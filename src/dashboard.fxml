@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="basePane" prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboardController">
+   <children>
+      <Button mnemonicParsing="false" onAction="#openSettings" text="Settings">
+         <font>
+            <Font name="Roboto Regular" size="12.0" />
+         </font></Button>
+      <Button layoutX="70.0" mnemonicParsing="false" onAction="#closeSettingsDebug" text="Close Settings">
+         <font>
+            <Font name="Roboto Regular" size="12.0" />
+         </font></Button>
+      <VBox fx:id="actionsVBox" onSwipeUp="#openSettings" spacing="20.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="loadingPane" alignment="CENTER" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/loading.gif" />
+               </image>
+            </ImageView>
+         </children></VBox>
+      <VBox fx:id="settingsPane" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="settingsHeadingLabel" prefHeight="60.0" prefWidth="701.0" text="Settings" textFill="WHITE">
+                     <font>
+                        <Font name="Roboto Regular" size="33.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="20.0" />
+                     </padding>
+                  </Label>
+                  <JFXButton fx:id="closeSettingsButton" cache="true" cacheHint="SPEED" onAction="#closeSettingsButtonClicked" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@assets/cancel.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox spacing="10.0">
+               <children>
+                  <Label text="StreamPi Server" textFill="WHITE">
+                     <font>
+                        <Font name="Roboto Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="serverIPField" cache="true" cacheHint="SPEED" style="-fx-text-inner-color: white;" unFocusColor="WHITE">
+                     <font>
+                        <Font name="Roboto Regular" size="13.0" />
+                     </font></JFXTextField>
+               </children>
+            </HBox>
+            <HBox spacing="10.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="114.0" text="Server Port" textFill="WHITE">
+                     <font>
+                        <Font name="Roboto Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="serverPortField" cache="true" cacheHint="SPEED" style="-fx-text-inner-color: white;" unFocusColor="WHITE">
+                     <font>
+                        <Font name="Roboto Regular" size="13.0" />
+                     </font></JFXTextField>
+               </children>
+            </HBox>
+            <HBox spacing="10.0">
+               <children>
+                  <Label prefHeight="58.0" prefWidth="119.0" text="Animations" textFill="WHITE">
+                     <font>
+                        <Font name="Roboto Regular" size="16.0" />
+                     </font>
+                  </Label>
+                  <JFXToggleButton fx:id="animationsToggleButton" cache="true" cacheHint="SPEED" onAction="#animationsToggleButtonClicked" prefHeight="55.0" prefWidth="138.0" text=" " />
+               </children>
+            </HBox>
+            <Label fx:id="currentStatusLabel" text="Current Status : NOT CONNECTED" textFill="RED">
+               <font>
+                  <Font name="Roboto Regular" size="14.0" />
+               </font></Label>
+            <Label fx:id="unableToConnectReasonLabel" text="Unable to Connect (&lt;Localised Message&gt;)" textFill="RED">
+               <font>
+                  <Font name="Roboto Regular" size="14.0" />
+               </font></Label>
+            <HBox prefWidth="760.0" spacing="25.0">
+               <children>
+                  <JFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" onAction="#checkServerConnection" ripplerFill="#cd8b19" text="Apply Settings And Restart" textFill="ORANGE">
+                     <font>
+                        <Font name="Roboto Regular" size="16.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" onAction="#restartStreamPi" ripplerFill="#cd8b19" text="Restart StreamPi" textFill="ORANGE">
+                     <font>
+                        <Font name="Roboto Regular" size="16.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" onAction="#shutdownStreamPi" ripplerFill="#bf1818" text="Turn Off StreamPi" textFill="RED">
+                     <font>
+                        <Font name="Roboto Regular" size="16.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding></VBox>
+   </children>
+</AnchorPane>

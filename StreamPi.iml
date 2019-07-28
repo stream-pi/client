@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="com.jfoenix:jfoenix:9.0.8" level="project" />
+    <orderEntry type="library" name="io.github.typhon0:AnimateFX:1.2.1" level="project" />
+    <orderEntry type="library" name="com.google.guava:guava:28.0-jre" level="project" />
+  </component>
+</module>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="io.github.typhon0:AnimateFX:1.2.1" type="repository">
+    <properties maven-id="io.github.typhon0:AnimateFX:1.2.1" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/github/typhon0/AnimateFX/1.2.1/AnimateFX-1.2.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
