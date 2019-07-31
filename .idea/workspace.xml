@@ -7,46 +7,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/StreamPi.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/com_google_guava_guava_28_0_jre.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/actions/details/steam" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/StreamPi_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/StreamPi_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StreamPi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StreamPi.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/details/youtube" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/icons/youtube" beforeDir="false" afterPath="$PROJECT_DIR$/actions/icons/youtube" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/details/steam" beforeDir="false" afterPath="$PROJECT_DIR$/actions/details/steam" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/details/steam - Copy" beforeDir="false" afterPath="$PROJECT_DIR$/actions/details/steam - Copy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/details/steam - Copy (2)" beforeDir="false" afterPath="$PROJECT_DIR$/actions/details/steam - Copy (2)" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/details/steam - Copy (3)" beforeDir="false" afterPath="$PROJECT_DIR$/actions/details/steam - Copy (3)" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/details/steam - Copy (4)" beforeDir="false" afterPath="$PROJECT_DIR$/actions/details/steam - Copy (4)" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/StreamPi_jar/StreamPi.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/StreamPi_jar/StreamPi.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/META-INF/StreamPi.kotlin_module" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4$5.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$7$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/style.css" afterDir="false" />
     </list>
-    <ignored path="JavaFxApplication.iws" />
-    <ignored path=".idea/workspace.xml" />
-    <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,72 +69,8 @@
     <ui_properties converted="true" />
     <breakpoint_rules converted="true" />
   </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="isMigrated" value="true" />
-  </component>
   <component name="FavoritesManager">
     <favorites_list name="JavaFxApplication" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/dashboardController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="576" column="9" lean-forward="true" selection-start-line="576" selection-start-column="9" selection-end-line="576" selection-end-column="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5218#5219#0" expanded="true" />
-                <element signature="e#5315#5316#0" expanded="true" />
-                <element signature="e#15730#15731#0" expanded="true" />
-                <element signature="e#15819#15820#0" expanded="true" />
-                <element signature="e#25945#26426#0" expanded="true" />
-                <element signature="e#26425#26426#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="49" selection-start-column="49" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/actions/details/steam">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="4" selection-start-column="4" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -169,47 +80,6 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>fadeIn</find>
-      <find>fade</find>
-      <find>setOpac</find>
-      <find>loading</find>
-      <find>openLoad</find>
-      <find>SlideOutDown</find>
-      <find>`</find>
-      <find>openSe</find>
-      <find>updat</find>
-      <find>closeSett</find>
-      <find>setStyle</find>
-      <find>closeLoadi</find>
-      <find>FadeOut</find>
-      <find>FadeIn</find>
-      <find>connected</find>
-      <find>timeout</find>
-      <find>closeSEttingsDe</find>
-      <find>settings</find>
-      <find>openSettings</find>
-      <find>e.print</find>
-      <find>initi</find>
-      <find>e.printSt</find>
-      <find>getOpaci</find>
-      <find>FadeOutDown</find>
-      <find>updateC</find>
-      <find>closeSEttings</find>
-      <find>animations_toggle</find>
-      <find>300</find>
-      <find>updateCOn</find>
-      <find>FadeIN</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>FadeOut</replace>
-      <replace>SlideOutDown</replace>
-      <replace>//System.o</replace>
-      <replace>animations_mode</replace>
-      <replace>FadeOutDown</replace>
-    </replaceStrings>
-  </component>
   <component name="FindManager">
     <FindUsagesManager>
       <setting name="OPEN_NEW_TAB" value="false" />
@@ -218,70 +88,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/file.java" />
-        <option value="$PROJECT_DIR$/src/dashboard.fxml" />
-        <option value="$PROJECT_DIR$/src/config" />
-        <option value="$PROJECT_DIR$/src/io.java" />
-        <option value="$PROJECT_DIR$/actions/details/youtube" />
-        <option value="$PROJECT_DIR$/actions/details/youtube2" />
-        <option value="$PROJECT_DIR$/actions/details/steam2" />
-        <option value="$PROJECT_DIR$/actions/details/steam" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (3)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (4)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (5)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (6)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (7)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (8)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (9)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (2)" />
-        <option value="$PROJECT_DIR$/actions/details/steam - Copy (10)" />
-        <option value="$PROJECT_DIR$/src/comms.java" />
-        <option value="$PROJECT_DIR$/src/style.css" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/dashboardController.java" />
-        <option value="$PROJECT_DIR$/config" />
-      </list>
-    </option>
-  </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="128" />
-    <option name="y" value="296" />
-    <option name="width" value="1612" />
-    <option name="height" value="876" />
-  </component>
+  <component name="ProjectId" id="1OmiYOyoK89aSxEGF7bH4ADvil1" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="StreamPi" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StreamPi" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="StreamPi" type="b2602c69:ProjectViewProjectNode" />
-              <item name="StreamPi" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
@@ -303,7 +114,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
     <property name="last.edited.regexp" value="Sample Text" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/actions/details" />
+    <property name="last_opened_file_path" value="C:/Program Files/SceneBuilder/SceneBuilder.exe" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -332,7 +143,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Embedded Linux JVM.Pi 3B">
+  <component name="RunManager" selected="Application.Main">
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -462,84 +273,18 @@
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="1302000" />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.11513859" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="Favorites" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="Image Layers" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="UI Designer" order="6" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.26218852" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Application Servers" order="7" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Problems" order="9" />
-      <window_info anchor="bottom" id="Changes" order="10" />
-      <window_info anchor="bottom" id="Profiler" order="11" />
-      <window_info anchor="bottom" id="Event Log" order="12" weight="0.32936078" />
-      <window_info anchor="bottom" id="Messages" order="13" weight="0.32936078" />
-      <window_info anchor="bottom" id="Flutter Performance" order="14" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="15" weight="0.32936078" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="JetGradle" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Palette" order="5" />
-      <window_info anchor="right" id="Maven Projects" order="6" />
-      <window_info anchor="right" id="Maven" order="7" />
-      <window_info anchor="right" id="Flutter Inspector" order="8" />
-      <window_info anchor="right" id="Flutter Outline" order="9" />
-      <window_info anchor="right" id="Palette&#9;" order="10" />
-      <window_info anchor="right" id="Theme Preview" order="11" />
-      <window_info anchor="right" id="Capture Analysis" order="12" />
-    </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.108742006" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="Favorites" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="Image Layers" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="UI Designer" order="6" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.26218852" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Application Servers" order="7" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Problems" order="9" />
-      <window_info anchor="bottom" id="Changes" order="10" />
-      <window_info anchor="bottom" id="Profiler" order="11" />
-      <window_info anchor="bottom" id="Event Log" order="12" weight="0.32936078" />
-      <window_info anchor="bottom" id="Messages" order="13" weight="0.32936078" />
-      <window_info anchor="bottom" id="Flutter Performance" order="14" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="15" weight="0.32936078" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="JetGradle" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Palette" order="5" />
-      <window_info anchor="right" id="Maven Projects" order="6" />
-      <window_info anchor="right" id="Maven" order="7" />
-      <window_info anchor="right" id="Flutter Inspector" order="8" />
-      <window_info anchor="right" id="Flutter Outline" order="9" />
-      <window_info anchor="right" id="Palette&#9;" order="10" />
-      <window_info anchor="right" id="Theme Preview" order="11" />
-      <window_info anchor="right" id="Capture Analysis" order="12" />
-    </layout-to-restore>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
@@ -549,220 +294,9 @@
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java" />
-    <entry file="file://$PROJECT_DIR$/src/file.java" />
-    <entry file="jar://$MAVEN_REPOSITORY$/io/github/typhon0/AnimateFX/1.2.1/AnimateFX-1.2.1.jar!/animatefx/animation/FadeIn.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-145">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/cvcv/youtube" />
-    <entry file="jar://C:/Program Files/BellSoft/LibericaJDK-11/lib/src.zip!/java.base/java/util/concurrent/FutureTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="271" column="32" lean-forward="true" selection-start-line="271" selection-start-column="32" selection-end-line="271" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/details/youtube" />
-    <entry file="jar://C:/Program Files/BellSoft/LibericaJDK-11/lib/src.zip!/java.base/java/net/SocketOutputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="149" column="8" selection-start-line="149" selection-start-column="8" selection-end-line="149" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/io.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="38" column="37" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dashboard.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2052">
-          <caret line="76" column="29" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/details/steam2" />
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (8)" />
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (6)" />
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (9)" />
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (10)" />
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (7)" />
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="32" selection-start-column="32" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (2)">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="32" selection-start-column="32" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (5)" />
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (4)">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="32" selection-start-column="32" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/details/steam - Copy (3)">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="32" selection-start-column="32" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/comms.java" />
-    <entry file="jar://$MAVEN_REPOSITORY$/io/github/typhon0/AnimateFX/1.2.1/AnimateFX-1.2.1.jar!/animatefx/animation/AnimationFX.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-324">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/github/typhon0/AnimateFX/1.2.1/AnimateFX-1.2.1.jar!/animatefx/animation/ZoomInUp.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/actions/details/steam">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="4" selection-start-column="4" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="49" selection-start-column="49" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dashboardController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="576" column="9" lean-forward="true" selection-start-line="576" selection-start-column="9" selection-end-line="576" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5218#5219#0" expanded="true" />
-            <element signature="e#5315#5316#0" expanded="true" />
-            <element signature="e#15730#15731#0" expanded="true" />
-            <element signature="e#15819#15820#0" expanded="true" />
-            <element signature="e#25945#26426#0" expanded="true" />
-            <element signature="e#26425#26426#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <last-edited>StreamPi:jar</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>11</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>StreamPi</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>io.github.typhon0:AnimateFX:1.2.1</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/streampi_client$Main.ic" NAME="Main Coverage Results" MODIFIED="1564591221479" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>.*</FILTER>
+    </SUITE>
   </component>
 </project>

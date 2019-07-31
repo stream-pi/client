@@ -307,7 +307,7 @@ public class dashboardController implements Initializable {
                                     //byte[] imageB = fs.readAllBytes();
                                     //fs.close();
                                     //String base64Image = Base64.getEncoder().encodeToString(imageB);
-                                    towrite+=eachAction[0]+"__"+eachAction[1]+"__"+eachAction[2]+"__"+eachAction[3]+"__"+eachAction[4]+"__"+eachAction[5]+"__"+eachAction[6]+separator;
+                                    towrite+=eachAction[0]+"__"+eachAction[1]+"__"+eachAction[2]+"__"+eachAction[3]+"__"+eachAction[4]+"__"+eachAction[5]+"__"+separator;
                                 }
                                 writeToOS(towrite);
                                 iconsSent.clear();
@@ -335,7 +335,7 @@ public class dashboardController implements Initializable {
                 }
             catch (Exception e)
             {
-                //checkServerConnection();
+                checkServerConnection();
                 if(debugMode)
                     e.printStackTrace();
             }
@@ -429,7 +429,7 @@ public class dashboardController implements Initializable {
                         actionsVBox.setAlignment(Pos.TOP_LEFT);
                     }
 
-                    actions = new String[allActionFiles.length][7];
+                    actions = new String[allActionFiles.length][6];
 
                     int i = 0;
                     for(String eachActionFile : allActionFiles)
@@ -440,9 +440,9 @@ public class dashboardController implements Initializable {
                         actions[i][2] = contentArray[1]; //HotKey
                         actions[i][3] = contentArray[2]; //Icon
                         //System.out.println("iconXX : "+actions[i][3]);
-                        actions[i][4] = contentArray[3]; //Ambient Colour
-                        actions[i][5] = contentArray[4]; //Row No
-                        actions[i][6] = contentArray[5]; //Column No
+                        //actions[i][4] = contentArray[3]; //Ambient Colour
+                        actions[i][4] = contentArray[3]; //Row No
+                        actions[i][5] = contentArray[4]; //Column No
                         i++;
                     }
 
@@ -495,8 +495,8 @@ public class dashboardController implements Initializable {
                             }
                         });
 
-                        int rowNo = Integer.parseInt(eachActionDetails[5]);
-                        int colNo = Integer.parseInt(eachActionDetails[6]);
+                        int rowNo = Integer.parseInt(eachActionDetails[4]);
+                        int colNo = Integer.parseInt(eachActionDetails[5]);
                         rows[rowNo].getChildren().set(colNo, actionPane);
                     }
 

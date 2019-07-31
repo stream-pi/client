@@ -103,7 +103,7 @@
                <font>
                   <Font name="Roboto Regular" size="14.0" />
                </font></Label>
-            <HBox prefWidth="760.0" spacing="25.0">
+            <HBox alignment="CENTER" prefHeight="26.0" prefWidth="760.0" spacing="25.0">
                <children>
                   <JFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" onAction="#checkServerConnection" ripplerFill="#cd8b19" text="Apply Settings And Restart" textFill="ORANGE">
                      <font>
