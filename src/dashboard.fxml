@@ -10,6 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -38,9 +39,9 @@
          </children></VBox>
       <VBox fx:id="settingsPane" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="settingsHeadingLabel" prefHeight="60.0" prefWidth="701.0" text="Settings" textFill="WHITE">
+                  <Label prefHeight="60.0" text="Settings" textFill="WHITE">
                      <font>
                         <Font name="Roboto Regular" size="33.0" />
                      </font>
@@ -48,9 +49,10 @@
                         <Insets bottom="20.0" />
                      </padding>
                   </Label>
-                  <JFXButton fx:id="closeSettingsButton" cache="true" cacheHint="SPEED" onAction="#closeSettingsButtonClicked" text=" ">
+                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <JFXButton fx:id="closeSettingsButton" cache="true" cacheHint="SPEED" onAction="#closeSettingsButtonClicked" prefHeight="60.0" prefWidth="55.0" text=" ">
                      <graphic>
-                        <ImageView fitHeight="35.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="35.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/cancel.png" />
                            </image>

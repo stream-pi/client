@@ -55,8 +55,6 @@ public class dashboardController implements Initializable {
     @FXML
     public JFXToggleButton animationsToggleButton;
     @FXML
-    public Label settingsHeadingLabel;
-    @FXML
     public JFXButton closeSettingsButton;
     @FXML
     public VBox loadingPane;
@@ -78,7 +76,6 @@ public class dashboardController implements Initializable {
         basePane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
         loadingPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
         settingsPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
-        settingsHeadingLabel.setPrefWidth(Integer.parseInt(Main.config.get("width"))-50);
         if(Main.config.get("debug_mode").equals("1"))
             debugMode = true;
         else
