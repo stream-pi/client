@@ -276,22 +276,33 @@ public class dashboardController implements Initializable {
                             {
                                 //System.out.println("sd213123");
                                 int noOfActions = Integer.parseInt(response[1]);
-                                int currentIndex = 1;
+                                int currentIndex = 2;
                                 for(int i = 0;i<noOfActions;i++)
                                 {
                                     String[] newAction = response[currentIndex].split("__");
                                     String actionID = newAction[0];
                                     String actionCasualName = newAction[1];
-                                    String actionHotkeyRaw = newAction[2];
-                                    String actionImageBase64 = newAction[3];
-                                    String actionAmbientColor = newAction[4];
-                                    byte[] img = Base64.getDecoder().decode(actionImageBase64);
-                                    io.writeToFileRaw(img,"actions/icons/"+actionID);
-                                    io.writeToFile(actionCasualName+separator+actionHotkeyRaw+separator+actionID+actionAmbientColor+separator,"actions/details/"+actionID);
+                                    String actionType = newAction[2];
+                                    String actionContent = newAction[3];
+                                    String actionIconFileName = newAction[4];
+                                    String actionRowNo = newAction[5];
+                                    String actionColNo = newAction[6];
+
+                                    io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionIconFileName+separator+actionRowNo+separator+actionColNo+separator,"actions/details/"+actionID);
+                                    //io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionID+separator+actionImageFileName+separator+actionRowNo+separator+actionColNo,"actions/details/"+actionID);
+                                    currentIndex ++;
                                 }
                                 //System.out.println("updated!");
                                 openLoadingPane();
                                 loadActions();
+                            }
+                            else if(msgHeading.equals("update_icon"))
+                            {
+                                String iconName = response[1];
+                                String actionImageBase64 = response[2];
+
+                                byte[] img = Base64.getDecoder().decode(actionImageBase64);
+                                io.writeToFileRaw(img,"actions/icons/"+iconName);
                             }
                             else if(msgHeading.equals("get_actions"))
                             {
@@ -304,7 +315,7 @@ public class dashboardController implements Initializable {
                                     //byte[] imageB = fs.readAllBytes();
                                     //fs.close();
                                     //String base64Image = Base64.getEncoder().encodeToString(imageB);
-                                    towrite+=eachAction[0]+"__"+eachAction[1]+"__"+eachAction[2]+"__"+eachAction[3]+"__"+eachAction[4]+"__"+eachAction[5]+"__"+separator;
+                                    towrite+=eachAction[0]+"__"+eachAction[1]+"__"+eachAction[2]+"__"+eachAction[3]+"__"+eachAction[4]+"__"+eachAction[5]+"__"+eachAction[6]+separator;
                                 }
                                 writeToOS(towrite);
                                 iconsSent.clear();
@@ -313,14 +324,14 @@ public class dashboardController implements Initializable {
                             {
                                 for(String[] eachAction : actions)
                                 {
-                                    if(!iconsSent.contains(eachAction[3]))
+                                    if(!iconsSent.contains(eachAction[4]))
                                     {
-                                        iconsSent.add(eachAction[3]);
-                                        FileInputStream fs = new FileInputStream("actions/icons/"+eachAction[3]);
+                                        iconsSent.add(eachAction[4]);
+                                        FileInputStream fs = new FileInputStream("actions/icons/"+eachAction[4]);
                                         byte[] imageB = fs.readAllBytes();
                                         fs.close();
                                         String base64Image = Base64.getEncoder().encodeToString(imageB);
-                                        writeToOS("action_icon::"+eachAction[3]+"::"+base64Image+"::");
+                                        writeToOS("action_icon::"+eachAction[4]+"::"+base64Image+"::");
                                         Thread.sleep(500);
                                     }
                                 }
@@ -426,20 +437,22 @@ public class dashboardController implements Initializable {
                         actionsVBox.setAlignment(Pos.TOP_LEFT);
                     }
 
-                    actions = new String[allActionFiles.length][6];
+                    actions = new String[allActionFiles.length][7];
 
                     int i = 0;
                     for(String eachActionFile : allActionFiles)
                     {
                         String[] contentArray = io.readFileArranged("actions/details/"+eachActionFile,separator);
+                        System.out.println(io.readFileRaw("actions/details/"+eachActionFile));
                         actions[i][0] = eachActionFile; //Action Unique ID
                         actions[i][1] = contentArray[0]; //Casual Name
-                        actions[i][2] = contentArray[1]; //HotKey
-                        actions[i][3] = contentArray[2]; //Icon
+                        actions[i][2] = contentArray[1]; //Action Type
+                        actions[i][3] = contentArray[2]; //Action Content
+                        actions[i][4] = contentArray[3]; //Icon
                         //System.out.println("iconXX : "+actions[i][3]);
                         //actions[i][4] = contentArray[3]; //Ambient Colour
-                        actions[i][4] = contentArray[3]; //Row No
-                        actions[i][5] = contentArray[4]; //Column No
+                        actions[i][5] = contentArray[4]; //Row No
+                        actions[i][6] = contentArray[5]; //Column No
                         i++;
                     }
 
@@ -466,7 +479,7 @@ public class dashboardController implements Initializable {
                     for(String[] eachActionDetails : actions)
                     {
                         //System.out.println("actions/icons/"+eachActionDetails[3]);
-                        ImageView icon = new ImageView(new File("actions/icons/"+eachActionDetails[3]).toURI().toString());
+                        ImageView icon = new ImageView(new File("actions/icons/"+eachActionDetails[4]).toURI().toString());
                         icon.setFitHeight(90);
                         icon.setPreserveRatio(false);
                         icon.setFitWidth(90);
@@ -476,24 +489,24 @@ public class dashboardController implements Initializable {
                         actionPane.setPrefSize(90,90);
                         //actionPane.getStyleClass().add("action_box");
                         //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
-                        actionPane.setId(eachActionDetails[2]);
+                        actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]);
                         actionPane.setOnTouchPressed(new EventHandler<TouchEvent>() {
                             @Override
                             public void handle(TouchEvent event) {
                                 Node n = (Node) event.getSource();
-                                sendHotkey(n.getId());
+                                sendAction(n.getId());
                             }
                         });
                         actionPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
                                 Node n = (Node) event.getSource();
-                                sendHotkey(n.getId());
+                                sendAction(n.getId());
                             }
                         });
 
-                        int rowNo = Integer.parseInt(eachActionDetails[4]);
-                        int colNo = Integer.parseInt(eachActionDetails[5]);
+                        int rowNo = Integer.parseInt(eachActionDetails[5]);
+                        int colNo = Integer.parseInt(eachActionDetails[6]);
                         rows[rowNo].getChildren().set(colNo, actionPane);
                     }
 
@@ -505,7 +518,7 @@ public class dashboardController implements Initializable {
                         }
                     });
                     Thread.sleep(1500);
-                    //System.out.println("asdsaxxx");
+                    //System.out.println("asdesaxxx");
 
 
                     closeLoadingPane();
@@ -521,12 +534,12 @@ public class dashboardController implements Initializable {
         }).start();
     }
 
-    public void sendHotkey(String hotkey)
+    public void sendAction(String rawActionContent)
     {
         //System.out.println("HOTKEY : "+hotkey);
         try
         {
-            writeToOS("hotkey"+separator+hotkey+separator);
+            writeToOS(rawActionContent);
         }
         catch (Exception e)
         {
