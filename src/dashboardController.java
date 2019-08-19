@@ -30,9 +30,12 @@ import javafx.util.Duration;
 import java.io.*;
 import java.net.Inet4Address;
 import java.net.Socket;
+import java.net.URI;
 import java.net.URL;
 import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.ResourceBundle;
@@ -150,10 +153,9 @@ public class dashboardController implements Initializable {
                     if(isSettingsOpen && !isConnected)
                     {
                         closeSettings();
-                        Thread.sleep(1000);
+                        Thread.sleep(2000);
                     }
 
-                    closeSettings();
                     openLoadingPane();
 
                     if(isConnected)
@@ -196,7 +198,7 @@ public class dashboardController implements Initializable {
                     s.setReceiveBufferSize(950000000);
                     is = new DataInputStream(new BufferedInputStream(s.getInputStream()));
                     os = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
-                    isConnected = true;
+
 
                     updateConfig("server_ip",serverIPTemp);
                     updateConfig("server_port",serverPortField.getText());
@@ -205,6 +207,7 @@ public class dashboardController implements Initializable {
                         @Override
                         public void run() {
                             currentStatusLabel.setText("Current Status :  CONNECTED to "+serverIPTemp+":"+serverPortTemp);
+                            unableToConnectReasonLabel.setText("");
                         }
                     });
                     writeToOS("hi there");
@@ -214,6 +217,7 @@ public class dashboardController implements Initializable {
                         closeSettings();
                     }
                     loadActions();
+                    isConnected = true;
                 }
                 catch (Exception e)
                 {
@@ -272,8 +276,20 @@ public class dashboardController implements Initializable {
                                 //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
                                 // <maxcols>
                             }
+                            else if(msgHeading.equals("delete_action"))
+                            {
+                                System.out.println("Deleting...");
+                                new File("actions/details/"+response[1]).delete();
+                                new File("actions/icons/"+response[2]).delete();
+                                loadActions();
+                            }
                             else if(msgHeading.equals("actions_update"))
                             {
+                                //delete all details...
+                                for(String[] eachAction : actions)
+                                {
+                                    new File("actions/details/"+eachAction[0]).delete();
+                                }
                                 //System.out.println("sd213123");
                                 int noOfActions = Integer.parseInt(response[1]);
                                 int currentIndex = 2;
@@ -352,6 +368,14 @@ public class dashboardController implements Initializable {
         }
     };
 
+    private void deleteFiles(File file) {
+        if (file.isDirectory())
+            for (File f : file.listFiles())
+                deleteFiles(f);
+        else
+            file.delete();
+    }
+
     ArrayList<String> iconsSent = new ArrayList<>();
 
     boolean currentlyWriting = false;
@@ -403,135 +427,107 @@ public class dashboardController implements Initializable {
     }
 
     boolean isFirstTimeRun = true;
-    public void loadActions()
+    public void loadActions() throws Exception
     {
-        new Thread(new Task<Void>() {
+        Platform.runLater(new Runnable() {
             @Override
-            protected Void call() {
-                try {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            actionsVBox.getChildren().clear();
-                        }
-                    });
-
-                    String[] allActionFiles = new File("actions/details").list();
-
-                    if(allActionFiles.length == 0)
-                    {
-                        actionsVBox.setAlignment(Pos.CENTER);
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                Label l1 = new Label("No Actions Present!\nAdd Actions from StreamPi Server!");
-                                l1.setTextFill(Paint.valueOf("#ffffff"));
-                                l1.setFont(new Font("Roboto Regular",20));
-                                l1.setAlignment(Pos.CENTER);
-                                actionsVBox.getChildren().add(l1);
-                            }
-                        });
-                    }
-                    else
-                    {
-                        actionsVBox.setAlignment(Pos.TOP_LEFT);
-                    }
-
-                    actions = new String[allActionFiles.length][7];
-
-                    int i = 0;
-                    for(String eachActionFile : allActionFiles)
-                    {
-                        String[] contentArray = io.readFileArranged("actions/details/"+eachActionFile,separator);
-                        System.out.println(io.readFileRaw("actions/details/"+eachActionFile));
-                        actions[i][0] = eachActionFile; //Action Unique ID
-                        actions[i][1] = contentArray[0]; //Casual Name
-                        actions[i][2] = contentArray[1]; //Action Type
-                        actions[i][3] = contentArray[2]; //Action Content
-                        actions[i][4] = contentArray[3]; //Icon
-                        //System.out.println("iconXX : "+actions[i][3]);
-                        //actions[i][4] = contentArray[3]; //Ambient Colour
-                        actions[i][5] = contentArray[4]; //Row No
-                        actions[i][6] = contentArray[5]; //Column No
-                        i++;
-                    }
-
-                    HBox[] rows = new HBox[maxNoOfRows];
-
-                    for(int j = 0;j<maxNoOfRows;j++)
-                    {
-                        rows[j] = new HBox();
-                        rows[j].setSpacing(20);
-                        rows[j].setAlignment(Pos.CENTER);
-
-                        Pane[] actionPane = new Pane[maxActionsPerRow];
-                        for(int k = 0;k<maxActionsPerRow;k++)
-                        {
-                            actionPane[k] = new Pane();
-                            actionPane[k].setPrefSize(90,90);
-                            actionPane[k].getStyleClass().add("action_box");
-                            //actionPane[k].setStyle("-fx-effect: dropshadow(three-pass-box, red, 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
-                        }
-
-                        rows[j].getChildren().addAll(actionPane);
-                    }
-
-                    for(String[] eachActionDetails : actions)
-                    {
-                        //System.out.println("actions/icons/"+eachActionDetails[3]);
-                        ImageView icon = new ImageView(new File("actions/icons/"+eachActionDetails[4]).toURI().toString());
-                        icon.setFitHeight(90);
-                        icon.setPreserveRatio(false);
-                        icon.setFitWidth(90);
-
-                        Pane actionPane = new Pane(icon);
-                        actionPane.setPrefSize(90,90);
-                        actionPane.setPrefSize(90,90);
-                        //actionPane.getStyleClass().add("action_box");
-                        //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
-                        actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]);
-                        actionPane.setOnTouchPressed(new EventHandler<TouchEvent>() {
-                            @Override
-                            public void handle(TouchEvent event) {
-                                Node n = (Node) event.getSource();
-                                sendAction(n.getId());
-                            }
-                        });
-                        actionPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                Node n = (Node) event.getSource();
-                                sendAction(n.getId());
-                            }
-                        });
-
-                        int rowNo = Integer.parseInt(eachActionDetails[5]);
-                        int colNo = Integer.parseInt(eachActionDetails[6]);
-                        rows[rowNo].getChildren().set(colNo, actionPane);
-                    }
-
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            actionsVBox.getChildren().addAll(rows);
-                            actionsVBox.toFront();
-                        }
-                    });
-                    Thread.sleep(1500);
-                    //System.out.println("asdesaxxx");
-
-
-                    closeLoadingPane();
-
-                }
-                catch (Exception e)
-                {
-                    if(debugMode)
-                        e.printStackTrace();
-                }
-                return null;
+            public void run() {
+                System.out.println("Cleared!!XX");
+                actionsVBox.getChildren().clear();
             }
-        }).start();
+        });
+
+        String[] allActionFiles = new File("actions/details").list();
+
+        actionsVBox.setAlignment(Pos.TOP_LEFT);
+
+        System.out.println("sx : "+allActionFiles.length);
+        actions = new String[allActionFiles.length][7];
+
+        int i = 0;
+        for(String eachActionFile : allActionFiles)
+        {
+            String[] contentArray = io.readFileArranged("actions/details/"+eachActionFile,separator);
+            System.out.println(io.readFileRaw("actions/details/"+eachActionFile));
+            actions[i][0] = eachActionFile; //Action Unique ID
+            actions[i][1] = contentArray[0]; //Casual Name
+            actions[i][2] = contentArray[1]; //Action Type
+            actions[i][3] = contentArray[2]; //Action Content
+            actions[i][4] = contentArray[3]; //Icon
+            //System.out.println("iconXX : "+actions[i][3]);
+            //actions[i][4] = contentArray[3]; //Ambient Colour
+            actions[i][5] = contentArray[4]; //Row No
+            actions[i][6] = contentArray[5]; //Column No
+            i++;
+        }
+
+        HBox[] rows = new HBox[maxNoOfRows];
+
+        for(int j = 0;j<maxNoOfRows;j++)
+        {
+            rows[j] = new HBox();
+            rows[j].setSpacing(20);
+            rows[j].setAlignment(Pos.CENTER);
+
+            Pane[] actionPane = new Pane[maxActionsPerRow];
+            for(int k = 0;k<maxActionsPerRow;k++)
+            {
+                actionPane[k] = new Pane();
+                actionPane[k].setPrefSize(90,90);
+                actionPane[k].getStyleClass().add("action_box");
+                //actionPane[k].setStyle("-fx-effect: dropshadow(three-pass-box, red, 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
+            }
+
+            rows[j].getChildren().addAll(actionPane);
+        }
+
+        for(String[] eachActionDetails : actions)
+        {
+            //System.out.println("actions/icons/"+eachActionDetails[3]);
+            ImageView icon = new ImageView(new File("actions/icons/"+eachActionDetails[4]).toURI().toString());
+            icon.setFitHeight(90);
+            icon.setPreserveRatio(false);
+            icon.setFitWidth(90);
+
+            Pane actionPane = new Pane(icon);
+            actionPane.setPrefSize(90,90);
+            actionPane.setPrefSize(90,90);
+            //actionPane.getStyleClass().add("action_box");
+            //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
+            actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]);
+            actionPane.setOnTouchPressed(new EventHandler<TouchEvent>() {
+                @Override
+                public void handle(TouchEvent event) {
+                    Node n = (Node) event.getSource();
+                    sendAction(n.getId());
+                }
+            });
+            actionPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Node n = (Node) event.getSource();
+                    sendAction(n.getId());
+                }
+            });
+
+            int rowNo = Integer.parseInt(eachActionDetails[5]);
+            int colNo = Integer.parseInt(eachActionDetails[6]);
+            rows[rowNo].getChildren().set(colNo, actionPane);
+        }
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                actionsVBox.getChildren().addAll(rows);
+                actionsVBox.toFront();
+            }
+        });
+        Thread.sleep(1500);
+        //System.out.println("asdesaxxx");
+
+
+        closeLoadingPane();
+
     }
 
     public void sendAction(String rawActionContent)
