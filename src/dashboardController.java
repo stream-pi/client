@@ -267,6 +267,7 @@ public class dashboardController implements Initializable {
                         }
                         else
                         {
+                            System.out.println("RFS : "+responseFromServerRaw);
                             String[] response = responseFromServerRaw.split(separator);
                             String msgHeading = response[0];
                             //System.out.println("'"+msgHeading+"'");
@@ -319,6 +320,7 @@ public class dashboardController implements Initializable {
 
                                 byte[] img = Base64.getDecoder().decode(actionImageBase64);
                                 io.writeToFileRaw(img,"actions/icons/"+iconName);
+                                loadActions();
                             }
                             else if(msgHeading.equals("get_actions"))
                             {
@@ -347,6 +349,7 @@ public class dashboardController implements Initializable {
                                         byte[] imageB = fs.readAllBytes();
                                         fs.close();
                                         String base64Image = Base64.getEncoder().encodeToString(imageB);
+                                        System.out.println(eachAction[4]+"GAYFAG");
                                         writeToOS("action_icon::"+eachAction[4]+"::"+base64Image+"::");
                                         Thread.sleep(500);
                                     }
@@ -382,7 +385,7 @@ public class dashboardController implements Initializable {
     public void writeToOS(String txt) throws Exception
     {
         //System.out.println("txt  : "+txt);
-        txt = txt + "<END>";
+        /*txt = txt + "<END>";
         currentlyWriting = true;
         String[] chunks = Iterables.toArray(Splitter.fixedLength(1000).split(txt),String.class);
         for(int i = 0;i<chunks.length;i++)
@@ -390,19 +393,22 @@ public class dashboardController implements Initializable {
             os.writeUTF(chunks[i]);
             Thread.sleep(100);
 
-        }
-        //os.writeUTF(txt);
+        }*/
+        //currentlyWriting = true;
+        os.writeUTF(txt);
 
         //os.write(txt.getBytes(StandardCharsets.UTF_8).length);
         //os.write(txt.getBytes(StandardCharsets.UTF_8));
-        currentlyWriting = false;
+        //currentlyWriting = false;
         os.flush();
         ////System.out.println("txt : "+txt);
     }
 
     public String readFromIS() throws Exception
     {
-        String finalResult = "";
+        String eachChunk = is.readUTF();
+        return eachChunk;
+        /*String finalResult = "";
         while(true)
         {
             if(currentlyWriting)
@@ -423,7 +429,7 @@ public class dashboardController implements Initializable {
         }
 
         //System.out.println("txtrr : "+finalResult);
-        return finalResult;
+        return finalResult;*/
     }
 
     boolean isFirstTimeRun = true;
