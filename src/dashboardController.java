@@ -1,17 +1,12 @@
 import animatefx.animation.*;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXMasonryPane;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.events.JFXDialogEvent;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -19,23 +14,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
 import javafx.scene.input.TouchEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 import java.io.*;
 import java.net.Inet4Address;
 import java.net.Socket;
-import java.net.URI;
 import java.net.URL;
-import java.nio.Buffer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.ResourceBundle;
@@ -60,7 +46,13 @@ public class dashboardController implements Initializable {
     @FXML
     public JFXButton closeSettingsButton;
     @FXML
+    public JFXTextField screenWidthField;
+    @FXML
+    public JFXTextField screenHeightField;
+    @FXML
     public VBox loadingPane;
+    @FXML
+    public StackPane alertStackPane;
 
     int maxActionsPerRow;
     int maxNoOfRows;
@@ -71,11 +63,14 @@ public class dashboardController implements Initializable {
     String serverPort = Main.config.get("server_port");
     boolean isConnected = false;
     String separator = "::";
+    final Paint WHITE_PAINT = Paint.valueOf("#ffffff");
 
     boolean isSettingsOpen = false;
     boolean debugMode = false;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        screenHeightField.setText(Main.config.get("height"));
+        screenWidthField.setText(Main.config.get("width"));
         basePane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
         loadingPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
         settingsPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
@@ -160,9 +155,9 @@ public class dashboardController implements Initializable {
 
                     if(isConnected)
                     {
+                        //writeToOS("client_quit::");
                         isConnected = false;
-                        writeToOS("client_quit::");
-                        Thread.sleep(400);
+                        //Thread.sleep(500);
                         s.close();
                         Platform.runLater(new Runnable() {
                             @Override
@@ -170,6 +165,7 @@ public class dashboardController implements Initializable {
                                 actionsVBox.getChildren().clear();
                             }
                         });
+                        Thread.sleep(3000);
                     }
 
                     Thread.sleep(1100);
@@ -193,7 +189,7 @@ public class dashboardController implements Initializable {
 
 
                     s = new Socket(serverIPTemp,serverPortTemp);
-                    //s.setSoTimeout(10000);f
+                    s.setSoTimeout(5000);
                     s.setSendBufferSize(950000000);
                     s.setReceiveBufferSize(950000000);
                     is = new DataInputStream(new BufferedInputStream(s.getInputStream()));
@@ -208,6 +204,7 @@ public class dashboardController implements Initializable {
                         public void run() {
                             currentStatusLabel.setText("Current Status :  CONNECTED to "+serverIPTemp+":"+serverPortTemp);
                             unableToConnectReasonLabel.setText("");
+
                         }
                     });
                     writeToOS("hi there");
@@ -221,13 +218,14 @@ public class dashboardController implements Initializable {
                 }
                 catch (Exception e)
                 {
-                    //System.out.println("asdsdsa");
+                    System.out.println("CFBBBBB");
                     currentStatusLabel.setTextFill(Paint.valueOf("#FF0000"));
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             currentStatusLabel.setText("Current Status :  FAILED TO CONNECT to "+serverIPTemp+":"+serverPortTemp);
                             unableToConnectReasonLabel.setText(e.getLocalizedMessage());
+
                         }
                     });
                     if(debugMode)
@@ -240,6 +238,77 @@ public class dashboardController implements Initializable {
         }).start();
     }
 
+
+    @FXML
+    public JFXButton applySettingsAndRestartButton;
+
+    @FXML
+    public void applySettingsAndRestartButtonClicked()
+    {
+        try
+        {
+            String uw = screenWidthField.getText();
+            String uh = screenHeightField.getText();
+            String portVal = serverPortField.getText();
+            String ipVal = serverIPField.getText();
+            Integer.parseInt(uw);
+            Integer.parseInt(uh);
+
+            if(!Main.config.get("height").equals(uh) || !Main.config.get("width").equals(uw))
+            {
+                updateConfig("height",uh);
+                updateConfig("width",uw);
+                showErrorAlert("Alert","Screen Settings have been updated, restart to see effect");
+            }
+
+            if(!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal))
+            {
+                checkServerConnection();
+            }
+        }
+        catch (Exception e)
+        {
+            showErrorAlert("Alert","Please make sure screen dimensions are valid.");
+        }
+    }
+
+    public void showErrorAlert(String heading, String content)
+    {
+        System.out.println("XD");
+        JFXDialogLayout l = new JFXDialogLayout();
+        l.getStyleClass().add("dialog_style");
+        Label headingLabel = new Label(heading);
+        headingLabel.setTextFill(WHITE_PAINT);
+        headingLabel.setFont(Font.font("Roboto Regular",25));
+        l.setHeading(headingLabel);
+        Label contentLabel = new Label(content);
+        contentLabel.setFont(Font.font("Roboto Regular",15));
+        contentLabel.setTextFill(WHITE_PAINT);
+        contentLabel.setWrapText(true);
+        l.setBody(contentLabel);
+        JFXButton okButton = new JFXButton("OK");
+        okButton.setTextFill(WHITE_PAINT);
+        l.setActions(okButton);
+
+        JFXDialog alertDialog = new JFXDialog(alertStackPane,l, JFXDialog.DialogTransition.CENTER);
+        alertDialog.setOverlayClose(false);
+        alertDialog.getStyleClass().add("dialog_box");
+        okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                alertDialog.close();
+                alertDialog.setOnDialogClosed(new EventHandler<JFXDialogEvent>() {
+                    @Override
+                    public void handle(JFXDialogEvent event) {
+                        alertStackPane.toBack();
+                    }
+                });
+            }
+        });
+
+        alertStackPane.toFront();
+        alertDialog.show();
+    }
 
     public void updateConfig(String keyName, String newValue)
     {
@@ -273,6 +342,7 @@ public class dashboardController implements Initializable {
                             //System.out.println("'"+msgHeading+"'");
                             if(msgHeading.equals("client_details"))
                             {
+                                Thread.sleep(1000);
                                 writeToOS("client_details"+separator+thisDeviceIP+separator+Main.config.get("device_nick_name")+separator+Main.config.get("width")+separator+Main.config.get("height")+separator+maxActionsPerRow+separator+maxNoOfRows+separator);
                                 //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
                                 // <maxcols>

@@ -21,3 +21,7 @@
     -fx-border-radius : 10;
     -fx-background-color:black;
 }
+
+.dialog_style {
+    -fx-background-color : #212121;
+}

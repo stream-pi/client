@@ -9,6 +9,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.jfoenix:jfoenix:9.0.8" level="project" />
     <orderEntry type="library" name="io.github.typhon0:AnimateFX:1.2.1" level="project" />
-    <orderEntry type="library" name="com.google.guava:guava:28.0-jre" level="project" />
   </component>
 </module>
