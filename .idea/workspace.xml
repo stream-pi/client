@@ -7,30 +7,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/actions/details/action_96701" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/actions/icons/icon_20259" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/StreamPi_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/StreamPi_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/com_google_guava_guava_28_0_jre.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StreamPi.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StreamPi.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/details/action_96701" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/icons/icon_20259" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/StreamPi_jar/StreamPi.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/StreamPi_jar/StreamPi.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$10.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$11.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$12$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$13$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$13$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$13.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$14.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$15.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$16$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$16.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$17$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$17$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$17.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$3$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$5.class" afterDir="false" />
@@ -39,10 +36,7 @@
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$8.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/StreamPi/dashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/dashboardController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/StreamPi/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/StreamPi/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboard.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/style.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -168,7 +162,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Embedded Linux JVM.Pi 3B">
+  <component name="RunManager" selected="Application.Main">
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <option name="VMOptions" />
       <option name="arguments" />

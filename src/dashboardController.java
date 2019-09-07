@@ -148,7 +148,6 @@ public class dashboardController implements Initializable {
                     if(isSettingsOpen && !isConnected)
                     {
                         closeSettings();
-                        Thread.sleep(2000);
                     }
 
                     openLoadingPane();
@@ -189,7 +188,7 @@ public class dashboardController implements Initializable {
 
 
                     s = new Socket(serverIPTemp,serverPortTemp);
-                    s.setSoTimeout(5000);
+                    //s.setSoTimeout(5000);
                     s.setSendBufferSize(950000000);
                     s.setReceiveBufferSize(950000000);
                     is = new DataInputStream(new BufferedInputStream(s.getInputStream()));
@@ -261,7 +260,7 @@ public class dashboardController implements Initializable {
                 showErrorAlert("Alert","Screen Settings have been updated, restart to see effect");
             }
 
-            if(!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal))
+            if(!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal) || !isConnected)
             {
                 checkServerConnection();
             }
