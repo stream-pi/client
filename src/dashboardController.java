@@ -257,7 +257,19 @@ public class dashboardController implements Initializable {
             {
                 updateConfig("height",uh);
                 updateConfig("width",uw);
-                showErrorAlert("Alert","Screen Settings have been updated, restart to see effect");
+                new Thread(new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        Thread.sleep(3000);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                showErrorAlert("Alert","Screen Settings have been updated, restart to see effect");
+                            }
+                        });
+                        return null;
+                    }
+                }).start();
             }
 
             if(!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal) || !isConnected)

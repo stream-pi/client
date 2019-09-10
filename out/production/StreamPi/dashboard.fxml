@@ -38,7 +38,7 @@
          </children></VBox>
       <VBox fx:id="settingsPane" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefWidth="200.0">
                <children>
                   <Label prefHeight="60.0" text="Settings" textFill="WHITE">
                      <font>
@@ -48,7 +48,7 @@
                         <Insets bottom="20.0" />
                      </padding>
                   </Label>
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Region prefWidth="580.0" HBox.hgrow="SOMETIMES" />
                   <JFXButton fx:id="closeSettingsButton" cache="true" cacheHint="SPEED" onAction="#closeSettingsButtonClicked" prefHeight="60.0" prefWidth="55.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
