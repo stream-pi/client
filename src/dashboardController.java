@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
@@ -32,7 +34,7 @@ public class dashboardController implements Initializable {
     @FXML
     public VBox actionsVBox;
     @FXML
-    public VBox settingsPane;
+    public ScrollPane settingsPane;
     @FXML
     public JFXTextField serverIPField;
     @FXML
@@ -51,6 +53,14 @@ public class dashboardController implements Initializable {
     public JFXTextField screenHeightField;
     @FXML
     public VBox loadingPane;
+    @FXML
+    public Button openSettingsButtonDebug;
+    @FXML
+    public Button closeSettingsButtonDebug;
+    @FXML
+    public JFXToggleButton debugModeToggleButton;
+    @FXML
+    public VBox goodbyePane;
     @FXML
     public StackPane alertStackPane;
 
@@ -74,12 +84,6 @@ public class dashboardController implements Initializable {
         basePane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
         loadingPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
         settingsPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
-        if(Main.config.get("debug_mode").equals("1"))
-            debugMode = true;
-        else
-            debugMode = false;
-
-
         loadingPane.setOpacity(0);
         serverIPField.setText(serverIP);
         serverPortField.setText(serverPort);
@@ -94,6 +98,22 @@ public class dashboardController implements Initializable {
         {
             animationsToggleButton.setSelected(true);
             settingsPane.setTranslateY(Integer.parseInt(Main.config.get("height")));
+        }
+
+        if(Main.config.get("debug_mode").equals("0"))
+        {
+            debugMode = false;
+            debugModeToggleButton.setSelected(false);
+
+            openSettingsButtonDebug.setDisable(true);
+            openSettingsButtonDebug.setVisible(false);
+            closeSettingsButtonDebug.setDisable(true);
+            closeSettingsButtonDebug.setVisible(false);
+        }
+        else
+        {
+            debugMode = true;
+            debugModeToggleButton.setSelected(true);
         }
 
         settingsPane.setOnSwipeDown(new EventHandler<SwipeEvent>() {
@@ -126,6 +146,27 @@ public class dashboardController implements Initializable {
         else
         {
             updateConfig("animations_mode","0");
+        }
+    }
+
+    @FXML
+    public void debugModeToggleButtonClicked()
+    {
+        if(debugModeToggleButton.isSelected())
+        {
+            updateConfig("debug_mode","1");
+            openSettingsButtonDebug.setDisable(false);
+            openSettingsButtonDebug.setVisible(true);
+            closeSettingsButtonDebug.setDisable(false);
+            closeSettingsButtonDebug.setVisible(true);
+        }
+        else
+        {
+            updateConfig("debug_mode","0");
+            openSettingsButtonDebug.setDisable(true);
+            openSettingsButtonDebug.setVisible(false);
+            closeSettingsButtonDebug.setDisable(true);
+            closeSettingsButtonDebug.setVisible(false);
         }
     }
 
@@ -392,6 +433,7 @@ public class dashboardController implements Initializable {
                                 }
                                 //System.out.println("updated!");
                                 openLoadingPane();
+                                isUpdateStuff = true;
                                 loadActions();
                             }
                             else if(msgHeading.equals("update_icon"))
@@ -401,6 +443,7 @@ public class dashboardController implements Initializable {
 
                                 byte[] img = Base64.getDecoder().decode(actionImageBase64);
                                 io.writeToFileRaw(img,"actions/icons/"+iconName);
+                                isUpdateStuff = true;
                                 loadActions();
                             }
                             else if(msgHeading.equals("get_actions"))
@@ -435,6 +478,7 @@ public class dashboardController implements Initializable {
                                         Thread.sleep(500);
                                     }
                                 }
+                                closeLoadingPane();
                             }
                         }
                         //System.out.println("'"+responseFromServerRaw+"'");
@@ -443,9 +487,12 @@ public class dashboardController implements Initializable {
                 }
             catch (Exception e)
             {
-                checkServerConnection();
-                if(debugMode)
-                    e.printStackTrace();
+                if(!isShutdown)
+                {
+                    checkServerConnection();
+                    if(debugMode)
+                        e.printStackTrace();
+                }
             }
             }
 
@@ -513,7 +560,7 @@ public class dashboardController implements Initializable {
         return finalResult;*/
     }
 
-    boolean isFirstTimeRun = true;
+    boolean isUpdateStuff = false;
     public void loadActions() throws Exception
     {
         Platform.runLater(new Runnable() {
@@ -582,7 +629,7 @@ public class dashboardController implements Initializable {
             //actionPane.getStyleClass().add("action_box");
             //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
             actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]);
-            actionPane.setOnTouchPressed(new EventHandler<TouchEvent>() {
+            actionPane.setOnTouchStationary(new EventHandler<TouchEvent>() {
                 @Override
                 public void handle(TouchEvent event) {
                     Node n = (Node) event.getSource();
@@ -606,15 +653,22 @@ public class dashboardController implements Initializable {
             @Override
             public void run() {
                 actionsVBox.getChildren().addAll(rows);
-                actionsVBox.toFront();
+                //actionsVBox.toFront();
             }
         });
         Thread.sleep(1500);
         //System.out.println("asdesaxxx");
 
+        if(actions.length == 0)
+        {
+            closeLoadingPane();
+        }
 
-        closeLoadingPane();
-
+        if(isUpdateStuff)
+        {
+            isUpdateStuff = false;
+            closeLoadingPane();
+        }
     }
 
     public void sendAction(String rawActionContent)
@@ -813,6 +867,7 @@ public class dashboardController implements Initializable {
     {
         try
         {
+            isShutdown = true;
             if(isConnected)
             {
                 //System.out.println("Closing connection to Server ...");
@@ -830,21 +885,35 @@ public class dashboardController implements Initializable {
         }
     }
 
+    boolean isShutdown = false;
     @FXML
     public void shutdownStreamPi()
     {
         try
         {
+            isShutdown = true;
+            goodbyePane.toFront();
             if(isConnected)
             {
                 isConnected = false;
-                //System.out.println("Closing connection to Server ...");
-                s.close();
-                //System.out.println("... Done!");
             }
             //System.out.println("Shutting Down ...");
-            Runtime r = Runtime.getRuntime();
-            r.exec("sudo halt");
+            new Thread(new Task<Void>() {
+                @Override
+                protected Void call() {
+                    try
+                    {
+                        Thread.sleep(3000);
+                        Runtime r = Runtime.getRuntime();
+                        r.exec("sudo halt");
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }).start();
         }
         catch (Exception e)
         {
