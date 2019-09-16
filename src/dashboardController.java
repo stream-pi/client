@@ -241,7 +241,7 @@ public class dashboardController implements Initializable {
                     });
 
                     s = new Socket(serverIPTemp,serverPortTemp);
-                    s.setSoTimeout(30000);
+                    //s.setSoTimeout(30000);
                     s.setSendBufferSize(950000000);
                     s.setReceiveBufferSize(950000000);
                     is = new DataInputStream(new BufferedInputStream(s.getInputStream()));
