@@ -22,6 +22,7 @@ import javafx.scene.text.Font;
 
 import java.io.*;
 import java.net.Inet4Address;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
@@ -240,7 +241,8 @@ public class dashboardController implements Initializable {
                         }
                     });
 
-                    s = new Socket(serverIPTemp,serverPortTemp);
+                    s = new Socket();
+                    s.connect(new InetSocketAddress(serverIPTemp,serverPortTemp), 5000);
                     //s.setSoTimeout(30000);
                     s.setSendBufferSize(950000000);
                     s.setReceiveBufferSize(950000000);
