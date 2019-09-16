@@ -175,11 +175,17 @@ public class dashboardController implements Initializable {
     DataOutputStream os;
     int serverPortTemp = 23;
     Thread socketCommThread;
+    boolean isWorking = false;
     public void checkServerConnection()
     {
         new Thread(new Task<Void>() {
             @Override
             protected Void call(){
+                if(isWorking)
+                    return null;
+
+                isWorking = true;
+                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
                 String serverIPTemp = serverIPField.getText();
 
@@ -227,9 +233,15 @@ public class dashboardController implements Initializable {
                         return null;
                     }
 
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            actionsVBox.getChildren().clear();
+                        }
+                    });
 
                     s = new Socket(serverIPTemp,serverPortTemp);
-                    //s.setSoTimeout(5000);
+                    s.setSoTimeout(30000);
                     s.setSendBufferSize(950000000);
                     s.setReceiveBufferSize(950000000);
                     is = new DataInputStream(new BufferedInputStream(s.getInputStream()));
@@ -273,6 +285,7 @@ public class dashboardController implements Initializable {
                     isConnected = false;
                     openSettings();
                 }
+                isWorking = false;
                 return null;
             }
         }).start();
