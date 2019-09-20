@@ -110,6 +110,8 @@ public class dashboardController implements Initializable {
             openSettingsButtonDebug.setVisible(false);
             closeSettingsButtonDebug.setDisable(true);
             closeSettingsButtonDebug.setVisible(false);
+            returnToParentLayerButton.setDisable(true);
+            returnToParentLayerButton.setVisible(false);
         }
         else
         {
@@ -124,6 +126,13 @@ public class dashboardController implements Initializable {
                 {
                    closeSettings();
                 }
+            }
+        });
+
+        actionsVBox.setOnSwipeRight(new EventHandler<SwipeEvent>() {
+            @Override
+            public void handle(SwipeEvent event) {
+                returnToParentLayerButtonClicked();
             }
         });
 
@@ -441,8 +450,9 @@ public class dashboardController implements Initializable {
                                     String actionIconFileName = newAction[4];
                                     String actionRowNo = newAction[5];
                                     String actionColNo = newAction[6];
+                                    String actionLayerIndex = newAction[7];
 
-                                    io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionIconFileName+separator+actionRowNo+separator+actionColNo+separator,"actions/details/"+actionID);
+                                    io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionIconFileName+separator+actionRowNo+separator+actionColNo+separator+actionLayerIndex+separator,"actions/details/"+actionID);
                                     //io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionID+separator+actionImageFileName+separator+actionRowNo+separator+actionColNo,"actions/details/"+actionID);
                                     currentIndex ++;
                                 }
@@ -472,9 +482,9 @@ public class dashboardController implements Initializable {
                                     //byte[] imageB = fs.readAllBytes();
                                     //fs.close();
                                     //String base64Image = Base64.getEncoder().encodeToString(imageB);
-                                    towrite+=eachAction[0]+"__"+eachAction[1]+"__"+eachAction[2]+"__"+eachAction[3]+"__"+eachAction[4]+"__"+eachAction[5]+"__"+eachAction[6]+separator;
+                                    towrite+=eachAction[0]+"__"+eachAction[1]+"__"+eachAction[2]+"__"+eachAction[3]+"__"+eachAction[4]+"__"+eachAction[5]+"__"+eachAction[6]+"__"+eachAction[7]+separator;
                                 }
-                                writeToOS(towrite);
+                                writeToOS(towrite+maxLayers+separator);
                                 iconsSent.clear();
                             }
                             else if(msgHeading.equals("client_actions_icons_get"))
@@ -576,39 +586,10 @@ public class dashboardController implements Initializable {
     }
 
     boolean isUpdateStuff = false;
-    public void loadActions() throws Exception
+    int currentLayer = 0;
+
+    public void drawLayer(int layer)
     {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Cleared!!XX");
-                actionsVBox.getChildren().clear();
-            }
-        });
-
-        String[] allActionFiles = new File("actions/details").list();
-
-        actionsVBox.setAlignment(Pos.TOP_LEFT);
-
-        System.out.println("sx : "+allActionFiles.length);
-        actions = new String[allActionFiles.length][7];
-
-        int i = 0;
-        for(String eachActionFile : allActionFiles)
-        {
-            String[] contentArray = io.readFileArranged("actions/details/"+eachActionFile,separator);
-            System.out.println(io.readFileRaw("actions/details/"+eachActionFile));
-            actions[i][0] = eachActionFile; //Action Unique ID
-            actions[i][1] = contentArray[0]; //Casual Name
-            actions[i][2] = contentArray[1]; //Action Type
-            actions[i][3] = contentArray[2]; //Action Content
-            actions[i][4] = contentArray[3]; //Icon
-            //System.out.println("iconXX : "+actions[i][3]);
-            //actions[i][4] = contentArray[3]; //Ambient Colour
-            actions[i][5] = contentArray[4]; //Row No
-            actions[i][6] = contentArray[5]; //Column No
-            i++;
-        }
 
         HBox[] rows = new HBox[maxNoOfRows];
 
@@ -632,6 +613,9 @@ public class dashboardController implements Initializable {
 
         for(String[] eachActionDetails : actions)
         {
+            if(Integer.parseInt(eachActionDetails[7]) != layer)
+                continue;
+
             //System.out.println("actions/icons/"+eachActionDetails[3]);
             ImageView icon = new ImageView(new File("actions/icons/"+eachActionDetails[4]).toURI().toString());
             icon.setFitHeight(90);
@@ -643,7 +627,7 @@ public class dashboardController implements Initializable {
             actionPane.setPrefSize(90,90);
             //actionPane.getStyleClass().add("action_box");
             //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
-            actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]);
+            actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]+separator);
             actionPane.setOnTouchStationary(new EventHandler<TouchEvent>() {
                 @Override
                 public void handle(TouchEvent event) {
@@ -667,10 +651,97 @@ public class dashboardController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                actionsVBox.getChildren().addAll(rows);
-                //actionsVBox.toFront();
+
+                if(currentLayer > layer)
+                {
+                    FadeOutRight gay = new FadeOutRight(actionsVBox);
+                    gay.play();
+                    gay.setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            actionsVBox.getChildren().clear();
+                            actionsVBox.getChildren().addAll(rows);
+                            FadeInLeft fag = new FadeInLeft(actionsVBox);
+                            fag.play();
+                        }
+                    });
+                }
+                else if(currentLayer < layer)
+                {
+                    FadeOutLeft gay = new FadeOutLeft(actionsVBox);
+                    gay.play();
+                    gay.setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            actionsVBox.getChildren().clear();
+                            actionsVBox.getChildren().addAll(rows);
+                            FadeInRight fag = new FadeInRight(actionsVBox);
+                            fag.play();
+                        }
+                    });
+                }
+                else
+                {
+                    actionsVBox.getChildren().clear();
+                    actionsVBox.getChildren().addAll(rows);
+                }
+
+
+                if(layer != -1)
+                    currentLayer = layer;
             }
         });
+    }
+
+    @FXML
+    public Button returnToParentLayerButton;
+
+    @FXML
+    public void returnToParentLayerButtonClicked()
+    {
+        System.out.println(currentLayer);
+        if(currentLayer > 0)
+        {
+            drawLayer(0);
+        }
+    }
+
+    int maxLayers = 0;
+    public void loadActions() throws Exception
+    {
+        maxLayers = 0;
+        String[] allActionFiles = new File("actions/details").list();
+
+        actionsVBox.setAlignment(Pos.TOP_LEFT);
+
+        System.out.println("sx : "+allActionFiles.length);
+        actions = new String[allActionFiles.length][8];
+
+        int i = 0;
+        int lowLayer = 0;
+        for(String eachActionFile : allActionFiles)
+        {
+            String[] contentArray = io.readFileArranged("actions/details/"+eachActionFile,separator);
+            System.out.println(io.readFileRaw("actions/details/"+eachActionFile));
+            actions[i][0] = eachActionFile; //Action Unique ID
+            actions[i][1] = contentArray[0]; //Casual Name
+            actions[i][2] = contentArray[1]; //Action Type
+            actions[i][3] = contentArray[2]; //Action Content
+            actions[i][4] = contentArray[3]; //Icon
+            //System.out.println("iconXX : "+actions[i][3]);
+            //actions[i][4] = contentArray[3]; //Ambient Colour
+            actions[i][5] = contentArray[4]; //Row No
+            actions[i][6] = contentArray[5]; //Column No
+            actions[i][7] = contentArray[6]; //Layer
+            if(Integer.parseInt(contentArray[6])>lowLayer)
+                lowLayer = Integer.parseInt(contentArray[6]);
+            i++;
+        }
+
+        maxLayers = lowLayer;
+
+        drawLayer(currentLayer);
+
         Thread.sleep(1500);
         //System.out.println("asdesaxxx");
 
@@ -689,15 +760,25 @@ public class dashboardController implements Initializable {
     public void sendAction(String rawActionContent)
     {
         //System.out.println("HOTKEY : "+hotkey);
-        try
+        System.out.println("AXION" +rawActionContent);
+        String[] splitz = rawActionContent.split("::");
+
+        if(splitz[0].equals("folder"))
         {
-            writeToOS(rawActionContent);
+            drawLayer(Integer.parseInt(splitz[1]));
         }
-        catch (Exception e)
+        else
         {
-            checkServerConnection();
-            if(debugMode)
-                e.printStackTrace();
+            try
+            {
+                writeToOS(rawActionContent);
+            }
+            catch (Exception e)
+            {
+                checkServerConnection();
+                if(debugMode)
+                    e.printStackTrace();
+            }
         }
     }
 
@@ -907,6 +988,7 @@ public class dashboardController implements Initializable {
         try
         {
             isShutdown = true;
+            goodbyePane.setVisible(true);
             goodbyePane.toFront();
             if(isConnected)
             {

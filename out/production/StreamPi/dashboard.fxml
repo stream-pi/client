@@ -19,7 +19,7 @@
 
 <AnchorPane fx:id="basePane" prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboardController">
    <children>
-      <VBox fx:id="goodbyePane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="goodbyePane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Goodbye" textFill="WHITE">
                <font>
@@ -52,7 +52,7 @@
                <children>
                   <HBox prefWidth="200.0">
                      <children>
-                        <Label prefHeight="60.0" text="Settings" textFill="WHITE">
+                        <Label prefHeight="60.0" prefWidth="466.0" text="Settings" textFill="WHITE">
                            <font>
                               <Font name="Roboto Regular" size="33.0" />
                            </font>
@@ -184,5 +184,10 @@
             </VBox>
          </content>
       </ScrollPane>
+      <Button fx:id="returnToParentLayerButton" layoutX="171.0" mnemonicParsing="false" onAction="#returnToParentLayerButtonClicked" text="Return to Parent Layer">
+         <font>
+            <Font name="Roboto Regular" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
