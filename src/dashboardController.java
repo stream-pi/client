@@ -588,7 +588,7 @@ public class dashboardController implements Initializable {
     boolean isUpdateStuff = false;
     int currentLayer = 0;
 
-    public void drawLayer(int layer)
+    public void drawLayer(int layer, int mode)
     {
 
         HBox[] rows = new HBox[maxNoOfRows];
@@ -652,9 +652,10 @@ public class dashboardController implements Initializable {
             @Override
             public void run() {
 
-                if(currentLayer > layer)
+                if(mode == 0)
                 {
                     FadeOutRight gay = new FadeOutRight(actionsVBox);
+                    gay.setSpeed(2.0);
                     gay.play();
                     gay.setOnFinished(new EventHandler<ActionEvent>() {
                         @Override
@@ -662,13 +663,15 @@ public class dashboardController implements Initializable {
                             actionsVBox.getChildren().clear();
                             actionsVBox.getChildren().addAll(rows);
                             FadeInLeft fag = new FadeInLeft(actionsVBox);
+                            fag.setSpeed(2.0);
                             fag.play();
                         }
                     });
                 }
-                else if(currentLayer < layer)
+                else if(mode == 1)
                 {
                     FadeOutLeft gay = new FadeOutLeft(actionsVBox);
+                    gay.setSpeed(2.0);
                     gay.play();
                     gay.setOnFinished(new EventHandler<ActionEvent>() {
                         @Override
@@ -676,6 +679,7 @@ public class dashboardController implements Initializable {
                             actionsVBox.getChildren().clear();
                             actionsVBox.getChildren().addAll(rows);
                             FadeInRight fag = new FadeInRight(actionsVBox);
+                            fag.setSpeed(2.0);
                             fag.play();
                         }
                     });
@@ -699,10 +703,12 @@ public class dashboardController implements Initializable {
     @FXML
     public void returnToParentLayerButtonClicked()
     {
-        System.out.println(currentLayer);
-        if(currentLayer > 0)
+        for(String[] eachAction : actions)
         {
-            drawLayer(0);
+            if(eachAction[2].equals("folder") && eachAction[3].equals(currentLayer+""))
+            {
+                drawLayer(Integer.parseInt(eachAction[7]),0);
+            }
         }
     }
 
@@ -740,7 +746,7 @@ public class dashboardController implements Initializable {
 
         maxLayers = lowLayer;
 
-        drawLayer(currentLayer);
+        drawLayer(currentLayer,1);
 
         Thread.sleep(1500);
         //System.out.println("asdesaxxx");
@@ -765,7 +771,7 @@ public class dashboardController implements Initializable {
 
         if(splitz[0].equals("folder"))
         {
-            drawLayer(Integer.parseInt(splitz[1]));
+            drawLayer(Integer.parseInt(splitz[1]),1);
         }
         else
         {
