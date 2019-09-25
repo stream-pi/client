@@ -31,6 +31,8 @@ public class Main extends Application {
         config.put("device_nick_name",configArray[5]);
         config.put("animations_mode",configArray[6]);
         config.put("debug_mode",configArray[7]);
+        config.put("each_action_size",configArray[8]);
+        config.put("each_action_padding",configArray[9]);
         launch(args);
     }
 }

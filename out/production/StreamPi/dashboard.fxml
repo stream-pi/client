@@ -37,11 +37,7 @@
          <font>
             <Font name="Roboto Regular" size="12.0" />
          </font></Button>
-      <VBox fx:id="actionsVBox" onSwipeUp="#openSettings" spacing="20.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </VBox>
+      <VBox fx:id="actionsVBox" onSwipeUp="#openSettings" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
       <VBox fx:id="loadingPane" alignment="CENTER" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <children>
             <JFXSpinner cache="true" cacheHint="SPEED" prefHeight="80.0" prefWidth="800.0" />

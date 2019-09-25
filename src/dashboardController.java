@@ -7,11 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
@@ -19,6 +21,7 @@ import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.net.Inet4Address;
@@ -75,11 +78,20 @@ public class dashboardController implements Initializable {
     boolean isConnected = false;
     String separator = "::";
     final Paint WHITE_PAINT = Paint.valueOf("#ffffff");
+    Image doneIcon = new Image(getClass().getResourceAsStream("assets/done.png"));
 
     boolean isSettingsOpen = false;
     boolean debugMode = false;
+
+    int eachActionSize;
+    int eachActionPadding;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        eachActionSize = Integer.parseInt(Main.config.get("each_action_size"));
+        eachActionPadding = Integer.parseInt(Main.config.get("each_action_padding"));
+        actionsVBox.setSpacing(eachActionPadding);
+        actionsVBox.setPadding(new Insets(0));
         screenHeightField.setText(Main.config.get("height"));
         screenWidthField.setText(Main.config.get("width"));
         basePane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
@@ -136,8 +148,9 @@ public class dashboardController implements Initializable {
             }
         });
 
-        maxActionsPerRow = (int) Math.floor((Integer.parseInt(Main.config.get("width"))-10) / 120);
-        maxNoOfRows = (int) Math.floor((Integer.parseInt(Main.config.get("height"))-10) / 120);
+        System.out.println(eachActionSize+eachActionPadding);
+        maxActionsPerRow = (int) Math.floor((Integer.parseInt(Main.config.get("width"))) / (eachActionSize + eachActionPadding + eachActionPadding));
+        maxNoOfRows = (int) Math.floor((Integer.parseInt(Main.config.get("height"))) / (eachActionSize +eachActionPadding + eachActionPadding));
 
         socketCommThread = new Thread(socketCommTask);
         socketCommThread.setDaemon(true);
@@ -169,6 +182,8 @@ public class dashboardController implements Initializable {
             openSettingsButtonDebug.setVisible(true);
             closeSettingsButtonDebug.setDisable(false);
             closeSettingsButtonDebug.setVisible(true);
+            returnToParentLayerButton.setDisable(false);
+            returnToParentLayerButton.setVisible(true);
         }
         else
         {
@@ -177,6 +192,8 @@ public class dashboardController implements Initializable {
             openSettingsButtonDebug.setVisible(false);
             closeSettingsButtonDebug.setDisable(true);
             closeSettingsButtonDebug.setVisible(false);
+            returnToParentLayerButton.setDisable(true);
+            returnToParentLayerButton.setVisible(false);
         }
     }
 
@@ -389,7 +406,7 @@ public class dashboardController implements Initializable {
     public void updateConfig(String keyName, String newValue)
     {
         Main.config.put(keyName,newValue);
-        String toBeWritten = Main.config.get("width")+separator+Main.config.get("height")+separator+Main.config.get("bg_colour")+separator+Main.config.get("server_ip")+separator+Main.config.get("server_port")+separator+Main.config.get("device_nick_name")+separator+Main.config.get("animations_mode")+separator+Main.config.get("debug_mode")+separator;
+        String toBeWritten = Main.config.get("width")+separator+Main.config.get("height")+separator+Main.config.get("bg_colour")+separator+Main.config.get("server_ip")+separator+Main.config.get("server_port")+separator+Main.config.get("device_nick_name")+separator+Main.config.get("animations_mode")+separator+Main.config.get("debug_mode")+separator+Main.config.get("each_action_size")+separator+Main.config.get("each_action_padding")+separator;
         io.writeToFile(toBeWritten,"config");
     }
 
@@ -419,7 +436,7 @@ public class dashboardController implements Initializable {
                             if(msgHeading.equals("client_details"))
                             {
                                 Thread.sleep(1000);
-                                writeToOS("client_details"+separator+thisDeviceIP+separator+Main.config.get("device_nick_name")+separator+Main.config.get("width")+separator+Main.config.get("height")+separator+maxActionsPerRow+separator+maxNoOfRows+separator);
+                                writeToOS("client_details"+separator+thisDeviceIP+separator+Main.config.get("device_nick_name")+separator+Main.config.get("width")+separator+Main.config.get("height")+separator+maxActionsPerRow+separator+maxNoOfRows+separator+eachActionSize+separator+eachActionPadding+separator);
                                 //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
                                 // <maxcols>
                             }
@@ -427,7 +444,9 @@ public class dashboardController implements Initializable {
                             {
                                 System.out.println("Deleting...");
                                 new File("actions/details/"+response[1]).delete();
+                                System.out.println("actions/icons/"+response[2]);
                                 new File("actions/icons/"+response[2]).delete();
+                                isUpdateStuff = true;
                                 loadActions();
                             }
                             else if(msgHeading.equals("actions_update"))
@@ -457,7 +476,6 @@ public class dashboardController implements Initializable {
                                     currentIndex ++;
                                 }
                                 //System.out.println("updated!");
-                                openLoadingPane();
                                 isUpdateStuff = true;
                                 loadActions();
                             }
@@ -596,14 +614,14 @@ public class dashboardController implements Initializable {
         for(int j = 0;j<maxNoOfRows;j++)
         {
             rows[j] = new HBox();
-            rows[j].setSpacing(20);
+            rows[j].setSpacing(eachActionPadding);
             rows[j].setAlignment(Pos.CENTER);
 
             Pane[] actionPane = new Pane[maxActionsPerRow];
             for(int k = 0;k<maxActionsPerRow;k++)
             {
                 actionPane[k] = new Pane();
-                actionPane[k].setPrefSize(90,90);
+                actionPane[k].setPrefSize(eachActionSize,eachActionSize);
                 actionPane[k].getStyleClass().add("action_box");
                 //actionPane[k].setStyle("-fx-effect: dropshadow(three-pass-box, red, 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
             }
@@ -618,30 +636,39 @@ public class dashboardController implements Initializable {
 
             //System.out.println("actions/icons/"+eachActionDetails[3]);
             ImageView icon = new ImageView(new File("actions/icons/"+eachActionDetails[4]).toURI().toString());
-            icon.setFitHeight(90);
+            icon.setFitHeight(eachActionSize);
             icon.setPreserveRatio(false);
-            icon.setFitWidth(90);
+            icon.setFitWidth(eachActionSize);
 
-            Pane actionPane = new Pane(icon);
-            actionPane.setPrefSize(90,90);
-            actionPane.setPrefSize(90,90);
+            ImageView doneImgView = new ImageView(doneIcon);
+            doneImgView.setPreserveRatio(true);
+            doneImgView.setFitWidth(eachActionSize);
+            doneImgView.setFitHeight(eachActionSize);
+
+            Pane anotherPane = new Pane(doneImgView);
+            anotherPane.setOpacity(0);
+            anotherPane.setStyle("-fx-background-color:black;");
+            Pane actionPane = new Pane(icon, anotherPane);
+            actionPane.setPrefSize(eachActionSize,eachActionSize);
+            actionPane.setPrefSize(eachActionSize,eachActionSize);
             //actionPane.getStyleClass().add("action_box");
             //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
             actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]+separator);
             actionPane.setOnTouchStationary(new EventHandler<TouchEvent>() {
                 @Override
                 public void handle(TouchEvent event) {
-                    Node n = (Node) event.getSource();
-                    sendAction(n.getId());
+                    allocatedActionMouseEventHandler((Node)event.getSource());
                 }
             });
             actionPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    Node n = (Node) event.getSource();
-                    sendAction(n.getId());
+                    allocatedActionMouseEventHandler((Node)event.getSource());
                 }
             });
+
+
+
 
             int rowNo = Integer.parseInt(eachActionDetails[5]);
             int colNo = Integer.parseInt(eachActionDetails[6]);
@@ -697,6 +724,34 @@ public class dashboardController implements Initializable {
         });
     }
 
+    private void allocatedActionMouseEventHandler(Node n)
+    {
+        sendAction(n.getId());
+
+        Pane fuck = (Pane) n;
+
+        Pane doneIconPane = (Pane) fuck.getChildren().get(1);
+        FadeIn lol = new FadeIn(doneIconPane);
+        lol.setSpeed(1.5);
+        lol.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FadeOut lol2 = new FadeOut(doneIconPane);
+                lol2.setSpeed(1.5);
+                lol2.setDelay(Duration.millis(500));
+                lol2.play();
+                lol2.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        doneIconPane.setOpacity(0.0);
+                    }
+                });
+            }
+        });
+
+        lol.play();
+    }
+
     @FXML
     public Button returnToParentLayerButton;
 
@@ -715,6 +770,7 @@ public class dashboardController implements Initializable {
     int maxLayers = 0;
     public void loadActions() throws Exception
     {
+
         maxLayers = 0;
         String[] allActionFiles = new File("actions/details").list();
 
@@ -746,7 +802,10 @@ public class dashboardController implements Initializable {
 
         maxLayers = lowLayer;
 
-        drawLayer(currentLayer,1);
+        if(isUpdateStuff)
+            drawLayer(0,-1);
+        else
+            drawLayer(0,1);
 
         Thread.sleep(1500);
         //System.out.println("asdesaxxx");
@@ -759,7 +818,7 @@ public class dashboardController implements Initializable {
         if(isUpdateStuff)
         {
             isUpdateStuff = false;
-            closeLoadingPane();
+            //For future compatibility reasons...
         }
     }
 
