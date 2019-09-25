@@ -730,26 +730,31 @@ public class dashboardController implements Initializable {
 
         Pane fuck = (Pane) n;
 
-        Pane doneIconPane = (Pane) fuck.getChildren().get(1);
-        FadeIn lol = new FadeIn(doneIconPane);
-        lol.setSpeed(1.5);
-        lol.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FadeOut lol2 = new FadeOut(doneIconPane);
-                lol2.setSpeed(1.5);
-                lol2.setDelay(Duration.millis(500));
-                lol2.play();
-                lol2.setOnFinished(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        doneIconPane.setOpacity(0.0);
-                    }
-                });
-            }
-        });
+        String[] splitz = n.getId().split("::");
 
-        lol.play();
+        if(!splitz[0].equals("folder"))
+        {
+            Pane doneIconPane = (Pane) fuck.getChildren().get(1);
+            FadeIn lol = new FadeIn(doneIconPane);
+            lol.setSpeed(1.5);
+            lol.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    FadeOut lol2 = new FadeOut(doneIconPane);
+                    lol2.setSpeed(1.5);
+                    lol2.setDelay(Duration.millis(500));
+                    lol2.play();
+                    lol2.setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            doneIconPane.setOpacity(0.0);
+                        }
+                    });
+                }
+            });
+
+            lol.play();
+        }
     }
 
     @FXML
