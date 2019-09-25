@@ -163,7 +163,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Embedded Linux JVM.Pi 3B">
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -218,7 +218,7 @@
       <option name="classesDirectory" />
       <option name="hostname" value="raspberrypi" />
       <option name="keyPath" value="" />
-      <option name="password" value="sammypi" />
+      <option name="password" value="gs@23011976" />
       <option name="port" value="1234" />
       <option name="programArguments" value="" />
       <option name="runAsRoot" value="true" />

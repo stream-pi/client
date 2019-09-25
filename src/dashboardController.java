@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -641,13 +642,15 @@ public class dashboardController implements Initializable {
             icon.setFitWidth(eachActionSize);
 
             ImageView doneImgView = new ImageView(doneIcon);
-            doneImgView.setPreserveRatio(true);
+            doneImgView.setPreserveRatio(false);
             doneImgView.setFitWidth(eachActionSize);
             doneImgView.setFitHeight(eachActionSize);
 
             Pane anotherPane = new Pane(doneImgView);
             anotherPane.setOpacity(0);
             anotherPane.setStyle("-fx-background-color:black;");
+            anotherPane.setCache(true);
+            anotherPane.setCacheHint(CacheHint.SPEED);
             Pane actionPane = new Pane(icon, anotherPane);
             actionPane.setPrefSize(eachActionSize,eachActionSize);
             actionPane.setPrefSize(eachActionSize,eachActionSize);
