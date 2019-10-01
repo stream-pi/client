@@ -198,6 +198,7 @@ public class dashboardController implements Initializable {
         }
     }
 
+    //-Dcom.sun.javafx.isEmbedded=true -Dcom.sun.javafx.touch=true -Dcom.sun.javafx.virtualKeyboard=javafx
     Socket s;
     DataInputStream is;
     DataOutputStream os;
@@ -213,7 +214,6 @@ public class dashboardController implements Initializable {
                     return null;
 
                 isWorking = true;
-                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
                 String serverIPTemp = serverIPField.getText();
 
@@ -270,7 +270,7 @@ public class dashboardController implements Initializable {
 
                     s = new Socket();
                     s.connect(new InetSocketAddress(serverIPTemp,serverPortTemp), 5000);
-                    //s.setSoTimeout(30000);
+                    s.setSoTimeout(0);
                     s.setSendBufferSize(950000000);
                     s.setReceiveBufferSize(950000000);
                     is = new DataInputStream(new BufferedInputStream(s.getInputStream()));
@@ -441,6 +441,24 @@ public class dashboardController implements Initializable {
                                 //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
                                 // <maxcols>
                             }
+                            else if(msgHeading.equals("client_action_size_padding_update"))
+                            {
+                                String newActionSizeString = response[1];
+                                String newActionPaddingString = response[2];
+
+                                if(!(eachActionSize+"").equals(newActionSizeString) || !(eachActionPadding+"").equals(newActionPaddingString))
+                                {
+                                    eachActionPadding = Integer.parseInt(newActionPaddingString);
+                                    eachActionSize = Integer.parseInt(newActionSizeString);
+                                    updateConfig("each_action_size",newActionSizeString);
+                                    updateConfig("each_action_padding",newActionPaddingString);
+
+                                    maxActionsPerRow = (int) Math.floor((Integer.parseInt(Main.config.get("width"))) / (eachActionSize + eachActionPadding + eachActionPadding));
+                                    maxNoOfRows = (int) Math.floor((Integer.parseInt(Main.config.get("height"))) / (eachActionSize +eachActionPadding + eachActionPadding));
+
+                                    loadActions();
+                                }
+                            }
                             else if(msgHeading.equals("delete_action"))
                             {
                                 System.out.println("Deleting...");
@@ -519,7 +537,7 @@ public class dashboardController implements Initializable {
                                         String base64Image = Base64.getEncoder().encodeToString(imageB);
                                         System.out.println(eachAction[4]+"GAYFAG");
                                         writeToOS("action_icon::"+eachAction[4]+"::"+base64Image+"::");
-                                        Thread.sleep(500);
+                                        Thread.sleep(1500);
                                     }
                                 }
                                 closeLoadingPane();
@@ -675,7 +693,14 @@ public class dashboardController implements Initializable {
 
             int rowNo = Integer.parseInt(eachActionDetails[5]);
             int colNo = Integer.parseInt(eachActionDetails[6]);
-            rows[rowNo].getChildren().set(colNo, actionPane);
+            try
+            {
+                rows[rowNo].getChildren().set(colNo, actionPane);
+            }
+            catch (IndexOutOfBoundsException e)
+            {
+                //TODO :: Show error that some action(s) couldnt be added due to different screen size
+            }
         }
 
         Platform.runLater(new Runnable() {
