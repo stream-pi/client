@@ -80,6 +80,7 @@ public class dashboardController implements Initializable {
     String separator = "::";
     final Paint WHITE_PAINT = Paint.valueOf("#ffffff");
     Image doneIcon = new Image(getClass().getResourceAsStream("assets/done.png"));
+    Image failedIcon = new Image(getClass().getResourceAsStream("assets/failed.png"));
 
     boolean isSettingsOpen = false;
     boolean debugMode = false;
@@ -441,6 +442,73 @@ public class dashboardController implements Initializable {
                                 //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
                                 // <maxcols>
                             }
+                            else if(msgHeading.equals("action_success_response"))
+                            {
+                                new Thread(new Task<Void>() {
+                                    @Override
+                                    protected Void call(){
+                                        try
+                                        {
+                                            String uniqueID = response[1];
+                                            String status = response[2];
+
+                                            for(Node eachNode : actionsVBox.getChildren())
+                                            {
+                                                HBox eachRow = (HBox) eachNode;
+                                                for(Node eachActionPane : eachRow.getChildren())
+                                                {
+                                                    Pane eachAction = (Pane) eachActionPane;
+                                                    String[] xxa = eachAction.getId().split("::");
+                                                    if(xxa[2].equals(uniqueID))
+                                                    {
+                                                        if(!xxa[0].equals("folder"))
+                                                        {
+                                                            Pane iconPane = (Pane) eachAction.getChildren().get(1);
+                                                            ImageView icon = (ImageView) iconPane.getChildren().get(0);
+                                                            if(status.equals("1"))
+                                                            {
+                                                                icon.setImage(doneIcon);
+                                                            }
+                                                            else if(status.equals("0"))
+                                                            {
+                                                                icon.setImage(failedIcon);
+                                                            }
+                                                            FadeIn lol = new FadeIn(iconPane);
+                                                            lol.setSpeed(1.5);
+                                                            lol.setOnFinished(new EventHandler<ActionEvent>() {
+                                                                @Override
+                                                                public void handle(ActionEvent event) {
+                                                                    FadeOut lol2 = new FadeOut(iconPane);
+                                                                    lol2.setSpeed(1.5);
+                                                                    lol2.setDelay(Duration.millis(500));
+                                                                    lol2.play();
+                                                                    lol2.setOnFinished(new EventHandler<ActionEvent>() {
+                                                                        @Override
+                                                                        public void handle(ActionEvent event) {
+                                                                            iconPane.setOpacity(0.0);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                            lol.play();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            System.out.println("FAILED");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            e.printStackTrace();
+                                        }
+                                        return null;
+                                    }
+                                }).start();
+                            }
                             else if(msgHeading.equals("client_action_size_padding_update"))
                             {
                                 String newActionSizeString = response[1];
@@ -642,6 +710,7 @@ public class dashboardController implements Initializable {
                 actionPane[k] = new Pane();
                 actionPane[k].setPrefSize(eachActionSize,eachActionSize);
                 actionPane[k].getStyleClass().add("action_box");
+                actionPane[k].setId("nut::nut::nut::");
                 //actionPane[k].setStyle("-fx-effect: dropshadow(three-pass-box, red, 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
             }
 
@@ -659,12 +728,12 @@ public class dashboardController implements Initializable {
             icon.setPreserveRatio(false);
             icon.setFitWidth(eachActionSize);
 
-            ImageView doneImgView = new ImageView(doneIcon);
-            doneImgView.setPreserveRatio(false);
-            doneImgView.setFitWidth(eachActionSize);
-            doneImgView.setFitHeight(eachActionSize);
+            ImageView resultImgView = new ImageView();
+            resultImgView.setPreserveRatio(false);
+            resultImgView.setFitWidth(eachActionSize);
+            resultImgView.setFitHeight(eachActionSize);
 
-            Pane anotherPane = new Pane(doneImgView);
+            Pane anotherPane = new Pane(resultImgView);
             anotherPane.setOpacity(0);
             anotherPane.setStyle("-fx-background-color:black;");
             anotherPane.setCache(true);
@@ -674,7 +743,7 @@ public class dashboardController implements Initializable {
             actionPane.setPrefSize(eachActionSize,eachActionSize);
             //actionPane.getStyleClass().add("action_box");
             //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
-            actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]+separator);
+            actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]+separator+eachActionDetails[0]+separator);
             actionPane.setOnTouchStationary(new EventHandler<TouchEvent>() {
                 @Override
                 public void handle(TouchEvent event) {
@@ -756,33 +825,11 @@ public class dashboardController implements Initializable {
     {
         sendAction(n.getId());
 
-        Pane fuck = (Pane) n;
+        //Pane fuck = (Pane) n;
 
-        String[] splitz = n.getId().split("::");
+        //String[] splitz = n.getId().split("::");
 
-        if(!splitz[0].equals("folder"))
-        {
-            Pane doneIconPane = (Pane) fuck.getChildren().get(1);
-            FadeIn lol = new FadeIn(doneIconPane);
-            lol.setSpeed(1.5);
-            lol.setOnFinished(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    FadeOut lol2 = new FadeOut(doneIconPane);
-                    lol2.setSpeed(1.5);
-                    lol2.setDelay(Duration.millis(500));
-                    lol2.play();
-                    lol2.setOnFinished(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            doneIconPane.setOpacity(0.0);
-                        }
-                    });
-                }
-            });
 
-            lol.play();
-        }
     }
 
     @FXML

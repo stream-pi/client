@@ -133,7 +133,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
     <property name="last.edited.regexp" value="Sample Text" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../streampi_server" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/assets" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -143,12 +143,13 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Debayan Sutradhar\IdeaProjects\romankh3_version\StreamPi\actions\details" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Coding\Java Projects\streampi_client\src\assets" />
       <recent name="C:\Users\Debayan Sutradhar\IdeaProjects\romankh3_version\StreamPi" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Coding\Java Projects\streampi_client\src\assets" />
+      <recent name="C:\Users\Debayan Sutradhar\IdeaProjects\romankh3_version\StreamPi\actions\details" />
     </key>
   </component>
   <component name="RunDashboard">
