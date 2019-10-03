@@ -473,19 +473,21 @@ public class dashboardController implements Initializable {
                                                             {
                                                                 icon.setImage(failedIcon);
                                                             }
+                                                            Platform.runLater(()->eachAction.setDisable(false));
                                                             FadeIn lol = new FadeIn(iconPane);
-                                                            lol.setSpeed(1.5);
+                                                            lol.setSpeed(1.8);
                                                             lol.setOnFinished(new EventHandler<ActionEvent>() {
                                                                 @Override
                                                                 public void handle(ActionEvent event) {
                                                                     FadeOut lol2 = new FadeOut(iconPane);
-                                                                    lol2.setSpeed(1.5);
-                                                                    lol2.setDelay(Duration.millis(500));
+                                                                    lol2.setSpeed(1.8);
+                                                                    lol2.setDelay(Duration.millis(400));
                                                                     lol2.play();
                                                                     lol2.setOnFinished(new EventHandler<ActionEvent>() {
                                                                         @Override
                                                                         public void handle(ActionEvent event) {
                                                                             iconPane.setOpacity(0.0);
+                                                                            eachAction.setDisable(false);
                                                                         }
                                                                     });
                                                                 }
