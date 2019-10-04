@@ -30,7 +30,7 @@ A stable network connection to the Server.
 
 A Screen (Preferably a touch screen). It can run on any touch screen, but a **minimum of 3.2 inch is required to run without hampering ui experience**, 7 inch screen is recommended.
 
-This software has been written with Java, and is designed to work with Java 8+. If you wish to compile this on your own, or download the executable without jdk, then you need to have Java 11+ installed on your computer, along with JavaFX 11+ installed. 
+This software has been written with Java, and is designed to work with Java 11+. If you wish to compile this on your own, or download the executable without jdk, then you need to have Java 11+ installed on your computer, along with JavaFX 11+ installed. 
 
 However, if you are downloading the executable with JDK bundled, then you dont need to worry about JDK versions or configuring anything.
 
