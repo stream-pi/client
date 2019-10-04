@@ -20,7 +20,7 @@ public class Main extends Application {
     public static HashMap<String,String> config;
 
     public static void main(String[] args) {
-        System.setProperty( "sun.security.ssl.allowUnsafeRenegotiation", "true" );
+        System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true" );
         config = new HashMap<>();
         String[] configArray = io.readFileArranged("config","::");
         config.put("width",configArray[0]);

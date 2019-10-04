@@ -243,7 +243,7 @@ public class dashboardController implements Initializable {
                         Thread.sleep(3000);
                     }
 
-                    Thread.sleep(1100);
+                    Thread.sleep(200);
                     
                     try
                     {
@@ -607,7 +607,7 @@ public class dashboardController implements Initializable {
                                         String base64Image = Base64.getEncoder().encodeToString(imageB);
                                         System.out.println(eachAction[4]+"GAYFAG");
                                         writeToOS("action_icon::"+eachAction[4]+"::"+base64Image+"::");
-                                        Thread.sleep(1500);
+                                        Thread.sleep(300);
                                     }
                                 }
                                 closeLoadingPane();
@@ -889,7 +889,7 @@ public class dashboardController implements Initializable {
         else
             drawLayer(0,1);
 
-        Thread.sleep(1500);
+        //Thread.sleep(500);
         //System.out.println("asdesaxxx");
 
         if(actions.length == 0)
