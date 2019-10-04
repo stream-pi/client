@@ -36,7 +36,7 @@ However, if you are downloading the executable with JDK bundled, then you dont n
 
 #### How to install StreamPi Client?
 
-Installation is easy. You can grab the latest build from [Releases](https://github.com/ladiesman6969/streampi_client), extract it on your SBC in your preferred directory, and then run `sudo ./install.sh` in the extracted directory.
+Installation is easy. You can grab the latest build from [Releases](https://github.com/ladiesman6969/streampi_client/releases), extract it on your SBC in your preferred directory, and then run `sudo ./install.sh` in the extracted directory.
 
 #### Contribution
 

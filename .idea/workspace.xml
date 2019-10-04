@@ -143,13 +143,14 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Coding\Java Projects\streampi_client\src\assets" />
-      <recent name="C:\Users\Debayan Sutradhar\IdeaProjects\romankh3_version\StreamPi" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Coding\Java Projects\streampi_client\src\assets" />
       <recent name="C:\Users\Debayan Sutradhar\IdeaProjects\romankh3_version\StreamPi\actions\details" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Coding\Java Projects\streampi_client\src\StreamPiClient" />
+      <recent name="D:\Coding\Java Projects\streampi_client\src\assets" />
+      <recent name="C:\Users\Debayan Sutradhar\IdeaProjects\romankh3_version\StreamPi" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -164,7 +165,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Embedded Linux JVM.Pi 3B">
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -184,7 +185,7 @@
       </method>
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="Main" />
+      <option name="MAIN_CLASS_NAME" value="StreamPiClient.Main" />
       <module name="StreamPi" />
       <option name="VM_PARAMETERS" value="-Dprism.lcdtext=false" />
       <extension name="coverage">
@@ -228,7 +229,7 @@
       <option name="usingKey" value="false" />
       <option name="vmParameters" value="" />
       <option name="moduleName" value="StreamPi" />
-      <option name="mainclass" value="Main" />
+      <option name="mainclass" value="StreamPiClient.Main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
