@@ -135,16 +135,6 @@ public class dashboardController implements Initializable {
             debugModeToggleButton.setSelected(true);
         }
 
-        settingsPane.setOnSwipeDown(new EventHandler<SwipeEvent>() {
-            @Override
-            public void handle(SwipeEvent event) {
-                if(isConnected)
-                {
-                   closeSettings();
-                }
-            }
-        });
-
         actionsVBox.setOnSwipeRight(new EventHandler<SwipeEvent>() {
             @Override
             public void handle(SwipeEvent event) {

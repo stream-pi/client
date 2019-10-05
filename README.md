@@ -48,7 +48,7 @@ This was originally thought of by [Samuel Quinones](https://twitter.com/SamuelQu
 
 #### License
 
-[MIT License](https://github.com/ladiesman6969/streampi_client/LICENSE)
+[MIT License](https://github.com/ladiesman6969/streampi_client/blob/master/LICENSE)
 
 
 
