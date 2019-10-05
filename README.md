@@ -14,7 +14,7 @@ The original Stream Deck can serve as an extremely useful and powerful tool for 
 
 You can browse through a comprehensive list of tutorials [here](google.com).
 
-StreamPi has two branches of software - [Server](https://www.raspberrypi.org/) and [Client](https://github.com/ladiesman6969/streampi_client)
+StreamPi has two branches of software - [Server](https://github.com/ladiesman6969/streampi_server) and [Client](https://github.com/ladiesman6969/streampi_client)
 
 This repository contains the Client Side code, which runs on your Raspberry Pi (or any cheaper or costlier SBC)
 
