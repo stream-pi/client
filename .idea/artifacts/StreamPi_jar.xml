@@ -1,10 +1,1 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="StreamPi:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/StreamPi_jar</output-path>
-    <root id="archive" name="StreamPi.jar">
       <element id="module-output" name="StreamPi" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/io/github/typhon0/AnimateFX/1.2.1/AnimateFX-1.2.1.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/jfoenix/jfoenix/9.0.8/jfoenix-9.0.8.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>
