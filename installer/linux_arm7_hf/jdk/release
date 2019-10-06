@@ -1,0 +1,2 @@
+JAVA_VERSION="11.0.4"
+MODULES="java.base java.datatransfer java.xml java.prefs java.desktop java.scripting javafx.base jdk.unsupported javafx.graphics javafx.controls javafx.fxml"
