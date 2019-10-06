@@ -1164,4 +1164,10 @@ public class dashboardController implements Initializable {
                 e.printStackTrace();
         }
     }
+
+    @FXML
+    public void exitStreamPi()
+    {
+        Platform.exit();
+    }
 }

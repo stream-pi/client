@@ -163,7 +163,12 @@
                               <Font name="Roboto Regular" size="16.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" onAction="#shutdownStreamPi" ripplerFill="#bf1818" text="Turn Off StreamPi" textFill="RED">
+                        <JFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" onAction="#shutdownStreamPi" ripplerFill="#bf1818" text="Power Off" textFill="RED">
+                           <font>
+                              <Font name="Roboto Regular" size="16.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" onAction="#exitStreamPi" ripplerFill="#bf1818" text="Exit" textFill="RED">
                            <font>
                               <Font name="Roboto Regular" size="16.0" />
                            </font>
