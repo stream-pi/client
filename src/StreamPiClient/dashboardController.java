@@ -299,12 +299,19 @@ public class dashboardController implements Initializable {
                         public void run() {
                             currentStatusLabel.setText("Current Status :  FAILED TO CONNECT to "+serverIPTemp+":"+serverPortTemp);
                             unableToConnectReasonLabel.setText(e.getLocalizedMessage());
-
                         }
                     });
                     if(debugMode)
                         e.printStackTrace();
                     isConnected = false;
+                    try
+                    {
+                        Thread.sleep(1500);
+                    }
+                    catch (Exception e1)
+                    {
+                        e.printStackTrace();
+                    }
                     openSettings();
                 }
                 isWorking = false;
