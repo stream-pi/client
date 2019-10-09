@@ -10,6 +10,10 @@ StreamPi is an opensource, free alternative to the [Elgato Stream Deck](https://
 
 The original Stream Deck can serve as an extremely useful and powerful tool for Streamers, gamers, and professional users. However, it is not a budget friendly option for the average user. Hence, we decided to work on an opensource and cheaper alternative to the Stream Deck - The StreamPi
 
+#### How to install StreamPi Client?
+
+Installation is easy. You can grab the latest build from [Releases](https://github.com/ladiesman6969/streampi_client/releases), extract it on your SBC in your preferred directory, and then run `sudo ./install.sh` in the extracted directory.
+
 #### How to use StreamPi?
 
 You can browse through a comprehensive list of tutorials [here](google.com).
@@ -26,17 +30,9 @@ Since the Raspberry Pi is a small form factor motherboard, it can be used as a k
 
 #### Requirements
 
-A stable network connection to the Server.
+* A network connection to connect to the Client, via a router, or LAN.
 
-A Screen (Preferably a touch screen). It can run on any touch screen, but a **minimum of 3.2 inch is required to run without hampering ui experience**, 7 inch screen is recommended.
-
-This software has been written with Java, and is designed to work with Java 11+. If you wish to compile this on your own, or download the executable without jdk, then you need to have Java 11+ installed on your computer, along with JavaFX 11+ installed. 
-
-However, if you are downloading the executable with JDK bundled, then you dont need to worry about JDK versions or configuring anything.
-
-#### How to install StreamPi Client?
-
-Installation is easy. You can grab the latest build from [Releases](https://github.com/ladiesman6969/streampi_client/releases), extract it on your SBC in your preferred directory, and then run `sudo ./install.sh` in the extracted directory.
+* **This software has been written with Java, and is designed to work with Java 11+. If you want to compile this on your own, then you need to have Java 11+ installed on your computer, along with JavaFX 11+ installed. ** [BellSoft's Liberica JDK 11](https://bell-sw.com/pages/java-11.0.4/) is preferred as it comes pre-bundled JavaFX 11.
 
 #### Contribution
 
