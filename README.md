@@ -32,8 +32,7 @@ Since the Raspberry Pi is a small form factor motherboard, it can be used as a k
 
 * A network connection to connect to the Client, via a router, or LAN.
 
-* **This software has been written with Java, and is designed to work with Java 11+. If you want to compile this on your own, then you need to have Java 11+ installed on your computer, along with JavaFX 11+ installed. ** [BellSoft's Liberica JDK 11](https://bell-sw.com/pages/java-11.0.4/) is preferred as it comes pre-bundled JavaFX 11.
-
+* This software has been written with Java, and is designed to work with Java 11+. If you want to compile this on your own, then you need to have Java 11+ installed on your computer, along with JavaFX 11+ installed. [BellSoft's Liberica JDK 11](https://bell-sw.com/pages/java-11.0.4/) is preferred as it comes pre-bundled JavaFX 11.
 #### Contribution
 
 If you would like to contribute, or talk to us, or suggest anything, you can raise and issue in the repository, or if you want to talk to us, then you can simply join our [Discord Server](https://discord.gg/BExqGmk)
