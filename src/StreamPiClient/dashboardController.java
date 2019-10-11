@@ -3,6 +3,8 @@ package StreamPiClient;
 import animatefx.animation.*;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.events.JFXDialogEvent;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -443,6 +445,7 @@ public class dashboardController implements Initializable {
                             }
                             else if(msgHeading.equals("action_success_response"))
                             {
+                                System.out.println("RECEIVEDXXX");
                                 new Thread(new Task<Void>() {
                                     @Override
                                     protected Void call(){
@@ -464,6 +467,7 @@ public class dashboardController implements Initializable {
                                                         {
                                                             Pane iconPane = (Pane) eachAction.getChildren().get(1);
                                                             ImageView icon = (ImageView) iconPane.getChildren().get(0);
+
                                                             if(status.equals("1"))
                                                             {
                                                                 icon.setImage(doneIcon);
@@ -472,15 +476,29 @@ public class dashboardController implements Initializable {
                                                             {
                                                                 icon.setImage(failedIcon);
                                                             }
+
+                                                            ScaleTransition lol2 = new ScaleTransition(Duration.millis(250), eachAction);
+                                                            lol2.setFromX(0.9);
+                                                            lol2.setFromY(0.9);
+                                                            lol2.setToX(1.0);
+                                                            lol2.setToY(1.0);
+
+                                                            FadeTransition lol3 = new FadeTransition(Duration.millis(250),eachAction);
+                                                            lol3.setFromValue(0.7);
+                                                            lol3.setToValue(1.0);
+
+                                                            lol2.play();
+                                                            lol3.play();
+
                                                             Platform.runLater(()->eachAction.setDisable(false));
                                                             FadeIn lol = new FadeIn(iconPane);
-                                                            lol.setSpeed(1.8);
+                                                            lol.setSpeed(2.0);
                                                             lol.setOnFinished(new EventHandler<ActionEvent>() {
                                                                 @Override
                                                                 public void handle(ActionEvent event) {
                                                                     FadeOut lol2 = new FadeOut(iconPane);
-                                                                    lol2.setSpeed(1.8);
-                                                                    lol2.setDelay(Duration.millis(400));
+                                                                    lol2.setSpeed(2.0);
+                                                                    lol2.setDelay(Duration.millis(200));
                                                                     lol2.play();
                                                                     lol2.setOnFinished(new EventHandler<ActionEvent>() {
                                                                         @Override
@@ -491,7 +509,10 @@ public class dashboardController implements Initializable {
                                                                     });
                                                                 }
                                                             });
-                                                            lol.play();
+                                                            lol.setDelay(Duration.millis(100));
+
+
+                                                            lol2.setOnFinished(event -> lol.play());
                                                             break;
                                                         }
                                                         else
@@ -824,6 +845,19 @@ public class dashboardController implements Initializable {
 
     private void allocatedActionMouseEventHandler(Node n)
     {
+        ScaleTransition lol2 = new ScaleTransition(Duration.millis(200), n);
+        lol2.setFromX(1.0);
+        lol2.setFromY(1.0);
+        lol2.setToX(0.9);
+        lol2.setToY(0.9);
+
+        FadeTransition lol3 = new FadeTransition(Duration.millis(200), n);
+        lol3.setFromValue(1.0);
+        lol3.setToValue(0.7);
+
+        lol2.play();
+        lol3.play();
+
         sendAction(n.getId());
 
         //Pane fuck = (Pane) n;
