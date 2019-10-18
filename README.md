@@ -1,5 +1,7 @@
 # StreamPi Client
 
+![](https://raw.githubusercontent.com/ladiesman6969/streampi_server/master/app_icon.png)
+
 This repository has the source code of the StreamPi Client Software, which is the interface for the multipurpose keyboard and is intended to run on any Single Board Computer, preferably the [Raspberry Pi](https://www.raspberrypi.org/).
 
 #### What is StreamPi?

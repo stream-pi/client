@@ -760,6 +760,7 @@ public class dashboardController implements Initializable {
             anotherPane.setStyle("-fx-background-color:black;");
             anotherPane.setCache(true);
             anotherPane.setCacheHint(CacheHint.SPEED);
+
             Pane actionPane = new Pane(icon, anotherPane);
             actionPane.setPrefSize(eachActionSize,eachActionSize);
             actionPane.setPrefSize(eachActionSize,eachActionSize);
