@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "StreamPi Client Installer"
-echo "Alpha"
+echo "Alpha 0.0.5"
 echo -n "Enter Screen Width (No. Of Pixels) : "
 read screen_width
 echo -n "Enter Screen Height (No. Of Pixels) : "
@@ -22,7 +22,7 @@ sudo cp -r StreamPiClient /home/pi/StreamPi/
 sudo cp start_streampi /home/pi/StreamPi/
 cd /home/pi/StreamPi/
 sudo chmod +x jdk/bin/java
-echo "${screen_width}::${screen_height}::black::192.168.0.102::69::test1::1::1::100::10:::" >> config
+echo "${screen_width}::${screen_height}::black::192.168.0.102::69::test1::1::0::100::10:::" >> config
 sudo chmod +x start_streampi
 echo "... Done!"
 echo "Setting Up Essentials to enable Hardware Accelartion ..."
