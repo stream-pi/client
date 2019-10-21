@@ -44,7 +44,7 @@
          </children></VBox>
       <ScrollPane fx:id="settingsPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="30.0">
          <content>
-            <VBox cache="true" cacheHint="SPEED" spacing="10.0">
+            <VBox fx:id="settingsVBox" cache="true" cacheHint="SPEED" prefWidth="800.0" spacing="10.0">
                <children>
                   <HBox prefWidth="200.0">
                      <children>

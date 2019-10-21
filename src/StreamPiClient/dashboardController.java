@@ -45,6 +45,8 @@ public class dashboardController implements Initializable {
     @FXML
     public ScrollPane settingsPane;
     @FXML
+    public VBox settingsVBox;
+    @FXML
     public JFXTextField serverIPField;
     @FXML
     public JFXTextField serverPortField;
@@ -107,6 +109,9 @@ public class dashboardController implements Initializable {
         serverIPField.setText(serverIP);
         serverPortField.setText(serverPort);
         unableToConnectReasonLabel.setText("");
+
+        settingsVBox.setPrefWidth(Integer.parseInt(Main.config.get("width"))-10);
+        settingsVBox.setPrefHeight(Integer.parseInt(Main.config.get("height"))-50);
 
         if(Main.config.get("animations_mode").equals("0"))
         {
@@ -1083,6 +1088,8 @@ public class dashboardController implements Initializable {
             //System.out.println("closed!");
             isSettingsOpen = false;
 
+
+
             if(Main.config.get("animations_mode").equals("1"))
             {
                 FadeOutDown s = new FadeOutDown(settingsPane);
@@ -1127,7 +1134,9 @@ public class dashboardController implements Initializable {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
+                            closeSettingsButton.setDisable(true);
                             closeSettings();
+                            closeSettingsButton.setDisable(false);
                         }
                     });
                 }
