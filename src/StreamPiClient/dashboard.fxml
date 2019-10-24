@@ -40,7 +40,7 @@
       <VBox fx:id="actionsVBox" cache="true" cacheHint="SPEED" onSwipeUp="#openSettings" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
       <VBox fx:id="loadingPane" alignment="CENTER" cache="true" cacheHint="SPEED" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <children>
-            <JFXSpinner cache="true" cacheHint="SPEED" prefHeight="80.0" prefWidth="800.0" />
+            <JFXSpinner fx:id="progressSpinner" cache="true" cacheHint="SPEED" prefHeight="80.0" prefWidth="800.0" />
          </children></VBox>
       <ScrollPane fx:id="settingsPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="30.0">
          <content>

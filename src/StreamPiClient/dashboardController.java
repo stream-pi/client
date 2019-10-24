@@ -15,16 +15,21 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -72,6 +77,8 @@ public class dashboardController implements Initializable {
     public JFXToggleButton debugModeToggleButton;
     @FXML
     public VBox goodbyePane;
+    @FXML
+    public JFXSpinner progressSpinner;
     @FXML
     public StackPane alertStackPane;
 
@@ -220,7 +227,7 @@ public class dashboardController implements Initializable {
                 try
                 {
                     thisDeviceIP = Inet4Address.getLocalHost().getHostAddress();
-                    if(isSettingsOpen && !isConnected)
+                    if(isSettingsOpen)
                     {
                         closeSettings();
                     }
@@ -269,7 +276,7 @@ public class dashboardController implements Initializable {
                     });
 
                     s = new Socket();
-                    s.connect(new InetSocketAddress(serverIPTemp,serverPortTemp), 5000);
+                    s.connect(new InetSocketAddress(serverIPTemp,serverPortTemp), 2500);
                     s.setSoTimeout(0);
                     s.setSendBufferSize(950000000);
                     s.setReceiveBufferSize(950000000);
@@ -334,22 +341,22 @@ public class dashboardController implements Initializable {
     @FXML
     public void applySettingsAndRestartButtonClicked()
     {
-        try
-        {
-            String uw = screenWidthField.getText();
-            String uh = screenHeightField.getText();
-            String portVal = serverPortField.getText();
-            String ipVal = serverIPField.getText();
-            Integer.parseInt(uw);
-            Integer.parseInt(uh);
+        new Thread(new Task<Void>() {
+            @Override
+            protected Void call() {
+                try
+                {
+                    String uw = screenWidthField.getText();
+                    String uh = screenHeightField.getText();
+                    String portVal = serverPortField.getText();
+                    String ipVal = serverIPField.getText();
+                    Integer.parseInt(uw);
+                    Integer.parseInt(uh);
 
-            if(!Main.config.get("height").equals(uh) || !Main.config.get("width").equals(uw))
-            {
-                updateConfig("height",uh);
-                updateConfig("width",uw);
-                new Thread(new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
+                    if(!Main.config.get("height").equals(uh) || !Main.config.get("width").equals(uw))
+                    {
+                        updateConfig("height",uh);
+                        updateConfig("width",uw);
                         Thread.sleep(3000);
                         Platform.runLater(new Runnable() {
                             @Override
@@ -357,20 +364,20 @@ public class dashboardController implements Initializable {
                                 showErrorAlert("Alert","Screen Settings have been updated, restart to see effect");
                             }
                         });
-                        return null;
                     }
-                }).start();
-            }
 
-            if(!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal) || !isConnected)
-            {
-                checkServerConnection();
+                    if(!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal) || !isConnected)
+                    {
+                        checkServerConnection();
+                    }
+                }
+                catch (Exception e)
+                {
+                    showErrorAlert("Alert","Please make sure screen dimensions are valid.");
+                }
+                return null;
             }
-        }
-        catch (Exception e)
-        {
-            showErrorAlert("Alert","Please make sure screen dimensions are valid.");
-        }
+        }).start();
     }
 
     public void showErrorAlert(String heading, String content)
@@ -459,74 +466,7 @@ public class dashboardController implements Initializable {
                                             String uniqueID = response[1];
                                             String status = response[2];
 
-                                            for(Node eachNode : actionsVBox.getChildren())
-                                            {
-                                                HBox eachRow = (HBox) eachNode;
-                                                for(Node eachActionPane : eachRow.getChildren())
-                                                {
-                                                    Pane eachAction = (Pane) eachActionPane;
-                                                    String[] xxa = eachAction.getId().split("::");
-                                                    if(xxa[2].equals(uniqueID))
-                                                    {
-                                                        if(!xxa[0].equals("folder"))
-                                                        {
-                                                            Pane iconPane = (Pane) eachAction.getChildren().get(1);
-                                                            ImageView icon = (ImageView) iconPane.getChildren().get(0);
-
-                                                            if(status.equals("1"))
-                                                            {
-                                                                icon.setImage(doneIcon);
-                                                            }
-                                                            else if(status.equals("0"))
-                                                            {
-                                                                icon.setImage(failedIcon);
-                                                            }
-
-                                                            ScaleTransition lol2 = new ScaleTransition(Duration.millis(250), eachAction);
-                                                            lol2.setFromX(0.9);
-                                                            lol2.setFromY(0.9);
-                                                            lol2.setToX(1.0);
-                                                            lol2.setToY(1.0);
-
-                                                            FadeTransition lol3 = new FadeTransition(Duration.millis(250),eachAction);
-                                                            lol3.setFromValue(0.7);
-                                                            lol3.setToValue(1.0);
-
-                                                            lol2.play();
-                                                            lol3.play();
-
-                                                            Platform.runLater(()->eachAction.setDisable(false));
-                                                            FadeIn lol = new FadeIn(iconPane);
-                                                            lol.setSpeed(2.0);
-                                                            lol.setOnFinished(new EventHandler<ActionEvent>() {
-                                                                @Override
-                                                                public void handle(ActionEvent event) {
-                                                                    FadeOut lol2 = new FadeOut(iconPane);
-                                                                    lol2.setSpeed(2.0);
-                                                                    lol2.setDelay(Duration.millis(200));
-                                                                    lol2.play();
-                                                                    lol2.setOnFinished(new EventHandler<ActionEvent>() {
-                                                                        @Override
-                                                                        public void handle(ActionEvent event) {
-                                                                            iconPane.setOpacity(0.0);
-                                                                            eachAction.setDisable(false);
-                                                                        }
-                                                                    });
-                                                                }
-                                                            });
-                                                            lol.setDelay(Duration.millis(100));
-
-
-                                                            lol2.setOnFinished(event -> lol.play());
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            System.out.println("FAILED");
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                            showSuccessToUI(uniqueID,status);
                                         }
                                         catch (Exception e)
                                         {
@@ -655,6 +595,76 @@ public class dashboardController implements Initializable {
 
         }
     };
+
+    private void showSuccessToUI(String uniqueID, String status) throws Exception
+    {
+        for(Node eachNode : actionsVBox.getChildren())
+        {
+            HBox eachRow = (HBox) eachNode;
+            for(Node eachActionPane : eachRow.getChildren())
+            {
+                Pane eachAction = (Pane) eachActionPane;
+                String[] xxa = eachAction.getId().split("::");
+                if(xxa[2].equals(uniqueID))
+                {
+                    if(!xxa[0].equals("folder"))
+                    {
+                        Pane iconPane = (Pane) eachAction.getChildren().get(1);
+                        ImageView icon = (ImageView) iconPane.getChildren().get(0);
+
+                        if(status.equals("1"))
+                        {
+                            icon.setImage(doneIcon);
+                        }
+                        else if(status.equals("0"))
+                        {
+                            icon.setImage(failedIcon);
+                        }
+
+                                                            /*ScaleTransition lol2 = new ScaleTransition(Duration.millis(450), eachAction);
+                                                            lol2.setFromX(0.9);
+                                                            lol2.setFromY(0.9);
+                                                            lol2.setToX(1.0);
+                                                            lol2.setToY(1.0);
+
+                                                            FadeTransition lol3 = new FadeTransition(Duration.millis(450),eachAction);
+                                                            lol3.setFromValue(0.7);
+                                                            lol3.setToValue(1.0);
+
+                                                            lol2.play();
+                                                            lol3.play();*/
+
+                        Platform.runLater(() -> eachAction.setDisable(false));
+                        FadeIn lol = new FadeIn(iconPane);
+                        lol.setSpeed(2.0);
+                        lol.setOnFinished(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                FadeOut lol2 = new FadeOut(iconPane);
+                                lol2.setSpeed(2.0);
+                                lol2.setDelay(Duration.millis(200));
+                                lol2.play();
+                                lol2.setOnFinished(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        iconPane.setOpacity(0.0);
+                                        eachAction.setDisable(false);
+                                    }
+                                });
+                            }
+                        });
+                        lol.setDelay(Duration.millis(100));
+                        lol.play();
+                        break;
+                    }
+                    else
+                    {
+                        System.out.println("FAILED");
+                    }
+                }
+            }
+        }
+    }
 
     private void deleteFiles(File file) {
         if (file.isDirectory())
@@ -807,7 +817,7 @@ public class dashboardController implements Initializable {
                 if(mode == 0)
                 {
                     FadeOutRight gay = new FadeOutRight(actionsVBox);
-                    gay.setSpeed(2.0);
+                    gay.setSpeed(3.0);
                     gay.play();
                     gay.setOnFinished(new EventHandler<ActionEvent>() {
                         @Override
@@ -823,7 +833,7 @@ public class dashboardController implements Initializable {
                 else if(mode == 1)
                 {
                     FadeOutLeft gay = new FadeOutLeft(actionsVBox);
-                    gay.setSpeed(2.0);
+                    gay.setSpeed(3.0);
                     gay.play();
                     gay.setOnFinished(new EventHandler<ActionEvent>() {
                         @Override
@@ -851,18 +861,18 @@ public class dashboardController implements Initializable {
 
     private void allocatedActionMouseEventHandler(Node n)
     {
-        ScaleTransition lol2 = new ScaleTransition(Duration.millis(200), n);
+        /*ScaleTransition lol2 = new ScaleTransition(Duration.millis(550), n);
         lol2.setFromX(1.0);
         lol2.setFromY(1.0);
         lol2.setToX(0.9);
         lol2.setToY(0.9);
 
-        FadeTransition lol3 = new FadeTransition(Duration.millis(200), n);
+        FadeTransition lol3 = new FadeTransition(Duration.millis(550), n);
         lol3.setFromValue(1.0);
         lol3.setToValue(0.7);
 
         lol2.play();
-        lol3.play();
+        lol3.play();*/
 
         sendAction(n.getId());
 
@@ -950,8 +960,30 @@ public class dashboardController implements Initializable {
         String[] splitz = rawActionContent.split("::");
 
         if(splitz[0].equals("folder"))
-        {
             drawLayer(Integer.parseInt(splitz[1]),1);
+        else if(splitz[0].equals("set_gpio_out"))
+        {
+            System.out.println(rawActionContent);
+            String[] s = splitz[1].split("<>");
+            Runtime r = Runtime.getRuntime();
+            try
+            {
+                r.exec("sudo gpio -g mode "+s[0]+" out");
+                r.exec("sudo gpio -g write "+s[0]+" "+s[1]);
+                showSuccessToUI(splitz[2],"1");
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    showSuccessToUI(splitz[2],"0");
+                }
+                catch (Exception e2)
+                {
+                    e.printStackTrace();
+                }
+                e.printStackTrace();
+            }
         }
         else
         {
@@ -994,7 +1026,9 @@ public class dashboardController implements Initializable {
             }
             else
             {
-                new FadeInUp(settingsPane).play();
+                SlideInUp z = new SlideInUp(settingsPane);
+                z.setSpeed(1.5);
+                z.play();
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1018,6 +1052,7 @@ public class dashboardController implements Initializable {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        progressSpinner.setProgress(-1);
                         loadingPane.setOpacity(1);
                         loadingPane.toFront();
                     }
@@ -1025,13 +1060,9 @@ public class dashboardController implements Initializable {
             }
             else
             {
+                Platform.runLater(()->progressSpinner.setProgress(-1));
                 new FadeIn(loadingPane).play();
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingPane.toFront();
-                    }
-                });
+                Platform.runLater(()-> loadingPane.toFront());
             }
         }
     }
@@ -1052,6 +1083,7 @@ public class dashboardController implements Initializable {
                             @Override
                             public void run() {
                                 loadingPane.toBack();
+                                progressSpinner.setProgress(0.0);
                             }
                         });
                     }
@@ -1065,6 +1097,7 @@ public class dashboardController implements Initializable {
                     public void run() {
                         loadingPane.setOpacity(0);
                         loadingPane.toBack();
+                        progressSpinner.setProgress(0.0);
                     }
                 });
             }
@@ -1092,7 +1125,8 @@ public class dashboardController implements Initializable {
 
             if(Main.config.get("animations_mode").equals("1"))
             {
-                FadeOutDown s = new FadeOutDown(settingsPane);
+                SlideOutDown s = new SlideOutDown(settingsPane);
+                s.setSpeed(1.5);
                 s.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
