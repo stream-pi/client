@@ -393,6 +393,7 @@ public class dashboardController implements Initializable {
         io.writeToFile(toBeWritten, "config");
     }
 
+    final String CLIENT_VERSION = "0.0.x";
     Task socketCommTask = new Task<Void>() {
         @Override
         protected Void call() {
@@ -406,7 +407,7 @@ public class dashboardController implements Initializable {
                         String msgHeading = response[0];
                         if (msgHeading.equals("client_details")) {
                             Thread.sleep(1000);
-                            writeToOS("client_details" + separator + thisDeviceIP + separator + Main.config.get("device_nick_name") + separator + Main.config.get("width") + separator + Main.config.get("height") + separator + maxActionsPerRow + separator + maxNoOfRows + separator + eachActionSize + separator + eachActionPadding + separator);
+                            writeToOS("client_details" + separator + thisDeviceIP + separator + Main.config.get("device_nick_name") + separator + Main.config.get("width") + separator + Main.config.get("height") + separator + maxActionsPerRow + separator + maxNoOfRows + separator + eachActionSize + separator + eachActionPadding + separator + CLIENT_VERSION + separator);
                             //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
                             // <maxcols>
                         } else if (msgHeading.equals("action_success_response")) {
