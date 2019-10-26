@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class Main extends Application {
 
@@ -14,7 +15,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
         primaryStage.setTitle("StreamPi");
-        primaryStage.setScene(new Scene(root, Integer.parseInt(config.get("width")), Integer.parseInt(config.get("height"))));
+        Scene s = new Scene(root, Integer.parseInt(config.get("width")), Integer.parseInt(config.get("height")));
+        primaryStage.setScene(s);
         primaryStage.show();
     }
 

@@ -38,6 +38,7 @@ import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.ResourceBundle;
@@ -109,30 +110,26 @@ public class dashboardController implements Initializable {
         actionsVBox.setPadding(new Insets(0));
         screenHeightField.setText(Main.config.get("height"));
         screenWidthField.setText(Main.config.get("width"));
-        basePane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
-        loadingPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
-        settingsPane.setStyle("-fx-background-color : "+Main.config.get("bg_colour"));
+        basePane.setStyle("-fx-background-color : " + Main.config.get("bg_colour"));
+        loadingPane.setStyle("-fx-background-color : " + Main.config.get("bg_colour"));
+        settingsPane.setStyle("-fx-background-color : " + Main.config.get("bg_colour"));
         loadingPane.setOpacity(0);
         serverIPField.setText(serverIP);
         serverPortField.setText(serverPort);
         unableToConnectReasonLabel.setText("");
 
-        settingsVBox.setPrefWidth(Integer.parseInt(Main.config.get("width"))-10);
-        settingsVBox.setPrefHeight(Integer.parseInt(Main.config.get("height"))-50);
+        settingsVBox.setPrefWidth(Integer.parseInt(Main.config.get("width")) - 10);
+        settingsVBox.setPrefHeight(Integer.parseInt(Main.config.get("height")) - 50);
 
-        if(Main.config.get("animations_mode").equals("0"))
-        {
+        if (Main.config.get("animations_mode").equals("0")) {
             animationsToggleButton.setSelected(false);
             settingsPane.setOpacity(0);
-        }
-        else
-        {
+        } else {
             animationsToggleButton.setSelected(true);
             settingsPane.setTranslateY(Integer.parseInt(Main.config.get("height")));
         }
 
-        if(Main.config.get("debug_mode").equals("0"))
-        {
+        if (Main.config.get("debug_mode").equals("0")) {
             debugMode = false;
             debugModeToggleButton.setSelected(false);
 
@@ -142,9 +139,7 @@ public class dashboardController implements Initializable {
             closeSettingsButtonDebug.setVisible(false);
             returnToParentLayerButton.setDisable(true);
             returnToParentLayerButton.setVisible(false);
-        }
-        else
-        {
+        } else {
             debugMode = true;
             debugModeToggleButton.setSelected(true);
         }
@@ -156,9 +151,9 @@ public class dashboardController implements Initializable {
             }
         });
 
-        System.out.println(eachActionSize+eachActionPadding);
+        System.out.println(eachActionSize + eachActionPadding);
         maxActionsPerRow = (int) Math.floor((Integer.parseInt(Main.config.get("width"))) / (eachActionSize + eachActionPadding + eachActionPadding));
-        maxNoOfRows = (int) Math.floor((Integer.parseInt(Main.config.get("height"))) / (eachActionSize +eachActionPadding + eachActionPadding));
+        maxNoOfRows = (int) Math.floor((Integer.parseInt(Main.config.get("height"))) / (eachActionSize + eachActionPadding + eachActionPadding));
 
         socketCommThread = new Thread(socketCommTask);
         socketCommThread.setDaemon(true);
@@ -168,34 +163,26 @@ public class dashboardController implements Initializable {
     }
 
     @FXML
-    public void animationsToggleButtonClicked()
-    {
-        if(animationsToggleButton.isSelected())
-        {
-            updateConfig("animations_mode","1");
-        }
-        else
-        {
-            updateConfig("animations_mode","0");
+    public void animationsToggleButtonClicked() {
+        if (animationsToggleButton.isSelected()) {
+            updateConfig("animations_mode", "1");
+        } else {
+            updateConfig("animations_mode", "0");
         }
     }
 
     @FXML
-    public void debugModeToggleButtonClicked()
-    {
-        if(debugModeToggleButton.isSelected())
-        {
-            updateConfig("debug_mode","1");
+    public void debugModeToggleButtonClicked() {
+        if (debugModeToggleButton.isSelected()) {
+            updateConfig("debug_mode", "1");
             openSettingsButtonDebug.setDisable(false);
             openSettingsButtonDebug.setVisible(true);
             closeSettingsButtonDebug.setDisable(false);
             closeSettingsButtonDebug.setVisible(true);
             returnToParentLayerButton.setDisable(false);
             returnToParentLayerButton.setVisible(true);
-        }
-        else
-        {
-            updateConfig("debug_mode","0");
+        } else {
+            updateConfig("debug_mode", "0");
             openSettingsButtonDebug.setDisable(true);
             openSettingsButtonDebug.setVisible(false);
             closeSettingsButtonDebug.setDisable(true);
@@ -212,30 +199,27 @@ public class dashboardController implements Initializable {
     int serverPortTemp = 23;
     Thread socketCommThread;
     boolean isWorking = false;
-    public void checkServerConnection()
-    {
+
+    public void checkServerConnection() {
         new Thread(new Task<Void>() {
             @Override
-            protected Void call(){
-                if(isWorking)
+            protected Void call() {
+                if (isWorking)
                     return null;
 
                 isWorking = true;
 
                 String serverIPTemp = serverIPField.getText();
 
-                try
-                {
+                try {
                     thisDeviceIP = Inet4Address.getLocalHost().getHostAddress();
-                    if(isSettingsOpen)
-                    {
+                    if (isSettingsOpen) {
                         closeSettings();
                     }
 
                     openLoadingPane();
 
-                    if(isConnected)
-                    {
+                    if (isConnected) {
                         //writeToOS("client_quit::");
                         isConnected = false;
                         //Thread.sleep(500);
@@ -250,13 +234,10 @@ public class dashboardController implements Initializable {
                     }
 
                     Thread.sleep(200);
-                    
-                    try
-                    {
+
+                    try {
                         serverPortTemp = Integer.parseInt(serverPortField.getText());
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
@@ -276,54 +257,49 @@ public class dashboardController implements Initializable {
                     });
 
                     s = new Socket();
-                    s.connect(new InetSocketAddress(serverIPTemp,serverPortTemp), 2500);
-                    s.setSoTimeout(0);
-                    s.setSendBufferSize(950000000);
-                    s.setReceiveBufferSize(950000000);
+                    s.connect(new InetSocketAddress(serverIPTemp, serverPortTemp), 2500);
+                    //s.setSoTimeout(0);
+                    //s.setSendBufferSize(950000000);
+                    //s.setReceiveBufferSize(950000000);
                     is = new DataInputStream(new BufferedInputStream(s.getInputStream()));
                     os = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
 
 
-                    updateConfig("server_ip",serverIPTemp);
-                    updateConfig("server_port",serverPortField.getText());
+                    updateConfig("server_ip", serverIPTemp);
+                    updateConfig("server_port", serverPortField.getText());
                     currentStatusLabel.setTextFill(Paint.valueOf("#008000"));
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            currentStatusLabel.setText("Current Status :  CONNECTED to "+serverIPTemp+":"+serverPortTemp);
+                            currentStatusLabel.setText("Current Status :  CONNECTED to " + serverIPTemp + ":" + serverPortTemp);
                             unableToConnectReasonLabel.setText("");
 
                         }
                     });
-                    writeToOS("hi there");
-                    os.flush();
-                    if(isSettingsOpen)
-                    {
+
+                    if (isSettingsOpen) {
                         closeSettings();
                     }
                     loadActions();
                     isConnected = true;
-                }
-                catch (Exception e)
-                {
+
+                    uniByteLen = 0;
+                } catch (Exception e) {
                     System.out.println("CFBBBBB");
                     currentStatusLabel.setTextFill(Paint.valueOf("#FF0000"));
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            currentStatusLabel.setText("Current Status :  FAILED TO CONNECT to "+serverIPTemp+":"+serverPortTemp);
+                            currentStatusLabel.setText("Current Status :  FAILED TO CONNECT to " + serverIPTemp + ":" + serverPortTemp);
                             unableToConnectReasonLabel.setText(e.getLocalizedMessage());
                         }
                     });
-                    if(debugMode)
+                    if (debugMode)
                         e.printStackTrace();
                     isConnected = false;
-                    try
-                    {
+                    try {
                         Thread.sleep(1500);
-                    }
-                    catch (Exception e1)
-                    {
+                    } catch (Exception e1) {
                         e.printStackTrace();
                     }
                     openSettings();
@@ -339,13 +315,11 @@ public class dashboardController implements Initializable {
     public JFXButton applySettingsAndRestartButton;
 
     @FXML
-    public void applySettingsAndRestartButtonClicked()
-    {
+    public void applySettingsAndRestartButtonClicked() {
         new Thread(new Task<Void>() {
             @Override
             protected Void call() {
-                try
-                {
+                try {
                     String uw = screenWidthField.getText();
                     String uh = screenHeightField.getText();
                     String portVal = serverPortField.getText();
@@ -353,44 +327,39 @@ public class dashboardController implements Initializable {
                     Integer.parseInt(uw);
                     Integer.parseInt(uh);
 
-                    if(!Main.config.get("height").equals(uh) || !Main.config.get("width").equals(uw))
-                    {
-                        updateConfig("height",uh);
-                        updateConfig("width",uw);
+                    if (!Main.config.get("height").equals(uh) || !Main.config.get("width").equals(uw)) {
+                        updateConfig("height", uh);
+                        updateConfig("width", uw);
                         Thread.sleep(3000);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                showErrorAlert("Alert","Screen Settings have been updated, restart to see effect");
+                                showErrorAlert("Alert", "Screen Settings have been updated, restart to see effect");
                             }
                         });
                     }
 
-                    if(!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal) || !isConnected)
-                    {
+                    if (!Main.config.get("server_ip").equals(ipVal) || !Main.config.get("server_port").equals(portVal) || !isConnected) {
                         checkServerConnection();
                     }
-                }
-                catch (Exception e)
-                {
-                    showErrorAlert("Alert","Please make sure screen dimensions are valid.");
+                } catch (Exception e) {
+                    showErrorAlert("Alert", "Please make sure screen dimensions are valid.");
                 }
                 return null;
             }
         }).start();
     }
 
-    public void showErrorAlert(String heading, String content)
-    {
+    public void showErrorAlert(String heading, String content) {
         System.out.println("XD");
         JFXDialogLayout l = new JFXDialogLayout();
         l.getStyleClass().add("dialog_style");
         Label headingLabel = new Label(heading);
         headingLabel.setTextFill(WHITE_PAINT);
-        headingLabel.setFont(Font.font("Roboto Regular",25));
+        headingLabel.setFont(Font.font("Roboto Regular", 25));
         l.setHeading(headingLabel);
         Label contentLabel = new Label(content);
-        contentLabel.setFont(Font.font("Roboto Regular",15));
+        contentLabel.setFont(Font.font("Roboto Regular", 15));
         contentLabel.setTextFill(WHITE_PAINT);
         contentLabel.setWrapText(true);
         l.setBody(contentLabel);
@@ -398,7 +367,7 @@ public class dashboardController implements Initializable {
         okButton.setTextFill(WHITE_PAINT);
         l.setActions(okButton);
 
-        JFXDialog alertDialog = new JFXDialog(alertStackPane,l, JFXDialog.DialogTransition.CENTER);
+        JFXDialog alertDialog = new JFXDialog(alertStackPane, l, JFXDialog.DialogTransition.CENTER);
         alertDialog.setOverlayClose(false);
         alertDialog.getStyleClass().add("dialog_box");
         okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -418,206 +387,156 @@ public class dashboardController implements Initializable {
         alertDialog.show();
     }
 
-    public void updateConfig(String keyName, String newValue)
-    {
-        Main.config.put(keyName,newValue);
-        String toBeWritten = Main.config.get("width")+separator+Main.config.get("height")+separator+Main.config.get("bg_colour")+separator+Main.config.get("server_ip")+separator+Main.config.get("server_port")+separator+Main.config.get("device_nick_name")+separator+Main.config.get("animations_mode")+separator+Main.config.get("debug_mode")+separator+Main.config.get("each_action_size")+separator+Main.config.get("each_action_padding")+separator;
-        io.writeToFile(toBeWritten,"config");
+    public void updateConfig(String keyName, String newValue) {
+        Main.config.put(keyName, newValue);
+        String toBeWritten = Main.config.get("width") + separator + Main.config.get("height") + separator + Main.config.get("bg_colour") + separator + Main.config.get("server_ip") + separator + Main.config.get("server_port") + separator + Main.config.get("device_nick_name") + separator + Main.config.get("animations_mode") + separator + Main.config.get("debug_mode") + separator + Main.config.get("each_action_size") + separator + Main.config.get("each_action_padding") + separator;
+        io.writeToFile(toBeWritten, "config");
     }
 
     Task socketCommTask = new Task<Void>() {
         @Override
         protected Void call() {
-            while(true)
-            {
-            try
-            {
+            while (true) {
+                try {
+                    if (isConnected) {
 
-                    if(isConnected) {
-                        //System.out.println("connected!");
                         String responseFromServerRaw = readFromIS();
-                        if (responseFromServerRaw == null)
-                        {
-                            //System.out.println("2323");
-                            checkServerConnection();
-                            return null;
-                        }
-                        else
-                        {
-                            System.out.println("RFS : "+responseFromServerRaw);
-                            String[] response = responseFromServerRaw.split(separator);
-                            String msgHeading = response[0];
-                            //System.out.println("'"+msgHeading+"'");
-                            if(msgHeading.equals("client_details"))
-                            {
-                                Thread.sleep(1000);
-                                writeToOS("client_details"+separator+thisDeviceIP+separator+Main.config.get("device_nick_name")+separator+Main.config.get("width")+separator+Main.config.get("height")+separator+maxActionsPerRow+separator+maxNoOfRows+separator+eachActionSize+separator+eachActionPadding+separator);
-                                //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
-                                // <maxcols>
-                            }
-                            else if(msgHeading.equals("action_success_response"))
-                            {
-                                System.out.println("RECEIVEDXXX");
-                                new Thread(new Task<Void>() {
-                                    @Override
-                                    protected Void call(){
-                                        try
-                                        {
-                                            String uniqueID = response[1];
-                                            String status = response[2];
+                        System.out.println("RFS : " + responseFromServerRaw);
+                        String[] response = responseFromServerRaw.split(separator);
+                        String msgHeading = response[0];
+                        if (msgHeading.equals("client_details")) {
+                            Thread.sleep(1000);
+                            writeToOS("client_details" + separator + thisDeviceIP + separator + Main.config.get("device_nick_name") + separator + Main.config.get("width") + separator + Main.config.get("height") + separator + maxActionsPerRow + separator + maxNoOfRows + separator + eachActionSize + separator + eachActionPadding + separator);
+                            //client_details::<deviceIP>::<nick_name>::<device_width>::<device_height>::<max_actions_per_row>::<max_no_of_rows>::
+                            // <maxcols>
+                        } else if (msgHeading.equals("action_success_response")) {
+                            System.out.println("RECEIVEDXXX");
+                            new Thread(new Task<Void>() {
+                                @Override
+                                protected Void call() {
+                                    try {
+                                        String uniqueID = response[1];
+                                        String status = response[2];
 
-                                            showSuccessToUI(uniqueID,status);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            e.printStackTrace();
-                                        }
-                                        return null;
+                                        showSuccessToUI(uniqueID, status);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                }).start();
-                            }
-                            else if(msgHeading.equals("client_action_size_padding_update"))
-                            {
-                                String newActionSizeString = response[1];
-                                String newActionPaddingString = response[2];
-
-                                if(!(eachActionSize+"").equals(newActionSizeString) || !(eachActionPadding+"").equals(newActionPaddingString))
-                                {
-                                    eachActionPadding = Integer.parseInt(newActionPaddingString);
-                                    eachActionSize = Integer.parseInt(newActionSizeString);
-                                    updateConfig("each_action_size",newActionSizeString);
-                                    updateConfig("each_action_padding",newActionPaddingString);
-
-                                    maxActionsPerRow = (int) Math.floor((Integer.parseInt(Main.config.get("width"))) / (eachActionSize + eachActionPadding + eachActionPadding));
-                                    maxNoOfRows = (int) Math.floor((Integer.parseInt(Main.config.get("height"))) / (eachActionSize +eachActionPadding + eachActionPadding));
-
-                                    loadActions();
+                                    return null;
                                 }
-                            }
-                            else if(msgHeading.equals("delete_action"))
-                            {
-                                System.out.println("Deleting...");
-                                new File("actions/details/"+response[1]).delete();
-                                System.out.println("actions/icons/"+response[2]);
-                                new File("actions/icons/"+response[2]).delete();
-                                isUpdateStuff = true;
+                            }).start();
+                        } else if (msgHeading.equals("client_action_size_padding_update")) {
+                            String newActionSizeString = response[1];
+                            String newActionPaddingString = response[2];
+
+                            if (!(eachActionSize + "").equals(newActionSizeString) || !(eachActionPadding + "").equals(newActionPaddingString)) {
+                                eachActionPadding = Integer.parseInt(newActionPaddingString);
+                                eachActionSize = Integer.parseInt(newActionSizeString);
+                                updateConfig("each_action_size", newActionSizeString);
+                                updateConfig("each_action_padding", newActionPaddingString);
+
+                                maxActionsPerRow = (int) Math.floor((Integer.parseInt(Main.config.get("width"))) / (eachActionSize + eachActionPadding + eachActionPadding));
+                                maxNoOfRows = (int) Math.floor((Integer.parseInt(Main.config.get("height"))) / (eachActionSize + eachActionPadding + eachActionPadding));
+
                                 loadActions();
                             }
-                            else if(msgHeading.equals("actions_update"))
-                            {
-                                //delete all details...
-                                for(String[] eachAction : actions)
-                                {
-                                    new File("actions/details/"+eachAction[0]).delete();
-                                }
-                                //System.out.println("sd213123");
-                                int noOfActions = Integer.parseInt(response[1]);
-                                int currentIndex = 2;
-                                for(int i = 0;i<noOfActions;i++)
-                                {
-                                    String[] newAction = response[currentIndex].split("__");
-                                    String actionID = newAction[0];
-                                    String actionCasualName = newAction[1];
-                                    String actionType = newAction[2];
-                                    String actionContent = newAction[3];
-                                    String actionIconFileName = newAction[4];
-                                    String actionRowNo = newAction[5];
-                                    String actionColNo = newAction[6];
-                                    String actionLayerIndex = newAction[7];
+                        } else if (msgHeading.equals("delete_action")) {
+                            System.out.println("Deleting...");
+                            new File("actions/details/" + response[1]).delete();
+                            System.out.println("actions/icons/" + response[2]);
+                            new File("actions/icons/" + response[2]).delete();
+                            isUpdateStuff = true;
+                            loadActions();
+                        } else if (msgHeading.equals("actions_update")) {
+                            //delete all details...
+                            for (String[] eachAction : actions) {
+                                new File("actions/details/" + eachAction[0]).delete();
+                            }
+                            //System.out.println("sd213123");
+                            int noOfActions = Integer.parseInt(response[1]);
+                            int currentIndex = 2;
+                            for (int i = 0; i < noOfActions; i++) {
+                                String[] newAction = response[currentIndex].split("__");
+                                String actionID = newAction[0];
+                                String actionCasualName = newAction[1];
+                                String actionType = newAction[2];
+                                String actionContent = newAction[3];
+                                String actionIconFileName = newAction[4];
+                                String actionRowNo = newAction[5];
+                                String actionColNo = newAction[6];
+                                String actionLayerIndex = newAction[7];
 
-                                    io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionIconFileName+separator+actionRowNo+separator+actionColNo+separator+actionLayerIndex+separator,"actions/details/"+actionID);
-                                    //io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionID+separator+actionImageFileName+separator+actionRowNo+separator+actionColNo,"actions/details/"+actionID);
-                                    currentIndex ++;
-                                }
-                                //System.out.println("updated!");
-                                isUpdateStuff = true;
-                                loadActions();
+                                io.writeToFile(actionCasualName + separator + actionType + separator + actionContent + separator + actionIconFileName + separator + actionRowNo + separator + actionColNo + separator + actionLayerIndex + separator, "actions/details/" + actionID);
+                                //io.writeToFile(actionCasualName+separator+actionType+separator+actionContent+separator+actionID+separator+actionImageFileName+separator+actionRowNo+separator+actionColNo,"actions/details/"+actionID);
+                                currentIndex++;
                             }
-                            else if(msgHeading.equals("update_icon"))
-                            {
-                                String iconName = response[1];
-                                String actionImageBase64 = response[2];
+                            //System.out.println("updated!");
+                            isUpdateStuff = true;
+                            loadActions();
+                        } else if (msgHeading.equals("update_icon")) {
+                            String iconName = response[1];
+                            String actionImageBase64 = response[2];
 
-                                byte[] img = Base64.getDecoder().decode(actionImageBase64);
-                                io.writeToFileRaw(img,"actions/icons/"+iconName);
-                                isUpdateStuff = true;
-                                loadActions();
-                            }
-                            else if(msgHeading.equals("get_actions"))
-                            {
-                                //System.out.println("145455");
-                                String towrite = "client_actions"+separator+actions.length+separator;
+                            byte[] img = Base64.getDecoder().decode(actionImageBase64);
+                            io.writeToFileRaw(img, "actions/icons/" + iconName);
+                            isUpdateStuff = true;
+                            loadActions();
+                        } else if (msgHeading.equals("get_actions")) {
+                            //System.out.println("145455");
+                            String towrite = "client_actions" + separator + actions.length + separator;
 
-                                for(String[] eachAction : actions)
-                                {
-                                    //FileInputStream fs = new FileInputStream("actions/icons/"+eachAction[3]);
-                                    //byte[] imageB = fs.readAllBytes();
-                                    //fs.close();
-                                    //String base64Image = Base64.getEncoder().encodeToString(imageB);
-                                    towrite+=eachAction[0]+"__"+eachAction[1]+"__"+eachAction[2]+"__"+eachAction[3]+"__"+eachAction[4]+"__"+eachAction[5]+"__"+eachAction[6]+"__"+eachAction[7]+separator;
-                                }
-                                writeToOS(towrite+maxLayers+separator);
-                                iconsSent.clear();
+                            for (String[] eachAction : actions) {
+                                //FileInputStream fs = new FileInputStream("actions/icons/"+eachAction[3]);
+                                //byte[] imageB = fs.readAllBytes();
+                                //fs.close();
+                                //String base64Image = Base64.getEncoder().encodeToString(imageB);
+                                towrite += eachAction[0] + "__" + eachAction[1] + "__" + eachAction[2] + "__" + eachAction[3] + "__" + eachAction[4] + "__" + eachAction[5] + "__" + eachAction[6] + "__" + eachAction[7] + separator;
                             }
-                            else if(msgHeading.equals("client_actions_icons_get"))
-                            {
-                                for(String[] eachAction : actions)
-                                {
-                                    if(!iconsSent.contains(eachAction[4]))
-                                    {
-                                        iconsSent.add(eachAction[4]);
-                                        FileInputStream fs = new FileInputStream("actions/icons/"+eachAction[4]);
-                                        byte[] imageB = fs.readAllBytes();
-                                        fs.close();
-                                        String base64Image = Base64.getEncoder().encodeToString(imageB);
-                                        System.out.println(eachAction[4]+"GAYFAG");
-                                        writeToOS("action_icon::"+eachAction[4]+"::"+base64Image+"::");
-                                        Thread.sleep(300);
-                                    }
+                            writeToOS(towrite + maxLayers + separator);
+                            iconsSent.clear();
+                        } else if (msgHeading.equals("client_actions_icons_get")) {
+                            for (String[] eachAction : actions) {
+                                if (!iconsSent.contains(eachAction[4])) {
+                                    iconsSent.add(eachAction[4]);
+                                    FileInputStream fs = new FileInputStream("actions/icons/" + eachAction[4]);
+                                    byte[] imageB = fs.readAllBytes();
+                                    fs.close();
+                                    String base64Image = Base64.getEncoder().encodeToString(imageB);
+                                    System.out.println(eachAction[4] + "GAYFAG");
+                                    writeToOS("action_icon::" + eachAction[4] + "::" + base64Image + "::");
+                                    Thread.sleep(300);
                                 }
-                                closeLoadingPane();
                             }
+                            closeLoadingPane();
                         }
-                        //System.out.println("'"+responseFromServerRaw+"'");
                     }
                     Thread.sleep(100);
-                }
-            catch (Exception e)
-            {
-                if(!isShutdown)
-                {
-                    checkServerConnection();
-                    if(debugMode)
-                        e.printStackTrace();
-                }
-            }
-            }
 
+                } catch (Exception e) {
+                    if (!isShutdown) {
+                        checkServerConnection();
+                        if (debugMode)
+                            e.printStackTrace();
+                    }
+                }
+            }
         }
     };
 
-    private void showSuccessToUI(String uniqueID, String status) throws Exception
-    {
-        for(Node eachNode : actionsVBox.getChildren())
-        {
+    private void showSuccessToUI(String uniqueID, String status) throws Exception {
+        for (Node eachNode : actionsVBox.getChildren()) {
             HBox eachRow = (HBox) eachNode;
-            for(Node eachActionPane : eachRow.getChildren())
-            {
+            for (Node eachActionPane : eachRow.getChildren()) {
                 Pane eachAction = (Pane) eachActionPane;
                 String[] xxa = eachAction.getId().split("::");
-                if(xxa[2].equals(uniqueID))
-                {
-                    if(!xxa[0].equals("folder"))
-                    {
+                if (xxa[2].equals(uniqueID)) {
+                    if (!xxa[0].equals("folder")) {
                         Pane iconPane = (Pane) eachAction.getChildren().get(1);
                         ImageView icon = (ImageView) iconPane.getChildren().get(0);
 
-                        if(status.equals("1"))
-                        {
+                        if (status.equals("1")) {
                             icon.setImage(doneIcon);
-                        }
-                        else if(status.equals("0"))
-                        {
+                        } else if (status.equals("0")) {
                             icon.setImage(failedIcon);
                         }
 
@@ -656,9 +575,7 @@ public class dashboardController implements Initializable {
                         lol.setDelay(Duration.millis(100));
                         lol.play();
                         break;
-                    }
-                    else
-                    {
+                    } else {
                         System.out.println("FAILED");
                     }
                 }
@@ -676,76 +593,56 @@ public class dashboardController implements Initializable {
 
     ArrayList<String> iconsSent = new ArrayList<>();
 
-    boolean currentlyWriting = false;
-    public void writeToOS(String txt) throws Exception
-    {
-        //System.out.println("txt  : "+txt);
-        /*txt = txt + "<END>";
-        currentlyWriting = true;
-        String[] chunks = Iterables.toArray(Splitter.fixedLength(1000).split(txt),String.class);
-        for(int i = 0;i<chunks.length;i++)
-        {
-            os.writeUTF(chunks[i]);
-            Thread.sleep(100);
-
-        }*/
-        //currentlyWriting = true;
-        os.writeUTF(txt);
-
-        //os.write(txt.getBytes(StandardCharsets.UTF_8).length);
-        //os.write(txt.getBytes(StandardCharsets.UTF_8));
-        //currentlyWriting = false;
+    //Writes to the Output Stream of the Socket connection between pi and pc
+    public void writeToOS(String txt) throws Exception {
+        byte[] by = txt.getBytes(StandardCharsets.UTF_8);
+        os.writeUTF("buff_length::" + by.length + "::");
         os.flush();
-        ////System.out.println("txt : "+txt);
+        Thread.sleep(500);
+        os.write(by);
+        os.flush();
+        System.out.println("SENT @ " + by.length);
     }
 
-    public String readFromIS() throws Exception
-    {
-        String eachChunk = is.readUTF();
-        return eachChunk;
-        /*String finalResult = "";
-        while(true)
-        {
-            if(currentlyWriting)
-            {
-                Thread.sleep(500);
-                continue;
-            }
-            String eachChunk = is.readUTF();
-            if(!eachChunk.endsWith("<END>"))
-            {
-                finalResult += eachChunk;
-            }
-            else
-            {
-                finalResult += eachChunk.replace("<END>","");
-                break;
-            }
-        }
+    //Writes from the Input Stream of the Socket connection between pi and pc
+    int uniByteLen = 0;
 
-        //System.out.println("txtrr : "+finalResult);
-        return finalResult;*/
+    public String readFromIS() {
+        try {
+            String bg = is.readUTF();
+            byte[] str = new byte[uniByteLen];
+            if (bg.startsWith("buff_length")) {
+                uniByteLen = Integer.parseInt(bg.split("::")[1]);
+                System.out.println("GOT @ " + uniByteLen);
+                str = is.readNBytes(uniByteLen);
+            }
+
+            if (uniByteLen > 0) {
+                uniByteLen = 0;
+            }
+            return new String(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     boolean isUpdateStuff = false;
     int currentLayer = 0;
 
-    public void drawLayer(int layer, int mode)
-    {
+    public void drawLayer(int layer, int mode) {
 
         HBox[] rows = new HBox[maxNoOfRows];
 
-        for(int j = 0;j<maxNoOfRows;j++)
-        {
+        for (int j = 0; j < maxNoOfRows; j++) {
             rows[j] = new HBox();
             rows[j].setSpacing(eachActionPadding);
             rows[j].setAlignment(Pos.CENTER);
 
             Pane[] actionPane = new Pane[maxActionsPerRow];
-            for(int k = 0;k<maxActionsPerRow;k++)
-            {
+            for (int k = 0; k < maxActionsPerRow; k++) {
                 actionPane[k] = new Pane();
-                actionPane[k].setPrefSize(eachActionSize,eachActionSize);
+                actionPane[k].setPrefSize(eachActionSize, eachActionSize);
                 actionPane[k].getStyleClass().add("action_box");
                 actionPane[k].setId("nut::nut::nut::");
                 //actionPane[k].setStyle("-fx-effect: dropshadow(three-pass-box, red, 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
@@ -754,13 +651,12 @@ public class dashboardController implements Initializable {
             rows[j].getChildren().addAll(actionPane);
         }
 
-        for(String[] eachActionDetails : actions)
-        {
-            if(Integer.parseInt(eachActionDetails[7]) != layer)
+        for (String[] eachActionDetails : actions) {
+            if (Integer.parseInt(eachActionDetails[7]) != layer)
                 continue;
 
             //System.out.println("actions/icons/"+eachActionDetails[3]);
-            ImageView icon = new ImageView(new File("actions/icons/"+eachActionDetails[4]).toURI().toString());
+            ImageView icon = new ImageView(new File("actions/icons/" + eachActionDetails[4]).toURI().toString());
             icon.setFitHeight(eachActionSize);
             icon.setPreserveRatio(false);
             icon.setFitWidth(eachActionSize);
@@ -777,35 +673,30 @@ public class dashboardController implements Initializable {
             anotherPane.setCacheHint(CacheHint.SPEED);
 
             Pane actionPane = new Pane(icon, anotherPane);
-            actionPane.setPrefSize(eachActionSize,eachActionSize);
-            actionPane.setPrefSize(eachActionSize,eachActionSize);
+            actionPane.setPrefSize(eachActionSize, eachActionSize);
+            actionPane.setPrefSize(eachActionSize, eachActionSize);
             //actionPane.getStyleClass().add("action_box");
             //actionPane.setStyle("-fx-effect: dropshadow(three-pass-box, "+eachActionDetails[4]+", 5, 0, 0, 0);-fx-background-color:"+Main.config.get("bg_colour"));
-            actionPane.setId(eachActionDetails[2]+separator+eachActionDetails[3]+separator+eachActionDetails[0]+separator);
+            actionPane.setId(eachActionDetails[2] + separator + eachActionDetails[3] + separator + eachActionDetails[0] + separator);
             actionPane.setOnTouchStationary(new EventHandler<TouchEvent>() {
                 @Override
                 public void handle(TouchEvent event) {
-                    allocatedActionMouseEventHandler((Node)event.getSource());
+                    allocatedActionMouseEventHandler((Node) event.getSource());
                 }
             });
             actionPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    allocatedActionMouseEventHandler((Node)event.getSource());
+                    allocatedActionMouseEventHandler((Node) event.getSource());
                 }
             });
 
 
-
-
             int rowNo = Integer.parseInt(eachActionDetails[5]);
             int colNo = Integer.parseInt(eachActionDetails[6]);
-            try
-            {
+            try {
                 rows[rowNo].getChildren().set(colNo, actionPane);
-            }
-            catch (IndexOutOfBoundsException e)
-            {
+            } catch (IndexOutOfBoundsException e) {
                 //TODO :: Show error that some action(s) couldnt be added due to different screen size
             }
         }
@@ -814,8 +705,7 @@ public class dashboardController implements Initializable {
             @Override
             public void run() {
 
-                if(mode == 0)
-                {
+                if (mode == 0) {
                     FadeOutRight gay = new FadeOutRight(actionsVBox);
                     gay.setSpeed(3.0);
                     gay.play();
@@ -829,9 +719,7 @@ public class dashboardController implements Initializable {
                             fag.play();
                         }
                     });
-                }
-                else if(mode == 1)
-                {
+                } else if (mode == 1) {
                     FadeOutLeft gay = new FadeOutLeft(actionsVBox);
                     gay.setSpeed(3.0);
                     gay.play();
@@ -845,22 +733,19 @@ public class dashboardController implements Initializable {
                             fag.play();
                         }
                     });
-                }
-                else
-                {
+                } else {
                     actionsVBox.getChildren().clear();
                     actionsVBox.getChildren().addAll(rows);
                 }
 
 
-                if(layer != -1)
+                if (layer != -1)
                     currentLayer = layer;
             }
         });
     }
 
-    private void allocatedActionMouseEventHandler(Node n)
-    {
+    private void allocatedActionMouseEventHandler(Node n) {
         /*ScaleTransition lol2 = new ScaleTransition(Duration.millis(550), n);
         lol2.setFromX(1.0);
         lol2.setFromY(1.0);
@@ -887,35 +772,31 @@ public class dashboardController implements Initializable {
     public Button returnToParentLayerButton;
 
     @FXML
-    public void returnToParentLayerButtonClicked()
-    {
-        for(String[] eachAction : actions)
-        {
-            if(eachAction[2].equals("folder") && eachAction[3].equals(currentLayer+""))
-            {
-                drawLayer(Integer.parseInt(eachAction[7]),0);
+    public void returnToParentLayerButtonClicked() {
+        for (String[] eachAction : actions) {
+            if (eachAction[2].equals("folder") && eachAction[3].equals(currentLayer + "")) {
+                drawLayer(Integer.parseInt(eachAction[7]), 0);
             }
         }
     }
 
     int maxLayers = 0;
-    public void loadActions() throws Exception
-    {
+
+    public void loadActions() throws Exception {
 
         maxLayers = 0;
         String[] allActionFiles = new File("actions/details").list();
 
         actionsVBox.setAlignment(Pos.TOP_LEFT);
 
-        System.out.println("sx : "+allActionFiles.length);
+        System.out.println("sx : " + allActionFiles.length);
         actions = new String[allActionFiles.length][8];
 
         int i = 0;
         int lowLayer = 0;
-        for(String eachActionFile : allActionFiles)
-        {
-            String[] contentArray = io.readFileArranged("actions/details/"+eachActionFile,separator);
-            System.out.println(io.readFileRaw("actions/details/"+eachActionFile));
+        for (String eachActionFile : allActionFiles) {
+            String[] contentArray = io.readFileArranged("actions/details/" + eachActionFile, separator);
+            System.out.println(io.readFileRaw("actions/details/" + eachActionFile));
             actions[i][0] = eachActionFile; //Action Unique ID
             actions[i][1] = contentArray[0]; //Casual Name
             actions[i][2] = contentArray[1]; //Action Type
@@ -926,96 +807,75 @@ public class dashboardController implements Initializable {
             actions[i][5] = contentArray[4]; //Row No
             actions[i][6] = contentArray[5]; //Column No
             actions[i][7] = contentArray[6]; //Layer
-            if(Integer.parseInt(contentArray[6])>lowLayer)
+            if (Integer.parseInt(contentArray[6]) > lowLayer)
                 lowLayer = Integer.parseInt(contentArray[6]);
             i++;
         }
 
         maxLayers = lowLayer;
 
-        if(isUpdateStuff)
-            drawLayer(0,-1);
+        if (isUpdateStuff)
+            drawLayer(0, -1);
         else
-            drawLayer(0,1);
+            drawLayer(0, 1);
 
         //Thread.sleep(500);
         //System.out.println("asdesaxxx");
 
-        if(actions.length == 0)
-        {
+        if (actions.length == 0) {
             closeLoadingPane();
         }
 
-        if(isUpdateStuff)
-        {
+        if (isUpdateStuff) {
             isUpdateStuff = false;
             //For future compatibility reasons...
         }
     }
 
-    public void sendAction(String rawActionContent)
-    {
+    public void sendAction(String rawActionContent) {
         //System.out.println("HOTKEY : "+hotkey);
-        System.out.println("AXION" +rawActionContent);
+        System.out.println("AXION" + rawActionContent);
         String[] splitz = rawActionContent.split("::");
 
-        if(splitz[0].equals("folder"))
-            drawLayer(Integer.parseInt(splitz[1]),1);
-        else if(splitz[0].equals("set_gpio_out"))
-        {
+        if (splitz[0].equals("folder"))
+            drawLayer(Integer.parseInt(splitz[1]), 1);
+        else if (splitz[0].equals("set_gpio_out")) {
             System.out.println(rawActionContent);
             String[] s = splitz[1].split("<>");
             Runtime r = Runtime.getRuntime();
-            try
-            {
-                r.exec("sudo gpio -g mode "+s[0]+" out");
-                r.exec("sudo gpio -g write "+s[0]+" "+s[1]);
-                showSuccessToUI(splitz[2],"1");
-            }
-            catch (Exception e)
-            {
-                try
-                {
-                    showSuccessToUI(splitz[2],"0");
-                }
-                catch (Exception e2)
-                {
+            try {
+                r.exec("sudo gpio -g mode " + s[0] + " out");
+                r.exec("sudo gpio -g write " + s[0] + " " + s[1]);
+                showSuccessToUI(splitz[2], "1");
+            } catch (Exception e) {
+                try {
+                    showSuccessToUI(splitz[2], "0");
+                } catch (Exception e2) {
                     e.printStackTrace();
                 }
                 e.printStackTrace();
             }
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 writeToOS(rawActionContent);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 checkServerConnection();
-                if(debugMode)
+                if (debugMode)
                     e.printStackTrace();
             }
         }
     }
 
-    public void openSettings()
-    {
-        if(!isConnected)
-        {
+    public void openSettings() {
+        if (!isConnected) {
             closeSettingsButton.setVisible(false);
-        }
-        else
-        {
+        } else {
             closeSettingsButton.setVisible(true);
         }
         //System.out.println("xcxc");
-        if(!isSettingsOpen)
-        {
+        if (!isSettingsOpen) {
             //System.out.println("dfdf");
-            if(Main.config.get("animations_mode").equals("0"))
-            {
+            if (Main.config.get("animations_mode").equals("0")) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1023,9 +883,7 @@ public class dashboardController implements Initializable {
                         settingsPane.toFront();
                     }
                 });
-            }
-            else
-            {
+            } else {
                 SlideInUp z = new SlideInUp(settingsPane);
                 z.setSpeed(1.5);
                 z.play();
@@ -1041,14 +899,12 @@ public class dashboardController implements Initializable {
     }
 
     boolean isLoadingPaneOpen = false;
-    public void openLoadingPane()
-    {
-        if(!isLoadingPaneOpen)
-        {
+
+    public void openLoadingPane() {
+        if (!isLoadingPaneOpen) {
             isLoadingPaneOpen = true;
             //System.out.println("Showing Loading Pane ...");
-            if(Main.config.get("animations_mode").equals("0"))
-            {
+            if (Main.config.get("animations_mode").equals("0")) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1057,24 +913,19 @@ public class dashboardController implements Initializable {
                         loadingPane.toFront();
                     }
                 });
-            }
-            else
-            {
-                Platform.runLater(()->progressSpinner.setProgress(-1));
+            } else {
+                Platform.runLater(() -> progressSpinner.setProgress(-1));
                 new FadeIn(loadingPane).play();
-                Platform.runLater(()-> loadingPane.toFront());
+                Platform.runLater(() -> loadingPane.toFront());
             }
         }
     }
 
-    public void closeLoadingPane()
-    {
-        if(isLoadingPaneOpen)
-        {
+    public void closeLoadingPane() {
+        if (isLoadingPaneOpen) {
             isLoadingPaneOpen = false;
             //System.out.println("Hiding Loading Pane ...");
-            if(Main.config.get("animations_mode").equals("1"))
-            {
+            if (Main.config.get("animations_mode").equals("1")) {
                 FadeOut lol = new FadeOut(loadingPane);
                 lol.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
@@ -1089,9 +940,7 @@ public class dashboardController implements Initializable {
                     }
                 });
                 lol.play();
-            }
-            else
-            {
+            } else {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1106,25 +955,18 @@ public class dashboardController implements Initializable {
         }
     }
 
-    public void closeSettings()
-    {
-        if(!isConnected)
-        {
+    public void closeSettings() {
+        if (!isConnected) {
             closeSettingsButton.setVisible(false);
-        }
-        else
-        {
+        } else {
             closeSettingsButton.setVisible(true);
         }
-        if(isSettingsOpen)
-        {
+        if (isSettingsOpen) {
             //System.out.println("closed!");
             isSettingsOpen = false;
 
 
-
-            if(Main.config.get("animations_mode").equals("1"))
-            {
+            if (Main.config.get("animations_mode").equals("1")) {
                 SlideOutDown s = new SlideOutDown(settingsPane);
                 s.setSpeed(1.5);
                 s.setOnFinished(new EventHandler<ActionEvent>() {
@@ -1134,9 +976,7 @@ public class dashboardController implements Initializable {
                     }
                 });
                 s.play();
-            }
-            else
-            {
+            } else {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1148,22 +988,18 @@ public class dashboardController implements Initializable {
         }
     }
 
-    public void closeSettingsDebug()
-    {
-        if(isConnected)
-        {
+    public void closeSettingsDebug() {
+        if (isConnected) {
             closeSettings();
         }
     }
 
     @FXML
-    public void closeSettingsButtonClicked()
-    {
+    public void closeSettingsButtonClicked() {
         new Thread(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                if(isConnected)
-                {
+                if (isConnected) {
                     Thread.sleep(200);
                     Platform.runLater(new Runnable() {
                         @Override
@@ -1181,15 +1017,11 @@ public class dashboardController implements Initializable {
     }
 
 
-
     @FXML
-    public void restartStreamPi()
-    {
-        try
-        {
+    public void restartStreamPi() {
+        try {
             isShutdown = true;
-            if(isConnected)
-            {
+            if (isConnected) {
                 //System.out.println("Closing connection to Server ...");
                 s.close();
                 //System.out.println("... Done!");
@@ -1197,55 +1029,45 @@ public class dashboardController implements Initializable {
             //System.out.println("Restarting ...");
             Runtime r = Runtime.getRuntime();
             r.exec("sudo reboot");
-        }
-        catch (Exception e)
-        {
-            if(debugMode)
+        } catch (Exception e) {
+            if (debugMode)
                 e.printStackTrace();
         }
     }
 
     boolean isShutdown = false;
+
     @FXML
-    public void shutdownStreamPi()
-    {
-        try
-        {
+    public void shutdownStreamPi() {
+        try {
             isShutdown = true;
             goodbyePane.setVisible(true);
             goodbyePane.toFront();
-            if(isConnected)
-            {
+            if (isConnected) {
                 isConnected = false;
             }
             //System.out.println("Shutting Down ...");
             new Thread(new Task<Void>() {
                 @Override
                 protected Void call() {
-                    try
-                    {
+                    try {
                         Thread.sleep(3000);
                         Runtime r = Runtime.getRuntime();
                         r.exec("sudo halt");
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     return null;
                 }
             }).start();
-        }
-        catch (Exception e)
-        {
-            if(debugMode)
+        } catch (Exception e) {
+            if (debugMode)
                 e.printStackTrace();
         }
     }
 
     @FXML
-    public void exitStreamPi()
-    {
+    public void exitStreamPi() {
         Platform.exit();
     }
 }
