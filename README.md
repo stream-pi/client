@@ -41,7 +41,7 @@ If you would like to contribute, or talk to us, or suggest anything, you can rai
 
 #### About
 
-This was originally thought of by [Samuel Quinones](https://twitter.com/SamuelQuinones1). [I](https://twitter.com/ladiesman36069) was the one who wrote the software.
+This was originally thought of by [Samuel Quinones](https://twitter.com/SamuelQuinones1). [I](https://twitter.com/ladiesman36069) was the one who wrote the software with assistance from Sam.
 
 #### License
 
