@@ -393,7 +393,7 @@ public class dashboardController implements Initializable {
         io.writeToFile(toBeWritten, "config");
     }
 
-    final String CLIENT_VERSION = "0.0.x";
+    final String CLIENT_VERSION = "0.0.6";
     Task socketCommTask = new Task<Void>() {
         @Override
         protected Void call() {
