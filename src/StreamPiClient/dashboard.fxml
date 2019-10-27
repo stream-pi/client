@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="basePane" prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StreamPiClient.dashboardController">
+<AnchorPane fx:id="basePane" prefHeight="480.0" prefWidth="800.0" style="-fx-background-color: black;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StreamPiClient.dashboardController">
    <children>
       <VBox fx:id="goodbyePane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>

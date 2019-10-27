@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
+        primaryStage.getIcons().add(new Image("assets/app_icon.png"));
         primaryStage.setTitle("StreamPi");
         Scene s = new Scene(root, Integer.parseInt(config.get("width")), Integer.parseInt(config.get("height")));
         primaryStage.setScene(s);
