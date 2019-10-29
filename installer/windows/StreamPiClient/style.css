@@ -1,0 +1,27 @@
+.scroll-pane .viewport {
+       -fx-background-color: transparent;
+}
+
+.scroll-pane{
+   -fx-background-color:transparent;
+}
+
+.drop_shadow {
+    -fx-effect: dropshadow(three-pass-box, red, 15, 0, 0, 0)
+}
+
+.text{
+    -fx-font-smoothing-type: gray;
+}
+
+.action_box {
+    /*-fx-effect: dropshadow(three-pass-box, red, 5, 0, 0, 0);*/
+    -fx-border-color : gray;
+    -fx-border-width : 1;
+    -fx-border-radius : 10;
+    -fx-background-color:black;
+}
+
+.dialog_style {
+    -fx-background-color : #212121;
+}
