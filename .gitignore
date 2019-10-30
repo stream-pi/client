@@ -2,3 +2,6 @@
 .idea/vcs.xml
 .idea/workspace.xml
 out/
+.DS_Store
+installer/.DS_Store
+installer/mac/.DS_Store
