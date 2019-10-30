@@ -742,6 +742,8 @@ public class dashboardController implements Initializable {
 
                 if (layer != -1)
                     currentLayer = layer;
+
+
             }
         });
     }
@@ -909,13 +911,11 @@ public class dashboardController implements Initializable {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        progressSpinner.setProgress(-1);
                         loadingPane.setOpacity(1);
                         loadingPane.toFront();
                     }
                 });
             } else {
-                Platform.runLater(() -> progressSpinner.setProgress(-1));
                 new FadeIn(loadingPane).play();
                 Platform.runLater(() -> loadingPane.toFront());
             }
@@ -935,7 +935,6 @@ public class dashboardController implements Initializable {
                             @Override
                             public void run() {
                                 loadingPane.toBack();
-                                progressSpinner.setProgress(0.0);
                             }
                         });
                     }
@@ -947,7 +946,6 @@ public class dashboardController implements Initializable {
                     public void run() {
                         loadingPane.setOpacity(0);
                         loadingPane.toBack();
-                        progressSpinner.setProgress(0.0);
                     }
                 });
             }
