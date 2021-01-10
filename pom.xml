@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.StreamPi</groupId>
+    <artifactId>Client</artifactId>
+    <version>1.0.0</version>
+
+    <url>https://stream-pi.com/</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+
+        <client.plugin.version>0.1.35</client.plugin.version>
+
+        <JavaFXVersion>16-ea+5</JavaFXVersion>
+
+        <IkonliVersion>11.5.0</IkonliVersion>
+        <IkonliFA5PackVersion>11.5.0</IkonliFA5PackVersion>
+
+        <ActionAPIVersion>1.0.0</ActionAPIVersion>
+        <UtilVersion>1.0.0</UtilVersion>
+        <ThemeAPIVersion>1.0.0</ThemeAPIVersion>
+
+        <MainClassName>com.StreamPi.Client.Main</MainClassName>
+
+        <JavaFXSDK>/path/to/sdk</JavaFXSDK>
+    </properties>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${JavaFXVersion}</version>
+            <!--<systemPath>${JavaFXSDK}/lib/javafx.controls.jar</systemPath>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${JavaFXVersion}</version>
+            <!--<systemPath>${JavaFXSDK}/lib/javafx.base.jar</systemPath>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-fontawesome5-pack</artifactId>
+            <version>${IkonliFA5PackVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>${IkonliVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.StreamPi</groupId>
+            <artifactId>ActionAPI</artifactId>
+            <version>${ActionAPIVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.StreamPi</groupId>
+            <artifactId>ThemeAPI</artifactId>
+            <version>${ThemeAPIVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.StreamPi</groupId>
+            <artifactId>Util</artifactId>
+            <version>${UtilVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20201115</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.gluonhq.attach/lifecycle -->
+<dependency>
+    <groupId>com.gluonhq.attach</groupId>
+    <artifactId>lifecycle</artifactId>
+    <version>4.0.10</version>
+</dependency>
+
+<dependency>
+    <groupId>com.gluonhq.attach</groupId>
+    <artifactId>util</artifactId>
+    <version>4.0.10</version>
+</dependency>
+    </dependencies>
+
+
+
+    <repositories>
+        <repository>
+            <id>gluon-releases</id>
+            <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <mainClass>${MainClassName}</mainClass>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>com.gluonhq</groupId>
+                <artifactId>client-maven-plugin</artifactId>
+                <version>${client.plugin.version}</version>
+                <configuration>
+                    <target>android</target>
+                    <nativeImageArgs>
+                        <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
+                        <list>-Dsvm.targetName=android</list>
+                    </nativeImageArgs>
+                    <bundlesList>
+                        <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
+                    </bundlesList>
+                    <attachList>
+                        <list>lifecycle</list>
+                    </attachList>
+                    <reflectionList>
+                        <list>java.util.logging.FileHandler</list>
+                    </reflectionList>
+                    <mainClass>${MainClassName}</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                <includeEmptyDirs>true</includeEmptyDirs>
+                </configuration>
+            </plugin>
+            
+
+        </plugins>
+    </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gluon-releases</id>
+            <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+        </pluginRepository>
+	<pluginRepository>
+            <id>gluon-snapshots</id>
+            <url>https://nexus.gluonhq.com/nexus/content/repositories/public-snapshots</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>

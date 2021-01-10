@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package protos;
+
+option java_package = "com.StreamPi.Client.Connection.protos";
+option java_outer_classname = "ClientGRPC";
+
+import "com/StreamPi/Client/Connection/protos/ClientConnectionProtos.proto";
+
+service Connection
+{
+
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+    <theme-platform-version>1.0.0</theme-platform-version>
+    
+    <info>
+        <short-name>ROG Cybercity 2077</short-name>
+        <author>Necroxys</author>
+        <version>1.0.0</version>
+    </info>
+    
+    <theme>
+        <stylesheets>
+            <stylesheet>res/client/style.css</stylesheet>
+        </stylesheets>
+        
+        <fonts>
+        	<font>res/client/Cyberpunk.ttf</font>
+        </fonts>
+    </theme>
+</configuration>
