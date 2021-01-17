@@ -785,10 +785,12 @@ public class Client extends Thread{
 
             clientListener.getClientProfiles().getProfileFromID(profileID).saveActions();
 
-            if(clientListener.getCurrentProfile().getID().equals(profileID))
+            if(clientListener.getCurrentProfile().getID().equals(profileID) && action.getLocation().getCol()!=-1)
             {
                 javafx.application.Platform.runLater(()->{
                     ActionBox box = clientListener.getActionBox(action.getLocation().getCol(), action.getLocation().getRow());
+                    System.out.println(box==null);
+                    System.out.println("GATYYY : "+action.getLocation().getCol()+","+action.getLocation().getRow());
                     box.clear();
                     box.setAction(action);
                     box.baseInit();
@@ -865,8 +867,12 @@ public class Client extends Thread{
 
             clientListener.getClientProfiles().getProfileFromID(profileID).saveActions();
 
-            clientListener.clearActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
-            clientListener.addBlankActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
+            if(acc.getLocation().getCol()!=-1)
+            {
+                clientListener.clearActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
+                clientListener.addBlankActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
+            }
+
 
         }
         catch (Exception e)
