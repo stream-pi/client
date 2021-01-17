@@ -29,8 +29,6 @@ public class Main extends Application {
             String[] r = eachArg.split("=");
             if(r[0].equals("-DStreamPi.startupRunnerFileName"))
                 ClientInfo.getInstance().setRunnerFileName(r[1]);
-            else if(r[0].equals("-DStreamPi.isFrameBufferMode"))
-                ClientInfo.getInstance().setFrameBufferMode(r[1].equals("true"));
         }
         
          

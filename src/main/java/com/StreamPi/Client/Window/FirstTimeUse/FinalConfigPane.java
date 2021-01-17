@@ -162,23 +162,7 @@ public class FinalConfigPane extends VBox
 
                 Config.getInstance().save();
 
-                if(ClientInfo.getInstance().isFrameBufferMode())
-                {
-                    StreamPiAlert alert = new StreamPiAlert("Done!","Start StreamPi Again to see changes",StreamPiAlertType.INFORMATION);
-                    alert.setOnClicked(new StreamPiAlertListener()
-                    {
-                        @Override
-                        public void onClick(String buttonClicked)
-                        {
-                            javafx.application.Platform.exit();
-                        }
-                    });
-                }
-                else
-                {
-                    clientListener.init();
-                }
-
+                clientListener.init();
 
             }
             catch(SevereException e)
