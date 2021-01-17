@@ -59,8 +59,7 @@
     -fx-border-width : 5;
     -fx-border-radius : 5; 
     -fx-background-radius : 5;
-    -fx-max-height : 300;
-    -fx-max-width : 410;
+    -fx-max-width : 400;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0.0 , 0 );
 }
 
@@ -111,6 +110,7 @@
 .alert_scroll_pane {
     -fx-background: #FFFFFF;
     -fx-border-color:#FFFFFF;
+    -fx-max-height : 300;
     /*-fx-focus-color: #FFFFFF;
     -fx-faint-focus-color:#FFFFFF;*/
 }
