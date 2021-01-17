@@ -6,6 +6,7 @@ import com.StreamPi.Client.IO.Config;
 import com.StreamPi.Client.Info.ClientInfo;
 import com.StreamPi.Client.Window.ExceptionAndAlertHandler;
 import com.StreamPi.Util.Alert.StreamPiAlert;
+import com.StreamPi.Util.Alert.StreamPiAlertListener;
 import com.StreamPi.Util.Alert.StreamPiAlertType;
 import com.StreamPi.Util.Exception.SevereException;
 import com.StreamPi.Util.FormHelper.HBoxInputBox;
@@ -157,9 +158,28 @@ public class FinalConfigPane extends VBox
                         width, height
                     );
                 }
+
+
                 Config.getInstance().save();
 
-                clientListener.init();
+                if(ClientInfo.getInstance().isFrameBufferMode())
+                {
+                    StreamPiAlert alert = new StreamPiAlert("Done!","Start StreamPi Again to see changes",StreamPiAlertType.INFORMATION);
+                    alert.setOnClicked(new StreamPiAlertListener()
+                    {
+                        @Override
+                        public void onClick(String buttonClicked)
+                        {
+                            javafx.application.Platform.exit();
+                        }
+                    });
+                }
+                else
+                {
+                    clientListener.init();
+                }
+
+
             }
             catch(SevereException e)
             {

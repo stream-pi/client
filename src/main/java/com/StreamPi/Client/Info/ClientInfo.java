@@ -103,6 +103,18 @@ public class ClientInfo {
         return runnerFileName;
     }
 
+    private boolean frameBufferMode = false;
+    
+    public void setFrameBufferMode(boolean frameBufferMode)
+    {
+        this.frameBufferMode = frameBufferMode;
+    }
+
+    public boolean isFrameBufferMode() 
+    {
+        return frameBufferMode;
+    }
+
     public static synchronized ClientInfo getInstance(){
         if(instance == null)
         {
