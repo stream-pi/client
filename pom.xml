@@ -80,23 +80,16 @@
         </dependency>
 
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20201115</version>
+            <groupId>com.gluonhq.attach</groupId>
+            <artifactId>lifecycle</artifactId>
+            <version>4.0.10</version>
         </dependency>
-        
-        <!-- https://mvnrepository.com/artifact/com.gluonhq.attach/lifecycle -->
-<dependency>
-    <groupId>com.gluonhq.attach</groupId>
-    <artifactId>lifecycle</artifactId>
-    <version>4.0.10</version>
-</dependency>
 
-<dependency>
-    <groupId>com.gluonhq.attach</groupId>
-    <artifactId>util</artifactId>
-    <version>4.0.10</version>
-</dependency>
+        <dependency>
+            <groupId>com.gluonhq.attach</groupId>
+            <artifactId>util</artifactId>
+            <version>4.0.10</version>
+        </dependency>
     </dependencies>
 
 
