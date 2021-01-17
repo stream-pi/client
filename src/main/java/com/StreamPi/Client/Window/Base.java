@@ -176,6 +176,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             stage.setWidth(config.getStartupWindowWidth());
             stage.setHeight(config.getStartupWindowHeight());
+            stage.centerOnScreen();
             setupFlags();
         }
     }
