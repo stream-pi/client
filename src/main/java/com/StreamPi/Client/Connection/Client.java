@@ -783,7 +783,9 @@ public class Client extends Thread{
 
             System.out.println("XXXXXXXXXXX " +action.isHasIcon());
 
-            clientListener.getClientProfiles().getProfileFromID(profileID).saveActions();
+            //clientListener.getClientProfiles().getProfileFromID(profileID).saveActions();
+
+            clientListener.getClientProfiles().getProfileFromID(profileID).saveAction(action);
 
             if(clientListener.getCurrentProfile().getID().equals(profileID) && action.getLocation().getCol()!=-1)
             {
