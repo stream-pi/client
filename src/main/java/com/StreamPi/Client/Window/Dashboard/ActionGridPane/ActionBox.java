@@ -50,14 +50,6 @@ public class ActionBox extends StackPane{
     private int row;
     private int col;
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public void setCol(int col) {
-        this.col = col;
-    }
-
     public int getRow() {
         return row;
     }
@@ -102,8 +94,10 @@ public class ActionBox extends StackPane{
         setMinSize(size, size);
         setMaxSize(size, size);
 
+        getStyleClass().clear();
         getStyleClass().add("action_box");
         getStyleClass().add("action_box_icon_not_present");
+        getStyleClass().add("action_box_"+row+"_"+col);
 
         setOnMouseClicked(touchEvent -> actionClicked());
 
@@ -181,10 +175,13 @@ public class ActionBox extends StackPane{
     private int size;
     private ActionGridPaneListener actionGridPaneListener;
 
-    public ActionBox(int size, ActionGridPaneListener actionGridPaneListener)
+    public ActionBox(int size, ActionGridPaneListener actionGridPaneListener, int row, int col)
     {
         this.actionGridPaneListener = actionGridPaneListener;
         this.size = size;
+        this.row = row;
+        this.col = col;
+
         baseInit();
     }
 
@@ -244,14 +241,16 @@ public class ActionBox extends StackPane{
         this.parent = parent;
     }
 
-    public ActionBox(int size, Action action, ExceptionAndAlertHandler exceptionAndAlertHandler, ActionGridPaneListener actionGridPaneListener)
+    public ActionBox(int size, Action action, ExceptionAndAlertHandler exceptionAndAlertHandler,
+     ActionGridPaneListener actionGridPaneListener, int row, int col)
     {
         this.actionGridPaneListener = actionGridPaneListener;
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.action = action;
         this.size = size;
 
-
+        this.row = row;
+        this.col = col;
 
         baseInit();
 

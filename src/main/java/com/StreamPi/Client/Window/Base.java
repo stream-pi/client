@@ -149,8 +149,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         getChildren().clear();
         getChildren().addAll(settingsBase, dashboardBase, alertStackPane);
-
-        requestFocus();
         
         setStyle(null);
         clearStylesheets();
@@ -178,6 +176,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             stage.setHeight(config.getStartupWindowHeight());
             stage.centerOnScreen();
             setupFlags();
+        }
+        else
+        {
+            config.setStartupWindowSize(getWidth(), getHeight());
+            config.save();
         }
     }
 

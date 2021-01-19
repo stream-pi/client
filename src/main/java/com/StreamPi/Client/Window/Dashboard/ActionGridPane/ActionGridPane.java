@@ -240,11 +240,9 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
     public void addBlankActionBox(int col, int row)
     {
-        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), this);
+        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), this, row, col);
 
         actionBox.setStreamPiParent(currentParent);
-        actionBox.setRow(row);
-        actionBox.setCol(col);
 
         add(actionBox, row, col);
     }
@@ -270,13 +268,11 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         }
 
 
-        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this);
-
         Location location = action.getLocation();
 
+        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this, location.getRow(), location.getCol());
+
         actionBox.setStreamPiParent(currentParent);
-        actionBox.setRow(location.getRow());
-        actionBox.setCol(location.getCol());
 
         clearActionBox(location.getCol(), location.getRow());
 

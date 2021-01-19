@@ -69,6 +69,8 @@ public class Controller extends Base
         {
             initBase(); 
 
+            requestFocus();
+
             if(Config.getInstance().isFirstTimeUse())
                 return;
             
