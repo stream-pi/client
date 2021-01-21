@@ -7,7 +7,7 @@
 
     <application android:label='StreamPi Client' android:icon="@mipmap/ic_launcher" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
     android:requestLegacyExternalStorage="true">
-        <activity android:name='com.gluonhq.helloandroid.MainActivity' android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden">
+        <activity android:name='com.gluonhq.helloandroid.MainActivity' android:keepScreenOn="true" android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden">
              <intent-filter>
                 <category android:name='android.intent.category.LAUNCHER'/>
                 <action android:name='android.intent.action.MAIN'/>

@@ -23,9 +23,11 @@ import com.StreamPi.Util.IOHelper.IOHelper;
 import com.StreamPi.Util.LoggerHelper.StreamPiLogFallbackHandler;
 import com.StreamPi.Util.LoggerHelper.StreamPiLogFileHandler;
 import com.StreamPi.Util.Platform.Platform;
+import com.gluonhq.attach.display.DisplayService;
 import com.gluonhq.attach.lifecycle.LifecycleService;
 import com.gluonhq.attach.util.Services;
 
+import javafx.geometry.Dimension2D;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.input.KeyCombination;
@@ -170,6 +172,9 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         initThemes();
 
+
+        logger.info("HEIGHT"+getHeight());
+        
         if(clientInfo.getPlatformType()!= Platform.ANDROID && clientInfo.getPlatformType() != Platform.IOS)
         {
             stage.setWidth(config.getStartupWindowWidth());
@@ -179,8 +184,18 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         }
         else
         {
-            config.setStartupWindowSize(getWidth(), getHeight());
-            config.save();
+            Services.get(DisplayService.class).ifPresentOrElse(service->{
+                Dimension2D resolution = service.getScreenResolution();
+                float uiScale = service.getScreenScale();
+                logger.info("resolution"+resolution.getHeight()+","+resolution.getWidth()+","+uiScale);
+            },()->{
+                logger.info("Display service not available");
+            });
+            
+
+
+            getConfig().setStartupWindowSize(getWidth(), getHeight());
+            getConfig().save();
         }
     }
 
