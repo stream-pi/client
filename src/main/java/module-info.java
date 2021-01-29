@@ -7,7 +7,6 @@ module com.StreamPi.Client {
 
     requires com.gluonhq.attach.lifecycle;
     requires com.gluonhq.attach.util;
-    requires com.gluonhq.attach.display;
 
     requires java.xml;
 

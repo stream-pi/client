@@ -23,7 +23,6 @@ import com.StreamPi.Util.IOHelper.IOHelper;
 import com.StreamPi.Util.LoggerHelper.StreamPiLogFallbackHandler;
 import com.StreamPi.Util.LoggerHelper.StreamPiLogFileHandler;
 import com.StreamPi.Util.Platform.Platform;
-import com.gluonhq.attach.display.DisplayService;
 import com.gluonhq.attach.lifecycle.LifecycleService;
 import com.gluonhq.attach.util.Services;
 
@@ -184,7 +183,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         }
         else
         {
-            Services.get(DisplayService.class).ifPresentOrElse(service->{
+            /*Services.get(DisplayService.class).ifPresentOrElse(service->{
                 Dimension2D resolution = service.getScreenResolution();
                 float uiScale = service.getScreenScale();
                 logger.info("resolution"+resolution.getHeight()+","+resolution.getWidth()+","+uiScale);
@@ -195,7 +194,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
 
             getConfig().setStartupWindowSize(getWidth(), getHeight());
-            getConfig().save();
+            getConfig().save();*/
         }
     }
 
