@@ -16,12 +16,8 @@ public class Main extends Application {
         Controller d = new Controller();                                                        //Starts new dash instance
 
         Scene s = new Scene(d);                                                     //Starts new scene instance from dash
-        stage.setScene(s);                                                          //Init Scene
-        stage.setOnShown(event->
-        {    
-            d.init();
-        });
-        stage.show();
+        stage.setScene(s);
+        d.init();
     }
 
 

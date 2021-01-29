@@ -79,13 +79,15 @@ public class Controller extends Base
                 setupFlags();
             }
 
+
+            setupDashWindow();
+
+            getStage().show();
+
             requestFocus();
 
             if(Config.getInstance().isFirstTimeUse())
                 return;
-            
-            setupDashWindow();
-    
         
             setupSettingsWindowsAnimations();
 
