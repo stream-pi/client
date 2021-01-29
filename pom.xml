@@ -16,9 +16,9 @@
         <maven.compiler.target>11</maven.compiler.target>
 
 
-        <client.plugin.version>0.1.35</client.plugin.version>
+        <client.plugin.version>0.1.36</client.plugin.version>
 
-        <JavaFXVersion>16-ea+5</JavaFXVersion>
+        <JavaFXVersion>16-ea+6</JavaFXVersion>
 
         <IkonliVersion>11.5.0</IkonliVersion>
         <IkonliFA5PackVersion>11.5.0</IkonliFA5PackVersion>
