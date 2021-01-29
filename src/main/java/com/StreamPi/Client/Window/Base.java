@@ -170,32 +170,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         }
 
         initThemes();
-
-
-        logger.info("HEIGHT"+getHeight());
-        
-        if(clientInfo.getPlatformType()!= Platform.ANDROID && clientInfo.getPlatformType() != Platform.IOS)
-        {
-            stage.setWidth(config.getStartupWindowWidth());
-            stage.setHeight(config.getStartupWindowHeight());
-            stage.centerOnScreen();
-            setupFlags();
-        }
-        else
-        {
-            /*Services.get(DisplayService.class).ifPresentOrElse(service->{
-                Dimension2D resolution = service.getScreenResolution();
-                float uiScale = service.getScreenScale();
-                logger.info("resolution"+resolution.getHeight()+","+resolution.getWidth()+","+uiScale);
-            },()->{
-                logger.info("Display service not available");
-            });
-            
-
-
-            getConfig().setStartupWindowSize(getWidth(), getHeight());
-            getConfig().save();*/
-        }
     }
 
     private void checkPrePathDirectory() throws SevereException

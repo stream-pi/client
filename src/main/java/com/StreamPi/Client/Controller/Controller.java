@@ -68,7 +68,16 @@ public class Controller extends Base
     {
         try 
         {
-            initBase(); 
+            if(firstRun)
+                initBase();
+
+
+            if(getClientInfo().getPlatformType()!= com.StreamPi.Util.Platform.Platform.ANDROID && getClientInfo().getPlatformType() != com.StreamPi.Util.Platform.Platform.IOS) {
+                getStage().setWidth(getConfig().getStartupWindowWidth());
+                getStage().setHeight(getConfig().getStartupWindowHeight());
+                getStage().centerOnScreen();
+                setupFlags();
+            }
 
             requestFocus();
 
