@@ -74,8 +74,6 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
     {
         this.clientProfile = clientProfile;
 
-        System.out.println("CURRENT : "+getClientProfile().getID());
-
         setCurrentParent("root");
         setRows(clientProfile.getRows());
         setCols(clientProfile.getCols());

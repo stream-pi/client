@@ -49,13 +49,11 @@ public class DashboardBase extends VBox {
 
     public void renderProfile(ClientProfile clientProfile) throws SevereException
     {
-        System.out.println("LOADING 221... ");
         renderProfile(clientProfile, "root");
     }
 
     public void renderProfile(ClientProfile clientProfile, String currentParent) throws SevereException
     {
-        System.out.println("LOADING 333... ");
         actionGridPane.setClientProfile(clientProfile);
         actionGridPane.setCurrentParent(currentParent);
 

@@ -376,9 +376,6 @@ public class Controller extends Base
     public void refreshGridIfCurrent(String profileID) {
         ClientProfile clientProfile = getDashboardPane().getActionGridPane().getClientProfile();
 
-        System.out.println("Profile ID : "+profileID);
-        System.out.println("dd : "+clientProfile.getName());
-        System.out.println("profile2 : "+clientProfile.getID());
         if(clientProfile.getID().equals(profileID))
         {
             Platform.runLater(()->{
