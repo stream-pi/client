@@ -204,3 +204,13 @@
 .dashboard{
     -fx-background-color: white;
 }
+
+.first_time_use_welcome_pane_welcome_label
+{
+    -fx-font-size: 30;
+}
+
+.first_time_use_welcome_pane_next_to_continue_label
+{
+    -fx-font-size: 15;
+}

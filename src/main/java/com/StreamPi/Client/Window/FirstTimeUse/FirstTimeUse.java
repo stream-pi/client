@@ -108,7 +108,7 @@ public class FirstTimeUse extends VBox{
             licensePane.setVisible(false);
             finalConfigPane.setVisible(false);
 
-            headingLabel.setText("Welcome!");
+            headingLabel.setText("");
 
             nextButton.setDisable(false);
             previousButton.setDisable(true);
