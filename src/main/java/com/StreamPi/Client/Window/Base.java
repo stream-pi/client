@@ -260,6 +260,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     }
 
     public void renderRootDefaultProfile() throws SevereException {
+        System.out.println("LOADING 11... ");
         getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(
                 Config.getInstance().getStartupProfileID()
         ));
