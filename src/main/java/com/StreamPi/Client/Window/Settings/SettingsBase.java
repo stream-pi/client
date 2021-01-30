@@ -49,6 +49,7 @@ public class SettingsBase extends VBox {
     private Button closeButton;
     private Button saveButton;
     private Button connectDisconnectButton;
+    private Button shutdownButton;
 
     private ToggleButton startOnBootToggleButton;
 
@@ -213,10 +214,21 @@ public class SettingsBase extends VBox {
         connectDisconnectButton = new Button("Connect");
         connectDisconnectButton.setOnAction(event -> onConnectDisconnectButtonClicked());
 
+        shutdownButton = new Button("Shutdown");
+        shutdownButton.setOnAction(event -> onShutdownButtonClicked());
+
         Button exitButton = new Button("Exit");
         exitButton.setOnAction(event -> onExitButtonClicked());
 
         HBox buttonBar = new HBox(connectDisconnectButton, saveButton, exitButton, closeButton);
+
+        if(ClientInfo.getInstance().getPlatformType() == com.StreamPi.Util.Platform.Platform.LINUX &&
+            ClientInfo.getInstance().isShowShutDownButton())
+        {
+            buttonBar.getChildren().add(shutdownButton);
+        }
+
+
         buttonBar.setPadding(new Insets(0,5,5,0));
         buttonBar.setSpacing(5.0);
         buttonBar.setAlignment(Pos.CENTER_RIGHT);
@@ -232,14 +244,26 @@ public class SettingsBase extends VBox {
 
     public void onExitButtonClicked()
     {
-        Platform.exit();
         clientListener.onCloseRequest();
+        Platform.exit();
     }
 
     public void setDisableStatus(boolean status)
     {
         saveButton.setDisable(status);
         connectDisconnectButton.setDisable(status);
+    }
+
+    public void onShutdownButtonClicked()
+    {
+        clientListener.onCloseRequest();
+        try {
+            Runtime.getRuntime().exec("sudo halt");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void onConnectDisconnectButtonClicked()

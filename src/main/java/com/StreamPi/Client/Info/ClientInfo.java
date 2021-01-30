@@ -45,15 +45,9 @@ public class ClientInfo {
 
         releaseStatus = ReleaseStatus.EA;
 
-        // Hardcoded values for android because os.name returns linux on android
-        
-        //platformType = Platform.ANDROID;
-        //prePath = "/sdcard/StreamPiClient/";
-
         if(platformType == null)
         {
             String osName = System.getProperty("os.name").toLowerCase();
-            System.out.println("CCVVBB : '"+osName+"'");
 
             if(osName.contains("windows"))
             {
@@ -110,6 +104,16 @@ public class ClientInfo {
         }
 
         return instance;
+    }
+
+    private boolean isShowShutDownButton = false;
+
+    public void setShowShutDownButton(boolean showShutDownButton) {
+        isShowShutDownButton = showShutDownButton;
+    }
+
+    public boolean isShowShutDownButton() {
+        return isShowShutDownButton;
     }
 
     public String getPrePath() {

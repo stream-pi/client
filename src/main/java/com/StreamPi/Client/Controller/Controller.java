@@ -177,7 +177,8 @@ public class Controller extends Base
         getLogger().info("Shut down");
         closeLogger();
 
-        Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
+        if (ClientInfo.getInstance().getPlatformType() == com.StreamPi.Util.Platform.Platform.ANDROID)
+            Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
     }
 
     @Override
