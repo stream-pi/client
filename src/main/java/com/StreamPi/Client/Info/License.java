@@ -3,8 +3,8 @@ package com.StreamPi.Client.Info;
 public class License {
     public static String getLicense()
     {
-        return "StreamPi - Free & Opensource Modular Cross-Platform Programmable Macropad\n" +
-            "Copyright (C) 2020  Debayan Sutradhar (rnayabed),  Samuel Quiñones (SamuelQuinones)\n" +
+        return "Stream-Pi - Free & Opensource Modular Cross-Platform Programmable Macropad\n" +
+            "Copyright (C) 2019-2021  Debayan Sutradhar (rnayabed),  Samuel Quiñones (SamuelQuinones)\n" +
             "\n" +
             "This program is free software: you can redistribute it and/or modify\n" +
             "it under the terms of the GNU General Public License as published by\n" +

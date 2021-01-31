@@ -162,7 +162,7 @@ public class Controller extends Base
 
     public void setupDashWindow()
     {
-        getStage().setTitle("StreamPi Client");
+        getStage().setTitle("Stream-Pi Client");
         getStage().setOnCloseRequest(e->onCloseRequest());
     }
 
