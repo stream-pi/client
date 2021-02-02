@@ -1,4 +1,4 @@
-module com.StreamPi.Client {
+module com.stream_pi.client {
     requires javafx.base;
     requires javafx.graphics;
     requires javafx.controls;
@@ -10,11 +10,11 @@ module com.StreamPi.Client {
 
     requires java.xml;
 
-    requires com.StreamPi.Util;
-    requires com.StreamPi.ActionAPI;
-    requires com.StreamPi.ThemeAPI;
+    requires com.stream_pi.util;
+    requires com.stream_pi.actionapi;
+    requires com.stream_pi.themeapi;
 
     requires org.kordamp.ikonli.fontawesome5;
 
-    exports com.StreamPi.Client;
+    exports com.stream_pi.client;
 }
