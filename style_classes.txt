@@ -1,0 +1,28 @@
+Dashboard - dashboard
+    Settings HBox Bar - dashboard_settings_button_parent
+        Settings Button - dashboard_settings_button
+            Icon - dashboard_settings_button_icon
+
+
+    Action Grid Pane - action_grid_pane
+        Action Box - action_box
+            if folder back button :
+                Icon : folder_action_back_button_icon
+
+            Is Icon Present ?
+                yes : action_box_icon_present
+                no : action_box_icon_not_present
+            Is Action Valid (is plugin by module name found) ?
+                yes : action_box_valid
+                no : action_box_invalid
+
+            Action On Click : action_box_onclick
+
+            Display Text Label - action_box_display_text_label
+
+Settings - settings_base
+    Settings heading label - settings_heading_label
+    Scroll Pane - settings_base_scroll_pane
+        Base VBox - settings_base_vbox
+
+    Button Bar - settings_button_bar

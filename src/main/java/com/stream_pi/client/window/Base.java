@@ -148,8 +148,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         getChildren().addAll(settingsBase, dashboardBase, alertStackPane);
         
         setStyle(null);
-        clearStylesheets();
-        applyDefaultStylesheet();
+
 
         checkPrePathDirectory();
 
@@ -157,6 +156,9 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         if(config.isFirstTimeUse())
         {
+            clearStylesheets();
+            applyDefaultStylesheet();
+
             getChildren().add(firstTimeUse);
             firstTimeUse.toFront();
         }
@@ -165,7 +167,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             dashboardBase.toFront();
         }
 
-        initThemes();
+        registerThemes();
     }
 
     private void checkPrePathDirectory() throws SevereException
@@ -242,13 +244,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         getStylesheets().clear();
     }
 
-    public void initThemes() throws SevereException
-    {
-        registerThemes();
-       
-        applyDefaultTheme();
-    }
-
 
 
     public void applyDefaultStylesheet()
@@ -290,7 +285,10 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             }
         }
         currentTheme = t;
+
+        clearStylesheets();
         getStylesheets().addAll(t.getStylesheets());
+        applyDefaultStylesheet();
 
         logger.info("... Done!");
     }
@@ -335,7 +333,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     public void applyDefaultTheme()
     {
         logger.info("Applying default theme ...");
-
 
         boolean foundTheme = false;
         for(Theme t: themes.getThemeList())

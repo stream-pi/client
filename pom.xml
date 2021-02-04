@@ -131,10 +131,10 @@
                 <artifactId>client-maven-plugin</artifactId>
                 <version>${client.plugin.version}</version>
                 <configuration>
-                    <target>android</target>
+                    <!--target>android</target-->
                     <nativeImageArgs>
                         <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                        <list>-Dsvm.targetName=android</list>
+                        <!--list>-Dsvm.targetName=android</list-->
                     </nativeImageArgs>
                     <bundlesList>
                         <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>

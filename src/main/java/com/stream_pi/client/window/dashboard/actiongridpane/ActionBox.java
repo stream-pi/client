@@ -172,8 +172,7 @@ public class ActionBox extends StackPane{
         try {
             ByteArrayInputStream is = new ByteArrayInputStream(buffer.array());
             ObjectInputStream ois = new ObjectInputStream(is);
-            Action obj = (Action) ois.readObject();
-            return obj;
+            return (Action) ois.readObject();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

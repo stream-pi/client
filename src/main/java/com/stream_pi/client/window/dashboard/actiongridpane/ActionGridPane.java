@@ -127,7 +127,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         );
 
         FontIcon fontIcon = new FontIcon("fas-chevron-left");
-
+        fontIcon.getStyleClass().add("folder_action_back_button_icon");
         fontIcon.setIconSize(getClientProfile().getActionSize() - 30);
 
         stackPane.setAlignment(Pos.CENTER);

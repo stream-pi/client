@@ -188,7 +188,7 @@ public class SettingsBase extends VBox {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
-        scrollPane.getStyleClass().add("settings_base_scrollpane");
+        scrollPane.getStyleClass().add("settings_base_scroll_pane");
         scrollPane.setContent(vBox);
 
         vBox.setMinWidth(300);
@@ -196,9 +196,9 @@ public class SettingsBase extends VBox {
         vBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 
 
-        Label settingsLabel = new Label("settings");
+        Label settingsLabel = new Label("Settings");
         settingsLabel.setPadding(new Insets(5,0,0,5));
-        settingsLabel.getStyleClass().add("settings_heading");
+        settingsLabel.getStyleClass().add("settings_heading_label");
 
         saveButton = new Button("Save");
         saveButton.setOnAction(event->onSaveButtonClicked());
@@ -215,6 +215,7 @@ public class SettingsBase extends VBox {
         exitButton.setOnAction(event -> onExitButtonClicked());
 
         HBox buttonBar = new HBox(connectDisconnectButton, saveButton, exitButton, closeButton);
+        buttonBar.getStyleClass().add("settings_button_bar");
 
         if(ClientInfo.getInstance().getPlatformType() == com.stream_pi.util.platform.Platform.LINUX &&
             ClientInfo.getInstance().isShowShutDownButton())
@@ -280,8 +281,6 @@ public class SettingsBase extends VBox {
     {
         Platform.runLater(()->{
             setDisableStatus(false);
-
-            System.out.println("q24qwdqwd : "+clientListener.isConnected());
 
             if(clientListener.isConnected())
                 connectDisconnectButton.setText("Disconnect");

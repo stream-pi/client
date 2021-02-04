@@ -25,27 +25,10 @@
 
 }
 
-.action_box_not_onclick
-{
-
-}
-
-.action_box_display_text_label
-{
-    -fx-font-size : 16;
-}
-
-.action_box_icon
-{
-    -fx-arc-width:20px;
-    -fx-arc-height:20px;
-}
-
-.settings_heading
+.settings_heading_label
 {
     -fx-font-size: 20;
 }
-
 
 .alert_header
 {
@@ -54,8 +37,6 @@
 
 .alert_pane
 {
-    -fx-background-color : white;
-    -fx-border-color : white;
     -fx-border-width : 5;
     -fx-border-radius : 5; 
     -fx-background-radius : 5;
@@ -85,7 +66,6 @@
 
 .alert_content_pane
 {
-    -fx-background-color: white;
     -fx-padding: 5;
 }
 
@@ -101,15 +81,12 @@
 
 .alert_button_bar
 {
-    -fx-background-color: white;
     -fx-alignment: CENTER_RIGHT;
     -fx-spacing: 5;
     -fx-padding: 5;
 }
 
 .alert_scroll_pane {
-    -fx-background: #FFFFFF;
-    -fx-border-color:#FFFFFF;
     -fx-max-height : 300;
     /*-fx-focus-color: #FFFFFF;
     -fx-faint-focus-color:#FFFFFF;*/
@@ -133,15 +110,12 @@
     -fx-background-radius : 5;
     -fx-max-height : 300;
     -fx-max-width : 410;
-    -fx-background: #FFFFFF;
-    -fx-border-color:#FFFFFF;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0.0 , 0 );
 }
 
 .combo_box_popup_vbox
 {
-    -fx-background-color: white;
-    -fx-padding: 5;
+    -fx-padding: 5 5 0 5;
     -fx-spacing:5;
 }
 
@@ -151,15 +125,9 @@
     -fx-icon-size: 14;
 }
 
-.settings_base
-{
-    -fx-background-color:white;
-}
-
 .first_time_use_pane
 {
-    -fx-padding : 5;   
-    -fx-background-color: white;
+    -fx-padding : 5;
 }
 
 .first_time_use_pane_heading_label
@@ -192,19 +160,6 @@
     
 }
 
-.scroll-pane{
-    -fx-background-color:transparent;
-}
-
- 
-.scroll-pane .viewport {
-    -fx-background-color: transparent;
-}
-
-.dashboard{
-    -fx-background-color: white;
-}
-
 .first_time_use_welcome_pane_welcome_label
 {
     -fx-font-size: 30;
@@ -213,4 +168,10 @@
 .first_time_use_welcome_pane_next_to_continue_label
 {
     -fx-font-size: 15;
+}
+
+.scroll-pane
+{
+    -fx-focus-color:transparent;
+    -fx-faint-focus-color:transparent;
 }

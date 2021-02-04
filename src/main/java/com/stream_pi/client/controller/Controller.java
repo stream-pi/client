@@ -47,6 +47,7 @@ public class Controller extends Base
             if(firstRun)
                 initBase();
 
+            applyDefaultTheme();
 
             if(getClientInfo().getPlatformType()!= com.stream_pi.util.platform.Platform.ANDROID && getClientInfo().getPlatformType() != com.stream_pi.util.platform.Platform.IOS) {
                 getStage().setWidth(getConfig().getStartupWindowWidth());

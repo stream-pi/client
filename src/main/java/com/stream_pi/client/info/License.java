@@ -36,6 +36,7 @@ public class License {
             "1. JavaFX - GNU General Public License with Classpath Exception\nhttp://openjdk.java.net/legal/gplv2+ce.html\n\n"+
             "2. Gluon Attach - GPL License\nhttps://github.com/gluonhq/attach/blob/master/LICENSE\n\n"+
             "3. Gluon Client Maven Plugin - BSD-3 License\nhttps://github.com/gluonhq/client-maven-plugin/blob/master/LICENSE\n\n" +
-            "4. Ikonli - Apache License\nhttps://github.com/kordamp/ikonli/blob/master/LICENSE\n\n";
+            "4. Ikonli - Apache License\nhttps://github.com/kordamp/ikonli/blob/master/LICENSE\n\n"+
+            "5. Roboto Font - Apache License 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0\n\n";
     }
 }

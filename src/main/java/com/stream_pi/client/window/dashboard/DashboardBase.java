@@ -30,9 +30,11 @@ public class DashboardBase extends VBox {
         fontIcon.getStyleClass().addAll("dashboard_settings_button_icon");
 
         settingsButton = new Button();
+        settingsButton.getStyleClass().addAll("dashboard_settings_button");
         settingsButton.setGraphic(fontIcon);
 
         HBox hBox = new HBox(settingsButton);
+        hBox.getStyleClass().add("dashboard_settings_button_parent");
         hBox.setPadding(new Insets(0,5,5,0));
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
