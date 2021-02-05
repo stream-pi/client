@@ -63,7 +63,7 @@
 
         <dependency>
             <groupId>com.stream_pi</groupId>
-            <artifactId>action_api</artifactId>
+            <artifactId>actionapi</artifactId>
             <version>${ActionAPIVersion}</version>
         </dependency>
 
@@ -131,10 +131,10 @@
                 <artifactId>client-maven-plugin</artifactId>
                 <version>${client.plugin.version}</version>
                 <configuration>
-                    <!--target>android</target-->
+                    <target>${clientTarget}</target>
                     <nativeImageArgs>
                         <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                        <!--list>-Dsvm.targetName=android</list-->
+                        <list>${additionalArgs}</list>
                     </nativeImageArgs>
                     <bundlesList>
                         <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
@@ -160,6 +160,36 @@
 
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>android</id>
+            <properties>
+                <clientTarget>android</clientTarget>
+                <additionalArgs>-Dsvm.targetName=android</additionalArgs>
+            </properties>
+        </profile>
+        <profile>
+            <id>rpi</id>
+            <properties>
+                <clientTarget>linux-aarch64</clientTarget>
+                <additionalArgs>-Dsvm.targetName=linux_raspberrypi</additionalArgs>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows64</id>
+            <properties>
+                <clientTarget>windows</clientTarget>
+                <additionalArgs>-Dsvm.targetName=windows</additionalArgs>
+            </properties>
+        </profile>
+        <profile>
+            <id>linux64</id>
+            <properties>
+                <additionalArgs>-Dsvm.targetName=linux</additionalArgs>
+            </properties>
+        </profile>
+    </profiles>
 
     <pluginRepositories>
         <pluginRepository>

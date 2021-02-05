@@ -73,6 +73,7 @@ public class FinalConfigPane extends VBox
         v.setSpacing(10.0);
 
         ScrollPane scrollPane = new ScrollPane(v);
+        scrollPane.getStyleClass().add("first_time_use_final_config_pane_scroll_pane");
         v.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 
         getChildren().addAll(label, scrollPane,new SpaceFiller(FillerType.VBox), bBar);

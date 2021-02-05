@@ -26,3 +26,14 @@ Settings - settings_base
         Base VBox - settings_base_vbox
 
     Button Bar - settings_button_bar
+
+First Time Use - first_time_use_pane
+    Heading Label - first_time_use_pane_heading_label
+    Stack Pane - first_time_use_pane_stackpane
+        Welcome Pane - first_time_use_pane_welcome
+            Head - first_time_use_welcome_pane_welcome_label
+            Small Label - first_time_use_welcome_pane_next_to_continue_label
+        License Pane - first_time_use_pane_license
+        Final Config - first_time_use_pane_final_config
+            Scroll Pane - first_time_use_final_config_pane_scroll_pane
+    Button Bar - first_time_use_pane_button_bar

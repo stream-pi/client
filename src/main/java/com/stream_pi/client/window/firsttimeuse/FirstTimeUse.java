@@ -55,6 +55,7 @@ public class FirstTimeUse extends VBox{
 
 
         HBox buttonBar = new HBox(previousButton, new SpaceFiller(FillerType.HBox), nextButton);
+        buttonBar.getStyleClass().add("first_time_use_pane_button_bar");
         buttonBar.setSpacing(10.0);
 
         getChildren().addAll(headingLabel, stackPane, buttonBar);
