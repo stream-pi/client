@@ -1,11 +1,18 @@
+# Maven
 target/
-.idea/
-streampi.log
-streampi.log.lck
-gen/
-data/
 
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
 .settings/
 .project
 .factorypath
 .classpath
+
+# Misc
+streampi.log
+streampi.log.lck
+gen/
+data/

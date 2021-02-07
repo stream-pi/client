@@ -4,79 +4,61 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.stream_pi</groupId>
+    <groupId>com.stream-pi</groupId>
     <artifactId>client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <url>https://stream-pi.com/</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>11</maven.compiler.release>
 
-
+        <javafx.version>16-ea+6</javafx.version>
         <client.plugin.version>0.1.36</client.plugin.version>
+        <ikonli.version>11.5.0</ikonli.version>
 
-        <JavaFXVersion>16-ea+6</JavaFXVersion>
+        <action.api.version>1.0.0-SNAPSHOT</action.api.version>
+        <util.version>1.0.0-SNAPSHOT</util.version>
+        <theme.api.version>1.0.0-SNAPSHOT</theme.api.version>
 
-        <IkonliVersion>11.5.0</IkonliVersion>
-        <IkonliFA5PackVersion>11.5.0</IkonliFA5PackVersion>
-
-        <ActionAPIVersion>1.0.0</ActionAPIVersion>
-        <UtilVersion>1.0.0</UtilVersion>
-        <ThemeAPIVersion>1.0.0</ThemeAPIVersion>
-
-        <MainClassName>com.stream_pi.client.Main</MainClassName>
-
+        <main.class.name>com.StreamPi.Client.Main</main.class.name>
         <JavaFXSDK>/path/to/sdk</JavaFXSDK>
     </properties>
 
-
     <dependencies>
-
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>${JavaFXVersion}</version>
+            <version>${javafx.version}</version>
             <!--<systemPath>${JavaFXSDK}/lib/javafx.controls.jar</systemPath>-->
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>${JavaFXVersion}</version>
-            <!--<systemPath>${JavaFXSDK}/lib/javafx.base.jar</systemPath>-->
         </dependency>
 
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fontawesome5-pack</artifactId>
-            <version>${IkonliFA5PackVersion}</version>
+            <version>${ikonli.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
-            <version>${IkonliVersion}</version>
+            <version>${ikonli.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.stream_pi</groupId>
-            <artifactId>actionapi</artifactId>
-            <version>${ActionAPIVersion}</version>
+            <groupId>com.stream-pi</groupId>
+            <artifactId>action-api</artifactId>
+            <version>${action.api.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>com.stream_pi</groupId>
-            <artifactId>themeapi</artifactId>
-            <version>${ThemeAPIVersion}</version>
+            <groupId>com.stream-pi</groupId>
+            <artifactId>theme-api</artifactId>
+            <version>${theme.api.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.stream_pi</groupId>
             <artifactId>util</artifactId>
-            <version>${UtilVersion}</version>
+            <version>${util.version}</version>
         </dependency>
 
         <dependency>
@@ -84,15 +66,12 @@
             <artifactId>lifecycle</artifactId>
             <version>4.0.10</version>
         </dependency>
-
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>util</artifactId>
             <version>4.0.10</version>
         </dependency>
     </dependencies>
-
-
 
     <repositories>
         <repository>
@@ -107,9 +86,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
-                <configuration>
-                    <release>11</release>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -121,7 +97,7 @@
                     <compress>2</compress>
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
-                    <mainClass>${MainClassName}</mainClass>
+                    <mainClass>${main.class.name}</mainClass>
                 </configuration>
             </plugin>
 
@@ -145,7 +121,7 @@
                     <reflectionList>
                         <list>java.util.logging.FileHandler</list>
                     </reflectionList>
-                    <mainClass>${MainClassName}</mainClass>
+                    <mainClass>${main.class.name}</mainClass>
                 </configuration>
             </plugin>
 
@@ -156,8 +132,6 @@
                 <includeEmptyDirs>true</includeEmptyDirs>
                 </configuration>
             </plugin>
-            
-
         </plugins>
     </build>
 
