@@ -156,7 +156,7 @@ public class SettingsBase extends VBox {
 
 
         VBox vBox = new VBox(
-                new HBoxInputBox("Nick Name", nickNameTextField, prefWidth),
+                new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
                 new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
                 new HBoxInputBox("Port", serverPortTextField, prefWidth),
                 new HBox(

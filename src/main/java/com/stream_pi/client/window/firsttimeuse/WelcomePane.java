@@ -12,7 +12,7 @@ public class WelcomePane extends VBox{
         Label welcomeLabel = new Label("Welcome!");
         welcomeLabel.getStyleClass().add("first_time_use_welcome_pane_welcome_label");
 
-        Label nextToContinue = new Label("Click on Next to continue with the setup.");
+        Label nextToContinue = new Label("Please click \"Next\" to start the Setup process");
         nextToContinue.getStyleClass().add("first_time_use_welcome_pane_next_to_continue_label");
 
 
