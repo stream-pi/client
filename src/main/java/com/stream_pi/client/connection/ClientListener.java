@@ -1,11 +1,11 @@
 package com.stream_pi.client.connection;
 
-import com.stream_pi.actionapi.action.Action;
+import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
-import com.stream_pi.themeapi.Theme;
-import com.stream_pi.themeapi.Themes;
+import com.stream_pi.theme_api.Theme;
+import com.stream_pi.theme_api.Themes;
 import com.stream_pi.util.exception.SevereException;
 
 public interface ClientListener {

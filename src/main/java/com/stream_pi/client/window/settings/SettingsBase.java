@@ -7,7 +7,7 @@ import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
-import com.stream_pi.themeapi.Theme;
+import com.stream_pi.theme_api.Theme;
 import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.combobox.StreamPiComboBox;
@@ -161,12 +161,12 @@ public class SettingsBase extends VBox {
                 new HBoxInputBox("Port", serverPortTextField, prefWidth),
                 new HBox(
                         new Label("Current profile"),
-                        new SpaceFiller(SpaceFiller.FillerType.HBox),
+                        SpaceFiller.horizontal(),
                         clientProfileComboBox
                 ),
                 new HBox(
                         new Label("Theme"),
-                        new SpaceFiller(SpaceFiller.FillerType.HBox),
+                        SpaceFiller.horizontal(),
                         themeComboBox
                 ),
                 screenHeightInputBox,

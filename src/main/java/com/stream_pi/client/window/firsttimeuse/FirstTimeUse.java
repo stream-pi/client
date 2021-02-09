@@ -4,7 +4,6 @@ import com.stream_pi.client.Main;
 import com.stream_pi.client.connection.ClientListener;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.uihelper.SpaceFiller;
-import com.stream_pi.util.uihelper.SpaceFiller.FillerType;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -54,7 +53,7 @@ public class FirstTimeUse extends VBox{
         previousButton.setOnAction(event-> onPreviousButtonClicked());
 
 
-        HBox buttonBar = new HBox(previousButton, new SpaceFiller(FillerType.HBox), nextButton);
+        HBox buttonBar = new HBox(previousButton, SpaceFiller.horizontal(), nextButton);
         buttonBar.getStyleClass().add("first_time_use_pane_button_bar");
         buttonBar.setSpacing(10.0);
 

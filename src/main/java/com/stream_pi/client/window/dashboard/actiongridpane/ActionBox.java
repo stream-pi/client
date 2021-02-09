@@ -1,8 +1,8 @@
 package com.stream_pi.client.window.dashboard.actiongridpane;
 
-import com.stream_pi.actionapi.action.Action;
-import com.stream_pi.actionapi.action.ActionType;
-import com.stream_pi.actionapi.action.DisplayTextAlignment;
+import com.stream_pi.action_api.action.Action;
+import com.stream_pi.action_api.action.ActionType;
+import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;

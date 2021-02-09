@@ -56,7 +56,7 @@
             <version>${theme.api.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.stream_pi</groupId>
+            <groupId>com.stream-pi</groupId>
             <artifactId>util</artifactId>
             <version>${util.version}</version>
         </dependency>

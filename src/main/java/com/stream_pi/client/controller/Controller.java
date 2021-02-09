@@ -1,6 +1,6 @@
 package com.stream_pi.client.controller;
 
-import com.stream_pi.actionapi.action.Action;
+import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.connection.Client;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;

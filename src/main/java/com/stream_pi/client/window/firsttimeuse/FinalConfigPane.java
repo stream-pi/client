@@ -9,7 +9,6 @@ import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 import com.stream_pi.util.uihelper.SpaceFiller;
-import com.stream_pi.util.uihelper.SpaceFiller.FillerType;
 import com.stream_pi.util.platform.Platform;
 
 import javafx.geometry.Pos;
@@ -76,7 +75,7 @@ public class FinalConfigPane extends VBox
         scrollPane.getStyleClass().add("first_time_use_final_config_pane_scroll_pane");
         v.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 
-        getChildren().addAll(label, scrollPane,new SpaceFiller(FillerType.VBox), bBar);
+        getChildren().addAll(label, scrollPane, SpaceFiller.vertical(), bBar);
 
         setSpacing(10.0);
 

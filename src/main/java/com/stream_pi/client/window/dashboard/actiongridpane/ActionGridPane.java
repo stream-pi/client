@@ -2,8 +2,8 @@ package com.stream_pi.client.window.dashboard.actiongridpane;
 
 import java.util.logging.Logger;
 
-import com.stream_pi.actionapi.action.Action;
-import com.stream_pi.actionapi.action.Location;
+import com.stream_pi.action_api.action.Action;
+import com.stream_pi.action_api.action.Location;
 import com.stream_pi.client.connection.ClientListener;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
