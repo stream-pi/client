@@ -124,7 +124,7 @@ public class Client extends Thread{
     }
 
 
-    public void sendMessage(Message message) throws SevereException
+    public synchronized void sendMessage(Message message) throws SevereException
     {
         try
         {
@@ -249,7 +249,7 @@ public class Client extends Thread{
 
     //commands
 
-    public void sendIcon(String profileID, String actionID, byte[] icon) throws SevereException
+    public synchronized void sendIcon(String profileID, String actionID, byte[] icon) throws SevereException
     {
         Message message = new Message("action_icon");
         message.setStringArrValue(profileID, actionID);
@@ -400,6 +400,7 @@ public class Client extends Thread{
         ClientProfile clientProfile = clientListener.getClientProfiles().getProfileFromID(ID);
 
         String[] arr = new String[]{
+                ID,
                 clientProfile.getName(),
                 clientProfile.getRows()+"",
                 clientProfile.getCols()+"",
@@ -484,6 +485,8 @@ public class Client extends Thread{
             a.add(action.getLocation().getCol()+"");
         }
 
+        a.add(action.getParent());
+
         //client properties
 
         ClientProperties clientProperties = action.getClientProperties();
@@ -496,7 +499,6 @@ public class Client extends Thread{
             a.add(property.getRawValue());
         }
 
-        a.add(action.getParent());
 
 
         Message message = new Message("action_details");
@@ -515,7 +517,7 @@ public class Client extends Thread{
 
         String profileID = r[0];
 
-        String ID = r[1];
+        String actionID = r[1];
         ActionType actionType = ActionType.valueOf(r[2]);
 
         //3 - Version
@@ -540,7 +542,7 @@ public class Client extends Thread{
 
         Location location = new Location(Integer.parseInt(row), Integer.parseInt(col));
 
-        Action action = new Action(ID, actionType);
+        Action action = new Action(actionID, actionType);
 
         if(actionType == ActionType.NORMAL)
         {
@@ -573,34 +575,28 @@ public class Client extends Thread{
 
         action.setLocation(location);
 
+
+        String parent = r[14];
+        action.setParent(parent);
+
         //client properties
 
-        int clientPropertiesSize = Integer.parseInt(r[14]);
-
-        String[] clientPropertiesRaw = r[15].split("!!");
+        int clientPropertiesSize = Integer.parseInt(r[15]);
 
         ClientProperties clientProperties = new ClientProperties();
 
         if(actionType == ActionType.FOLDER)
             clientProperties.setDuplicatePropertyAllowed(true);
 
-        for(int i = 0;i<clientPropertiesSize; i++)
+        for(int i = 16;i<((clientPropertiesSize*2) + 16); i+=2)
         {
-            String[] clientPraw = clientPropertiesRaw[i].split("__");
-
-            Property property = new Property(clientPraw[0], Type.STRING);
-
-            if(clientPraw.length > 1)
-                property.setRawValue(clientPraw[1]);
+            Property property = new Property(r[i], Type.STRING);
+            property.setRawValue(r[i+1]);
 
             clientProperties.addProperty(property);
         }
 
         action.setClientProperties(clientProperties);
-
-
-        String parent = r[16];
-        action.setParent(parent);
 
 
         try
@@ -619,7 +615,10 @@ public class Client extends Thread{
 
             clientListener.getClientProfiles().getProfileFromID(profileID).saveAction(action);
 
-            if(clientListener.getCurrentProfile().getID().equals(profileID) && action.getLocation().getCol()!=-1)
+            clientListener.renderAction(profileID, action);
+
+            /*if(clientListener.getCurrentProfile().getID().equals(profileID) &&
+                clientListener.get&& action.getLocation().getCol()!=-1)
             {
                 javafx.application.Platform.runLater(()->{
                     ActionBox box = clientListener.getActionBox(action.getLocation().getCol(), action.getLocation().getRow());
@@ -634,7 +633,7 @@ public class Client extends Thread{
                         box.init();
                     }
                 });
-            }
+            }*/
         }
         catch (Exception e)
         {
@@ -794,7 +793,8 @@ public class Client extends Thread{
         ));
     }
 
-    public void onActionClicked(String profileID, String actionID) throws SevereException {
+    public void onActionClicked(String profileID, String actionID) throws SevereException
+    {
         Message m = new Message("action_clicked");
         m.setStringArrValue(profileID, actionID);
         sendMessage(m);

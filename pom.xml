@@ -22,8 +22,7 @@
         <util.version>1.0.0-SNAPSHOT</util.version>
         <theme.api.version>1.0.0-SNAPSHOT</theme.api.version>
 
-        <main.class.name>com.StreamPi.Client.Main</main.class.name>
-        <JavaFXSDK>/path/to/sdk</JavaFXSDK>
+        <main.class.name>com.stream_pi.client.Main</main.class.name>
     </properties>
 
     <dependencies>
@@ -31,7 +30,6 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
-            <!--<systemPath>${JavaFXSDK}/lib/javafx.controls.jar</systemPath>-->
         </dependency>
 
         <dependency>

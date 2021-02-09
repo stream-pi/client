@@ -8,7 +8,8 @@ import com.stream_pi.theme_api.Theme;
 import com.stream_pi.theme_api.Themes;
 import com.stream_pi.util.exception.SevereException;
 
-public interface ClientListener {
+public interface ClientListener
+{
     void onActionFailed(String profileID, String actionID);
     void onNormalActionClicked(String profileID, String actionID);
 
