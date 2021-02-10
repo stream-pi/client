@@ -77,7 +77,7 @@ public class Client extends Thread{
 
                         clientListener.setConnected(false);
                         clientListener.updateSettingsConnectDisconnectButton();
-                        throw new MinorException("connection Error", "Unable to connect to server. Please check settings and connection and try again.");
+                        throw new MinorException("Connection Error", "Unable to connect to server. Please check settings and connection and try again.");
                     }
 
                     try

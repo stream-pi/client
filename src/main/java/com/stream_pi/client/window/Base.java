@@ -23,6 +23,7 @@ import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
 import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
 import com.stream_pi.util.platform.Platform;
 
+import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.input.KeyCombination;
@@ -137,6 +138,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         settingsBase.setCacheHint(CacheHint.SPEED);
 
         alertStackPane = new StackPane();
+        alertStackPane.setPadding(new Insets(10));
         alertStackPane.setVisible(false);
 
         StreamPiAlert.setParent(alertStackPane);
@@ -158,6 +160,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             clearStylesheets();
             applyDefaultStylesheet();
+            applyDefaultIconsStylesheet();
 
             getChildren().add(firstTimeUse);
             firstTimeUse.toFront();
@@ -186,9 +189,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             }
             else
             {
+                clearStylesheets();
+                applyDefaultStylesheet();
+                applyDefaultIconsStylesheet();
+                getStage().show();
                 throw new SevereException("No storage permission. Give it!");
             }
-            
         }
         catch (Exception e)
         {
@@ -252,6 +258,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
     }
 
+    public void applyDefaultIconsStylesheet()
+    {
+        Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13);
+        getStylesheets().add(Main.class.getResource("default_icons.css").toExternalForm());
+    }
 
 
     public Config getConfig()
@@ -287,8 +298,9 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         currentTheme = t;
 
         clearStylesheets();
-        getStylesheets().addAll(t.getStylesheets());
         applyDefaultStylesheet();
+        getStylesheets().addAll(t.getStylesheets());
+        applyDefaultIconsStylesheet();
 
         logger.info("... Done!");
     }

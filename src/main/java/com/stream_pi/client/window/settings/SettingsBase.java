@@ -413,7 +413,10 @@ public class SettingsBase extends VBox {
             boolean breakConnection = false;
 
             if(!Config.getInstance().getCurrentThemeFullName().equals(themeComboBox.getCurrentSelectedItem().getFullName()))
+            {
+                breakConnection = true;
                 toBeReloaded = true;
+            }
 
             Config.getInstance().setCurrentThemeFullName(themeComboBox.getCurrentSelectedItem().getFullName());
 
@@ -496,7 +499,10 @@ public class SettingsBase extends VBox {
             if(breakConnection)
             {
                 if(clientListener.isConnected())
-                    clientListener.disconnect("Client connection settings were changed.");
+                {
+                    clientListener.disconnect("Client connection settings were changed. Client will reconnect again.");
+                    clientListener.setupClientConnection();
+                }
             }
 
             if(toBeReloaded)

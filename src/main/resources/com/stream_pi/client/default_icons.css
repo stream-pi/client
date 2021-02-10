@@ -1,0 +1,14 @@
+.alert_error_icon
+{
+    -fx-icon-color: RED;
+}
+
+.alert_information_icon
+{
+    -fx-icon-color: BLUE;
+}
+
+.alert_warning_icon
+{
+    -fx-icon-color: #ffcc00;
+}

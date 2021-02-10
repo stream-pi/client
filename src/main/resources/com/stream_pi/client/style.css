@@ -49,21 +49,6 @@
     -fx-icon-size : 30;
 }
 
-.alert_error_icon
-{
-    -fx-icon-color: RED;
-}
-
-.alert_information_icon
-{
-    -fx-icon-color: BLUE;
-}
-
-.alert_warning_icon
-{
-    -fx-icon-color: #ffcc00;
-}
-
 .alert_content_pane
 {
     -fx-padding: 5;
@@ -180,4 +165,34 @@
 {
     -fx-focus-color:transparent;
     -fx-faint-focus-color:transparent;
+}
+
+/*Alert Classes added to default stylesheet to show init error, if occurs */
+.action_box_display_text_label
+{
+    -fx-font-size : 16;
+    -fx-background-color : transparent;
+}
+
+.alert_pane
+{
+    -fx-background-color : white;
+    -fx-border-color : white;
+}
+
+.alert_content_pane
+{
+    -fx-background-color: white;
+    -fx-padding: 5;
+}
+
+.alert_scroll_pane
+{
+    -fx-background:  white;
+    -fx-border-color:white;
+}
+
+.alert_button_bar
+{
+    -fx-background-color:white;
 }
