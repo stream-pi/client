@@ -27,14 +27,17 @@ public class FinalConfigPane extends VBox
     private TextField serverPortTextField;
     private TextField displayWidthTextField;
     private TextField displayHeightTextField;
+    private Button nextButton;
 
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
     private ClientListener clientListener;
 
-    public FinalConfigPane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener)
+    public FinalConfigPane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener,
+                           Button nextButton)
     {
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.clientListener = clientListener;
+        this.nextButton = nextButton;
 
         getStyleClass().add("first_time_use_pane_final_config");
 
@@ -62,11 +65,6 @@ public class FinalConfigPane extends VBox
             displayHeightInputBox.setVisible(false);
         }
 
-        Button confirmButton = new Button("Confirm");
-        confirmButton.setOnAction(event -> onConfirmButtonClicked());
-        HBox bBar = new HBox(confirmButton);
-        bBar.setAlignment(Pos.CENTER_RIGHT);
-
         VBox v = new VBox(clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox,
         displayWidthInputBox, displayHeightInputBox);
         v.setSpacing(10.0);
@@ -75,11 +73,17 @@ public class FinalConfigPane extends VBox
         scrollPane.getStyleClass().add("first_time_use_final_config_pane_scroll_pane");
         v.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 
-        getChildren().addAll(label, scrollPane, SpaceFiller.vertical(), bBar);
+        getChildren().addAll(label, scrollPane);
 
         setSpacing(10.0);
 
         setVisible(false);
+    }
+
+    public void makeChangesToNextButton()
+    {
+        nextButton.setText("Confirm");
+        nextButton.setOnAction(event -> onConfirmButtonClicked());
     }
 
     private void onConfirmButtonClicked()

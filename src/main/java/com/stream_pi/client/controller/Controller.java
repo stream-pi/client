@@ -372,4 +372,10 @@ public class Controller extends Base
         return getDashboardPane().getActionGridPane().getClientProfile();
     }
 
+    @Override
+    public String getCurrentParent()
+    {
+        return getDashboardPane().getActionGridPane().getCurrentParent();
+    }
+
 }

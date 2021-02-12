@@ -25,10 +25,20 @@ public class Main extends Application {
         for(String eachArg : args)
         {
             String[] r = eachArg.split("=");
-            if(r[0].equals("-DStreamPi.startupRunnerFileName"))
-                ClientInfo.getInstance().setRunnerFileName(r[1]);
-            else if(r[0].equals("-DStreamPi.showShutDownButton"))
-                ClientInfo.getInstance().setShowShutDownButton(r[1].equals("true"));
+            String arg = r[0];
+            String val = r[1];
+
+            switch (arg) {
+                case "-DStreamPi.startupRunnerFileName":
+                    ClientInfo.getInstance().setRunnerFileName(val);
+                    break;
+                case "-DStreamPi.showShutDownButton":
+                    ClientInfo.getInstance().setShowShutDownButton(val.equals("true"));
+                    break;
+                case "-DStreamPi.isXMode":
+                    ClientInfo.getInstance().setXMode(val.equals("true"));
+                    break;
+            }
         }
 
         launch(args);

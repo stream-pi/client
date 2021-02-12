@@ -138,7 +138,8 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         return stackPane;
     }
 
-    public void renderGrid() throws SevereException {
+    public void renderGrid() throws SevereException
+    {
         clear();
 
         setHgap(getClientProfile().getActionGap());

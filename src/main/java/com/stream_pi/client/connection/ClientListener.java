@@ -34,6 +34,8 @@ public interface ClientListener
 
     ClientProfile getCurrentProfile();
 
+    String getCurrentParent();
+
     Theme getCurrentTheme();
 
     void init();

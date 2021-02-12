@@ -12,10 +12,6 @@ public class LicensePane extends VBox {
     {
         getStyleClass().add("first_time_use_pane_license");
 
-        Label label = new Label("By clicking on 'Next' you agree with the Stream-Pi license, and, the license('s) of the library('s) used/included with this software.");
-        label.prefWidthProperty().bind(widthProperty());
-        label.setWrapText(true);
-
         TextArea licenseTextArea = new TextArea(License.getLicense());
         licenseTextArea.setWrapText(false);
         licenseTextArea.setEditable(false);
@@ -23,6 +19,6 @@ public class LicensePane extends VBox {
         licenseTextArea.prefWidthProperty().bind(widthProperty());
         VBox.setVgrow(licenseTextArea, Priority.ALWAYS);
 
-        getChildren().addAll(label, licenseTextArea);
+        getChildren().addAll(licenseTextArea);
     }
 }

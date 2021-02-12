@@ -116,7 +116,8 @@ public class ActionBox extends StackPane{
             statusIcon.toBack();
         });
 
-
+        setCache(true);
+        setCacheHint(CacheHint.SPEED);
     }
 
     public void actionClicked()

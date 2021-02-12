@@ -35,27 +35,25 @@ public class FirstTimeUse extends VBox{
 
         VBox.setVgrow(stackPane, Priority.ALWAYS);
 
-        welcomePane = new WelcomePane();
-        licensePane = new LicensePane();
-        finalConfigPane = new FinalConfigPane(exceptionAndAlertHandler, clientListener);
-
-        stackPane.getChildren().addAll(
-            welcomePane,
-            licensePane,
-            finalConfigPane
-        );
-
-
         nextButton = new Button("Next");
         nextButton.setOnAction(event-> onNextButtonClicked());
 
         previousButton = new Button("Previous");
         previousButton.setOnAction(event-> onPreviousButtonClicked());
 
-
         HBox buttonBar = new HBox(previousButton, SpaceFiller.horizontal(), nextButton);
         buttonBar.getStyleClass().add("first_time_use_pane_button_bar");
         buttonBar.setSpacing(10.0);
+
+        welcomePane = new WelcomePane();
+        licensePane = new LicensePane();
+        finalConfigPane = new FinalConfigPane(exceptionAndAlertHandler, clientListener, nextButton);
+
+        stackPane.getChildren().addAll(
+            welcomePane,
+            licensePane,
+            finalConfigPane
+        );
 
         getChildren().addAll(headingLabel, stackPane, buttonBar);
 
@@ -85,6 +83,8 @@ public class FirstTimeUse extends VBox{
 
     private void onPreviousButtonClicked()
     {
+        nextButton.setText("Next");
+
         if(windowName == WindowName.FINAL)
         {
             setWindow(WindowName.LICENSE);
@@ -107,8 +107,9 @@ public class FirstTimeUse extends VBox{
 
             headingLabel.setText("");
 
-            nextButton.setDisable(false);
-            previousButton.setDisable(true);
+            nextButton.setText("Next");
+            nextButton.setOnAction(event-> onNextButtonClicked());
+            previousButton.setVisible(false);
         }
         else if (windowName == WindowName.LICENSE)
         {
@@ -120,8 +121,9 @@ public class FirstTimeUse extends VBox{
 
             headingLabel.setText("License Agreement");
 
-            nextButton.setDisable(false);
-            previousButton.setDisable(false);
+            nextButton.setText("Agree and Continue");
+            nextButton.setOnAction(event-> onNextButtonClicked());
+            previousButton.setVisible(true);
         }
         else if (windowName == WindowName.FINAL)
         {
@@ -130,11 +132,11 @@ public class FirstTimeUse extends VBox{
             welcomePane.setVisible(false);
             licensePane.setVisible(false);
             finalConfigPane.setVisible(true);
-            
+
             headingLabel.setText("Finishing up ...");
 
-            nextButton.setDisable(true);
-            previousButton.setDisable(false);
+            finalConfigPane.makeChangesToNextButton();
+            previousButton.setVisible(true);
         }
     }
 

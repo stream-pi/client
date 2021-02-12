@@ -451,7 +451,8 @@ public class SettingsBase extends VBox {
                     StartAtBoot startAtBoot = new StartAtBoot(SoftwareType.CLIENT, ClientInfo.getInstance().getPlatformType());
                     if(startOnBoot)
                     {
-                        startAtBoot.create(new File(ClientInfo.getInstance().getRunnerFileName()));
+                        startAtBoot.create(new File(ClientInfo.getInstance().getRunnerFileName()),
+                                ClientInfo.getInstance().isXMode());
                     }
                     else
                     {

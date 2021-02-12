@@ -108,6 +108,17 @@ public class ClientInfo {
         isShowShutDownButton = showShutDownButton;
     }
 
+    private boolean isXMode = false;
+
+    public void setXMode(boolean isXMode)
+    {
+        this.isXMode = isXMode;
+    }
+
+    public boolean isXMode() {
+        return isXMode;
+    }
+
     public boolean isShowShutDownButton() {
         return isShowShutDownButton;
     }

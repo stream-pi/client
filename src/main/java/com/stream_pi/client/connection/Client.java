@@ -15,10 +15,13 @@ import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
 import com.stream_pi.theme_api.Theme;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.comms.Message;
+import com.stream_pi.util.comms.Message;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.version.Version;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -237,7 +240,7 @@ public class Client extends Thread{
 
         clientListener.getClientProfiles().getProfileFromID(profileID).saveActionIcon(
                 actionID,
-                message.getByteArrValue()
+                ArrayUtils.toPrimitive(message.getByteArrValue())
         );
 
         Action a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
@@ -251,9 +254,18 @@ public class Client extends Thread{
 
     public synchronized void sendIcon(String profileID, String actionID, byte[] icon) throws SevereException
     {
+        try
+        {
+            Thread.sleep(50);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
         Message message = new Message("action_icon");
         message.setStringArrValue(profileID, actionID);
-        message.setByteArrValue(icon);
+        message.setByteArrValue(ArrayUtils.toObject(icon));
         sendMessage(message);
     }
 
@@ -611,29 +623,9 @@ public class Client extends Thread{
 
             clientListener.getClientProfiles().getProfileFromID(profileID).addAction(action);
 
-            System.out.println("XXXXXXXXXXX " +action.isHasIcon());
-
             clientListener.getClientProfiles().getProfileFromID(profileID).saveAction(action);
 
             clientListener.renderAction(profileID, action);
-
-            /*if(clientListener.getCurrentProfile().getID().equals(profileID) &&
-                clientListener.get&& action.getLocation().getCol()!=-1)
-            {
-                javafx.application.Platform.runLater(()->{
-                    ActionBox box = clientListener.getActionBox(action.getLocation().getCol(), action.getLocation().getRow());
-                    System.out.println(box==null);
-                    System.out.println("jj : "+action.getLocation().getCol()+","+action.getLocation().getRow());
-
-                    if(box!=null)
-                    {
-                        box.clear();
-                        box.setAction(action);
-                        box.baseInit();
-                        box.init();
-                    }
-                });
-            }*/
         }
         catch (Exception e)
         {
@@ -704,8 +696,27 @@ public class Client extends Thread{
 
             if(acc.getLocation().getCol()!=-1)
             {
-                clientListener.clearActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
-                clientListener.addBlankActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
+                String currentParent = clientListener.getCurrentParent();
+                if(acc.getParent().equals(currentParent))
+                {
+                    clientListener.clearActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
+                    clientListener.addBlankActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
+                }
+
+                if(acc.getActionType() == ActionType.FOLDER && currentParent.equals(acc.getID()))
+                {
+                    Platform.runLater(()->{
+                        try
+                        {
+                            clientListener.renderRootDefaultProfile();
+                        }
+                        catch (SevereException e)
+                        {
+                            e.printStackTrace();
+                            exceptionAndAlertHandler.handleSevereException(e);
+                        }
+                    });
+                }
             }
 
 

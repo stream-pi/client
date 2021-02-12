@@ -13,7 +13,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-
         <javafx.version>16-ea+6</javafx.version>
         <client.plugin.version>0.1.36</client.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
@@ -69,6 +68,13 @@
             <artifactId>util</artifactId>
             <version>4.0.10</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.11</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -105,10 +111,10 @@
                 <artifactId>client-maven-plugin</artifactId>
                 <version>${client.plugin.version}</version>
                 <configuration>
-                    <target>${clientTarget}</target>
+                    <target>android</target>
                     <nativeImageArgs>
                         <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                        <list>${additionalArgs}</list>
+                        <list>-Dsvm.targetName=android</list>
                     </nativeImageArgs>
                     <bundlesList>
                         <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
@@ -133,7 +139,7 @@
         </plugins>
     </build>
 
-    <profiles>
+    <!--profiles>
         <profile>
             <id>android</id>
             <properties>
@@ -148,20 +154,7 @@
                 <additionalArgs>-Dsvm.targetName=linux_raspberrypi</additionalArgs>
             </properties>
         </profile>
-        <profile>
-            <id>windows64</id>
-            <properties>
-                <clientTarget>windows</clientTarget>
-                <additionalArgs>-Dsvm.targetName=windows</additionalArgs>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux64</id>
-            <properties>
-                <additionalArgs>-Dsvm.targetName=linux</additionalArgs>
-            </properties>
-        </profile>
-    </profiles>
+    </profiles-->
 
     <pluginRepositories>
         <pluginRepository>
