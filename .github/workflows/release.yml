@@ -1,0 +1,42 @@
+name: Release
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Configure GIT
+        run: |
+          git config user.name "${{ github.event.head_commit.committer.name }}"
+          git config user.email "${{ github.event.head_commit.committer.email }}"
+
+      - name: Release artifacts
+        run: |
+          mvn deploy -DskipTests=true -B -U -Prelease
+        with:
+          server-id: ossrh
+          server-username: ${{ secrets.SONATYPE_USERNAME }}
+          server-password: ${{ secrets.SONATYPE_PASSWORD }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Update new version
+        run: |
+         TAG=${GITHUB_REF/refs\/tags\//}
+         newVersion=${TAG%.*}.$((${TAG##*.} + 1))
+         mvn versions:set -DnewVersion=$newVersion-SNAPSHOT -DgenerateBackupPoms=false
+         git commit pom.xml -m "Prepare development of $newVersion"
+         git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY} HEAD:master

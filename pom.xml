@@ -22,6 +22,10 @@
         <theme.api.version>1.0.0-SNAPSHOT</theme.api.version>
 
         <main.class.name>com.stream_pi.client.Main</main.class.name>
+
+        <source.plugin.version>2.2.1</source.plugin.version>
+        <javadoc.plugin.version>3.1.0</javadoc.plugin.version>
+        <gpg.plugin.version>1.6</gpg.plugin.version>
     </properties>
 
     <dependencies>
@@ -154,10 +158,118 @@
             <id>gluon-releases</id>
             <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
         </pluginRepository>
-	<pluginRepository>
+    <pluginRepository>
             <id>gluon-snapshots</id>
             <url>https://nexus.gluonhq.com/nexus/content/repositories/public-snapshots</url>
         </pluginRepository>
     </pluginRepositories>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${javadoc.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <source>8</source>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${gpg.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <organization>
+        <name>Stream Pi</name>
+        <url>https://www.stream-pi.com</url>
+    </organization>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/Stream-Pi/util/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>GPL-3.0 License</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Debayan Sutradhar</name>
+            <email>debayansutradhar3@gmail.com</email>
+            <organization>Stream-Pi</organization>
+            <organizationUrl>https://www.stream-pi.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Abhinay Agarwal</name>
+            <email>abhinay_agarwal@live.com</email>
+            <organization>Stream-Pi</organization>
+            <organizationUrl>https://www.stream-pi.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/stream-pi/util</url>
+        <connection>scm:git:git://github.com/stream-pi/util.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:stream-pi/util.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
