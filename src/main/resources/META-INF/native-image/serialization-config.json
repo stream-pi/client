@@ -2,7 +2,5 @@
   {"name":"com.stream_pi.util.comms.Message"},
   {"name": "java.lang.String"},
   {"name": "java.lang.String[]"},
-  {"name": "java.lang.Byte"},
-  {"name": "java.lang.Byte[]"},
-  {"name": "java.lang.Number"}
+  {"name": "byte[]"}
 ]

@@ -8,8 +8,6 @@ module com.stream_pi.client {
     requires com.gluonhq.attach.lifecycle;
     requires com.gluonhq.attach.util;
 
-    requires org.apache.commons.lang3;
-
     requires java.xml;
 
     requires com.stream_pi.util;

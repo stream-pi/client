@@ -21,7 +21,6 @@ import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.version.Version;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -240,7 +239,7 @@ public class Client extends Thread{
 
         clientListener.getClientProfiles().getProfileFromID(profileID).saveActionIcon(
                 actionID,
-                ArrayUtils.toPrimitive(message.getByteArrValue())
+                message.getByteArrValue()
         );
 
         Action a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
@@ -265,7 +264,7 @@ public class Client extends Thread{
 
         Message message = new Message("action_icon");
         message.setStringArrValue(profileID, actionID);
-        message.setByteArrValue(ArrayUtils.toObject(icon));
+        message.setByteArrValue(icon);
         sendMessage(message);
     }
 
