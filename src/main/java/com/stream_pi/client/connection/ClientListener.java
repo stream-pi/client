@@ -38,6 +38,7 @@ public interface ClientListener
 
     Theme getCurrentTheme();
 
+    void initLogger() throws SevereException;
     void init();
 
     void disconnect(String message) throws SevereException;

@@ -84,7 +84,7 @@ public class Config {
     //Default Values
     public String getDefaultClientNickName()
     {
-        return "StreamPi Client";
+        return "Stream-Pi Client";
     }
 
     public String getDefaultStartupProfileID()
@@ -94,22 +94,22 @@ public class Config {
 
     public String getDefaultCurrentThemeFullName()
     {
-        return "com.StreamPi.DefaultLight";
+        return "com.stream_pi.defaultlight";
     }
 
     public String getDefaultThemesPath()
     {
-        return "Themes/";
+        return "data/Themes/";
     }
 
     public String getDefaultProfilesPath()
     {
-        return "Profiles/";
+        return "data/Profiles/";
     }
 
     public String getDefaultIconsPath()
     {
-        return "Icons/";
+        return "data/Icons/";
     }
 
     public int getDefaultStartupWindowWidth()
@@ -143,7 +143,7 @@ public class Config {
     {
         if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
             return ClientInfo.getInstance().getPrePath() + "Themes/";
-        
+
         return XMLConfigHelper.getStringProperty(getClientElement(), "themes-path", getDefaultThemesPath(), false, true, document, configFile);
     }
 
@@ -153,7 +153,7 @@ public class Config {
         if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
             return ClientInfo.getInstance().getPrePath() + "Profiles/";
         
-        return XMLConfigHelper.getStringProperty(getClientElement(), "profiles-path", getDefaultThemesPath(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(getClientElement(), "profiles-path", getDefaultProfilesPath(), false, true, document, configFile);
     }
 
     public String getIconsPath()
@@ -161,7 +161,7 @@ public class Config {
         if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
             return ClientInfo.getInstance().getPrePath() + "Icons/";
         
-        return XMLConfigHelper.getStringProperty(getClientElement(), "icons-path", getDefaultThemesPath(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(getClientElement(), "icons-path", getDefaultIconsPath(), false, true, document, configFile);
     }
 
     public double getStartupWindowWidth()

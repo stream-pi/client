@@ -76,7 +76,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     private StreamPiLogFileHandler logFileHandler = null;
     private StreamPiLogFallbackHandler logFallbackHandler = null;
 
-    public void initLogger()
+    @Override
+    public void initLogger() throws SevereException
     {
         try
         {
@@ -93,7 +94,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
                 if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
                     path = ClientInfo.getInstance().getPrePath()+"streampi.log";
-    
+
                 logFileHandler = new StreamPiLogFileHandler(path);
                 logger.addHandler(logFileHandler);
             }
@@ -107,7 +108,9 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         catch(Exception e)
         {
             e.printStackTrace();
-            //throw new SevereException("Cant get logger started!");
+
+            logFallbackHandler = new StreamPiLogFallbackHandler();
+            logger.addHandler(logFallbackHandler);
         }
     }
     
@@ -120,11 +123,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     }
 
     public void initBase() throws SevereException
-    {        
-        
+    {
         stage = (Stage) getScene().getWindow();
-        
-        initLogger();
 
         clientInfo = ClientInfo.getInstance();
         dashboardBase = new DashboardBase(this, this);
@@ -147,14 +147,18 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         firstTimeUse = new FirstTimeUse(this, this);
 
         getChildren().clear();
-        getChildren().addAll(settingsBase, dashboardBase, alertStackPane);
-        
-        setStyle(null);
-
+        getChildren().addAll(alertStackPane);
 
         checkPrePathDirectory();
 
+        initLogger();
+
+        getChildren().addAll(settingsBase, dashboardBase);
+
+        setStyle(null);
+
         config = Config.getInstance();
+
 
         if(config.isFirstTimeUse())
         {
@@ -170,7 +174,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             dashboardBase.toFront();
         }
 
-        registerThemes();
+        initThemes();
     }
 
     private void checkPrePathDirectory() throws SevereException
@@ -189,6 +193,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             }
             else
             {
+                if(getClientInfo().getPlatformType() != Platform.ANDROID)
+                {
+                    setPrefSize(300,300);
+                }
+
                 clearStylesheets();
                 applyDefaultStylesheet();
                 applyDefaultIconsStylesheet();
@@ -307,7 +316,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     }
 
     Themes themes;
-    public void registerThemes() throws SevereException
+    public void initThemes() throws SevereException
     {
         logger.info("Loading themes ...");
         themes = new Themes(getConfig().getThemesPath(), getConfig().getCurrentThemeFullName(), clientInfo.getMinThemeSupportVersion());

@@ -13,6 +13,11 @@ import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.ReleaseStatus;
 import com.stream_pi.util.version.Version;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Optional;
+import java.util.function.Function;
+
 public class ClientInfo {
     private Version version;
     private final ReleaseStatus releaseStatus;
@@ -65,7 +70,7 @@ public class ClientInfo {
             }
             else if(osName.contains("android")) // SPECIFY -Dsvm.targetName=android WHILE BUILDING ANDROID NATIVE IMAGE
             {
-                prePath = "/sdcard/StreamPiClient/";
+                prePath = "/sdcard/Android/data/com.stream_pi.client/";
                 platformType = Platform.ANDROID;
             }
             else if (osName.contains("mac"))
@@ -123,7 +128,8 @@ public class ClientInfo {
         return isShowShutDownButton;
     }
 
-    public String getPrePath() {
+    public String getPrePath()
+    {
         return prePath;
     }
 
