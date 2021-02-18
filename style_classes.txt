@@ -18,6 +18,8 @@ Dashboard - dashboard
 
             Action On Click : action_box_onclick
 
+            Error Icon - action_box_error_icon
+
             Display Text Label - action_box_display_text_label
 
 Settings - settings_base

@@ -100,9 +100,6 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
                 ActionBox actionBox = (ActionBox) node;
 
-                actionBox.getStatusIcon().setIconLiteral("fas-exclamation-triangle");
-                actionBox.getStatusIcon().setIconColor(Color.RED);
-
                 actionBox.animateStatus();
 
                 break;

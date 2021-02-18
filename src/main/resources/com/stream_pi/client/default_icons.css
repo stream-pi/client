@@ -12,3 +12,7 @@
 {
     -fx-icon-color: #ffcc00;
 }
+
+.action_box_error_icon{
+    -fx-icon-color:red;
+}

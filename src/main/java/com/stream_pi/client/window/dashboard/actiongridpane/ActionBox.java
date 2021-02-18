@@ -65,7 +65,8 @@ public class ActionBox extends StackPane{
         displayTextLabel.prefWidthProperty().bind(widthProperty());
 
 
-        statusIcon = new FontIcon();
+        statusIcon = new FontIcon("fas-exclamation-triangle");
+        statusIcon.getStyleClass().add("action_box_error_icon");
         statusIcon.setOpacity(0);
         statusIcon.setCache(true);
         statusIcon.setCacheHint(CacheHint.SPEED);
@@ -140,10 +141,6 @@ public class ActionBox extends StackPane{
                 }
             }
         }
-    }
-
-    public FontIcon getStatusIcon() {
-        return statusIcon;
     }
 
     private Timeline statusIconAnimation;
