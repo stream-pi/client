@@ -77,7 +77,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     private StreamPiLogFallbackHandler logFallbackHandler = null;
 
     @Override
-    public void initLogger() throws SevereException
+    public void initLogger()
     {
         try
         {
@@ -149,9 +149,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         getChildren().clear();
         getChildren().addAll(alertStackPane);
 
-        checkPrePathDirectory();
 
         initLogger();
+
+        checkPrePathDirectory();
+
 
         getChildren().addAll(settingsBase, dashboardBase);
 
