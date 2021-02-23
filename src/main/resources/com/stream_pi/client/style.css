@@ -6,8 +6,8 @@
 .action_box
 {
     -fx-border-width: 1px;
-    -fx-shape: "M100,100 h200 a20,20 0 0 1 20,20 v200 a20,20 0 0 1 -20,20 h-200 a20,20 0 0 1 -20,-20 v-200 a20,20 0 0 1 20,-20 z";
     -fx-border-color : grey;
+    -fx-shape : "M100,100 h200 a20,20 0 0 1 20,20 v200 a20,20 0 0 1 -20,20 h-200 a20,20 0 0 1 -20,-20 v-200 a20,20 0 0 1 20,-20 z";
 }
 
 .action_box_icon_present

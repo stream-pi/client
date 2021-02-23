@@ -183,22 +183,22 @@ public class ActionBox extends StackPane{
         { 
             getStyleClass().remove("action_box_icon_present");
             getStyleClass().add("action_box_icon_not_present");
-            setBackground(Background.EMPTY);
+            setBackground(null);
         }
         else
         {
             getStyleClass().add("action_box_icon_present");
             getStyleClass().remove("action_box_icon_not_present");
 
-            
+
             setBackground(
-                new Background(
-                    new BackgroundImage(new Image(
-                        new ByteArrayInputStream(iconByteArray), size, size, false, true
-                    ), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
-                
-                    new BackgroundSize(100, 100, true, true, true, false))
-                )
+                    new Background(
+                            new BackgroundImage(new Image(
+                                    new ByteArrayInputStream(iconByteArray), size, size, false, false
+                            ), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+
+                                    new BackgroundSize(size, size, false, false, true, false))
+                    )
             );
         }
     }
