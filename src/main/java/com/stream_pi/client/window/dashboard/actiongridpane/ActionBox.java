@@ -120,7 +120,7 @@ public class ActionBox extends StackPane{
         });
 
         setCache(true);
-        setCacheHint(CacheHint.SPEED);
+        setCacheHint(CacheHint.QUALITY);
     }
 
     public void actionClicked()
@@ -196,10 +196,10 @@ public class ActionBox extends StackPane{
             setBackground(
                     new Background(
                             new BackgroundImage(new Image(
-                                    new ByteArrayInputStream(iconByteArray), size, size, false, false
+                                    new ByteArrayInputStream(iconByteArray), size, size, false, true
                             ), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 
-                                    new BackgroundSize(size, size, false, false, true, false))
+                                    new BackgroundSize(100, 100, true, true, true, false))
                     )
             );
         }
