@@ -44,18 +44,19 @@ public class ActionBox extends StackPane{
     
 
     public void clear()
-    {   
-        setAction(null);
-        setBackground(Background.EMPTY);
+    {
         setStyle(null);
+        setAction(null);
+        getStyleClass().clear();
+        setBackground(Background.EMPTY);
         getChildren().clear();
+        baseInit();
     }
 
     private FontIcon statusIcon;
 
     public void baseInit()
     {
-
         displayTextLabel = new Label();
         displayTextLabel.setWrapText(true);
         displayTextLabel.setTextAlignment(TextAlignment.CENTER);
@@ -80,8 +81,9 @@ public class ActionBox extends StackPane{
 
         getStyleClass().clear();
         getStyleClass().add("action_box");
-        getStyleClass().add("action_box_icon_not_present");
         getStyleClass().add("action_box_"+row+"_"+col);
+
+        setIcon(null);
 
         setOnMouseClicked(touchEvent -> actionClicked());
 
@@ -203,7 +205,7 @@ public class ActionBox extends StackPane{
         }
     }
 
-    private Action action;
+    private Action action = null;
     
     public Action getAction() {
         return action;

@@ -353,8 +353,10 @@ public class Controller extends Base
     }
 
     @Override
-    public void refreshGridIfCurrent(String profileID) {
+    public void refreshGridIfCurrentProfile(String profileID) {
         ClientProfile clientProfile = getDashboardPane().getActionGridPane().getClientProfile();
+
+        getDashboardPane().getActionGridPane().setFreshRender(true);
 
         if(clientProfile.getID().equals(profileID))
         {

@@ -28,7 +28,7 @@ public interface ClientListener
     void clearActionBox(int col, int row);
     void addBlankActionBox(int col, int row);
     void renderAction(String currentProfileID, Action action);
-    void refreshGridIfCurrent(String currentProfileID);
+    void refreshGridIfCurrentProfile(String currentProfileID);
     
     ActionBox getActionBox(int col, int row);
 

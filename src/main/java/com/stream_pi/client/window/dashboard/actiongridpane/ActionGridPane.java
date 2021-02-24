@@ -27,6 +27,8 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
     private ClientListener clientListener;
 
+    private ActionBox[][] actionBoxes;
+
     public ActionGridPane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener)
     {
         this.clientListener = clientListener;
@@ -92,7 +94,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
     public void failShow(Action action)
     {
-        for(Node node : getChildren())
+        /*for(Node node : getChildren())
         {
             if(GridPane.getColumnIndex(node) == action.getLocation().getRow() &&
                     GridPane.getRowIndex(node) == action.getLocation().getCol())
@@ -104,7 +106,9 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
                 break;
             }
-        }
+        }*/
+
+        actionBoxes[action.getLocation().getCol()][action.getLocation().getRow()].animateStatus();
     }
 
 
@@ -135,20 +139,47 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         return stackPane;
     }
 
+    private boolean isFreshRender = true;
+    private Node folderBackButton = null;
     public void renderGrid() throws SevereException
     {
-        clear();
-
         setHgap(getClientProfile().getActionGap());
         setVgap(getClientProfile().getActionGap());
 
+        if(isFreshRender)
+        {
+            clear();
+            actionBoxes = new ActionBox[cols][rows];
+        }
+
         boolean isFolder = false;
 
-        if(!getCurrentParent().equals("root"))
+        if(getCurrentParent().equals("root"))
+        {
+            if(folderBackButton != null)
+            {
+                getChildren().remove(folderBackButton);
+                folderBackButton = null;
+
+                actionBoxes[0][0] = addBlankActionBox(0,0);
+            }
+        }
+        else
         {
             isFolder = true;
 
-            add(getFolderBackButton(), 0,0);
+            if(folderBackButton != null)
+            {
+                getChildren().remove(folderBackButton);
+                folderBackButton = null;
+            }
+            else
+            {
+                getChildren().remove(actionBoxes[0][0]);
+            }
+
+            folderBackButton = getFolderBackButton();
+            add(folderBackButton, 0,0);
         }
 
         for(int row = 0; row<rows; row++)
@@ -158,10 +189,32 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
                 if(row == 0 && col == 0 && isFolder)
                     continue;
 
-                addBlankActionBox(col, row);
+                if(isFreshRender)
+                {
+                    actionBoxes[col][row] = addBlankActionBox(col, row);
+                }
+                else
+                {
+                    if(actionBoxes[col][row].getAction() != null)
+                    {
+                        logger.info("xc234213123123");
+                        actionBoxes[col][row].clear();
+                    }
+                    else
+                    {
+                        logger.info("bbbbbb " +col+","+row);
+                    }
+                }
 
+                logger.info(isFreshRender+"22222222222222222xxxxxxxxxx");
             }
         }
+
+        isFreshRender = false;
+    }
+
+    public void setFreshRender(boolean isFreshRender) {
+        this.isFreshRender = isFreshRender;
     }
 
     public void renderActions()
@@ -200,20 +253,14 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
     public void clearActionBox(int col, int row)
     {
-        for(Node node : getChildren())
-        {
-            if(GridPane.getColumnIndex(node) == row &&
-                    GridPane.getRowIndex(node) == col)
-            {
-                getChildren().remove(node);
-                break;
-            }
-        }
+        actionBoxes[col][row].clear();
     }
 
     public ActionBox getActionBox(int col, int row)
     {
-        for(Node node : getChildren())
+        return actionBoxes[col][row];
+
+        /*for(Node node : getChildren())
         {
             if(GridPane.getColumnIndex(node) == row &&
                     GridPane.getRowIndex(node) == col)
@@ -222,16 +269,17 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
             }
         }
 
-        return null;
+        return null;*/
     }
 
-    public void addBlankActionBox(int col, int row)
+    public ActionBox addBlankActionBox(int col, int row)
     {
         ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), this, row, col);
 
         actionBox.setStreamPiParent(currentParent);
 
         add(actionBox, row, col);
+        return actionBox;
     }
 
     public void renderAction(Action action) throws SevereException, MinorException
@@ -257,7 +305,15 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
         Location location = action.getLocation();
 
-        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this, location.getRow(), location.getCol());
+        ActionBox actionBox = actionBoxes[location.getCol()][location.getRow()];
+
+        actionBox.clear();
+
+        actionBox.setAction(action);
+        actionBox.setStreamPiParent(currentParent);
+        actionBox.init();
+
+        /*ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this, location.getRow(), location.getCol());
 
         actionBox.setStreamPiParent(currentParent);
 
@@ -266,6 +322,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         System.out.println(location.getCol()+","+location.getRow());
         add(actionBox, location.getRow(), location.getCol());
 
+        actionBoxes[location.getCol()][location.getRow()] = actionBox;*/
     }
 
     public void setRows(int rows)

@@ -241,7 +241,6 @@ public class Client extends Thread{
         );
 
         Action a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
-        clientListener.clearActionBox(a.getLocation().getCol(), a.getLocation().getRow());
         clientListener.renderAction(profileID, a);
     }
 
@@ -697,23 +696,20 @@ public class Client extends Thread{
                 if(acc.getParent().equals(currentParent))
                 {
                     clientListener.clearActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
-                    clientListener.addBlankActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
                 }
 
-                if(acc.getActionType() == ActionType.FOLDER && currentParent.equals(acc.getID()))
-                {
-                    Platform.runLater(()->{
-                        try
-                        {
-                            clientListener.renderRootDefaultProfile();
-                        }
-                        catch (SevereException e)
-                        {
-                            e.printStackTrace();
-                            exceptionAndAlertHandler.handleSevereException(e);
-                        }
-                    });
-                }
+
+                Platform.runLater(()->{
+                    try
+                    {
+                        clientListener.renderRootDefaultProfile();
+                    }
+                    catch (SevereException e)
+                    {
+                        e.printStackTrace();
+                        exceptionAndAlertHandler.handleSevereException(e);
+                    }
+                });
             }
 
 
@@ -784,7 +780,7 @@ public class Client extends Thread{
         {
             clientListener.getClientProfiles().addProfile(clientProfile);
             clientProfile.saveProfileDetails();
-            clientListener.refreshGridIfCurrent(sep[0]);
+            clientListener.refreshGridIfCurrentProfile(sep[0]);
             javafx.application.Platform.runLater(clientListener::loadSettings);
         }
         catch (Exception e)
