@@ -356,7 +356,7 @@ public class Client extends Thread{
     {
         String clientVersion = clientInfo.getVersion().getText();
         String releaseStatus = clientInfo.getReleaseStatus().toString();
-        String clientCommsStandard = clientInfo.getCommsStandardVersion().getText();
+        String clientCommStandard = clientInfo.getCommStandardVersion().getText();
         String clientMinThemeStandard = clientInfo.getMinThemeSupportVersion().getText();
         String clientNickname = Config.getInstance().getClientNickName();
         String screenWidth = Config.getInstance().getStartupWindowWidth()+"";
@@ -369,7 +369,7 @@ public class Client extends Thread{
         toBeSent.setStringArrValue(
                 clientVersion,
                 releaseStatus,
-                clientCommsStandard,
+                clientCommStandard,
                 clientMinThemeStandard,
                 clientNickname,
                 screenWidth,
@@ -613,8 +613,15 @@ public class Client extends Thread{
             
             if(old != null)
             {
-                if(action.isHasIcon())
+                if(isHasIcon)
                     action.setIcon(clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID()).getIconAsByteArray());
+                else
+                {
+                    if(old.isHasIcon())
+                    {
+                        new File(Config.getInstance().getIconsPath()+"/"+actionID).delete();
+                    }
+                }
             }
 
             clientListener.getClientProfiles().getProfileFromID(profileID).addAction(action);

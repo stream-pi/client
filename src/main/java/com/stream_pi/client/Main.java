@@ -16,6 +16,7 @@ public class Main extends Application {
         Controller d = new Controller();
         Scene s = new Scene(d);
         stage.setScene(s);
+        d.setHostServices(getHostServices());
         d.init();
     }
 

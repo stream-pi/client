@@ -23,6 +23,7 @@ import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
 import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
 import com.stream_pi.util.platform.Platform;
 
+import javafx.application.HostServices;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
@@ -122,20 +123,28 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             logFallbackHandler.close();
     }
 
+    private HostServices hostServices;
+
+    public void setHostServices(HostServices hostServices)
+    {
+        this.hostServices = hostServices;
+    }
+
+    public HostServices getHostServices()
+    {
+        return hostServices;
+    }
+
     public void initBase() throws SevereException
     {
         stage = (Stage) getScene().getWindow();
 
         clientInfo = ClientInfo.getInstance();
         dashboardBase = new DashboardBase(this, this);
-        dashboardBase.setCache(true);
-        dashboardBase.setCacheHint(CacheHint.SPEED);
         dashboardBase.prefWidthProperty().bind(widthProperty());
         dashboardBase.prefHeightProperty().bind(heightProperty());
 
-        settingsBase = new SettingsBase(this, this);
-        settingsBase.setCache(true);
-        settingsBase.setCacheHint(CacheHint.SPEED);
+        settingsBase = new SettingsBase(this, this, getHostServices());
 
         alertStackPane = new StackPane();
         alertStackPane.setPadding(new Insets(10));

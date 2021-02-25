@@ -42,9 +42,6 @@ public class DashboardBase extends VBox {
         getChildren().addAll(actionGridPane,hBox);
 
         getStyleClass().add("dashboard");
-
-        setCache(true);
-        setCacheHint(CacheHint.SPEED);
     }
 
     public void renderProfile(ClientProfile clientProfile) throws SevereException

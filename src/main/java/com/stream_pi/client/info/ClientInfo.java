@@ -21,71 +21,54 @@ import java.util.function.Function;
 public class ClientInfo {
     private Version version;
     private final ReleaseStatus releaseStatus;
-    private Platform platformType = null;
+    private Platform platformType;
 
     private String prePath;
 
     private Version minThemeSupportVersion;
     private Version minPluginSupportVersion;
-    private Version commsStandardVersion;
+    private Version commStandardVersion;
 
     private String runnerFileName;
 
     private static ClientInfo instance = null;
 
-    private ClientInfo(){
-
-        try {
-            version = new Version("1.0.0");
-            minThemeSupportVersion = new Version("1.0.0");
-            minPluginSupportVersion = new Version("1.0.0");
-            commsStandardVersion = new Version("1.0.0");
-        } catch (MinorException e) {
-            e.printStackTrace();
-        }
+    private ClientInfo()
+    {
+        version = new Version(1,0,0);
+        minThemeSupportVersion = new Version(1,0,0);
+        minPluginSupportVersion = new Version(1,0,0);
+        commStandardVersion = new Version(1,0,0);
 
         releaseStatus = ReleaseStatus.EA;
 
-        if(platformType == null)
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        if(osName.contains("windows"))
         {
-            String osName = System.getProperty("os.name").toLowerCase();
-
-            if(osName.contains("windows"))
-            {
-                prePath = "data/";
-                platformType = Platform.WINDOWS;
-            }
-            else if (osName.contains("linux"))
-            {
-                if(osName.contains("raspberrypi"))
-                {
-                    prePath = "data/";
-                    platformType = Platform.LINUX_RPI;
-                }
-                else
-                {
-                    prePath = "data/";
-                    platformType = Platform.LINUX;
-                }
-            }
-            else if(osName.contains("android")) // SPECIFY -Dsvm.targetName=android WHILE BUILDING ANDROID NATIVE IMAGE
-            {
-                prePath = "/sdcard/Android/data/com.stream_pi.client/";
-                platformType = Platform.ANDROID;
-            }
-            else if (osName.contains("mac"))
-            {
-                prePath = "data/";
-                platformType = Platform.MAC;
-            }
-            else
-            {
-                prePath = "data/";
-                platformType = Platform.UNKNOWN;
-            }
+            prePath = "data/";
+            platformType = Platform.WINDOWS;
         }
-
-
+        else if (osName.contains("linux"))
+        {
+            prePath = "data/";
+            platformType = Platform.LINUX;
+        }
+        else if(osName.contains("android")) // SPECIFY -Dsvm.targetName=android WHILE BUILDING ANDROID NATIVE IMAGE
+        {
+            prePath = "/sdcard/Android/data/com.stream_pi.client/";
+            platformType = Platform.ANDROID;
+        }
+        else if (osName.contains("mac"))
+        {
+            prePath = "data/";
+            platformType = Platform.MAC;
+        }
+        else
+        {
+            prePath = "data/";
+            platformType = Platform.UNKNOWN;
+        }
     }
 
     public void setRunnerFileName(String runnerFileName)
@@ -157,8 +140,8 @@ public class ClientInfo {
         return minPluginSupportVersion;
     }
 
-    public Version getCommsStandardVersion()
+    public Version getCommStandardVersion()
     {
-        return commsStandardVersion;
+        return commStandardVersion;
     }
 }

@@ -13,6 +13,7 @@ import com.stream_pi.util.exception.SevereException;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -45,6 +46,9 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         setAlignment(Pos.CENTER);
 
         VBox.setVgrow(this, Priority.ALWAYS);
+
+        setCache(true);
+        setCacheHint(CacheHint.SPEED);
     }
 
     private String currentParent;
@@ -205,8 +209,6 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
                         logger.info("bbbbbb " +col+","+row);
                     }
                 }
-
-                logger.info(isFreshRender+"22222222222222222xxxxxxxxxx");
             }
         }
 

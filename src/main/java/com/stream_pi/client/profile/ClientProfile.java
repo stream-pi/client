@@ -589,9 +589,7 @@ public class ClientProfile implements Cloneable{
 
             if(XMLConfigHelper.getBooleanProperty(iconElement, "has"))
             {
-                File file = new File(ClientInfo.getInstance().getPrePath()+iconsPath+"/"+ID);
-
-                System.out.println(file.delete());
+                new File(iconsPath+"/"+ID).delete();
             }
             actions.remove(ID);
         }

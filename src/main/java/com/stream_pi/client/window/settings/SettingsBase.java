@@ -10,19 +10,22 @@ import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.theme_api.Theme;
 import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
+import com.stream_pi.util.checkforupdates.CheckForUpdates;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 import com.stream_pi.util.uihelper.SpaceFiller;
-import com.stream_pi.util.startatboot.SoftwareType;
 import com.stream_pi.util.startatboot.StartAtBoot;
 
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -57,9 +60,15 @@ public class SettingsBase extends VBox {
     private TextField iconsPathTextField;
     private TextField profilesPathTextField;
 
-    public SettingsBase(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener) {
+    private final Button checkForUpdatesButton;
+    private HostServices hostServices;
 
+    public SettingsBase(ExceptionAndAlertHandler exceptionAndAlertHandler,
+                        ClientListener clientListener, HostServices hostServices)
+    {
         getStyleClass().add("settings_base");
+
+        this.hostServices = hostServices;
         this.clientListener = clientListener;
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
 
@@ -154,6 +163,8 @@ public class SettingsBase extends VBox {
             screenWidthInputBox.setVisible(false);
         }
 
+        checkForUpdatesButton = new Button("Check for updates");
+        checkForUpdatesButton.setOnAction(event->checkForUpdates());
 
         VBox vBox = new VBox(
                 new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
@@ -173,13 +184,27 @@ public class SettingsBase extends VBox {
                 screenWidthInputBox,
                 themesPathInputBox,
                 iconsPathInputBox,
-                profilesPathInputBox,
+                profilesPathInputBox
+        );
+
+        if(ClientInfo.getInstance().getPlatformType() == com.stream_pi.util.platform.Platform.LINUX &&
+                ClientInfo.getInstance().isShowShutDownButton())
+        {
+
+            shutdownButton = new Button("Shutdown");
+            shutdownButton.setOnAction(event -> onShutdownButtonClicked());
+            vBox.getChildren().add(shutdownButton);
+        }
+
+        vBox.getChildren().addAll(
+                checkForUpdatesButton,
                 startOnBootToggleButton,
                 showCursorToggleButton,
                 fullScreenToggleButton,
                 licenseLabel,
                 versionLabel
         );
+
         vBox.getStyleClass().add("settings_base_vbox");
 
         vBox.setSpacing(5.0);
@@ -208,20 +233,12 @@ public class SettingsBase extends VBox {
         connectDisconnectButton = new Button("Connect");
         connectDisconnectButton.setOnAction(event -> onConnectDisconnectButtonClicked());
 
-        shutdownButton = new Button("Shutdown");
-        shutdownButton.setOnAction(event -> onShutdownButtonClicked());
 
         Button exitButton = new Button("Exit");
         exitButton.setOnAction(event -> onExitButtonClicked());
 
         HBox buttonBar = new HBox(connectDisconnectButton, saveButton, exitButton, closeButton);
         buttonBar.getStyleClass().add("settings_button_bar");
-
-        if(ClientInfo.getInstance().getPlatformType() == com.stream_pi.util.platform.Platform.LINUX &&
-            ClientInfo.getInstance().isShowShutDownButton())
-        {
-            buttonBar.getChildren().add(shutdownButton);
-        }
 
 
         buttonBar.setPadding(new Insets(0,5,5,0));
@@ -235,6 +252,15 @@ public class SettingsBase extends VBox {
                 scrollPane,
                 buttonBar
         );
+
+        setCache(true);
+        setCacheHint(CacheHint.SPEED);
+    }
+
+    private void checkForUpdates()
+    {
+        new CheckForUpdates(checkForUpdatesButton, hostServices,
+                PlatformType.CLIENT, ClientInfo.getInstance().getVersion());
     }
 
     public void onExitButtonClicked()
@@ -448,7 +474,7 @@ public class SettingsBase extends VBox {
                 }
                 else
                 {
-                    StartAtBoot startAtBoot = new StartAtBoot(SoftwareType.CLIENT, ClientInfo.getInstance().getPlatformType());
+                    StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatformType());
                     if(startOnBoot)
                     {
                         startAtBoot.create(new File(ClientInfo.getInstance().getRunnerFileName()),
