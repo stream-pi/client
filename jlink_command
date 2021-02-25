@@ -1,0 +1,2 @@
+jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output jre
+
