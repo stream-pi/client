@@ -17,4 +17,5 @@ This project depends on the following Stream-Pi modules:
 - [Stream-Pi Theme API](https://github.com/stream-pi/themeapi)
 - [Stream-Pi Utilities](https://github.com/stream-pi/util)
 
-Build locally by executing `mvn clean install` and start the app by running `com.stream_pi.client.Main`.
+
+Build and run using `mvn clean javafx:run`
