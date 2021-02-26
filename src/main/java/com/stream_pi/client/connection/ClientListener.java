@@ -23,7 +23,7 @@ public interface ClientListener
     void setConnected(boolean isConnected);
     boolean isConnected();
 
-    void renderProfile(ClientProfile clientProfile);
+    void renderProfile(ClientProfile clientProfile, boolean freshRender);
 
     void clearActionBox(int col, int row);
     void addBlankActionBox(int col, int row);

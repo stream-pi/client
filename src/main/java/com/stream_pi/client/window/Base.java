@@ -261,7 +261,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(
                 Config.getInstance().getStartupProfileID()
-        ));
+        ), true);
     }
 
 

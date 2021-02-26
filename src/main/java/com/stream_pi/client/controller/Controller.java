@@ -312,9 +312,9 @@ public class Controller extends Base
     }
 
     @Override
-    public void renderProfile(ClientProfile clientProfile) {
+    public void renderProfile(ClientProfile clientProfile, boolean freshRender) {
         try {
-            getDashboardPane().renderProfile(clientProfile);
+            getDashboardPane().renderProfile(clientProfile, freshRender);
         } catch (SevereException e) {
             e.printStackTrace();
             handleSevereException(e);
@@ -339,7 +339,7 @@ public class Controller extends Base
         Platform.runLater(()->{
             try {
                 if(getDashboardPane().getActionGridPane().getCurrentParent().equals(action.getParent()) &&
-                        getDashboardPane().getActionGridPane().getClientProfile().getID().equals(currentProfileID))
+                        getCurrentProfile().getID().equals(currentProfileID))
                 {
                     getDashboardPane().getActionGridPane().renderAction(action);
                 }
@@ -362,7 +362,7 @@ public class Controller extends Base
         {
             Platform.runLater(()->{
                 try {
-                    getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(profileID));
+                    getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(profileID), true);
                 } catch (SevereException e) {
                     e.printStackTrace();
                     handleSevereException(e);

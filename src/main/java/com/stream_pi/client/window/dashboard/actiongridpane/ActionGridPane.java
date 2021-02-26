@@ -261,17 +261,6 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
     public ActionBox getActionBox(int col, int row)
     {
         return actionBoxes[col][row];
-
-        /*for(Node node : getChildren())
-        {
-            if(GridPane.getColumnIndex(node) == row &&
-                    GridPane.getRowIndex(node) == col)
-            {
-                return (ActionBox) node;
-            }
-        }
-
-        return null;*/
     }
 
     public ActionBox addBlankActionBox(int col, int row)

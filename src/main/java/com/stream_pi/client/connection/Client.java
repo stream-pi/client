@@ -699,22 +699,10 @@ public class Client extends Thread{
 
             if(acc.getLocation().getCol()!=-1)
             {
-                String currentParent = clientListener.getCurrentParent();
-                if(acc.getParent().equals(currentParent))
-                {
-                    clientListener.clearActionBox(acc.getLocation().getCol(), acc.getLocation().getRow());
-                }
-
-
-                Platform.runLater(()->{
-                    try
+                Platform.runLater(()-> {
+                    if (clientListener.getCurrentProfile().getID().equals(profileID))
                     {
-                        clientListener.renderRootDefaultProfile();
-                    }
-                    catch (SevereException e)
-                    {
-                        e.printStackTrace();
-                        exceptionAndAlertHandler.handleSevereException(e);
+                        clientListener.renderProfile(clientListener.getCurrentProfile(), false);
                     }
                 });
             }

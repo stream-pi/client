@@ -44,15 +44,16 @@ public class DashboardBase extends VBox {
         getStyleClass().add("dashboard");
     }
 
-    public void renderProfile(ClientProfile clientProfile) throws SevereException
+    public void renderProfile(ClientProfile clientProfile, boolean freshRender) throws SevereException
     {
-        renderProfile(clientProfile, "root");
+        renderProfile(clientProfile, "root", freshRender);
     }
 
-    public void renderProfile(ClientProfile clientProfile, String currentParent) throws SevereException
+    public void renderProfile(ClientProfile clientProfile, String currentParent, boolean freshRender) throws SevereException
     {
         actionGridPane.setClientProfile(clientProfile);
         actionGridPane.setCurrentParent(currentParent);
+        actionGridPane.setFreshRender(freshRender);
 
         actionGridPane.renderGrid();
         actionGridPane.renderActions();

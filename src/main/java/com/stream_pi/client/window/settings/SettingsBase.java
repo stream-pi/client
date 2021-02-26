@@ -91,7 +91,7 @@ public class SettingsBase extends VBox {
             @Override
             public void onNewItemSelected(ClientProfile selectedItem) 
             {
-                clientListener.renderProfile(selectedItem);
+                clientListener.renderProfile(selectedItem, true);
             }
         });
 
