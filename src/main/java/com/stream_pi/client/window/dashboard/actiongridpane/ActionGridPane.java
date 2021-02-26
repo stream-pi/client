@@ -120,7 +120,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         return currentParent;
     }
 
-    public StackPane getFolderBackButton() throws SevereException
+    public StackPane getFolderBackButton()
     {
         StackPane stackPane = new StackPane();
         stackPane.getStyleClass().add("action_box");
@@ -145,7 +145,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
     private boolean isFreshRender = true;
     private Node folderBackButton = null;
-    public void renderGrid() throws SevereException
+    public void renderGrid()
     {
         setHgap(getClientProfile().getActionGap());
         setVgap(getClientProfile().getActionGap());
@@ -350,12 +350,8 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
     public void renderFolder(String actionID) {
         setCurrentParent(clientProfile.getActionFromID(actionID).getID());
         setPreviousParent(clientProfile.getActionFromID(actionID).getParent());
-        try {
-            renderGrid();
-            renderActions();
-        } catch (SevereException e) {
-            e.printStackTrace();
-        }
+        renderGrid();
+        renderActions();
     }
 
     @Override
@@ -405,11 +401,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
             ).getParent());
         }
 
-        try {
-            renderGrid();
-            renderActions();
-        } catch (SevereException e) {
-            e.printStackTrace();
-        }
+        renderGrid();
+        renderActions();
     }
 }

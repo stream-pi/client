@@ -18,7 +18,7 @@ public interface ClientListener
     Themes getThemes();
     String getDefaultThemeFullName();
 
-    void renderRootDefaultProfile() throws SevereException;
+    void renderRootDefaultProfile();
 
     void setConnected(boolean isConnected);
     boolean isConnected();

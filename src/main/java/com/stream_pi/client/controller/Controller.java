@@ -312,13 +312,9 @@ public class Controller extends Base
     }
 
     @Override
-    public void renderProfile(ClientProfile clientProfile, boolean freshRender) {
-        try {
-            getDashboardPane().renderProfile(clientProfile, freshRender);
-        } catch (SevereException e) {
-            e.printStackTrace();
-            handleSevereException(e);
-        }
+    public void renderProfile(ClientProfile clientProfile, boolean freshRender)
+    {
+        getDashboardPane().renderProfile(clientProfile, freshRender);
     }
 
     @Override
@@ -354,20 +350,9 @@ public class Controller extends Base
 
     @Override
     public void refreshGridIfCurrentProfile(String profileID) {
-        ClientProfile clientProfile = getDashboardPane().getActionGridPane().getClientProfile();
-
-        getDashboardPane().getActionGridPane().setFreshRender(true);
-
-        if(clientProfile.getID().equals(profileID))
+        if(getCurrentProfile().getID().equals(profileID))
         {
-            Platform.runLater(()->{
-                try {
-                    getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(profileID), true);
-                } catch (SevereException e) {
-                    e.printStackTrace();
-                    handleSevereException(e);
-                }
-            });
+            Platform.runLater(()-> getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(profileID), true));
         }
     }
 

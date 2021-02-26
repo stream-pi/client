@@ -257,10 +257,10 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         return dashboardBase;
     }
 
-    public void renderRootDefaultProfile() throws SevereException
+    public void renderRootDefaultProfile()
     {
         getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(
-                Config.getInstance().getStartupProfileID()
+                getConfig().getStartupProfileID()
         ), true);
     }
 

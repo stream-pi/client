@@ -740,11 +740,11 @@ public class Client extends Thread{
             Config.getInstance().setCurrentThemeFullName(sep[4]);
 
             if(!oldHeight.equals(sep[2]) || !oldWidth.equals(sep[1]) || !oldThemeFullName.equals(sep[4]))
-                javafx.application.Platform.runLater(clientListener::init);
+                Platform.runLater(clientListener::init);
 
 
             Config.getInstance().save();
-            javafx.application.Platform.runLater(clientListener::loadSettings);
+            Platform.runLater(clientListener::loadSettings);
         }
         catch (SevereException e)
         {
@@ -776,7 +776,7 @@ public class Client extends Thread{
             clientListener.getClientProfiles().addProfile(clientProfile);
             clientProfile.saveProfileDetails();
             clientListener.refreshGridIfCurrentProfile(sep[0]);
-            javafx.application.Platform.runLater(clientListener::loadSettings);
+            Platform.runLater(clientListener::loadSettings);
         }
         catch (Exception e)
         {
@@ -790,6 +790,11 @@ public class Client extends Thread{
         clientListener.getClientProfiles().deleteProfile(clientListener.getClientProfiles().getProfileFromID(
                 message.getStringValue()
         ));
+        
+        if(clientListener.getCurrentProfile().getID().equals(message.getStringValue()))
+        {
+            Platform.runLater(clientListener::renderRootDefaultProfile);
+        }
     }
 
     public void onActionClicked(String profileID, String actionID) throws SevereException
