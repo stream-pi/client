@@ -27,6 +27,7 @@ import javafx.application.HostServices;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -138,6 +139,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     public void initBase() throws SevereException
     {
         stage = (Stage) getScene().getWindow();
+
+        getStage().getIcons().add(new Image(Main.class.getResourceAsStream("app_icon.png")));
 
         clientInfo = ClientInfo.getInstance();
         dashboardBase = new DashboardBase(this, this);
