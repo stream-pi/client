@@ -197,26 +197,32 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             File filex = new File(ClientInfo.getInstance().getPrePath());
 
-            if(filex.getAbsoluteFile().getParentFile().canWrite())
-            {
-                if(!filex.exists())
-                { 
-                    filex.mkdirs();
-                    IOHelper.unzip(Main.class.getResourceAsStream("Default.obj"), ClientInfo.getInstance().getPrePath());
-                }
-            }
-            else
-            {
-                if(getClientInfo().getPlatformType() != Platform.ANDROID)
-                {
-                    setPrefSize(300,300);
-                }
 
-                clearStylesheets();
-                applyDefaultStylesheet();
-                applyDefaultIconsStylesheet();
-                getStage().show();
-                throw new SevereException("No storage permission. Give it!");
+            if(!filex.exists())
+            {
+                boolean result = filex.mkdirs();
+                if(result)
+                {
+                    IOHelper.unzip(Main.class.getResourceAsStream("Default.obj"), ClientInfo.getInstance().getPrePath());
+                    Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
+                    Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
+                    Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
+
+                    Config.getInstance().save();
+                }
+                else
+                {
+                    if(getClientInfo().getPlatformType() != Platform.ANDROID)
+                    {
+                        setPrefSize(300,300);
+                    }
+
+                    clearStylesheets();
+                    applyDefaultStylesheet();
+                    applyDefaultIconsStylesheet();
+                    getStage().show();
+                    throw new SevereException("No storage permission. Give it!");
+                }
             }
         }
         catch (Exception e)

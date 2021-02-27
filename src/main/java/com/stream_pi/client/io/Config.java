@@ -99,17 +99,17 @@ public class Config {
 
     public String getDefaultThemesPath()
     {
-        return "data/Themes/";
+        return ClientInfo.getInstance().getPrePath()+"Themes/";
     }
 
     public String getDefaultProfilesPath()
     {
-        return "data/Profiles/";
+        return ClientInfo.getInstance().getPrePath()+"Profiles/";
     }
 
     public String getDefaultIconsPath()
     {
-        return "data/Icons/";
+        return ClientInfo.getInstance().getPrePath()+"Icons/";
     }
 
     public int getDefaultStartupWindowWidth()

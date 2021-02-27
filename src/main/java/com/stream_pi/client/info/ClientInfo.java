@@ -44,14 +44,14 @@ public class ClientInfo {
 
         String osName = System.getProperty("os.name").toLowerCase();
 
+        prePath = System.getProperty("user.home")+"/Stream-Pi/Client/";
+
         if(osName.contains("windows"))
         {
-            prePath = "data/";
             platformType = Platform.WINDOWS;
         }
         else if (osName.contains("linux"))
         {
-            prePath = "data/";
             platformType = Platform.LINUX;
         }
         else if(osName.contains("android")) // SPECIFY -Dsvm.targetName=android WHILE BUILDING ANDROID NATIVE IMAGE
@@ -61,12 +61,10 @@ public class ClientInfo {
         }
         else if (osName.contains("mac"))
         {
-            prePath = "data/";
             platformType = Platform.MAC;
         }
         else
         {
-            prePath = "data/";
             platformType = Platform.UNKNOWN;
         }
     }
