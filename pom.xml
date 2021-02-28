@@ -79,6 +79,10 @@
             <id>gluon-releases</id>
             <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
         </repository>
+        <repository>
+            <id>sonatype-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
     </repositories>
 
     <build>
