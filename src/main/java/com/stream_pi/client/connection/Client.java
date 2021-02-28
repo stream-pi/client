@@ -359,8 +359,8 @@ public class Client extends Thread{
         String clientCommStandard = clientInfo.getCommStandardVersion().getText();
         String clientMinThemeStandard = clientInfo.getMinThemeSupportVersion().getText();
         String clientNickname = Config.getInstance().getClientNickName();
-        String screenWidth = Config.getInstance().getStartupWindowWidth()+"";
-        String screenHeight = Config.getInstance().getStartupWindowHeight()+"";
+        String screenWidth = clientListener.getStageWidth()+"";
+        String screenHeight = clientListener.getStageHeight()+"";
         String OS = clientInfo.getPlatformType()+"";
         String defaultProfileID = Config.getInstance().getStartupProfileID();
 

@@ -31,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public abstract class Base extends StackPane implements ExceptionAndAlertHandler, ClientListener {
@@ -83,7 +84,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         try
         {
-            if(logger != null || logFileHandler != null)
+            if(logFileHandler != null)
                 return;
 
             closeLogger();
@@ -91,11 +92,10 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             if(new File(ClientInfo.getInstance().getPrePath()).getAbsoluteFile().getParentFile().canWrite())
             {
-
-                String path = ClientInfo.getInstance().getPrePath()+"../streampi.log";
+                String path = ClientInfo.getInstance().getPrePath()+"../stream-pi-client.log";
 
                 if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
-                    path = ClientInfo.getInstance().getPrePath()+"streampi.log";
+                    path = ClientInfo.getInstance().getPrePath()+"stream-pi-client.log";
 
                 logFileHandler = new StreamPiLogFileHandler(path);
                 logger.addHandler(logFileHandler);
@@ -181,7 +181,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             applyDefaultIconsStylesheet();
 
             getChildren().add(firstTimeUse);
+
             firstTimeUse.toFront();
+
+            //resolution check
+            resizeAccordingToResolution();
+
         }
         else
         {
@@ -189,6 +194,59 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         }
 
         initThemes();
+    }
+
+    private void resizeAccordingToResolution()
+    {
+        if(ClientInfo.getInstance().getPlatformType() != Platform.ANDROID)
+        {
+            double height = getScreenHeight();
+            double width = getScreenWidth();
+
+            logger.info("HEIGHT: "+height+", WIDTH: "+width);
+
+            if(height < 500)
+                setPrefHeight(320);
+
+            if(width < 500)
+                setPrefWidth(240);
+        }
+    }
+
+    @Override
+    public double getStageWidth()
+    {
+        if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
+        {
+            return getScreenWidth();
+        }
+        else
+        {
+            return getStage().getWidth();
+        }
+    }
+
+    public double getScreenWidth()
+    {
+        return Screen.getPrimary().getBounds().getWidth();
+    }
+
+    @Override
+    public double getStageHeight()
+    {
+        if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
+        {
+            return getScreenHeight();
+        }
+        else
+        {
+            return getStage().getHeight();
+        }
+    }
+
+    public double getScreenHeight()
+    {
+        return Screen.getPrimary().getBounds().getHeight();
     }
 
     private void checkPrePathDirectory() throws SevereException
@@ -203,19 +261,18 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 boolean result = filex.mkdirs();
                 if(result)
                 {
-                    IOHelper.unzip(Main.class.getResourceAsStream("Default.obj"), ClientInfo.getInstance().getPrePath());
+                    IOHelper.unzip(Main.class.getResourceAsStream("Default.zip"), ClientInfo.getInstance().getPrePath());
                     Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
                     Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
                     Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
 
                     Config.getInstance().save();
+
+                    initLogger();
                 }
                 else
                 {
-                    if(getClientInfo().getPlatformType() != Platform.ANDROID)
-                    {
-                        setPrefSize(300,300);
-                    }
+                    resizeAccordingToResolution();
 
                     clearStylesheets();
                     applyDefaultStylesheet();

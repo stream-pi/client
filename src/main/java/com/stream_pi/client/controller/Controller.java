@@ -58,10 +58,10 @@ public class Controller extends Base
             applyDefaultTheme();
 
 
-
             setupDashWindow();
 
             getStage().show();
+
 
             requestFocus();
 

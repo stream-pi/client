@@ -50,4 +50,7 @@ public interface ClientListener
     void onCloseRequest();
 
     void loadSettings();
+
+    double getStageWidth();
+    double getStageHeight();
 }
