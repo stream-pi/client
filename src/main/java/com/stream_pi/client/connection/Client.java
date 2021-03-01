@@ -700,9 +700,13 @@ public class Client extends Thread{
             if(acc.getLocation().getCol()!=-1)
             {
                 Platform.runLater(()-> {
-                    if (clientListener.getCurrentProfile().getID().equals(profileID))
+                    if (clientListener.getCurrentProfile().getID().equals(profileID)
+                        && clientListener.getCurrentParent().equals(acc.getParent()))
                     {
-                        clientListener.renderProfile(clientListener.getCurrentProfile(), false);
+                        clientListener.clearActionBox(
+                                acc.getLocation().getCol(),
+                                acc.getLocation().getRow()
+                        );
                     }
                 });
             }
