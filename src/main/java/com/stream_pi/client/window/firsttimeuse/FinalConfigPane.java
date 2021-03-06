@@ -59,7 +59,9 @@ public class FinalConfigPane extends VBox
         HBoxInputBox displayWidthInputBox = new HBoxInputBox("Display Width", displayWidthTextField);
         HBoxInputBox displayHeightInputBox = new HBoxInputBox("Display Height", displayHeightTextField);
 
-        if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
+        Platform platform = ClientInfo.getInstance().getPlatform();
+        if(platform == Platform.ANDROID ||
+                platform == Platform.IOS)
         {
             displayWidthInputBox.setVisible(false);
             displayHeightInputBox.setVisible(false);
@@ -115,7 +117,7 @@ public class FinalConfigPane extends VBox
 
         double width=-1,height=-1;
 
-        if(ClientInfo.getInstance().getPlatformType() != Platform.ANDROID)
+        if(ClientInfo.getInstance().getPlatform() != Platform.ANDROID)
         {
             try
             {
@@ -151,7 +153,9 @@ public class FinalConfigPane extends VBox
                 Config.getInstance().setServerPort(port);
                 Config.getInstance().setFirstTimeUse(false);
 
-                if(ClientInfo.getInstance().getPlatformType() != Platform.ANDROID)
+                Platform platform = ClientInfo.getInstance().getPlatform();
+                if(platform != Platform.ANDROID &&
+                        platform != Platform.IOS)
                 {
                     Config.getInstance().setStartupWindowSize(
                         width, height

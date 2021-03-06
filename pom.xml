@@ -77,6 +77,11 @@
             <artifactId>storage</artifactId>
             <version>4.0.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.gluonhq.attach</groupId>
+            <artifactId>browser</artifactId>
+            <version>4.0.10</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -113,10 +118,10 @@
                 <artifactId>client-maven-plugin</artifactId>
                 <version>${client.plugin.version}</version>
                 <configuration>
-                    <target>android</target>
+                    <target>${clientTarget}</target>
                     <nativeImageArgs>
                         <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                        <list>-Dsvm.targetName=android</list>
+                        <list>{additionalArgs}</list>
                     </nativeImageArgs>
                     <bundlesList>
                         <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
@@ -124,6 +129,7 @@
                     <attachList>
                         <list>lifecycle</list>
                         <list>storage</list>
+                        <list>browser</list>
                     </attachList>
                     <reflectionList>
                         <list>java.util.logging.FileHandler</list>
@@ -142,23 +148,6 @@
         </plugins>
     </build>
 
-    <!--profiles>
-        <profile>
-            <id>android</id>
-            <properties>
-                <clientTarget>android</clientTarget>
-                <additionalArgs>-Dsvm.targetName=android</additionalArgs>
-            </properties>
-        </profile>
-        <profile>
-            <id>rpi</id>
-            <properties>
-                <clientTarget>linux-aarch64</clientTarget>
-                <additionalArgs>-Dsvm.targetName=linux_raspberrypi</additionalArgs>
-            </properties>
-        </profile>
-    </profiles-->
-
     <pluginRepositories>
         <pluginRepository>
             <id>gluon-releases</id>
@@ -171,6 +160,21 @@
     </pluginRepositories>
 
     <profiles>
+        <profile>
+            <id>android</id>
+            <properties>
+                <clientTarget>android</clientTarget>
+                <additionalArgs>-Dsvm.targetName=android</additionalArgs>
+            </properties>
+        </profile>
+        <profile>
+            <id>ios</id>
+            <properties>
+                <clientTarget>ios</clientTarget>
+                <additionalArgs>-Dsvm.targetName=ios</additionalArgs>
+            </properties>
+        </profile>
+
         <profile>
             <id>release</id>
             <build>

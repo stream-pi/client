@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class ClientInfo {
     private Version version;
     private final ReleaseStatus releaseStatus;
-    private Platform platformType;
+    private Platform platform;
 
     private String prePath;
 
@@ -36,7 +36,7 @@ public class ClientInfo {
 
     private ClientInfo()
     {
-        version = new Version(1,0,0);
+        version = new Version(0,0,0);
         minThemeSupportVersion = new Version(1,0,0);
         minPluginSupportVersion = new Version(1,0,0);
         commStandardVersion = new Version(1,0,0);
@@ -49,11 +49,11 @@ public class ClientInfo {
 
         if(osName.contains("windows"))
         {
-            platformType = Platform.WINDOWS;
+            platform = Platform.WINDOWS;
         }
         else if (osName.contains("linux"))
         {
-            platformType = Platform.LINUX;
+            platform = Platform.LINUX;
         }
         else if(osName.contains("android")) // SPECIFY -Dsvm.targetName=android WHILE BUILDING ANDROID NATIVE IMAGE
         {
@@ -66,7 +66,7 @@ public class ClientInfo {
                 });
             });
 
-            platformType = Platform.ANDROID;
+            platform = Platform.ANDROID;
         }
         else if(osName.contains("ios")) // SPECIFY -Dsvm.targetName=ios WHILE BUILDING ANDROID NATIVE IMAGE
         {
@@ -79,15 +79,15 @@ public class ClientInfo {
                 });
             });
 
-            platformType = Platform.IOS;
+            platform = Platform.IOS;
         }
         else if (osName.contains("mac"))
         {
-            platformType = Platform.MAC;
+            platform = Platform.MAC;
         }
         else
         {
-            platformType = Platform.UNKNOWN;
+            platform = Platform.UNKNOWN;
         }
     }
 
@@ -136,9 +136,9 @@ public class ClientInfo {
         return prePath;
     }
 
-    public Platform getPlatformType()
+    public Platform getPlatform()
     {
-        return platformType;
+        return platform;
     }
 
     public Version getVersion() {

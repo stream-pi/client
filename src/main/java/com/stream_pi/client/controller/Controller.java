@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.util.logging.Level;
 
 
 public class Controller extends Base
@@ -47,7 +48,7 @@ public class Controller extends Base
             if(firstRun)
                 initBase();
 
-            if(getClientInfo().getPlatformType()!= com.stream_pi.util.platform.Platform.ANDROID)
+            if(getClientInfo().getPlatform()!= com.stream_pi.util.platform.Platform.ANDROID)
             {
                 getStage().setWidth(getConfig().getStartupWindowWidth());
                 getStage().setHeight(getConfig().getStartupWindowHeight());
@@ -108,15 +109,11 @@ public class Controller extends Base
         catch (SevereException e)
         {
             handleSevereException(e);
-            return;
         }
         catch (MinorException e)
         {
             handleMinorException(e);
-            return;
         }
-
-        
     }
 
    
@@ -156,7 +153,7 @@ public class Controller extends Base
         getLogger().info("Shut down");
         closeLogger();
 
-        if (ClientInfo.getInstance().getPlatformType() == com.stream_pi.util.platform.Platform.ANDROID)
+        if (ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.ANDROID)
             Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
     }
 
@@ -242,12 +239,20 @@ public class Controller extends Base
     @Override
     public void handleMinorException(MinorException e) 
     {
+        getLogger().log(Level.SEVERE, e.getMessage(), e);
+        e.printStackTrace();
+
+
         Platform.runLater(()-> genNewAlert(e.getTitle(), e.getShortMessage(), StreamPiAlertType.WARNING).show());
     }
 
     @Override
     public void handleSevereException(SevereException e)
     {
+        getLogger().log(Level.SEVERE, e.getMessage(), e);
+        e.printStackTrace();
+
+
         Platform.runLater(()->
         {
             StreamPiAlert alert = genNewAlert(e.getTitle(), e.getShortMessage(), StreamPiAlertType.ERROR);

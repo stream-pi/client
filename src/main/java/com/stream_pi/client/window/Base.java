@@ -94,7 +94,9 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             {
                 String path = ClientInfo.getInstance().getPrePath()+"../stream-pi-client.log";
 
-                if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
+                Platform platform = getClientInfo().getPlatform();
+                if(platform == Platform.ANDROID ||
+                        platform == Platform.IOS)
                     path = ClientInfo.getInstance().getPrePath()+"stream-pi-client.log";
 
                 logFileHandler = new StreamPiLogFileHandler(path);
@@ -198,7 +200,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     private void resizeAccordingToResolution()
     {
-        if(ClientInfo.getInstance().getPlatformType() != Platform.ANDROID)
+        if(ClientInfo.getInstance().getPlatform() != Platform.ANDROID)
         {
             double height = getScreenHeight();
             double width = getScreenWidth();
@@ -216,7 +218,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     @Override
     public double getStageWidth()
     {
-        if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
+        if(ClientInfo.getInstance().getPlatform() == Platform.ANDROID)
         {
             return getScreenWidth();
         }
@@ -234,7 +236,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     @Override
     public double getStageHeight()
     {
-        if(ClientInfo.getInstance().getPlatformType() == Platform.ANDROID)
+        if(ClientInfo.getInstance().getPlatform() == Platform.ANDROID)
         {
             return getScreenHeight();
         }
@@ -251,13 +253,28 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     private void checkPrePathDirectory() throws SevereException
     {
-        try 
+        try
         {
-            File filex = new File(getClientInfo().getPrePath());
+            String path = getClientInfo().getPrePath();
 
-            if(!filex.exists())
+            System.out.println("PAAAAAAAAAAAATH : '"+path+"'");
+            if(path == null)
             {
-                boolean result = filex.mkdirs();
+                throwStoragePermErrorAlert("Unable to access file system!");
+                return;
+            }
+
+            File file = new File(path);
+
+            if(!file.canWrite() || !file.canRead())
+            {
+                throwStoragePermErrorAlert("No read/write storage permission. Give it!");
+                return;
+            }
+
+            if(!file.exists())
+            {
+                boolean result = file.mkdirs();
                 if(result)
                 {
                     IOHelper.unzip(Main.class.getResourceAsStream("Default.zip"), ClientInfo.getInstance().getPrePath());
@@ -271,13 +288,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 }
                 else
                 {
-                    resizeAccordingToResolution();
-
-                    clearStylesheets();
-                    applyDefaultStylesheet();
-                    applyDefaultIconsStylesheet();
-                    getStage().show();
-                    throw new SevereException("No storage permission. Give it!");
+                    throwStoragePermErrorAlert("No storage permission. Give it!");
                 }
             }
         }
@@ -286,6 +297,17 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             e.printStackTrace();
             throw new SevereException(e.getMessage());
         }
+    }
+
+    private void throwStoragePermErrorAlert(String msg) throws SevereException
+    {
+        resizeAccordingToResolution();
+
+        clearStylesheets();
+        applyDefaultStylesheet();
+        applyDefaultIconsStylesheet();
+        getStage().show();
+        throw new SevereException(msg);
     }
 
     public void setupFlags()

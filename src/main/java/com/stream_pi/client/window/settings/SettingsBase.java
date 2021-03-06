@@ -1,7 +1,10 @@
 package com.stream_pi.client.window.settings;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
+import com.gluonhq.attach.browser.BrowserService;
 import com.stream_pi.client.connection.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
@@ -11,18 +14,21 @@ import com.stream_pi.theme_api.Theme;
 import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.checkforupdates.CheckForUpdates;
+import com.stream_pi.util.checkforupdates.UpdateHyperlinkOnClick;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 import com.stream_pi.util.uihelper.SpaceFiller;
 import com.stream_pi.util.startatboot.StartAtBoot;
 
 import javafx.application.HostServices;
-import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
@@ -81,7 +87,7 @@ public class SettingsBase extends VBox {
         clientProfileComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<ClientProfile>()
         {
             @Override
-            public String getOptionDisplayText(ClientProfile object) 
+            public String getOptionDisplayText(ClientProfile object)
             {
                 return object.getName();
             }
@@ -89,7 +95,7 @@ public class SettingsBase extends VBox {
 
         clientProfileComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<ClientProfile>(){
             @Override
-            public void onNewItemSelected(ClientProfile selectedItem) 
+            public void onNewItemSelected(ClientProfile selectedItem)
             {
                 clientListener.renderProfile(selectedItem, true);
             }
@@ -100,7 +106,7 @@ public class SettingsBase extends VBox {
         themeComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<Theme>()
         {
             @Override
-            public String getOptionDisplayText(Theme object) 
+            public String getOptionDisplayText(Theme object)
             {
                 return object.getShortName();
             }
@@ -149,7 +155,9 @@ public class SettingsBase extends VBox {
         HBoxInputBox screenWidthInputBox = new HBoxInputBox("Screen Width", displayWidthTextField, prefWidth);
         screenWidthInputBox.managedProperty().bind(screenWidthInputBox.visibleProperty());
 
-        if(ClientInfo.getInstance().getPlatformType() == com.stream_pi.util.platform.Platform.ANDROID)
+        com.stream_pi.util.platform.Platform platform = ClientInfo.getInstance().getPlatform();
+        if(platform == Platform.ANDROID ||
+                platform == Platform.IOS)
         {
             themesPathInputBox.setVisible(false);
             iconsPathInputBox.setVisible(false);
@@ -187,7 +195,7 @@ public class SettingsBase extends VBox {
                 profilesPathInputBox
         );
 
-        if(ClientInfo.getInstance().getPlatformType() == com.stream_pi.util.platform.Platform.LINUX &&
+        if(ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.LINUX &&
                 ClientInfo.getInstance().isShowShutDownButton())
         {
 
@@ -259,14 +267,41 @@ public class SettingsBase extends VBox {
 
     private void checkForUpdates()
     {
-        new CheckForUpdates(checkForUpdatesButton, hostServices,
-                PlatformType.CLIENT, ClientInfo.getInstance().getVersion());
+        new CheckForUpdates(checkForUpdatesButton,
+                PlatformType.CLIENT, ClientInfo.getInstance().getVersion(), new UpdateHyperlinkOnClick() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Platform platform = ClientInfo.getInstance().getPlatform();
+                if(platform == Platform.ANDROID || platform == Platform.IOS)
+                {
+                    BrowserService.create().ifPresentOrElse(s->
+                    {
+                        try
+                        {
+                            s.launchExternalBrowser(getURL());
+                        }
+                        catch (Exception e )
+                        {
+                            exceptionAndAlertHandler.handleMinorException(
+                                    new MinorException("Cant start browser!")
+                            );
+                        }
+                    },()-> exceptionAndAlertHandler.handleMinorException(
+                            new MinorException("Sorry!","No browser detected.")
+                    ));
+                }
+                else
+                {
+                    hostServices.showDocument(getURL());
+                }
+            }
+        });
     }
 
     public void onExitButtonClicked()
     {
         clientListener.onCloseRequest();
-        Platform.exit();
+        javafx.application.Platform.exit();
     }
 
     public void setDisableStatus(boolean status)
@@ -305,7 +340,7 @@ public class SettingsBase extends VBox {
 
     public void setConnectDisconnectButtonStatus()
     {
-        Platform.runLater(()->{
+        javafx.application.Platform.runLater(()->{
             setDisableStatus(false);
 
             if(clientListener.isConnected())
@@ -464,7 +499,7 @@ public class SettingsBase extends VBox {
             Config.getInstance().setServerHostNameOrIP(serverHostNameOrIPTextField.getText());
 
             boolean startOnBoot = startOnBootToggleButton.isSelected();
-            
+
             if(Config.getInstance().isStartOnBoot() != startOnBoot)
             {
                 if(ClientInfo.getInstance().getRunnerFileName() == null)
@@ -474,7 +509,7 @@ public class SettingsBase extends VBox {
                 }
                 else
                 {
-                    StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatformType());
+                    StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform());
                     if(startOnBoot)
                     {
                         startAtBoot.create(new File(ClientInfo.getInstance().getRunnerFileName()),
