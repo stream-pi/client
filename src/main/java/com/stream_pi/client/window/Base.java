@@ -253,8 +253,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         try 
         {
-            File filex = new File(ClientInfo.getInstance().getPrePath());
-
+            File filex = new File(getClientInfo().getPrePath());
 
             if(!filex.exists())
             {

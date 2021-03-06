@@ -72,6 +72,11 @@
             <artifactId>util</artifactId>
             <version>4.0.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.gluonhq.attach</groupId>
+            <artifactId>storage</artifactId>
+            <version>4.0.10</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -118,6 +123,7 @@
                     </bundlesList>
                     <attachList>
                         <list>lifecycle</list>
+                        <list>storage</list>
                     </attachList>
                     <reflectionList>
                         <list>java.util.logging.FileHandler</list>

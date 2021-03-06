@@ -8,6 +8,7 @@ Contributors: Debayan Sutradhar (@dubbadhar)
 
 package com.stream_pi.client.info;
 
+import com.gluonhq.attach.storage.StorageService;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.ReleaseStatus;
@@ -56,8 +57,29 @@ public class ClientInfo {
         }
         else if(osName.contains("android")) // SPECIFY -Dsvm.targetName=android WHILE BUILDING ANDROID NATIVE IMAGE
         {
-            prePath = "/sdcard/Android/data/com.stream_pi.client/";
+            StorageService.create().ifPresent(s->{
+                s.getPublicStorage("Documents").ifPresentOrElse(sp->{
+                    prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/";
+                }, ()->
+                {
+                    prePath = null;
+                });
+            });
+
             platformType = Platform.ANDROID;
+        }
+        else if(osName.contains("ios")) // SPECIFY -Dsvm.targetName=ios WHILE BUILDING ANDROID NATIVE IMAGE
+        {
+            StorageService.create().ifPresent(s->{
+                s.getPrivateStorage().ifPresentOrElse(sp->{
+                    prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/";
+                }, ()->
+                {
+                    prePath = null;
+                });
+            });
+
+            platformType = Platform.IOS;
         }
         else if (osName.contains("mac"))
         {

@@ -7,6 +7,7 @@ module com.stream_pi.client {
 
     requires com.gluonhq.attach.lifecycle;
     requires com.gluonhq.attach.util;
+    requires com.gluonhq.attach.storage;
 
     requires java.xml;
 
