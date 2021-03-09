@@ -266,11 +266,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             File file = new File(path);
 
-            if(!file.canWrite() || !file.canRead())
-            {
-                throwStoragePermErrorAlert("No read/write storage permission. Give it!");
-                return;
-            }
 
             if(!file.exists())
             {

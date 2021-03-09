@@ -36,7 +36,7 @@ public class ClientInfo {
 
     private ClientInfo()
     {
-        version = new Version(0,0,0);
+        version = new Version(1,0,0);
         minThemeSupportVersion = new Version(1,0,0);
         minPluginSupportVersion = new Version(1,0,0);
         commStandardVersion = new Version(1,0,0);

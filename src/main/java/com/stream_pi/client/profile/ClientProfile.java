@@ -152,6 +152,9 @@ public class ClientProfile implements Cloneable{
                 {
                     action.setVersion(new Version(XMLConfigHelper.getStringProperty(eachActionElement, "version")));
                     action.setModuleName(XMLConfigHelper.getStringProperty(eachActionElement, "module-name"));
+                    action.setDelayBeforeExecuting(Integer.parseInt(
+                            XMLConfigHelper.getStringProperty(eachActionElement, "delay-before-running")
+                    ));
                 }
 
                 Node propertiesNode = eachActionElement.getElementsByTagName("properties").item(0);
@@ -376,6 +379,10 @@ public class ClientProfile implements Cloneable{
             Element moduleNameElement = document.createElement("module-name");
             moduleNameElement.setTextContent(action.getModuleName());
             newActionElement.appendChild(moduleNameElement);
+
+            Element delayBeforeRunningElement = document.createElement("delay-before-running");
+            delayBeforeRunningElement.setTextContent(action.getDelayBeforeExecuting()+"");
+            newActionElement.appendChild(delayBeforeRunningElement);
         }
 
         Element displayElement = document.createElement("display");
@@ -387,6 +394,7 @@ public class ClientProfile implements Cloneable{
         Element colourHexElement = document.createElement("colour-hex");
         colourHexElement.setTextContent(action.getBgColourHex());
         backgroundElement.appendChild(colourHexElement);
+
 
         Element iconElement = document.createElement("icon");
     

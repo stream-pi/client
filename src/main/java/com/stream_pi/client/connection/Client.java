@@ -495,6 +495,8 @@ public class Client extends Thread{
 
         a.add(action.getParent());
 
+        a.add(action.getDelayBeforeExecuting()+"");
+
         //client properties
 
         ClientProperties clientProperties = action.getClientProperties();
@@ -589,14 +591,16 @@ public class Client extends Thread{
 
         //client properties
 
-        int clientPropertiesSize = Integer.parseInt(r[15]);
+        action.setDelayBeforeExecuting(Integer.parseInt(r[15]));
+
+        int clientPropertiesSize = Integer.parseInt(r[16]);
 
         ClientProperties clientProperties = new ClientProperties();
 
         if(actionType == ActionType.FOLDER)
             clientProperties.setDuplicatePropertyAllowed(true);
 
-        for(int i = 16;i<((clientPropertiesSize*2) + 16); i+=2)
+        for(int i = 17;i<((clientPropertiesSize*2) + 17); i+=2)
         {
             Property property = new Property(r[i], Type.STRING);
             property.setRawValue(r[i+1]);
