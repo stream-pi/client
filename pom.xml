@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <javafx.version>16-ea+7</javafx.version>
+        <javafx.version>16</javafx.version>
         <client.plugin.version>0.1.36</client.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
 
@@ -126,7 +126,7 @@
                     <target>${clientTarget}</target>
                     <nativeImageArgs>
                         <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                        <list>{additionalArgs}</list>
+                        <list>${additionalArgs}</list>
                     </nativeImageArgs>
                     <bundlesList>
                         <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
