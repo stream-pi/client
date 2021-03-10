@@ -163,7 +163,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         getChildren().clear();
         getChildren().addAll(alertStackPane);
 
-
         initLogger();
 
         checkPrePathDirectory();
@@ -307,18 +306,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     public void setupFlags()
     {
-        //Full Screen
-        if(getConfig().isFullscreen())
-        {
-            getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            getStage().setFullScreen(true);
-        }
-        else
-        {
-            getStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("Esc"));
-            getStage().setFullScreen(false);
-        }
-
         //Cursor
         if(getConfig().isShowCursor())
         {

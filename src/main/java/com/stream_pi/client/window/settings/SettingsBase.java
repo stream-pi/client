@@ -3,8 +3,10 @@ package com.stream_pi.client.window.settings;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.function.Consumer;
 
 import com.gluonhq.attach.browser.BrowserService;
+import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.client.connection.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
@@ -44,9 +46,6 @@ public class SettingsBase extends VBox {
     private StreamPiComboBox<ClientProfile> clientProfileComboBox;
     private StreamPiComboBox<Theme> themeComboBox;
 
-    private TextField displayWidthTextField;
-    private TextField displayHeightTextField;
-
     private TextField nickNameTextField;
 
     private Button closeButton;
@@ -56,8 +55,10 @@ public class SettingsBase extends VBox {
 
     private ToggleButton startOnBootToggleButton;
 
+    private ToggleButton connectOnStartupToggleButton;
+    private ToggleButton vibrateOnActionPressToggleButton;
+
     private ToggleButton showCursorToggleButton;
-    private ToggleButton fullScreenToggleButton;
 
     private ClientListener clientListener;
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
@@ -112,9 +113,6 @@ public class SettingsBase extends VBox {
             }
         });
 
-        displayHeightTextField = new TextField();
-        displayWidthTextField = new TextField();
-
         themesPathTextField = new TextField();
         iconsPathTextField = new TextField();
         profilesPathTextField = new TextField();
@@ -122,11 +120,14 @@ public class SettingsBase extends VBox {
         startOnBootToggleButton = new ToggleButton("Start On Boot");
         startOnBootToggleButton.managedProperty().bind(startOnBootToggleButton.visibleProperty());
 
+        vibrateOnActionPressToggleButton = new ToggleButton("Vibrate On Action Press");
+        vibrateOnActionPressToggleButton.managedProperty().bind(vibrateOnActionPressToggleButton.visibleProperty());
+
+        connectOnStartupToggleButton = new ToggleButton("Connect On Startup");
+        connectOnStartupToggleButton.managedProperty().bind(connectOnStartupToggleButton.visibleProperty());
+
         showCursorToggleButton = new ToggleButton("Show Cursor");
         showCursorToggleButton.managedProperty().bind(showCursorToggleButton.visibleProperty());
-
-        fullScreenToggleButton = new ToggleButton("Full Screen");
-        fullScreenToggleButton.managedProperty().bind(fullScreenToggleButton.visibleProperty());
 
         int prefWidth = 200;
 
@@ -148,12 +149,6 @@ public class SettingsBase extends VBox {
         profilesPathInputBox.managedProperty().bind(profilesPathInputBox.visibleProperty());
 
 
-        HBoxInputBox screenHeightInputBox = new HBoxInputBox("Screen Height", displayHeightTextField, prefWidth);
-        screenHeightInputBox.managedProperty().bind(screenHeightInputBox.visibleProperty());
-
-
-        HBoxInputBox screenWidthInputBox = new HBoxInputBox("Screen Width", displayWidthTextField, prefWidth);
-        screenWidthInputBox.managedProperty().bind(screenWidthInputBox.visibleProperty());
 
         com.stream_pi.util.platform.Platform platform = ClientInfo.getInstance().getPlatform();
         if(platform == Platform.ANDROID ||
@@ -165,10 +160,10 @@ public class SettingsBase extends VBox {
 
             startOnBootToggleButton.setVisible(false);
             showCursorToggleButton.setVisible(false);
-            fullScreenToggleButton.setVisible(false);
-
-            screenHeightInputBox.setVisible(false);
-            screenWidthInputBox.setVisible(false);
+        }
+        else
+        {
+            vibrateOnActionPressToggleButton.setVisible(false);
         }
 
         checkForUpdatesButton = new Button("Check for updates");
@@ -188,8 +183,6 @@ public class SettingsBase extends VBox {
                         SpaceFiller.horizontal(),
                         themeComboBox
                 ),
-                screenHeightInputBox,
-                screenWidthInputBox,
                 themesPathInputBox,
                 iconsPathInputBox,
                 profilesPathInputBox
@@ -205,10 +198,11 @@ public class SettingsBase extends VBox {
         }
 
         vBox.getChildren().addAll(
+                connectOnStartupToggleButton,
+                vibrateOnActionPressToggleButton,
                 checkForUpdatesButton,
                 startOnBootToggleButton,
                 showCursorToggleButton,
-                fullScreenToggleButton,
                 licenseLabel,
                 versionLabel
         );
@@ -357,10 +351,12 @@ public class SettingsBase extends VBox {
 
     public void loadData() throws SevereException
     {
-        nickNameTextField.setText(Config.getInstance().getClientNickName());
+        Config config = Config.getInstance();
 
-        serverHostNameOrIPTextField.setText(Config.getInstance().getSavedServerHostNameOrIP());
-        serverPortTextField.setText(Config.getInstance().getSavedServerPort()+"");
+        nickNameTextField.setText(config.getClientNickName());
+
+        serverHostNameOrIPTextField.setText(config.getSavedServerHostNameOrIP());
+        serverPortTextField.setText(config.getSavedServerPort()+"");
 
         clientProfileComboBox.setOptions(clientListener.getClientProfiles().getClientProfiles());
 
@@ -390,17 +386,16 @@ public class SettingsBase extends VBox {
 
         themeComboBox.setCurrentSelectedItemIndex(ind2);
 
-        displayWidthTextField.setText(Config.getInstance().getStartupWindowWidth()+"");
-        displayHeightTextField.setText(Config.getInstance().getStartupWindowHeight()+"");
+        themesPathTextField.setText(config.getThemesPath());
+        iconsPathTextField.setText(config.getIconsPath());
+        profilesPathTextField.setText(config.getProfilesPath());
 
-        themesPathTextField.setText(Config.getInstance().getThemesPath());
-        iconsPathTextField.setText(Config.getInstance().getIconsPath());
-        profilesPathTextField.setText(Config.getInstance().getProfilesPath());
+        startOnBootToggleButton.setSelected(config.isStartOnBoot());
 
-        startOnBootToggleButton.setSelected(Config.getInstance().isStartOnBoot());
+        showCursorToggleButton.setSelected(config.isShowCursor());
 
-        fullScreenToggleButton.setSelected(Config.getInstance().isFullscreen());
-        showCursorToggleButton.setSelected(Config.getInstance().isShowCursor());
+        connectOnStartupToggleButton.setSelected(config.isConnectOnStartup());
+        vibrateOnActionPressToggleButton.setSelected(config.isVibrateOnActionClicked());
     }
 
     public void onSaveButtonClicked()
@@ -420,31 +415,6 @@ public class SettingsBase extends VBox {
             errors.append("* Server IP should be a number.\n");
         }
 
-        double width = -1;
-        try
-        {
-            width = Double.parseDouble(displayWidthTextField.getText());
-
-            if(width < 0)
-                errors.append("* Display Width should be above 0.\n");
-        }
-        catch (NumberFormatException exception)
-        {
-            errors.append("* Display Width should be a number.\n");
-        }
-
-        double height = -1;
-        try
-        {
-            height = Double.parseDouble(displayHeightTextField.getText());
-
-            if(height < 0)
-                errors.append("* Display Height should be above 0.\n");
-        }
-        catch (NumberFormatException exception)
-        {
-            errors.append("* Display Height should be a number.\n");
-        }
 
         if(serverHostNameOrIPTextField.getText().isBlank())
         {
@@ -473,34 +443,30 @@ public class SettingsBase extends VBox {
 
             boolean breakConnection = false;
 
-            if(!Config.getInstance().getCurrentThemeFullName().equals(themeComboBox.getCurrentSelectedItem().getFullName()))
+            Config config = Config.getInstance();
+
+            if(!config.getCurrentThemeFullName().equals(themeComboBox.getCurrentSelectedItem().getFullName()))
             {
                 breakConnection = true;
                 toBeReloaded = true;
             }
 
-            Config.getInstance().setCurrentThemeFullName(themeComboBox.getCurrentSelectedItem().getFullName());
+            config.setCurrentThemeFullName(themeComboBox.getCurrentSelectedItem().getFullName());
 
-            if(width != Config.getInstance().getStartupWindowWidth() || height != Config.getInstance().getStartupWindowHeight())
-                toBeReloaded = true;
-
-            Config.getInstance().setStartupWindowSize(width, height);
-
-
-            if(!Config.getInstance().getClientNickName().equals(nickNameTextField.getText()))
+            if(!config.getClientNickName().equals(nickNameTextField.getText()))
                 breakConnection = true;
 
-            Config.getInstance().setNickName(nickNameTextField.getText());
+            config.setNickName(nickNameTextField.getText());
 
-            if(port != Config.getInstance().getSavedServerPort() || !serverHostNameOrIPTextField.getText().equals(Config.getInstance().getSavedServerHostNameOrIP()))
+            if(port != config.getSavedServerPort() || !serverHostNameOrIPTextField.getText().equals(config.getSavedServerHostNameOrIP()))
                 breakConnection = true;
 
-            Config.getInstance().setServerPort(port);
-            Config.getInstance().setServerHostNameOrIP(serverHostNameOrIPTextField.getText());
+            config.setServerPort(port);
+            config.setServerHostNameOrIP(serverHostNameOrIPTextField.getText());
 
             boolean startOnBoot = startOnBootToggleButton.isSelected();
 
-            if(Config.getInstance().isStartOnBoot() != startOnBoot)
+            if(config.isStartOnBoot() != startOnBoot)
             {
                 if(ClientInfo.getInstance().getRunnerFileName() == null)
                 {
@@ -524,36 +490,45 @@ public class SettingsBase extends VBox {
                 }
             }
 
-            Config.getInstance().setStartOnBoot(startOnBoot);
+            config.setStartOnBoot(startOnBoot);
 
-            if(Config.getInstance().isFullscreen() != fullScreenToggleButton.isSelected() ||
-                    Config.getInstance().isShowCursor() != showCursorToggleButton.isSelected())
+            config.setShowCursor(showCursorToggleButton.isSelected());
+
+
+
+            if(!config.getThemesPath().equals(themesPathTextField.getText()))
                 toBeReloaded = true;
 
-
-            Config.getInstance().setFullscreen(fullScreenToggleButton.isSelected());
-            Config.getInstance().setShowCursor(showCursorToggleButton.isSelected());
+            config.setThemesPath(themesPathTextField.getText());
 
 
-
-            if(!Config.getInstance().getThemesPath().equals(themesPathTextField.getText()))
+            if(!config.getIconsPath().equals(iconsPathTextField.getText()))
                 toBeReloaded = true;
 
-            Config.getInstance().setThemesPath(themesPathTextField.getText());
+            config.setIconsPath(iconsPathTextField.getText());
 
-
-            if(!Config.getInstance().getIconsPath().equals(iconsPathTextField.getText()))
+            if(!config.getProfilesPath().equals(profilesPathTextField.getText()))
                 toBeReloaded = true;
 
-            Config.getInstance().setIconsPath(iconsPathTextField.getText());
+            config.setProfilesPath(profilesPathTextField.getText());
 
-            if(!Config.getInstance().getProfilesPath().equals(profilesPathTextField.getText()))
-                toBeReloaded = true;
+            config.setConnectOnStartup(connectOnStartupToggleButton.isSelected());
 
-            Config.getInstance().setProfilesPath(profilesPathTextField.getText());
+            boolean isVibrateOnActionClicked = vibrateOnActionPressToggleButton.isSelected();
+
+            if(config.isVibrateOnActionClicked() != isVibrateOnActionClicked && isVibrateOnActionClicked)
+            {
+                if(VibrationService.create().isEmpty())
+                {
+                    isVibrateOnActionClicked = false;
+                    new StreamPiAlert("Uh Oh!", "Vibration not supported", StreamPiAlertType.ERROR).show();
+                }
+            }
+
+            config.setVibrateOnActionClicked(isVibrateOnActionClicked);
 
 
-            Config.getInstance().save();
+            config.save();
 
             loadData();
 

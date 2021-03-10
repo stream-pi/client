@@ -732,23 +732,12 @@ public class Client extends Thread{
 
             Config.getInstance().setNickName(sep[0]);
 
-            String oldWidth = Config.getInstance().getStartupWindowWidth()+"";
-            String oldHeight = Config.getInstance().getStartupWindowHeight()+"";
 
-
-            Config.getInstance().setStartupWindowSize(
-                    Double.parseDouble(sep[1]),
-                    Double.parseDouble(sep[2])
-            );
-
-            Config.getInstance().setStartupProfileID(sep[3]);
+            Config.getInstance().setStartupProfileID(sep[1]);
 
             String oldThemeFullName = Config.getInstance().getCurrentThemeFullName();
 
-            Config.getInstance().setCurrentThemeFullName(sep[4]);
-
-            if(!oldHeight.equals(sep[2]) || !oldWidth.equals(sep[1]) || !oldThemeFullName.equals(sep[4]))
-                Platform.runLater(clientListener::init);
+            Config.getInstance().setCurrentThemeFullName(sep[2]);
 
 
             Config.getInstance().save();

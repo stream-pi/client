@@ -1,5 +1,6 @@
 package com.stream_pi.client.controller;
 
+import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.connection.Client;
 import com.stream_pi.client.io.Config;
@@ -22,6 +23,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCombination;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -48,13 +50,17 @@ public class Controller extends Base
             if(firstRun)
                 initBase();
 
+            //Full Screen
+
+
             if(getClientInfo().getPlatform()!= com.stream_pi.util.platform.Platform.ANDROID)
             {
-                getStage().setWidth(getConfig().getStartupWindowWidth());
-                getStage().setHeight(getConfig().getStartupWindowHeight());
                 getStage().centerOnScreen();
+                getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+                getStage().setFullScreen(true);
                 setupFlags();
             }
+
 
             applyDefaultTheme();
 
@@ -101,7 +107,10 @@ public class Controller extends Base
 
             if(firstRun)
             {
-                setupClientConnection();
+                if(getConfig().isConnectOnStartup())
+                {
+                    setupClientConnection();
+                }
                 firstRun = false;
             }
 
@@ -292,6 +301,14 @@ public class Controller extends Base
     @Override
     public void onNormalActionClicked(String profileID, String actionID) {
         try {
+
+            //Vibrate for android/iOS
+
+            if(getConfig().isVibrateOnActionClicked())
+            {
+                VibrationService.create().ifPresent(VibrationService::vibrate);
+            }
+
             client.onActionClicked(profileID, actionID);
         } catch (SevereException e) {
             e.printStackTrace();

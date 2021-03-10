@@ -169,16 +169,6 @@ public class Config {
         return XMLConfigHelper.getStringProperty(getClientElement(), "icons-path", getDefaultIconsPath(), false, true, document, configFile);
     }
 
-    public double getStartupWindowWidth()
-    {
-        return XMLConfigHelper.getDoubleProperty((Element) getClientElement().getElementsByTagName("startup-window-size").item(0), "width", getDefaultStartupWindowWidth(), false, true, document, configFile);
-    }
-
-    public double getStartupWindowHeight()
-    {
-        return XMLConfigHelper.getDoubleProperty((Element) getClientElement().getElementsByTagName("startup-window-size").item(0), "height", getDefaultStartupWindowHeight(), false, true, document, configFile);
-    }
-
     
 
     //Setters
@@ -213,24 +203,6 @@ public class Config {
         getClientElement().getElementsByTagName("themes-path").item(0).setTextContent(themesPath);
     }
 
-    //client > startup-window-size
-    public void setStartupWindowSize(double width, double height)
-    {
-        setStartupWindowWidth(width);
-        setStartupWindowHeight(height);
-    }
-
-    public void setStartupWindowWidth(double width)
-    {
-        ((Element) getClientElement().getElementsByTagName("startup-window-size").item(0))
-            .getElementsByTagName("width").item(0).setTextContent(width+"");
-    }
-
-    public void setStartupWindowHeight(double height)
-    {
-        ((Element) getClientElement().getElementsByTagName("startup-window-size").item(0))
-            .getElementsByTagName("height").item(0).setTextContent(height+"");
-    }
 
 
 
@@ -300,11 +272,6 @@ public class Config {
         return false;
     }
 
-    public boolean getDefaultFullscreen()
-    {
-        return true;
-    }
-
     public boolean getDefaultIsShowCursor()
     {
         return true;
@@ -328,16 +295,20 @@ public class Config {
         return XMLConfigHelper.getBooleanProperty(getOthersElement(), "start-on-boot", getDefaultStartOnBoot(), false, true, document, configFile);
     }
 
-
-    public boolean isFullscreen()
-    {
-        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "fullscreen", getDefaultFullscreen(), false, true, document, configFile);
-    }
-
     
     public boolean isFirstTimeUse()
     {
         return XMLConfigHelper.getBooleanProperty(getOthersElement(), "first-time-use", true, false, true, document, configFile);
+    }
+
+    public boolean isVibrateOnActionClicked()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "vibrate-on-action-clicked", false, false, true, document, configFile);
+    }
+
+    public boolean isConnectOnStartup()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "connect-on-startup", false, false, true, document, configFile);
     }
 
 
@@ -359,6 +330,16 @@ public class Config {
     public void setFirstTimeUse(boolean value)
     {
         getOthersElement().getElementsByTagName("first-time-use").item(0).setTextContent(value+"");
+    }
+
+    public void setVibrateOnActionClicked(boolean value)
+    {
+        getOthersElement().getElementsByTagName("vibrate-on-action-clicked").item(0).setTextContent(value+"");
+    }
+
+    public void setConnectOnStartup(boolean value)
+    {
+        getOthersElement().getElementsByTagName("connect-on-startup").item(0).setTextContent(value+"");
     }
 
 }

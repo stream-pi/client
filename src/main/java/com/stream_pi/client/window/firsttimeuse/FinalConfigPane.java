@@ -25,8 +25,6 @@ public class FinalConfigPane extends VBox
     private TextField clientNicknameTextField;
     private TextField serverIPHostNameTextField;
     private TextField serverPortTextField;
-    private TextField displayWidthTextField;
-    private TextField displayHeightTextField;
     private Button nextButton;
 
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
@@ -50,25 +48,14 @@ public class FinalConfigPane extends VBox
         serverIPHostNameTextField = new TextField();
         serverPortTextField = new TextField();
 
-        displayWidthTextField = new TextField();
-        displayHeightTextField = new TextField();
-
         HBoxInputBox clientNickNameInputBox = new HBoxInputBox("Nickname", clientNicknameTextField);
         HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox("Server IP", serverIPHostNameTextField);
         HBoxInputBox serverIPPortInputBox = new HBoxInputBox("Server Port", serverPortTextField);
-        HBoxInputBox displayWidthInputBox = new HBoxInputBox("Display Width", displayWidthTextField);
-        HBoxInputBox displayHeightInputBox = new HBoxInputBox("Display Height", displayHeightTextField);
 
         Platform platform = ClientInfo.getInstance().getPlatform();
-        if(platform == Platform.ANDROID ||
-                platform == Platform.IOS)
-        {
-            displayWidthInputBox.setVisible(false);
-            displayHeightInputBox.setVisible(false);
-        }
 
-        VBox v = new VBox(clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox,
-        displayWidthInputBox, displayHeightInputBox);
+
+        VBox v = new VBox(clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox);
         v.setSpacing(10.0);
 
         ScrollPane scrollPane = new ScrollPane(v);
@@ -115,35 +102,6 @@ public class FinalConfigPane extends VBox
             errors.append("* Server IP should be a number.\n");
         }
 
-        double width=-1,height=-1;
-
-        if(ClientInfo.getInstance().getPlatform() != Platform.ANDROID)
-        {
-            try
-            {
-                width = Double.parseDouble(displayWidthTextField.getText());
-    
-                if(width < 0)
-                    errors.append("* Display Width should be above 0.\n");
-            }
-            catch (NumberFormatException exception)
-            {
-                errors.append("* Display Width should be a number.\n");
-            }
-    
-            try
-            {
-                height = Double.parseDouble(displayHeightTextField.getText());
-    
-                if(height < 0)
-                    errors.append("* Display Height should be above 0.\n");
-            }
-            catch (NumberFormatException exception)
-            {
-                errors.append("* Display Height should be a number.\n");
-            }
-        }
-
         if(errors.toString().isEmpty())
         {
             try
@@ -153,19 +111,10 @@ public class FinalConfigPane extends VBox
                 Config.getInstance().setServerPort(port);
                 Config.getInstance().setFirstTimeUse(false);
 
-                Platform platform = ClientInfo.getInstance().getPlatform();
-                if(platform != Platform.ANDROID &&
-                        platform != Platform.IOS)
-                {
-                    Config.getInstance().setStartupWindowSize(
-                        width, height
-                    );
-                }
-
-
                 Config.getInstance().save();
 
                 clientListener.init();
+                clientListener.setupClientConnection();
 
             }
             catch(SevereException e)
