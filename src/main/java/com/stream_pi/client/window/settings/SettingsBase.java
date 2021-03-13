@@ -148,24 +148,6 @@ public class SettingsBase extends VBox {
         HBoxInputBox profilesPathInputBox = new HBoxInputBox("Profiles Path", profilesPathTextField, prefWidth);
         profilesPathInputBox.managedProperty().bind(profilesPathInputBox.visibleProperty());
 
-
-
-        com.stream_pi.util.platform.Platform platform = ClientInfo.getInstance().getPlatform();
-        if(platform == Platform.ANDROID ||
-                platform == Platform.IOS)
-        {
-            themesPathInputBox.setVisible(false);
-            iconsPathInputBox.setVisible(false);
-            profilesPathInputBox.setVisible(false);
-
-            startOnBootToggleButton.setVisible(false);
-            showCursorToggleButton.setVisible(false);
-        }
-        else
-        {
-            vibrateOnActionPressToggleButton.setVisible(false);
-        }
-
         checkForUpdatesButton = new Button("Check for updates");
         checkForUpdatesButton.setOnAction(event->checkForUpdates());
 
@@ -239,7 +221,31 @@ public class SettingsBase extends VBox {
         Button exitButton = new Button("Exit");
         exitButton.setOnAction(event -> onExitButtonClicked());
 
-        HBox buttonBar = new HBox(connectDisconnectButton, saveButton, exitButton, closeButton);
+        HBox buttonBar = new HBox(connectDisconnectButton, saveButton);
+
+
+
+        Platform platform = ClientInfo.getInstance().getPlatform();
+        if(platform == Platform.ANDROID ||
+                platform == Platform.IOS)
+        {
+            themesPathInputBox.setVisible(false);
+            iconsPathInputBox.setVisible(false);
+            profilesPathInputBox.setVisible(false);
+
+            startOnBootToggleButton.setVisible(false);
+            showCursorToggleButton.setVisible(false);
+        }
+        else
+        {
+            vibrateOnActionPressToggleButton.setVisible(false);
+            buttonBar.getChildren().add(exitButton);
+        }
+
+
+
+
+        buttonBar.getChildren().add(closeButton);
         buttonBar.getStyleClass().add("settings_button_bar");
 
 

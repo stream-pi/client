@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <javafx.version>16</javafx.version>
-        <client.plugin.version>0.1.36</client.plugin.version>
+        <client.plugin.version>0.1.38</client.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
 
         <action.api.version>1.0.0-SNAPSHOT</action.api.version>
@@ -177,7 +177,7 @@
             <id>ios</id>
             <properties>
                 <clientTarget>ios</clientTarget>
-                <additionalArgs>-Dsvm.targetName=ios</additionalArgs>
+                <additionalArgs>-Dsvm.targetName=iOS</additionalArgs>
             </properties>
         </profile>
 

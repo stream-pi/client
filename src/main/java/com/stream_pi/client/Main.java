@@ -22,23 +22,26 @@ public class Main extends Application {
 
 
     public static void main(String[] args) 
-    { 
-        for(String eachArg : args)
+    {
+        if(args.length == 2)
         {
-            String[] r = eachArg.split("=");
-            String arg = r[0];
-            String val = r[1];
+            for(String eachArg : args)
+            {
+                String[] r = eachArg.split("=");
+                String arg = r[0];
+                String val = r[1];
 
-            switch (arg) {
-                case "-DStreamPi.startupRunnerFileName":
-                    ClientInfo.getInstance().setRunnerFileName(val);
-                    break;
-                case "-DStreamPi.showShutDownButton":
-                    ClientInfo.getInstance().setShowShutDownButton(val.equals("true"));
-                    break;
-                case "-DStreamPi.isXMode":
-                    ClientInfo.getInstance().setXMode(val.equals("true"));
-                    break;
+                switch (arg) {
+                    case "-DStreamPi.startupRunnerFileName":
+                        ClientInfo.getInstance().setRunnerFileName(val);
+                        break;
+                    case "-DStreamPi.showShutDownButton":
+                        ClientInfo.getInstance().setShowShutDownButton(val.equals("true"));
+                        break;
+                    case "-DStreamPi.isXMode":
+                        ClientInfo.getInstance().setXMode(val.equals("true"));
+                        break;
+                }
             }
         }
 
