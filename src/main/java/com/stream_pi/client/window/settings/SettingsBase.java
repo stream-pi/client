@@ -58,6 +58,8 @@ public class SettingsBase extends VBox {
     private ToggleButton connectOnStartupToggleButton;
     private ToggleButton vibrateOnActionPressToggleButton;
 
+    private ToggleButton fullScreenModeToggleButton;
+
     private ToggleButton showCursorToggleButton;
 
     private ClientListener clientListener;
@@ -120,6 +122,9 @@ public class SettingsBase extends VBox {
         startOnBootToggleButton = new ToggleButton("Start On Boot");
         startOnBootToggleButton.managedProperty().bind(startOnBootToggleButton.visibleProperty());
 
+        fullScreenModeToggleButton = new ToggleButton("Full Screen");
+        fullScreenModeToggleButton.managedProperty().bind(fullScreenModeToggleButton.visibleProperty());
+
         vibrateOnActionPressToggleButton = new ToggleButton("Vibrate On Action Press");
         vibrateOnActionPressToggleButton.managedProperty().bind(vibrateOnActionPressToggleButton.visibleProperty());
 
@@ -170,24 +175,6 @@ public class SettingsBase extends VBox {
                 profilesPathInputBox
         );
 
-        if(ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.LINUX &&
-                ClientInfo.getInstance().isShowShutDownButton())
-        {
-
-            shutdownButton = new Button("Shutdown");
-            shutdownButton.setOnAction(event -> onShutdownButtonClicked());
-            vBox.getChildren().add(shutdownButton);
-        }
-
-        vBox.getChildren().addAll(
-                connectOnStartupToggleButton,
-                vibrateOnActionPressToggleButton,
-                checkForUpdatesButton,
-                startOnBootToggleButton,
-                showCursorToggleButton,
-                licenseLabel,
-                versionLabel
-        );
 
         vBox.getStyleClass().add("settings_base_vbox");
 
@@ -223,6 +210,22 @@ public class SettingsBase extends VBox {
 
         HBox buttonBar = new HBox(connectDisconnectButton, saveButton);
 
+        shutdownButton = new Button("Shutdown");
+        shutdownButton.managedProperty().bind(shutdownButton.visibleProperty());
+        shutdownButton.setOnAction(event -> onShutdownButtonClicked());
+
+
+        vBox.getChildren().addAll(
+                shutdownButton,
+                fullScreenModeToggleButton,
+                connectOnStartupToggleButton,
+                vibrateOnActionPressToggleButton,
+                checkForUpdatesButton,
+                startOnBootToggleButton,
+                showCursorToggleButton,
+                licenseLabel,
+                versionLabel
+        );
 
 
         Platform platform = ClientInfo.getInstance().getPlatform();
@@ -235,11 +238,22 @@ public class SettingsBase extends VBox {
 
             startOnBootToggleButton.setVisible(false);
             showCursorToggleButton.setVisible(false);
+            fullScreenModeToggleButton.setVisible(false);
         }
         else
         {
+            if(!ClientInfo.getInstance().isShowShutDownButton())
+            {
+                shutdownButton.setVisible(false);
+            }
+
             vibrateOnActionPressToggleButton.setVisible(false);
             buttonBar.getChildren().add(exitButton);
+        }
+
+        if(!ClientInfo.getInstance().isShowFullScreenToggleButton())
+        {
+            fullScreenModeToggleButton.setVisible(false);
         }
 
 
@@ -397,6 +411,7 @@ public class SettingsBase extends VBox {
         profilesPathTextField.setText(config.getProfilesPath());
 
         startOnBootToggleButton.setSelected(config.isStartOnBoot());
+        fullScreenModeToggleButton.setSelected(config.getIsFullScreenMode());
 
         showCursorToggleButton.setSelected(config.isShowCursor());
 
@@ -469,6 +484,18 @@ public class SettingsBase extends VBox {
 
             config.setServerPort(port);
             config.setServerHostNameOrIP(serverHostNameOrIPTextField.getText());
+
+            boolean isFullScreen = fullScreenModeToggleButton.isSelected();
+
+            if(config.getIsFullScreenMode() != isFullScreen)
+            {
+                toBeReloaded = true;
+            }
+
+            config.setIsFullScreenMode(isFullScreen);
+
+
+
 
             boolean startOnBoot = startOnBootToggleButton.isSelected();
 

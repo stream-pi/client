@@ -27,7 +27,8 @@ import com.stream_pi.util.xmlconfighelper.XMLConfigHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class Config {
+public class Config
+{
     private static Config instance = null;
 
     private final File configFile;
@@ -311,6 +312,11 @@ public class Config {
         return XMLConfigHelper.getBooleanProperty(getOthersElement(), "connect-on-startup", false, false, true, document, configFile);
     }
 
+    public boolean getIsFullScreenMode()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "full-screen-mode", false, false, true, document, configFile);
+    }
+
 
     public void setStartOnBoot(boolean value)
     {
@@ -340,6 +346,11 @@ public class Config {
     public void setConnectOnStartup(boolean value)
     {
         getOthersElement().getElementsByTagName("connect-on-startup").item(0).setTextContent(value+"");
+    }
+
+    public void setIsFullScreenMode(boolean value)
+    {
+        getOthersElement().getElementsByTagName("full-screen-mode").item(0).setTextContent(value+"");
     }
 
 }

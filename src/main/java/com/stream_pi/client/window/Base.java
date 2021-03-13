@@ -306,6 +306,18 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     public void setupFlags()
     {
+        //Full Screen
+        if(getConfig().getIsFullScreenMode())
+        {
+            getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+            getStage().setFullScreen(true);
+        }
+        else
+        {
+            getStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
+            getStage().setFullScreen(false);
+        }
+
         //Cursor
         if(getConfig().isShowCursor())
         {

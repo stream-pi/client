@@ -50,14 +50,10 @@ public class Controller extends Base
             if(firstRun)
                 initBase();
 
-            //Full Screen
 
-
-            if(getClientInfo().getPlatform()!= com.stream_pi.util.platform.Platform.ANDROID)
+            if(getClientInfo().getPlatform() != com.stream_pi.util.platform.Platform.ANDROID)
             {
                 getStage().centerOnScreen();
-                getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-                getStage().setFullScreen(true);
                 setupFlags();
             }
 

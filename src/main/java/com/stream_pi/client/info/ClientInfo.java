@@ -154,4 +154,17 @@ public class ClientInfo {
     {
         return commStandardVersion;
     }
+
+
+    private boolean showFullScreenToggleButton = true;
+
+    public boolean isShowFullScreenToggleButton()
+    {
+        return showFullScreenToggleButton;
+    }
+
+    public void setShowFullScreenToggleButton(boolean showFullScreenToggleButton)
+    {
+        this.showFullScreenToggleButton = showFullScreenToggleButton;
+    }
 }
