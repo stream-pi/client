@@ -163,6 +163,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         getChildren().clear();
         getChildren().addAll(alertStackPane);
 
+        if(getClientInfo().isPhone())
+        {
+            dashboardBase.setPadding(new Insets(10));
+            settingsBase.setPadding(new Insets(10));
+        }
+
         initLogger();
 
         checkPrePathDirectory();
@@ -199,7 +205,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     private void resizeAccordingToResolution()
     {
-        if(ClientInfo.getInstance().getPlatform() != Platform.ANDROID)
+        if(getClientInfo().isPhone())
         {
             double height = getScreenHeight();
             double width = getScreenWidth();
@@ -217,7 +223,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     @Override
     public double getStageWidth()
     {
-        if(ClientInfo.getInstance().getPlatform() == Platform.ANDROID)
+        if(getClientInfo().isPhone())
         {
             return getScreenWidth();
         }

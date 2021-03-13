@@ -228,6 +228,32 @@ public class SettingsBase extends VBox {
         );
 
 
+
+
+
+
+        buttonBar.getChildren().add(closeButton);
+        buttonBar.getStyleClass().add("settings_button_bar");
+
+
+        buttonBar.setPadding(new Insets(0,5,5,0));
+        buttonBar.setSpacing(5.0);
+        buttonBar.setAlignment(Pos.CENTER_RIGHT);
+
+        setSpacing(5.0);
+
+        getChildren().addAll(
+                settingsLabel,
+                scrollPane,
+                buttonBar
+        );
+
+        setCache(true);
+        setCacheHint(CacheHint.SPEED);
+
+
+        //Perform platform checks
+
         Platform platform = ClientInfo.getInstance().getPlatform();
         if(platform == Platform.ANDROID ||
                 platform == Platform.IOS)
@@ -255,28 +281,6 @@ public class SettingsBase extends VBox {
         {
             fullScreenModeToggleButton.setVisible(false);
         }
-
-
-
-
-        buttonBar.getChildren().add(closeButton);
-        buttonBar.getStyleClass().add("settings_button_bar");
-
-
-        buttonBar.setPadding(new Insets(0,5,5,0));
-        buttonBar.setSpacing(5.0);
-        buttonBar.setAlignment(Pos.CENTER_RIGHT);
-
-        setSpacing(5.0);
-
-        getChildren().addAll(
-                settingsLabel,
-                scrollPane,
-                buttonBar
-        );
-
-        setCache(true);
-        setCacheHint(CacheHint.SPEED);
     }
 
     private void checkForUpdates()
