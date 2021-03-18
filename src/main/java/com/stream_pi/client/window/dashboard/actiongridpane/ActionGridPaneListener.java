@@ -9,4 +9,5 @@ public interface ActionGridPaneListener {
 
     void normalActionClicked(String ID);
     void combineActionClicked(String ID);
+    void toggleActionClicked(String ID, boolean toggleState);
 }

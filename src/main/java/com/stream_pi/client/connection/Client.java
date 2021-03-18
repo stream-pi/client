@@ -230,14 +230,16 @@ public class Client extends Thread{
         }
     }
 
-    private void onActionIconReceived(Message message)
+    private void onActionIconReceived(Message message) throws MinorException
     {
         String profileID = message.getStringArrValue()[0];
         String actionID = message.getStringArrValue()[1];
+        String state = message.getStringArrValue()[2];
 
         clientListener.getClientProfiles().getProfileFromID(profileID).saveActionIcon(
                 actionID,
-                message.getByteArrValue()
+                message.getByteArrValue(),
+                state
         );
 
         Action a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
@@ -248,7 +250,7 @@ public class Client extends Thread{
 
     //commands
 
-    public synchronized void sendIcon(String profileID, String actionID, byte[] icon) throws SevereException
+    public synchronized void sendIcon(String profileID, String actionID, String state, byte[] icon) throws SevereException
     {
         try
         {
@@ -260,7 +262,7 @@ public class Client extends Thread{
         }
 
         Message message = new Message("action_icon");
-        message.setStringArrValue(profileID, actionID);
+        message.setStringArrValue(profileID, actionID, state);
         message.setByteArrValue(icon);
         sendMessage(message);
     }
@@ -322,10 +324,14 @@ public class Client extends Thread{
     }
 
 
-    public void sendActionIcon(String clientProfileID, String actionID) throws SevereException
+    public void sendActionIcon(String clientProfileID, String actionID, String state) throws SevereException
     {
-        System.out.println("sending action icon "+clientProfileID+", "+actionID);
-        sendIcon(clientProfileID, actionID, clientListener.getClientProfiles().getProfileFromID(clientProfileID).getActionFromID(actionID).getIconAsByteArray());
+        sendIcon(clientProfileID,
+                actionID,
+                state,
+                clientListener.getClientProfiles()
+                        .getProfileFromID(clientProfileID)
+                        .getActionFromID(actionID).getIcon(state));
     }
 
     public void serverDisconnected(Message message)
@@ -429,7 +435,10 @@ public class Client extends Thread{
         {
             if(action.isHasIcon())
             {
-                sendActionIcon(clientProfile.getID(), action.getID());
+                for(String key : action.getIcons().keySet())
+                {
+                    sendActionIcon(clientProfile.getID(), action.getID(), key);
+                }
             }
         }
 
@@ -471,8 +480,17 @@ public class Client extends Thread{
         a.add(action.getBgColourHex());
 
         //icon
-        a.add(action.isHasIcon()+"");
-        a.add(action.isShowIcon()+"");
+
+
+        StringBuilder allIconStatesNames = new StringBuilder();
+        for(String eachState : action.getIcons().keySet())
+        {
+            allIconStatesNames.append(eachState).append("::");
+        }
+        a.add(allIconStatesNames.toString());
+
+
+        a.add(action.getCurrentIconState()+"");
 
         //text
         a.add(action.isShowDisplayText()+"");
@@ -536,9 +554,8 @@ public class Client extends Thread{
         //display
         String bgColorHex = r[5];
 
-        //icon
-        boolean isHasIcon = r[6].equals("true");
-        boolean isShowIcon = r[7].equals("true");
+        String[] iconStates = r[6].split("::");
+        String currentIconState = r[7];
 
         //text
         boolean isShowDisplayText = r[8].equals("true");
@@ -571,16 +588,11 @@ public class Client extends Thread{
 
         action.setBgColourHex(bgColorHex);
 
-        action.setShowIcon(isShowIcon);
-        action.setHasIcon(isHasIcon);
-
-        System.out.println("IS HAS ICON : "+isHasIcon+", IS SHOW ICON :"+isShowIcon);
-
-
         action.setShowDisplayText(isShowDisplayText);
         action.setDisplayTextFontColourHex(displayFontColor);
         action.setDisplayText(displayText);
         action.setDisplayTextAlignment(displayTextAlignment);
+        action.setCurrentIconState(currentIconState);
 
 
         action.setLocation(location);
@@ -617,13 +629,23 @@ public class Client extends Thread{
             
             if(old != null)
             {
-                if(isHasIcon)
-                    action.setIcon(clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID()).getIconAsByteArray());
-                else
+                for(String oldState : old.getIcons().keySet())
                 {
-                    if(old.isHasIcon())
+                    boolean isPresent = false;
+                    for(String state : iconStates)
                     {
-                        new File(Config.getInstance().getIconsPath()+"/"+actionID).delete();
+                        if(state.equals(oldState))
+                        {
+                            isPresent = true;
+                            break;
+                        }
+                    }
+
+                    if(!isPresent)
+                    {
+                        // State no longer exists. Delete.
+
+                        new File(Config.getInstance().getIconsPath()+"/"+actionID+"___"+oldState).delete();
                     }
                 }
             }
@@ -794,12 +816,15 @@ public class Client extends Thread{
         }
     }
 
-    public void onActionClicked(String profileID, String actionID) throws SevereException
+    public void onActionClicked(String profileID, String actionID,
+                                boolean isToggle, boolean toggleState) throws SevereException
     {
         Message m = new Message("action_clicked");
-        m.setStringArrValue(profileID, actionID);
+        m.setStringArrValue(profileID, actionID, isToggle+"", toggleState+"");
         sendMessage(m);
     }
+
+
 
     public void actionFailed(Message message)
     {

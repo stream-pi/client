@@ -141,8 +141,18 @@ public class ActionBox extends StackPane{
                 {
                     getActionGridPaneListener().normalActionClicked(action.getID());
                 }
+                else if(action.getActionType() == ActionType.TOGGLE)
+                {
+                    toggle();
+                    getActionGridPaneListener().toggleActionClicked(action.getID(), getCurrentStatus());
+                }
             }
         }
+    }
+
+    private boolean getCurrentStatus()
+    {
+        return currentStatus;
     }
 
     private Timeline statusIconAnimation;
@@ -258,16 +268,117 @@ public class ActionBox extends StackPane{
         setDisplayTextAlignment(action.getDisplayTextAlignment());
         setBackgroundColour(action.getBgColourHex());
 
-        if(action.isHasIcon() && action.isShowIcon())
+        try {
+            if(action.getActionType() == ActionType.TOGGLE)
+            {
+                toggle(false);
+            }
+            else
+            {
+                if(action.isHasIcon() && action.isShowIcon())
+                {
+                    setIcon(action.getDefaultIcon());
+                }
+                else
+                {
+                    setIcon(null);
+                }
+            }
+        }
+        catch (Exception e)
         {
-            setIcon(action.getIconAsByteArray());
+            e.printStackTrace();
+        }
+    }
+
+    private boolean currentStatus = false;
+
+    private void toggle()
+    {
+        currentStatus = !currentStatus;
+
+        toggle(currentStatus);
+    }
+
+    private void toggle(boolean isON)
+    {
+        if(isON) // ON
+        {
+            if(action.isHasIcon())
+            {
+                boolean isToggleOnPresent = action.getIcons().containsKey("toggle_on");
+                boolean isToggleOnHidden = action.getCurrentIconState().contains("toggle_on");
+
+                if(isToggleOnPresent)
+                {
+                    if(isToggleOnHidden)
+                    {
+                        setDefaultToggleIcon(true);
+                    }
+                    else
+                    {
+                        setIcon(action.getIcons().get("toggle_on"));
+                    }
+                }
+                else
+                {
+                    setDefaultToggleIcon(true);
+                }
+            }
+            else
+            {
+                setDefaultToggleIcon(true);
+            }
+        }
+        else // OFF
+        {
+            if(action.isHasIcon())
+            {
+                boolean isToggleOffPresent = action.getIcons().containsKey("toggle_off");
+                boolean isToggleOffHidden = action.getCurrentIconState().contains("toggle_off");
+
+                if(isToggleOffPresent)
+                {
+                    if(isToggleOffHidden)
+                    {
+                        setDefaultToggleIcon(false);
+                    }
+                    else
+                    {
+                        setIcon(action.getIcons().get("toggle_off"));
+                    }
+                }
+                else
+                {
+                    setDefaultToggleIcon(false);
+                }
+            }
+            else
+            {
+                setDefaultToggleIcon(false);
+            }
+        }
+    }
+
+
+    public void setDefaultToggleIcon(boolean isToggleOn)
+    {
+        setBackground(null);
+
+        String styleClass;
+
+        if(isToggleOn)
+        {
+            styleClass = "action_box_toggle_on";
         }
         else
         {
-            setIcon(null);
+            styleClass = "action_box_toggle_off";
         }
 
-
+        FontIcon fontIcon = new FontIcon();
+        fontIcon.getStyleClass().add(styleClass);
+        fontIcon.setIconSize((int) (size * 0.8));
     }
 
     public void animateStatus()
@@ -309,7 +420,7 @@ public class ActionBox extends StackPane{
     public void setBackgroundColour(String colour)
     {
         System.out.println("COLOr : "+colour);
-        if(!colour.isEmpty() && action.getIconAsByteArray() == null)
+        if(!colour.isEmpty())
             setStyle("-fx-background-color : "+colour);
     }
 }

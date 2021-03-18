@@ -172,7 +172,7 @@ public class ClientProfile implements Cloneable{
     
                     Element eachPropertyElement = (Element) eachPropertyNode;
     
-                    if(eachPropertyElement.getNodeName() != "property")
+                    if(!eachPropertyElement.getNodeName().equals("property"))
                         continue;
     
                     
@@ -219,8 +219,45 @@ public class ClientProfile implements Cloneable{
 
                 Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
                 
-                boolean showIcon = XMLConfigHelper.getBooleanProperty(iconElement, "show");
-                boolean hasIcon = XMLConfigHelper.getBooleanProperty(iconElement, "has");
+                //boolean showIcon = XMLConfigHelper.getBooleanProperty(iconElement, "show");
+                //boolean hasIcon = XMLConfigHelper.getBooleanProperty(iconElement, "has");
+
+                String currentIconState = XMLConfigHelper.getStringProperty(iconElement, "current-state");
+
+                action.setCurrentIconState(currentIconState);
+
+                Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
+
+                NodeList statesNodeList = statesElements.getChildNodes();
+
+                for (int i = 0;i<statesNodeList.getLength();i++)
+                {
+                    Node eachStateNode = statesNodeList.item(i);
+
+                    if(eachStateNode.getNodeType() != Node.ELEMENT_NODE)
+                        continue;
+
+                    Element eachIconStateElement = (Element) eachStateNode;
+
+                    if(!eachIconStateElement.getNodeName().equals("state"))
+                        continue;
+
+                    String state = eachIconStateElement.getTextContent();
+
+                    File f = new File(iconsPath+"/"+id+"___"+state);
+
+                    try
+                    {
+                        byte[] iconFileByteArray = Files.readAllBytes(f.toPath());
+                        action.addIcon(state, iconFileByteArray);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+
 
                 Element textElement = (Element) displayElement.getElementsByTagName("text").item(0);
             
@@ -230,8 +267,6 @@ public class ClientProfile implements Cloneable{
 
 
                 action.setDisplayTextAlignment(displayTextAlignment);
-                action.setShowIcon(showIcon);
-                action.setHasIcon(hasIcon);
                 action.setShowDisplayText(showText);
 
                 action.setDisplayTextFontColourHex(displayTextFontColour);
@@ -240,27 +275,6 @@ public class ClientProfile implements Cloneable{
                 String displayText = XMLConfigHelper.getStringProperty(textElement, "display-text");
 
                 action.setDisplayText(displayText);
-
-
-
-                if(hasIcon)
-                {
-                    File f = new File(iconsPath+"/"+id);
-
-                    try
-                    {
-                        byte[] iconFileByteArray = Files.readAllBytes(f.toPath());
-                        action.setIcon(iconFileByteArray);
-                    }
-                    catch(NoSuchFileException e)
-                    {
-                        action.setIcon(null);
-                        action.setHasIcon(false);
-                        action.setShowIcon(false);
-                        saveAction(action);
-                    }
-                }
-
 
 
                 addAction(action);
@@ -397,14 +411,26 @@ public class ClientProfile implements Cloneable{
 
 
         Element iconElement = document.createElement("icon");
-    
-        Element iconShowElement = document.createElement("show");
-        iconShowElement.setTextContent(action.isShowIcon()+"");
-        iconElement.appendChild(iconShowElement);
 
-        Element iconHasElement = document.createElement("has");
-        iconHasElement.setTextContent(action.isHasIcon()+"");
-        iconElement.appendChild(iconHasElement);
+
+        Element currentIconStateElement = document.createElement("current-state");
+        currentIconStateElement.setTextContent(action.getCurrentIconState());
+        iconElement.appendChild(currentIconStateElement);
+
+
+
+        Element iconStatesElement = document.createElement("states");
+
+        for(String state : action.getIcons().keySet())
+        {
+            Element eachStateElement = document.createElement("state");
+            eachStateElement.setTextContent(state);
+            iconStatesElement.appendChild(eachStateElement);
+        }
+
+        iconElement.appendChild(iconStatesElement);
+
+
 
         backgroundElement.appendChild(iconElement);
 
@@ -498,12 +524,14 @@ public class ClientProfile implements Cloneable{
         return -1;
     }
     
-    public void saveActionIcon(String actionID, byte[] array){
+    public void saveActionIcon(String actionID, byte[] array, String state) throws MinorException
+    {
         int index = getActionIndexInConfig(actionID);
 
-        getActionFromID(actionID).setIcon(array);
+        getActionFromID(actionID).addIcon(state, array);
 
-        File iconFile = new File(iconsPath+"/"+actionID);
+
+        File iconFile = new File(iconsPath+"/"+actionID+"___"+state);
         if(iconFile.exists())
         {
             boolean result = iconFile.delete();
@@ -523,8 +551,11 @@ public class ClientProfile implements Cloneable{
             Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
             Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
 
-            Element hasElement = (Element) iconElement.getElementsByTagName("has").item(0);
-            hasElement.setTextContent("true");
+            Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
+
+            Element stateElement = document.createElement("state");
+            stateElement.setTextContent(state);
+            statesElements.appendChild(statesElements);
 
             save();
         }

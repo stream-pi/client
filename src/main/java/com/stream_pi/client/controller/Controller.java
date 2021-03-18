@@ -295,20 +295,23 @@ public class Controller extends Base
     }
 
     @Override
-    public void onNormalActionClicked(String profileID, String actionID) {
+    public void onActionClicked(String profileID, String actionID, boolean isToggle, boolean toggleState) {
         try {
 
-            //Vibrate for android/iOS
+            vibratePhone();
 
-            if(getConfig().isVibrateOnActionClicked())
-            {
-                VibrationService.create().ifPresent(VibrationService::vibrate);
-            }
-
-            client.onActionClicked(profileID, actionID);
+            client.onActionClicked(profileID, actionID, isToggle, toggleState);
         } catch (SevereException e) {
             e.printStackTrace();
             handleSevereException(e);
+        }
+    }
+
+    public void vibratePhone()
+    {
+        if(getConfig().isVibrateOnActionClicked())
+        {
+            VibrationService.create().ifPresent(VibrationService::vibrate);
         }
     }
 
