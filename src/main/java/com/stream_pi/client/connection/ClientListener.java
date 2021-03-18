@@ -11,7 +11,7 @@ import com.stream_pi.util.exception.SevereException;
 public interface ClientListener
 {
     void onActionFailed(String profileID, String actionID);
-    void onActionClicked(String profileID, String actionID, boolean isToggle, boolean toggleState);
+    void onActionClicked(String profileID, String actionID, boolean toggleState);
     ClientProfiles getClientProfiles();
 
     Themes getThemes();

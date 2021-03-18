@@ -358,7 +358,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
     public void normalActionClicked(String ID) {
         if(clientListener.isConnected())
         {
-            clientListener.onActionClicked(getClientProfile().getID(), ID, false, false);
+            clientListener.onActionClicked(getClientProfile().getID(), ID, false);
         }
         else
             exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
@@ -394,7 +394,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
     @Override
     public void toggleActionClicked(String ID, boolean toggleState) {
         if(clientListener.isConnected())
-            clientListener.onActionClicked(getClientProfile().getID(), ID, true, toggleState);
+            clientListener.onActionClicked(getClientProfile().getID(), ID, toggleState);
         else
             exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
     }

@@ -295,12 +295,13 @@ public class Controller extends Base
     }
 
     @Override
-    public void onActionClicked(String profileID, String actionID, boolean isToggle, boolean toggleState) {
+    public void onActionClicked(String profileID, String actionID, boolean toggleState)
+    {
         try {
 
             vibratePhone();
 
-            client.onActionClicked(profileID, actionID, isToggle, toggleState);
+            client.onActionClicked(profileID, actionID, toggleState);
         } catch (SevereException e) {
             e.printStackTrace();
             handleSevereException(e);

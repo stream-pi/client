@@ -816,11 +816,10 @@ public class Client extends Thread{
         }
     }
 
-    public void onActionClicked(String profileID, String actionID,
-                                boolean isToggle, boolean toggleState) throws SevereException
+    public void onActionClicked(String profileID, String actionID, boolean toggleState) throws SevereException
     {
         Message m = new Message("action_clicked");
-        m.setStringArrValue(profileID, actionID, isToggle+"", toggleState+"");
+        m.setStringArrValue(profileID, actionID, toggleState+"");
         sendMessage(m);
     }
 

@@ -49,6 +49,7 @@ public class ActionBox extends StackPane{
         setAction(null);
         getStyleClass().clear();
         setBackground(Background.EMPTY);
+        removeFontIcon();
         getChildren().clear();
         baseInit();
     }
@@ -191,6 +192,8 @@ public class ActionBox extends StackPane{
 
     public void setIcon(byte[] iconByteArray)
     {
+        removeFontIcon();
+
         if(iconByteArray == null)
         { 
             getStyleClass().remove("action_box_icon_present");
@@ -363,8 +366,6 @@ public class ActionBox extends StackPane{
 
     public void setDefaultToggleIcon(boolean isToggleOn)
     {
-        setBackground(null);
-
         String styleClass;
 
         if(isToggleOn)
@@ -376,10 +377,27 @@ public class ActionBox extends StackPane{
             styleClass = "action_box_toggle_off";
         }
 
-        FontIcon fontIcon = new FontIcon();
+        setBackground(null);
+        removeFontIcon();
+
+        fontIcon = new FontIcon();
         fontIcon.getStyleClass().add(styleClass);
         fontIcon.setIconSize((int) (size * 0.8));
+
+        getChildren().add(fontIcon);
+        fontIcon.toBack();
     }
+
+    public void removeFontIcon()
+    {
+        if(fontIcon!=null)
+        {
+            getChildren().remove(fontIcon);
+            fontIcon = null;
+        }
+    }
+
+    FontIcon fontIcon = null;
 
     public void animateStatus()
     {
