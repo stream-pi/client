@@ -278,9 +278,13 @@ public class ActionBox extends StackPane{
             }
             else
             {
-                if(action.isHasIcon() && action.isShowIcon())
+                System.out.println("XXXX : "+ action.isShowIcon()+", 22xx2 : "+action.isHasIcon());
+                if(action.isHasIcon())
                 {
-                    setIcon(action.getDefaultIcon());
+                    if(!action.getCurrentIconState().isBlank())
+                    {
+                        setIcon(action.getCurrentIcon());
+                    }
                 }
                 else
                 {

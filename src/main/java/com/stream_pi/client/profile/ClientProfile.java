@@ -367,6 +367,13 @@ public class ClientProfile implements Cloneable{
 
     public void saveAction(Action action) throws Exception {
 
+        int ind = getActionIndexInConfig(action.getID());
+        if(ind != -1)
+        {
+            Element actionElement = (Element) getActionsElement().getElementsByTagName("action").item(ind);
+            getActionsElement().removeChild(actionElement);
+        }
+
         Element newActionElement = document.createElement("action");
         getActionsElement().appendChild(newActionElement);
 
@@ -528,6 +535,8 @@ public class ClientProfile implements Cloneable{
     {
         int index = getActionIndexInConfig(actionID);
 
+        logger.info("INDEXXXX : "+index);
+
         getActionFromID(actionID).addIcon(state, array);
 
 
@@ -545,7 +554,10 @@ public class ClientProfile implements Cloneable{
             outputStream.flush();
             outputStream.close();
 
+
             Element actionElement = (Element) getActionsElement().getElementsByTagName("action").item(index);
+
+            getActionsElement().removeChild(actionElement);
 
             Element displayElement = (Element) actionElement.getElementsByTagName("display").item(0);
             Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
@@ -555,7 +567,10 @@ public class ClientProfile implements Cloneable{
 
             Element stateElement = document.createElement("state");
             stateElement.setTextContent(state);
-            statesElements.appendChild(statesElements);
+
+            statesElements.appendChild(stateElement);
+
+            getActionsElement().appendChild(actionElement);
 
             save();
         }
