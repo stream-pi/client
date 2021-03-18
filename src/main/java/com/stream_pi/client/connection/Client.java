@@ -458,7 +458,8 @@ public class Client extends Thread{
         a.add(action.getID());
         a.add(action.getActionType()+"");
 
-        if(action.getActionType() == ActionType.NORMAL) {
+        if(action.getActionType() == ActionType.NORMAL ||
+                action.getActionType() == ActionType.TOGGLE) {
             a.add(action.getVersion().getText());
         }
         else
@@ -466,7 +467,8 @@ public class Client extends Thread{
             a.add("no");
         }
 
-        if(action.getActionType() ==ActionType.NORMAL)
+        if(action.getActionType() ==ActionType.NORMAL ||
+                action.getActionType() == ActionType.TOGGLE)
         {
             a.add(action.getModuleName());
         }
