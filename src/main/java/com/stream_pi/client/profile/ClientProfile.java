@@ -626,10 +626,29 @@ public class ClientProfile implements Cloneable{
             Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
             Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
 
-            if(XMLConfigHelper.getBooleanProperty(iconElement, "has"))
+            Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
+
+            NodeList statesNodeList = statesElements.getChildNodes();
+
+            for (int i = 0;i<statesNodeList.getLength();i++)
             {
-                new File(iconsPath+"/"+ID).delete();
+                Node eachStateNode = statesNodeList.item(i);
+
+                if(eachStateNode.getNodeType() != Node.ELEMENT_NODE)
+                    continue;
+
+                Element eachIconStateElement = (Element) eachStateNode;
+
+                if(!eachIconStateElement.getNodeName().equals("state"))
+                    continue;
+
+                String state = eachIconStateElement.getTextContent();
+
+                new File(iconsPath+"/"+ID+"___"+state).delete();
             }
+
+
+
             actions.remove(ID);
         }
 
