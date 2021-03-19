@@ -153,15 +153,15 @@ public class ActionBox extends StackPane{
                 else if(action.getActionType() == ActionType.TOGGLE)
                 {
                     toggle();
-                    getActionGridPaneListener().toggleActionClicked(action.getID(), getCurrentStatus());
+                    getActionGridPaneListener().toggleActionClicked(action.getID(), getCurrentToggleStatus());
                 }
             }
         }
     }
 
-    private boolean getCurrentStatus()
+    public boolean getCurrentToggleStatus()
     {
-        return currentStatus;
+        return currentToggleStatus;
     }
 
     private Timeline statusIconAnimation;
@@ -306,23 +306,32 @@ public class ActionBox extends StackPane{
         }
     }
 
-    private boolean currentStatus = false;
+    private boolean currentToggleStatus = false;
 
-    private void toggle()
+    public void setCurrentToggleStatus(boolean currentToggleStatus)
     {
-        currentStatus = !currentStatus;
-
-        toggle(currentStatus);
+        this.currentToggleStatus = currentToggleStatus;
     }
 
-    private void toggle(boolean isON)
+    public void toggle()
     {
+        setCurrentToggleStatus(!getCurrentToggleStatus());
+
+        toggle(currentToggleStatus);
+    }
+
+    public void toggle(boolean isON)
+    {
+        String[] toggleStatesHiddenStatus = action.getCurrentIconState().split("__");
+
+        boolean isToggleOffHidden = toggleStatesHiddenStatus[0].equals("true");
+        boolean isToggleOnHidden = toggleStatesHiddenStatus[1].equals("true");
+
         if(isON) // ON
         {
             if(action.isHasIcon())
             {
                 boolean isToggleOnPresent = action.getIcons().containsKey("toggle_on");
-                boolean isToggleOnHidden = action.getCurrentIconState().contains("toggle_on");
 
                 if(isToggleOnPresent)
                 {
@@ -350,7 +359,6 @@ public class ActionBox extends StackPane{
             if(action.isHasIcon())
             {
                 boolean isToggleOffPresent = action.getIcons().containsKey("toggle_off");
-                boolean isToggleOffHidden = action.getCurrentIconState().contains("toggle_off");
 
                 if(isToggleOffPresent)
                 {
@@ -389,12 +397,14 @@ public class ActionBox extends StackPane{
             styleClass = "action_box_toggle_off";
         }
 
-        setBackground(null);
-        removeFontIcon();
 
+        setBackground(null);
+
+        removeFontIcon();
         fontIcon = new FontIcon();
         fontIcon.getStyleClass().add(styleClass);
         fontIcon.setIconSize((int) (size * 0.8));
+
 
         getChildren().add(fontIcon);
         fontIcon.toBack();

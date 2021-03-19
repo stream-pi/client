@@ -52,4 +52,6 @@ public interface ClientListener
 
     double getStageWidth();
     double getStageHeight();
+
+    void onDisconnect();
 }

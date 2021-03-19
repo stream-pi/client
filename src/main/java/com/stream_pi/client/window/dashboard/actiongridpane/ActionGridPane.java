@@ -3,6 +3,7 @@ package com.stream_pi.client.window.dashboard.actiongridpane;
 import java.util.logging.Logger;
 
 import com.stream_pi.action_api.action.Action;
+import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.Location;
 import com.stream_pi.client.connection.ClientListener;
 import com.stream_pi.client.profile.ClientProfile;
@@ -272,6 +273,25 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
         add(actionBox, row, col);
         return actionBox;
+    }
+
+    public void toggleOffAllToggleActions()
+    {
+        for(Node each : getChildren())
+        {
+            if(each instanceof ActionBox)
+            {
+                ActionBox eachActionBox = (ActionBox) each;
+
+                if(eachActionBox.getAction().getActionType() == ActionType.TOGGLE)
+                {
+                    if(eachActionBox.getCurrentToggleStatus()) // ON
+                    {
+                        eachActionBox.toggle();
+                    }
+                }
+            }
+        }
     }
 
     public void renderAction(Action action) throws SevereException, MinorException

@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
-public class Client extends Thread{
+public class Client extends Thread
+{
 
     private Socket socket;
 
@@ -163,6 +164,9 @@ public class Client extends Thread{
                         case "get_client_details" :     sendClientDetails();
                             break;
 
+                        case "get_client_screen_details" : sendClientScreenDetails();
+                            break;
+
                         case "get_profiles" :           sendProfileNamesToServer();
                             break;
 
@@ -201,6 +205,7 @@ public class Client extends Thread{
 
                     clientListener.setConnected(false);
                     clientListener.updateSettingsConnectDisconnectButton();
+                    clientListener.onDisconnect();
 
                     if(!stop.get())
                     {
@@ -355,7 +360,22 @@ public class Client extends Thread{
         }
 
         clientListener.setConnected(false);
+        clientListener.onDisconnect();
         clientListener.updateSettingsConnectDisconnectButton();
+    }
+
+    public void sendClientScreenDetails() throws SevereException
+    {
+        String screenWidth = clientListener.getStageWidth() + "";
+        String screenHeight = clientListener.getStageHeight() + "";
+
+        Message toBeSent = new Message("client_screen_details");
+        toBeSent.setStringArrValue(
+                screenWidth,
+                screenHeight
+        );
+
+        sendMessage(toBeSent);
     }
 
     public void sendClientDetails() throws SevereException
@@ -408,6 +428,7 @@ public class Client extends Thread{
     public void sendProfileDetailsToServer(Message message) throws SevereException
     {
         String ID = message.getStringValue();
+        logger.info("IDDDD : "+ID);
 
         Message tbs1 = new Message("profile_details");
 

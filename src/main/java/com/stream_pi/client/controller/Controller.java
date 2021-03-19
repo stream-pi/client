@@ -22,6 +22,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCombination;
 import javafx.util.Duration;
@@ -110,6 +111,21 @@ public class Controller extends Base
                 firstRun = false;
             }
 
+
+            ChangeListener<Number> windowResizeListener = (observableValue, number, t1) -> {
+                if(isConnected())
+                {
+                    try {
+                        client.sendClientScreenDetails();
+                    } catch (SevereException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            getStage().widthProperty().addListener(windowResizeListener);
+            getStage().heightProperty().addListener(windowResizeListener);
+
         }
         catch (SevereException e)
         {
@@ -170,6 +186,11 @@ public class Controller extends Base
             e.printStackTrace();
             handleSevereException(e);
         }
+    }
+
+    @Override
+    public void onDisconnect() {
+        getDashboardPane().getActionGridPane().toggleOffAllToggleActions();
     }
 
 
@@ -369,6 +390,8 @@ public class Controller extends Base
             }
         });
     }
+
+
 
     @Override
     public void refreshGridIfCurrentProfile(String profileID) {
