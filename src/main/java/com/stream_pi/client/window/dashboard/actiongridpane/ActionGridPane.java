@@ -22,7 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class ActionGridPane extends GridPane implements ActionGridPaneListener {
+public class ActionGridPane extends GridPane implements ActionGridPaneListener
+{
 
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
 
@@ -265,7 +266,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
 
     public ActionBox addBlankActionBox(int col, int row)
     {
-        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), this, row, col);
+        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), exceptionAndAlertHandler, this, row, col);
 
         actionBox.setStreamPiParent(currentParent);
 
@@ -355,13 +356,21 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
     }
 
     @Override
-    public void normalActionClicked(String ID) {
-        if(clientListener.isConnected())
-        {
-            clientListener.onActionClicked(getClientProfile().getID(), ID, false);
-        }
-        else
-            exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
+    public void normalActionClicked(String ID)
+    {
+        clientListener.onActionClicked(getClientProfile().getID(), ID, false);
+    }
+
+    @Override
+    public void toggleActionClicked(String ID, boolean toggleState)
+    {
+        clientListener.onActionClicked(getClientProfile().getID(), ID, toggleState);
+    }
+
+    @Override
+    public boolean isConnected()
+    {
+        return clientListener.isConnected();
     }
 
     @Override
@@ -391,13 +400,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener {
         }
     }
 
-    @Override
-    public void toggleActionClicked(String ID, boolean toggleState) {
-        if(clientListener.isConnected())
-            clientListener.onActionClicked(getClientProfile().getID(), ID, toggleState);
-        else
-            exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
-    }
+
 
     public void returnToPreviousParent()
     {
