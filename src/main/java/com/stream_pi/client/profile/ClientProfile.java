@@ -148,7 +148,7 @@ public class ClientProfile implements Cloneable{
                     properties.setDuplicatePropertyAllowed(true);
 
 
-                if(actionType == ActionType.NORMAL)
+                if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE)
                 {
                     action.setVersion(new Version(XMLConfigHelper.getStringProperty(eachActionElement, "version")));
                     action.setModuleName(XMLConfigHelper.getStringProperty(eachActionElement, "module-name"));
@@ -389,7 +389,7 @@ public class ClientProfile implements Cloneable{
         actionTypeElement.setTextContent(action.getActionType()+"");
         newActionElement.appendChild(actionTypeElement);
 
-        if(action.getActionType() == ActionType.NORMAL)
+        if(action.getActionType() == ActionType.NORMAL || action.getActionType() == ActionType.TOGGLE)
         {
             Element versionElement = document.createElement("version");
             versionElement.setTextContent(action.getVersion().getText());

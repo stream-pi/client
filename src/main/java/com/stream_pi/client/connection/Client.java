@@ -573,7 +573,7 @@ public class Client extends Thread{
 
         Action action = new Action(actionID, actionType);
 
-        if(actionType == ActionType.NORMAL)
+        if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE)
         {
             try
             {
