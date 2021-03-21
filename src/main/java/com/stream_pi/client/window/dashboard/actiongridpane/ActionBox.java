@@ -48,6 +48,7 @@ public class ActionBox extends StackPane{
     {
         setStyle(null);
         setAction(null);
+        setCurrentToggleStatus(false);
         getStyleClass().clear();
         setBackground(Background.EMPTY);
         removeFontIcon();
@@ -280,10 +281,11 @@ public class ActionBox extends StackPane{
         setDisplayTextAlignment(action.getDisplayTextAlignment());
         setBackgroundColour(action.getBgColourHex());
 
-        try {
+        try
+        {
             if(action.getActionType() == ActionType.TOGGLE)
             {
-                toggle(false);
+                toggle(getCurrentToggleStatus());
             }
             else
             {

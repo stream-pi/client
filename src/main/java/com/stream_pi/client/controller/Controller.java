@@ -190,7 +190,7 @@ public class Controller extends Base
 
     @Override
     public void onDisconnect() {
-        getDashboardPane().getActionGridPane().toggleOffAllToggleActions();
+        Platform.runLater(()->getDashboardPane().getActionGridPane().toggleOffAllToggleActions());
     }
 
 
