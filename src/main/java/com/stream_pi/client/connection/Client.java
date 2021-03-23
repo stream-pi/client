@@ -645,6 +645,10 @@ public class Client extends Thread
 
         action.setClientProperties(clientProperties);
 
+        for(String state : iconStates)
+        {
+            action.addIcon(state, null);
+        }
 
         try
         {
