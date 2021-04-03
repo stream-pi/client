@@ -700,6 +700,12 @@ public class Client extends Thread
 
             Action acc =  clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
 
+            if(acc == null)
+            {
+                exceptionAndAlertHandler.handleMinorException(new MinorException("Unable to delete action "+actionID+" since it does not exist."));
+                return;
+            }
+
             if(acc.getActionType() == ActionType.FOLDER)
             {
                 ArrayList<String> idsToBeRemoved = new ArrayList<>();
