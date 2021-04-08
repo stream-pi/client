@@ -283,13 +283,17 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
             {
                 ActionBox eachActionBox = (ActionBox) each;
 
-                if(eachActionBox.getAction().getActionType() == ActionType.TOGGLE)
+                if(eachActionBox.getAction() != null)
                 {
-                    if(eachActionBox.getCurrentToggleStatus()) // ON
+                    if(eachActionBox.getAction().getActionType() == ActionType.TOGGLE)
                     {
-                        eachActionBox.toggle();
+                        if(eachActionBox.getCurrentToggleStatus()) // ON
+                        {
+                            eachActionBox.toggle();
+                        }
                     }
                 }
+
             }
         }
     }
