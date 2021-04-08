@@ -742,6 +742,8 @@ public class Client extends Thread
                     clientListener.getClientProfiles().getProfileFromID(profileID).removeAction(ids);
                 }
 
+                Platform.runLater(clientListener::renderRootDefaultProfile);
+
             }
             else if (acc.getActionType() == ActionType.COMBINE)
             {
