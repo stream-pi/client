@@ -785,6 +785,8 @@ public class Client extends Thread
     {
         try
         {
+            boolean reInit = false;
+
             String[] sep = message.getStringArrValue();
 
             Config.getInstance().setNickName(sep[0]);
@@ -793,12 +795,27 @@ public class Client extends Thread
             Config.getInstance().setStartupProfileID(sep[1]);
 
             String oldThemeFullName = Config.getInstance().getCurrentThemeFullName();
+            String newThemeFullName = sep[2];
+
+            if(!oldThemeFullName.equals(newThemeFullName))
+            {
+                reInit = true;
+            }
 
             Config.getInstance().setCurrentThemeFullName(sep[2]);
 
 
+
             Config.getInstance().save();
-            Platform.runLater(clientListener::loadSettings);
+
+            if(reInit)
+            {
+                Platform.runLater(clientListener::init);
+            }
+            else
+            {
+                Platform.runLater(clientListener::loadSettings);
+            }
         }
         catch (SevereException e)
         {
