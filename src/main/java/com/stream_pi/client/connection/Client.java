@@ -380,6 +380,17 @@ public class Client extends Thread
 
     public void sendClientDetails() throws SevereException
     {
+        sendClientDetails("register_client_details");
+    }
+
+    public void updateClientDetails() throws SevereException
+    {
+        sendClientDetails("update_client_details");
+    }
+
+
+    public void sendClientDetails(String header) throws SevereException
+    {
         String clientVersion = clientInfo.getVersion().getText();
         String releaseStatus = clientInfo.getReleaseStatus().toString();
         String clientCommStandard = clientInfo.getCommStandardVersion().getText();
@@ -391,7 +402,7 @@ public class Client extends Thread
         String defaultProfileID = Config.getInstance().getStartupProfileID();
 
 
-        Message toBeSent = new Message("client_details");
+        Message toBeSent = new Message(header);
         toBeSent.setStringArrValue(
                 clientVersion,
                 releaseStatus,

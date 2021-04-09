@@ -189,6 +189,11 @@ public class Controller extends Base
     }
 
     @Override
+    public Client getClient() {
+        return client;
+    }
+
+    @Override
     public void onDisconnect() {
         Platform.runLater(()->getDashboardPane().getActionGridPane().toggleOffAllToggleActions());
     }

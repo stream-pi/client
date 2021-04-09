@@ -468,25 +468,29 @@ public class SettingsBase extends VBox {
         try {
             boolean toBeReloaded = false;
 
-            boolean breakConnection = false;
+            boolean syncWithServer = false;
 
             Config config = Config.getInstance();
 
             if(!config.getCurrentThemeFullName().equals(themeComboBox.getCurrentSelectedItem().getFullName()))
             {
-                breakConnection = true;
+                syncWithServer = true;
                 toBeReloaded = true;
             }
 
             config.setCurrentThemeFullName(themeComboBox.getCurrentSelectedItem().getFullName());
 
             if(!config.getClientNickName().equals(nickNameTextField.getText()))
-                breakConnection = true;
+            {
+                syncWithServer = true;
+            }
 
             config.setNickName(nickNameTextField.getText());
 
             if(port != config.getSavedServerPort() || !serverHostNameOrIPTextField.getText().equals(config.getSavedServerHostNameOrIP()))
-                breakConnection = true;
+            {
+                syncWithServer = true;
+            }
 
             config.setServerPort(port);
             config.setServerHostNameOrIP(serverHostNameOrIPTextField.getText());
@@ -572,12 +576,11 @@ public class SettingsBase extends VBox {
             loadData();
 
 
-            if(breakConnection)
+            if(syncWithServer)
             {
                 if(clientListener.isConnected())
                 {
-                    clientListener.disconnect("Client connection settings were changed. Client will reconnect again.");
-                    clientListener.setupClientConnection();
+                    clientListener.getClient().updateClientDetails();
                 }
             }
 

@@ -17,6 +17,8 @@ public interface ClientListener
     Themes getThemes();
     String getDefaultThemeFullName();
 
+    Client getClient();
+
     void renderRootDefaultProfile();
 
     void setConnected(boolean isConnected);
