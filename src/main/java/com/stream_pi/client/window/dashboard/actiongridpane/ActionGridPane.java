@@ -7,6 +7,7 @@ import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.Location;
 import com.stream_pi.client.connection.ClientListener;
 import com.stream_pi.client.profile.ClientProfile;
+import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.MinorException;
@@ -393,6 +394,13 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
     {
         clientListener.onActionClicked(getClientProfile().getID(), ID, toggleState);
     }
+
+    @Override
+    public ActionBox getActionBoxByLocation(Location location)
+    {
+        return getActionBox(location.getCol(), location.getRow());
+    }
+
 
     @Override
     public boolean isConnected()

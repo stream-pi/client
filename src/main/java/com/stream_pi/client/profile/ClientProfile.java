@@ -276,6 +276,7 @@ public class ClientProfile implements Cloneable{
 
                 action.setDisplayText(displayText);
 
+                action.setCurrentToggleStatus(false); // Always fault at default
 
                 addAction(action);
 

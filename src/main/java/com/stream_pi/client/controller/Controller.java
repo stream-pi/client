@@ -9,6 +9,7 @@ import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.Base;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
+import com.stream_pi.client.window.dashboard.actiongridpane.ActionGridPaneListener;
 import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertListener;
 import com.stream_pi.util.alert.StreamPiAlertType;
@@ -196,6 +197,12 @@ public class Controller extends Base
     @Override
     public void onDisconnect() {
         Platform.runLater(()->getDashboardPane().getActionGridPane().toggleOffAllToggleActions());
+    }
+
+    @Override
+    public boolean getToggleStatus(String profileID, String actionID)
+    {
+        return getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID).getCurrentToggleStatus();
     }
 
 
@@ -417,4 +424,15 @@ public class Controller extends Base
         return getDashboardPane().getActionGridPane().getCurrentParent();
     }
 
+
+    @Override
+    public ActionBox getActionBoxByProfileAndID(String profileID, String actionID)
+    {
+        Action action = getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
+
+        if(!getCurrentProfile().getID().equals(profileID) && !getCurrentParent().equals(action.getParent()))
+            return null;
+
+        return getDashboardPane().getActionGridPane().getActionBoxByLocation(action.getLocation());
+    }
 }

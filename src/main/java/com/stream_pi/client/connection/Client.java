@@ -11,6 +11,7 @@ import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
+import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
 import com.stream_pi.theme_api.Theme;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.comms.Message;
@@ -194,6 +195,9 @@ public class Client extends Thread
                         case "action_failed":           actionFailed(message);
                             break;
 
+                        case "set_toggle_status":       onSetToggleStatus(message);
+                            break;
+
                         default:                        logger.warning("Command '"+header+"' does not match records. Make sure client and server versions are equal.");
 
                     }
@@ -232,6 +236,29 @@ public class Client extends Thread
             e.printStackTrace();
 
             exceptionAndAlertHandler.handleMinorException(e);
+        }
+    }
+
+    private void onSetToggleStatus(Message message)
+    {
+        String[] arr = message.getStringArrValue();
+
+        String profileID = arr[0];
+        String actionID = arr[1];
+        boolean newStatus = arr[2].equals("true");
+
+        boolean currentStatus = clientListener.getToggleStatus(profileID,actionID);
+
+        if(currentStatus == newStatus)
+        {
+            return;
+        }
+
+        ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
+
+        if(actionBox!=null)
+        {
+            actionBox.toggle(newStatus);
         }
     }
 

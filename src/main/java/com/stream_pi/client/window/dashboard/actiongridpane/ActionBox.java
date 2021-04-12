@@ -27,7 +27,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.nio.ByteBuffer;
 
-public class ActionBox extends StackPane{
+public class ActionBox extends StackPane
+{
 
     private Label displayTextLabel;
 
@@ -158,11 +159,6 @@ public class ActionBox extends StackPane{
                 }
             }
         }
-    }
-
-    public boolean getCurrentToggleStatus()
-    {
-        return currentToggleStatus;
     }
 
     private Timeline statusIconAnimation;
@@ -308,18 +304,22 @@ public class ActionBox extends StackPane{
         }
     }
 
-    private boolean currentToggleStatus = false;
 
     public void setCurrentToggleStatus(boolean currentToggleStatus)
     {
-        this.currentToggleStatus = currentToggleStatus;
+        getAction().setCurrentToggleStatus(currentToggleStatus);
+    }
+
+    public boolean getCurrentToggleStatus()
+    {
+        return getAction().getCurrentToggleStatus();
     }
 
     public void toggle()
     {
         setCurrentToggleStatus(!getCurrentToggleStatus());
 
-        toggle(currentToggleStatus);
+        toggle(getCurrentToggleStatus());
     }
 
     public void toggle(boolean isON)
