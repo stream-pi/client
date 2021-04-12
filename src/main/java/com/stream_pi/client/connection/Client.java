@@ -258,7 +258,8 @@ public class Client extends Thread
 
         if(actionBox!=null)
         {
-            actionBox.toggle(newStatus);
+            actionBox.setCurrentToggleStatus(newStatus);
+            Platform.runLater(()-> actionBox.toggle(newStatus));
         }
     }
 

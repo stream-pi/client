@@ -324,13 +324,19 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
         ActionBox actionBox = actionBoxes[location.getCol()][location.getRow()];
 
-        boolean oldToggleStatus = actionBox.getCurrentToggleStatus();
         actionBox.clear();
+
 
         actionBox.setAction(action);
 
+
+        if(actionBox.getAction()!=null)
+        {
+            boolean oldToggleStatus = actionBox.getCurrentToggleStatus();
+            actionBox.setCurrentToggleStatus(oldToggleStatus);
+        }
+
         actionBox.setStreamPiParent(currentParent);
-        actionBox.setCurrentToggleStatus(oldToggleStatus);
         actionBox.init();
 
         /*ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this, location.getRow(), location.getCol());

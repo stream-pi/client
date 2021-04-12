@@ -307,7 +307,8 @@ public class ActionBox extends StackPane
 
     public void setCurrentToggleStatus(boolean currentToggleStatus)
     {
-        getAction().setCurrentToggleStatus(currentToggleStatus);
+        if(getAction() != null)
+            getAction().setCurrentToggleStatus(currentToggleStatus);
     }
 
     public boolean getCurrentToggleStatus()
