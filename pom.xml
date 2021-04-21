@@ -13,7 +13,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <javafx.version>16</javafx.version>
+        <javafx.version>17-ea+7</javafx.version>
+
+        <javafx.scope>compile</javafx.scope>
+        <javafx.systemPath>/opt/javafx-17-sdk/lib</javafx.systemPath>
+        <javafx.drm.egl.lib.path>/home/rnayabed/openjfx/javafx-sdk-17/lib/libgluon_drm-1.1.3.so</javafx.drm.egl.lib.path>
+        <javafx.drm.display.card>/dev/dri/card0</javafx.drm.display.card>
+
         <client.plugin.version>0.1.38</client.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
 
@@ -33,6 +39,24 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
+            <scope>${javafx.scope}</scope>
+            <systemPath>${javafx.systemPath}/javafx.controls.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+            <scope>${javafx.scope}</scope>
+            <systemPath>${javafx.systemPath}/javafx.base.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <scope>${javafx.scope}</scope>
+            <systemPath>${javafx.systemPath}/javafx.graphics.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -118,6 +142,7 @@
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
                     <mainClass>${main.class.name}</mainClass>
+                    <options>${additional.javafx.plugin.options}</options>
                 </configuration>
             </plugin>
 
@@ -127,10 +152,10 @@
                 <artifactId>client-maven-plugin</artifactId>
                 <version>${client.plugin.version}</version>
                 <configuration>
-                    <target>${clientTarget}</target>
+                    <target>${client.target}</target>
                     <nativeImageArgs>
                         <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                        <list>${additionalArgs}</list>
+                        <list>${additional.native.client.args}</list>
                     </nativeImageArgs>
                     <bundlesList>
                         <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
@@ -173,15 +198,29 @@
         <profile>
             <id>android</id>
             <properties>
-                <clientTarget>android</clientTarget>
-                <additionalArgs>-Dsvm.targetName=android</additionalArgs>
+                <client.target>android</client.target>
+                <additional.native.client.args>-Dsvm.targetName=android</additional.native.client.args>
             </properties>
         </profile>
         <profile>
             <id>ios</id>
             <properties>
-                <clientTarget>ios</clientTarget>
-                <additionalArgs>-Dsvm.targetName=iOS</additionalArgs>
+                <client.target>ios</client.target>
+                <additional.native.client.args>-Dsvm.targetName=iOS</additional.native.client.args>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>ARM-DRM</id>
+            <properties>
+                <additional.javafx.plugin.options>
+                    <option>-Dmonocle.platform=EGL</option>
+                    <option>-Dembedded=monocle</option>
+                    <option>-Dglass.platform=Monocle</option>
+                    <option>-Degl.displayid=${javafx.drm.display.card}</option>
+                    <option>-Dmonocle.egl.lib=${javafx.drm.egl.lib.path}</option>
+                    <option>-Dprism.verbose=true</option>
+                </additional.javafx.plugin.options>
             </properties>
         </profile>
 

@@ -204,12 +204,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
                 {
                     if(actionBoxes[col][row].getAction() != null)
                     {
-                        logger.info("xc234213123123");
                         actionBoxes[col][row].clear();
-                    }
-                    else
-                    {
-                        logger.info("bbbbbb " +col+","+row);
                     }
                 }
             }
@@ -272,7 +267,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
         actionBox.setStreamPiParent(currentParent);
 
-        add(actionBox, row, col);
+        add(actionBox, col, row);
         return actionBox;
     }
 
