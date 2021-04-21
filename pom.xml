@@ -209,6 +209,13 @@
                 <additional.native.client.args>-Dsvm.targetName=iOS</additional.native.client.args>
             </properties>
         </profile>
+        <profile>
+            <id>linux-aarch64</id>
+            <properties>
+                <client.target>linux-aarch64</client.target>
+                <additional.native.client.args>-Dsvm.targetName=linux</additional.native.client.args>
+            </properties>
+        </profile>
 
         <!--profile>
             <id>ARM-DRM</id>
