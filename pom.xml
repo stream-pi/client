@@ -20,7 +20,7 @@
         <javafx.drm.egl.lib.path>/home/rnayabed/openjfx/javafx-sdk-17/lib/libgluon_drm-1.1.3.so</javafx.drm.egl.lib.path>
         <javafx.drm.display.card>/dev/dri/card0</javafx.drm.display.card>
 
-        <client.plugin.version>0.1.38</client.plugin.version>
+        <client.plugin.version>0.1.39</client.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
 
         <action.api.version>1.0.0-SNAPSHOT</action.api.version>
@@ -39,24 +39,24 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
-            <scope>${javafx.scope}</scope>
-            <systemPath>${javafx.systemPath}/javafx.controls.jar</systemPath>
+            <!--scope>${javafx.scope}</scope>
+            <systemPath>${javafx.systemPath}/javafx.controls.jar</systemPath-->
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
             <version>${javafx.version}</version>
-            <scope>${javafx.scope}</scope>
-            <systemPath>${javafx.systemPath}/javafx.base.jar</systemPath>
+            <!--scope>${javafx.scope}</scope>
+            <systemPath>${javafx.systemPath}/javafx.base.jar</systemPath-->
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
-            <scope>${javafx.scope}</scope>
-            <systemPath>${javafx.systemPath}/javafx.graphics.jar</systemPath>
+            <!--scope>${javafx.scope}</scope>
+            <systemPath>${javafx.systemPath}/javafx.graphics.jar</systemPath-->
         </dependency>
 
         <dependency>
@@ -142,7 +142,7 @@
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
                     <mainClass>${main.class.name}</mainClass>
-                    <options>${additional.javafx.plugin.options}</options>
+                    <!--options>${additional.javafx.plugin.options}</options-->
                 </configuration>
             </plugin>
 
@@ -210,7 +210,7 @@
             </properties>
         </profile>
 
-        <profile>
+        <!--profile>
             <id>ARM-DRM</id>
             <properties>
                 <additional.javafx.plugin.options>
@@ -222,7 +222,7 @@
                     <option>-Dprism.verbose=true</option>
                 </additional.javafx.plugin.options>
             </properties>
-        </profile>
+        </profile-->
 
         <profile>
             <id>release</id>
