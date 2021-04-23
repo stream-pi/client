@@ -69,6 +69,8 @@ public class SettingsBase extends VBox {
     private TextField iconsPathTextField;
     private TextField profilesPathTextField;
 
+    private TextField autoReconnectTimeTextField;
+
     private final Button checkForUpdatesButton;
     private HostServices hostServices;
 
@@ -155,6 +157,10 @@ public class SettingsBase extends VBox {
 
         checkForUpdatesButton = new Button("Check for updates");
         checkForUpdatesButton.setOnAction(event->checkForUpdates());
+
+
+
+        autoReconnectTimeTextField = new TextField();
 
         VBox vBox = new VBox(
                 new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
