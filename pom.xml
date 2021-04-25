@@ -20,7 +20,7 @@
         <javafx.drm.egl.lib.path>/home/rnayabed/openjfx/javafx-sdk-17/lib/libgluon_drm-1.1.3.so</javafx.drm.egl.lib.path>
         <javafx.drm.display.card>/dev/dri/card0</javafx.drm.display.card>
 
-        <client.plugin.version>0.1.39</client.plugin.version>
+        <client.plugin.version>0.1.40-SNAPSHOT</client.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
 
         <action.api.version>1.0.0-SNAPSHOT</action.api.version>
@@ -188,9 +188,13 @@
             <id>gluon-releases</id>
             <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
         </pluginRepository>
-    <pluginRepository>
+        <pluginRepository>
             <id>gluon-snapshots</id>
             <url>https://nexus.gluonhq.com/nexus/content/repositories/public-snapshots</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>Sonatype</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </pluginRepository>
     </pluginRepositories>
 
