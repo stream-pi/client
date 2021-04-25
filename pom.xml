@@ -153,6 +153,7 @@
                 <version>${client.plugin.version}</version>
                 <configuration>
                     <target>${client.target}</target>
+                    <verbose>true</verbose>
                     <nativeImageArgs>
                         <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
                         <list>${additional.native.client.args}</list>
