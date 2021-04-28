@@ -1,5 +1,6 @@
 {
   "resources": [
-    {"pattern": ".*\\.zip$"}
+    {"pattern": ".*/Default.zip$"},
+    {"pattern": ".*/(EmailBoard|NumericBoard|TextBoard|UriBoard).txt$"}
   ]
 }

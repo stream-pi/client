@@ -221,6 +221,20 @@
                 <additional.native.client.args>-Dsvm.targetName=Linux</additional.native.client.args>
             </properties>
         </profile>
+        <profile>
+            <id>linux-x86_64</id>
+            <properties>
+                <client.target>host</client.target>
+                <additional.native.client.args>-Dsvm.targetName=Linux</additional.native.client.args>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows-x86_64</id>
+            <properties>
+                <client.target>host</client.target>
+                <additional.native.client.args>-Dsvm.targetName=Linux</additional.native.client.args>
+            </properties>
+        </profile>
 
         <!--profile>
             <id>ARM-DRM</id>
