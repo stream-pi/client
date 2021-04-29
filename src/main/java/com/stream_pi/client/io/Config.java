@@ -412,9 +412,9 @@ public class Config
         getStartupWindowSizeElement().getElementsByTagName("height").item(0).setTextContent(height+"");
     }
 
-    public void setStartupIsXMode(boolean isXMode)
+    public void setStartupIsXMode(boolean value)
     {
-        getOthersElement().getElementsByTagName("start-on-boot-x-mode").item(0).setTextContent(isXMode+"");
+        getOthersElement().getElementsByTagName("start-on-boot-x-mode").item(0).setTextContent(value+"");
     }
 
     public boolean getDefaultIsStartupXMode()
@@ -424,6 +424,22 @@ public class Config
 
     public boolean isStartupXMode()
     {
-        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "start-on-boot-x-mode", getDefaultIsStartupXMode(), false, false, document, configFile);
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "start-on-boot-x-mode", getDefaultIsStartupXMode(), false, true, document, configFile);
+    }
+
+
+    public boolean getDefaultIsTryConnectingWhenActionClicked()
+    {
+        return false;
+    }
+
+    public boolean isTryConnectingWhenActionClicked()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "try-connecting-when-action-clicked", getDefaultIsTryConnectingWhenActionClicked(), false, true, document, configFile);
+    }
+
+    public void setTryConnectingWhenActionClicked(boolean value)
+    {
+        getOthersElement().getElementsByTagName("try-connecting-when-action-clicked").item(0).setTextContent(value+"");
     }
 }
