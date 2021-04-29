@@ -9,6 +9,7 @@ handler for config.xml
 package com.stream_pi.client.io;
 
 import java.io.File;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,8 +20,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.stream_pi.client.Main;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.xmlconfighelper.XMLConfigHelper;
 
@@ -57,6 +60,16 @@ public class Config
             instance = new Config();
 
         return instance;
+    }
+
+    public void unzipToDefaultPrePath() throws Exception
+    {
+        IOHelper.unzip(Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
+        Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
+        Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
+        Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
+
+        Config.getInstance().save();
     }
 
     public void save() throws SevereException

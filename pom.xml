@@ -146,7 +146,6 @@
                 </configuration>
             </plugin>
 
-
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>client-maven-plugin</artifactId>
@@ -173,6 +172,7 @@
                     <mainClass>${main.class.name}</mainClass>
                 </configuration>
             </plugin>
+
 
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

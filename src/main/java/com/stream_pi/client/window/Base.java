@@ -5,6 +5,7 @@ import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.stream_pi.client.Main;
@@ -277,13 +278,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 boolean result = file.mkdirs();
                 if(result)
                 {
-                    IOHelper.unzip(Main.class.getResourceAsStream("Default.zip"), ClientInfo.getInstance().getPrePath());
-                    Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
-                    Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
-                    Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
-
-                    Config.getInstance().save();
-
+                    Config.getInstance().unzipToDefaultPrePath();
                     initLogger();
                 }
                 else
