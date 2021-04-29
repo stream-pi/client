@@ -126,16 +126,6 @@ public class Config
         return ClientInfo.getInstance().getPrePath()+"Icons/";
     }
 
-    public int getDefaultStartupWindowWidth()
-    {
-        return 800;
-    }
-
-    public int getDefaultStartupWindowHeight()
-    {
-        return 400;
-    }
-
     //Getters
 
     public String getClientNickName()
@@ -374,5 +364,51 @@ public class Config
     public void setIsFullScreenMode(boolean value)
     {
         getOthersElement().getElementsByTagName("full-screen-mode").item(0).setTextContent(value+"");
+    }
+
+
+
+    private Element getStartupWindowSizeElement()
+    {
+        return (Element) getClientElement().getElementsByTagName("startup-window-size").item(0);
+    }
+
+    public double getStartupWindowWidth()
+    {
+        return XMLConfigHelper.getDoubleProperty(getStartupWindowSizeElement(), "width",
+                getDefaultStartupWindowWidth(), false, true, document, configFile);
+    }
+
+    public double getStartupWindowHeight()
+    {
+        return XMLConfigHelper.getDoubleProperty(getStartupWindowSizeElement(), "height",
+                getDefaultStartupWindowHeight(), false, true, document, configFile);
+    }
+
+
+    public int getDefaultStartupWindowWidth()
+    {
+        return 800;
+    }
+
+    public int getDefaultStartupWindowHeight()
+    {
+        return 400;
+    }
+
+    public void setStartupWindowSize(double width, double height)
+    {
+        setStartupWindowWidth(width);
+        setStartupWindowHeight(height);
+    }
+
+    public void setStartupWindowWidth(double width)
+    {
+        getStartupWindowSizeElement().getElementsByTagName("width").item(0).setTextContent(width+"");
+    }
+
+    public void setStartupWindowHeight(double height)
+    {
+        getStartupWindowSizeElement().getElementsByTagName("height").item(0).setTextContent(height+"");
     }
 }
