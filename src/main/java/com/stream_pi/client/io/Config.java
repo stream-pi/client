@@ -411,4 +411,19 @@ public class Config
     {
         getStartupWindowSizeElement().getElementsByTagName("height").item(0).setTextContent(height+"");
     }
+
+    public void setStartupIsXMode(boolean isXMode)
+    {
+        getOthersElement().getElementsByTagName("start-on-boot-x-mode").item(0).setTextContent(isXMode+"");
+    }
+
+    public boolean getDefaultIsStartupXMode()
+    {
+        return false;
+    }
+
+    public boolean isStartupXMode()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "start-on-boot-x-mode", getDefaultIsStartupXMode(), false, false, document, configFile);
+    }
 }

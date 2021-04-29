@@ -18,6 +18,8 @@ import com.stream_pi.util.exception.SevereException;
 import com.gluonhq.attach.lifecycle.LifecycleService;
 import com.gluonhq.attach.util.Services;
 
+import com.stream_pi.util.platform.PlatformType;
+import com.stream_pi.util.startatboot.StartAtBoot;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -55,6 +57,26 @@ public class Controller extends Base
 
             if(getClientInfo().getPlatform() != com.stream_pi.util.platform.Platform.ANDROID)
             {
+                if(getConfig().isStartOnBoot())
+                {
+                    if(getClientInfo().isXMode() != getConfig().isStartupXMode())
+                    {
+                        StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform());
+
+                        boolean result = startAtBoot.delete();
+                        if(!result)
+                            new StreamPiAlert("Uh Oh!", "Unable to delete the previous starter file.\n" +
+                                    "This was probably because you ran Stream-Pi as root before. Restart stream pi as root, " +
+                                    "delete the old starter file, then exit and restart Stream-Pi as normal user.", StreamPiAlertType.ERROR).show();
+                        else
+                        {
+                            startAtBoot.create(new File(ClientInfo.getInstance().getRunnerFileName()),
+                                    ClientInfo.getInstance().isXMode());
+                            getConfig().setStartupIsXMode(ClientInfo.getInstance().isXMode());
+                        }
+                    }
+                }
+
                 setupFlags();
 
                 if(!getConfig().getIsFullScreenMode())
