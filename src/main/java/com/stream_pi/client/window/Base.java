@@ -190,6 +190,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             getChildren().add(firstTimeUse);
 
+            if(getClientInfo().isPhone())
+            {
+                firstTimeUse.setPadding(new Insets(10));
+            }
+
             firstTimeUse.toFront();
 
             //resolution check
@@ -206,7 +211,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     private void resizeAccordingToResolution()
     {
-        if(getClientInfo().isPhone())
+        if(!getClientInfo().isPhone())
         {
             double height = getScreenHeight();
             double width = getScreenWidth();

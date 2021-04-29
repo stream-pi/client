@@ -267,6 +267,8 @@ public class SettingsBase extends VBox {
         //Perform platform checks
 
         Platform platform = ClientInfo.getInstance().getPlatform();
+
+        System.out.println("PLATFORRRM : "+platform.getUIName()+"232323232323");
         if(platform == Platform.ANDROID ||
                 platform == Platform.IOS)
         {
@@ -277,6 +279,7 @@ public class SettingsBase extends VBox {
             startOnBootToggleButton.setVisible(false);
             showCursorToggleButton.setVisible(false);
             fullScreenModeToggleButton.setVisible(false);
+            shutdownButton.setVisible(false);
         }
         else
         {
