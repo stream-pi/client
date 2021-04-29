@@ -55,6 +55,8 @@ public class Controller extends Base
 
             if(getClientInfo().getPlatform() != com.stream_pi.util.platform.Platform.ANDROID)
             {
+                getStage().setWidth(getConfig().getStartupWindowWidth());
+                getStage().setHeight(getConfig().getStartupWindowHeight());
                 getStage().centerOnScreen();
                 setupFlags();
             }
@@ -168,15 +170,28 @@ public class Controller extends Base
     @Override
     public void onCloseRequest()
     {
-        if(isConnected())
-            client.exit();
+        try
+        {
+            if(isConnected())
+                client.exit();
 
 
-        getLogger().info("Shut down");
-        closeLogger();
+            getConfig().setStartupWindowSize(getStageWidth(), getStageHeight());
+            getConfig().save();
+        }
+        catch (SevereException e)
+        {
+            handleSevereException(e);
+        }
+        finally
+        {
 
-        if (ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.ANDROID)
-            Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
+            getLogger().info("Shut down");
+            closeLogger();
+
+            if (ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.ANDROID)
+                Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
+        }
     }
 
     @Override
