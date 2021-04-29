@@ -192,6 +192,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             if(getClientInfo().isPhone())
             {
+                System.out.println("FELLOW ANDROID ENJOYER :D");
                 firstTimeUse.setPadding(new Insets(10));
             }
 
