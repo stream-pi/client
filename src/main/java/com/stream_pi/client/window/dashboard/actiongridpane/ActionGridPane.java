@@ -263,7 +263,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
     public ActionBox addBlankActionBox(int col, int row)
     {
-        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), exceptionAndAlertHandler, this, row, col);
+        ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), exceptionAndAlertHandler, clientListener, this, row, col);
 
         actionBox.setStreamPiParent(currentParent);
 

@@ -2,5 +2,10 @@
   {"name":"com.stream_pi.util.comms.Message"},
   {"name": "java.lang.String"},
   {"name": "java.lang.String[]"},
-  {"name": "byte[]"}
+  {"name": "byte"},
+  {"name": "byte[]"},
+  {"name": "int"},
+  {"name": "int[]"},
+  {"name": "double"},
+  {"name": "double[]"}
 ]

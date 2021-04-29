@@ -166,13 +166,20 @@ public class Controller extends Base
         }
     }
 
-   
-
     @Override
     public void setupClientConnection()
     {
+        setupClientConnection(null);
+    }
+
+    @Override
+    public void setupClientConnection(Runnable onConnect)
+    {
+        if(getSettingsPane().getConnectDisconnectButton().isDisabled()) //probably already connecting
+            return;
+
         Platform.runLater(()->getSettingsPane().setDisableStatus(true));
-        client = new Client(getConfig().getSavedServerHostNameOrIP(), getConfig().getSavedServerPort(), this, this);
+        client = new Client(getConfig().getSavedServerHostNameOrIP(), getConfig().getSavedServerPort(), this, this, onConnect);
     }
 
     @Override

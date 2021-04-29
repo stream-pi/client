@@ -47,6 +47,8 @@ public interface ClientListener
 
     void setupClientConnection();
 
+    void setupClientConnection(Runnable onConnect);
+
     void updateSettingsConnectDisconnectButton();
 
     void onCloseRequest();

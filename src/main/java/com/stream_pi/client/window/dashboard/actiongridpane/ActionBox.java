@@ -3,8 +3,11 @@ package com.stream_pi.client.window.dashboard.actiongridpane;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
+import com.stream_pi.client.connection.ClientListener;
+import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.alert.StreamPiAlertType;
+import com.stream_pi.util.exception.SevereException;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -133,8 +136,22 @@ public class ActionBox extends StackPane
         {
             if(!getActionGridPaneListener().isConnected())
             {
-                exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
-                return;
+                try
+                {
+                    if(Config.getInstance().isTryConnectingWhenActionClicked())
+                    {
+                        clientListener.setupClientConnection(this::actionClicked);
+                    }
+                    else
+                    {
+                        exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
+                    }
+                    return;
+                }
+                catch (SevereException e)
+                {
+                    exceptionAndAlertHandler.handleSevereException(e);
+                }
             }
 
 
@@ -173,14 +190,17 @@ public class ActionBox extends StackPane
 
     private int size;
     private ActionGridPaneListener actionGridPaneListener;
+    private ClientListener clientListener;
 
-    public ActionBox(int size, ExceptionAndAlertHandler exceptionAndAlertHandler, ActionGridPaneListener actionGridPaneListener, int row, int col)
+    public ActionBox(int size, ExceptionAndAlertHandler exceptionAndAlertHandler,
+                     ClientListener clientListener, ActionGridPaneListener actionGridPaneListener, int row, int col)
     {
         this.actionGridPaneListener = actionGridPaneListener;
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.size = size;
         this.row = row;
         this.col = col;
+        this.clientListener = clientListener;
 
         baseInit();
     }
@@ -242,8 +262,9 @@ public class ActionBox extends StackPane
         this.parent = parent;
     }
 
+    /*
     public ActionBox(int size, Action action, ExceptionAndAlertHandler exceptionAndAlertHandler,
-     ActionGridPaneListener actionGridPaneListener, int row, int col)
+                     ClientListener clientListener, ActionGridPaneListener actionGridPaneListener, int row, int col)
     {
         this.actionGridPaneListener = actionGridPaneListener;
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
@@ -257,7 +278,7 @@ public class ActionBox extends StackPane
 
         init();
 
-    }
+    }*/
 
     public void setAction(Action action)
     {

@@ -55,6 +55,8 @@ public class SettingsBase extends VBox {
 
     private ToggleButton startOnBootToggleButton;
 
+    private ToggleButton tryConnectingToServerIfActionClickedToggleButton;
+
     private ToggleButton connectOnStartupToggleButton;
     private ToggleButton vibrateOnActionPressToggleButton;
 
@@ -123,6 +125,9 @@ public class SettingsBase extends VBox {
 
         startOnBootToggleButton = new ToggleButton("Start On Boot");
         startOnBootToggleButton.managedProperty().bind(startOnBootToggleButton.visibleProperty());
+
+        tryConnectingToServerIfActionClickedToggleButton  = new ToggleButton("Try Connecting to Server If not connected on Action click");
+        tryConnectingToServerIfActionClickedToggleButton.managedProperty().bind(tryConnectingToServerIfActionClickedToggleButton.visibleProperty());
 
         fullScreenModeToggleButton = new ToggleButton("Full Screen");
         fullScreenModeToggleButton.managedProperty().bind(fullScreenModeToggleButton.visibleProperty());
@@ -223,6 +228,7 @@ public class SettingsBase extends VBox {
 
         vBox.getChildren().addAll(
                 shutdownButton,
+                tryConnectingToServerIfActionClickedToggleButton,
                 fullScreenModeToggleButton,
                 connectOnStartupToggleButton,
                 vibrateOnActionPressToggleButton,
@@ -334,6 +340,11 @@ public class SettingsBase extends VBox {
         connectDisconnectButton.setDisable(status);
     }
 
+    public Button getConnectDisconnectButton()
+    {
+        return connectDisconnectButton;
+    }
+
     public void onShutdownButtonClicked()
     {
         clientListener.onCloseRequest();
@@ -427,6 +438,7 @@ public class SettingsBase extends VBox {
 
         connectOnStartupToggleButton.setSelected(config.isConnectOnStartup());
         vibrateOnActionPressToggleButton.setSelected(config.isVibrateOnActionClicked());
+        tryConnectingToServerIfActionClickedToggleButton.setSelected(config.isTryConnectingWhenActionClicked());
     }
 
     public void onSaveButtonClicked()
@@ -510,6 +522,9 @@ public class SettingsBase extends VBox {
 
             config.setIsFullScreenMode(isFullScreen);
 
+
+
+            config.setTryConnectingWhenActionClicked(tryConnectingToServerIfActionClickedToggleButton.isSelected());
 
 
 

@@ -36,18 +36,21 @@ public class Client extends Thread
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
 
-    private final AtomicBoolean stop = new AtomicBoolean(false);
+    private AtomicBoolean stop = new AtomicBoolean(false);
 
-    private final ClientListener clientListener;
-    private final ExceptionAndAlertHandler exceptionAndAlertHandler;
+    private ClientListener clientListener;
+    private ExceptionAndAlertHandler exceptionAndAlertHandler;
 
-    private final ClientInfo clientInfo;
+    private ClientInfo clientInfo;
 
-    private final String serverIP;
-    private final int serverPort;
-    private final Logger logger;
+    private String serverIP;
+    private int serverPort;
+    private Logger logger;
 
-    public Client(String serverIP, int serverPort, ClientListener clientListener, ExceptionAndAlertHandler exceptionAndAlertHandler)
+    private Runnable onConnectAndSetupToBeRun;
+
+    public Client(String serverIP, int serverPort, ClientListener clientListener,
+                  ExceptionAndAlertHandler exceptionAndAlertHandler, Runnable onConnectAndSetupToBeRun)
     {
         this.serverIP = serverIP;
         this.serverPort = serverPort;
@@ -55,6 +58,8 @@ public class Client extends Thread
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.clientInfo = ClientInfo.getInstance();
         this.clientListener = clientListener;
+
+        this.onConnectAndSetupToBeRun = onConnectAndSetupToBeRun;
 
         logger = Logger.getLogger(Client.class.getName());
 
@@ -93,6 +98,7 @@ public class Client extends Thread
                         e.printStackTrace();
                         throw new MinorException("Unable to set up io Streams to server. Check connection and try again.");
                     }
+
                     start();
                 } catch (MinorException e)
                 {
@@ -156,6 +162,9 @@ public class Client extends Thread
 
                     switch (header)
                     {
+                        case "ready" :                  onServerReady();
+                            break;
+
                         case "action_icon" :            onActionIconReceived(message);
                             break;
 
@@ -333,6 +342,15 @@ public class Client extends Thread
         }
     }
 
+    public void onServerReady()
+    {
+        if(onConnectAndSetupToBeRun!=null)
+        {
+            onConnectAndSetupToBeRun.run();
+            onConnectAndSetupToBeRun = null;
+        }
+    }
+
     public void sendThemesToServer() throws SevereException
     {
         Message message = new Message("themes");
@@ -394,13 +412,11 @@ public class Client extends Thread
 
     public void sendClientScreenDetails() throws SevereException
     {
-        String screenWidth = clientListener.getStageWidth() + "";
-        String screenHeight = clientListener.getStageHeight() + "";
-
         Message toBeSent = new Message("client_screen_details");
-        toBeSent.setStringArrValue(
-                screenWidth,
-                screenHeight
+
+        toBeSent.setDoubleArrValue(
+                clientListener.getStageWidth(),
+                clientListener.getStageHeight()
         );
 
         sendMessage(toBeSent);
@@ -454,20 +470,23 @@ public class Client extends Thread
 
         String[] arr = new String[clientListener.getClientProfiles().getClientProfiles().size()];
 
+        int totalActions = 0;
+
         for(int i = 0;i<arr.length;i++)
         {
             ClientProfile clientProfile = clientListener.getClientProfiles().getClientProfiles().get(i);
+            totalActions += clientProfile.getActions().size();
             arr[i] = clientProfile.getID();
         }
 
         message.setStringArrValue(arr);
+        message.setIntValue(totalActions);
         sendMessage(message);
     }
 
     public void sendProfileDetailsToServer(Message message) throws SevereException
     {
         String ID = message.getStringValue();
-        logger.info("IDDDD : "+ID);
 
         Message tbs1 = new Message("profile_details");
 
