@@ -27,6 +27,8 @@
         <util.version>1.0.0-SNAPSHOT</util.version>
         <theme.api.version>1.0.0-SNAPSHOT</theme.api.version>
 
+        <attach.version>4.0.11</attach.version>
+
         <main.class.name>com.stream_pi.client.Main</main.class.name>
 
         <source.plugin.version>2.2.1</source.plugin.version>
@@ -89,27 +91,32 @@
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>lifecycle</artifactId>
-            <version>4.0.10</version>
+            <version>${attach.version}</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>util</artifactId>
-            <version>4.0.10</version>
+            <version>${attach.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gluonhq.attach</groupId>
+            <artifactId>orientation</artifactId>
+            <version>${attach.version}</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>storage</artifactId>
-            <version>4.0.10</version>
+            <version>${attach.version}</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>browser</artifactId>
-            <version>4.0.10</version>
+            <version>${attach.version}</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>vibration</artifactId>
-            <version>4.0.10</version>
+            <version>${attach.version}</version>
         </dependency>
     </dependencies>
 
@@ -165,6 +172,7 @@
                         <list>storage</list>
                         <list>browser</list>
                         <list>vibration</list>
+                        <list>orientation</list>
                     </attachList>
                     <reflectionList>
                         <list>java.util.logging.FileHandler</list>

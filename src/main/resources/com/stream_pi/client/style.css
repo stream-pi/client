@@ -112,7 +112,11 @@
 .first_time_use_pane
 {
     -fx-background-color:white;
-    -fx-padding : 5;
+}
+
+.action_grid_pane_parent
+{
+     -fx-background-color:transparent;
 }
 
 .first_time_use_pane_heading_label

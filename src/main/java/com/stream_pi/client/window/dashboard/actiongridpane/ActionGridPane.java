@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -24,7 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class ActionGridPane extends GridPane implements ActionGridPaneListener
+public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 {
 
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
@@ -33,20 +34,27 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
     private ActionBox[][] actionBoxes;
 
+    private GridPane actionsGridPane;
+
     public ActionGridPane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener)
     {
         this.clientListener = clientListener;
 
         logger = Logger.getLogger(ActionGridPane.class.getName());
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
-        getStyleClass().add("action_grid_pane");
 
-        setPadding(new Insets(5.0));
+        getStyleClass().add("action_grid_pane_parent");
 
-        setPrefSize(USE_COMPUTED_SIZE, USE_COMPUTED_SIZE);
+        actionsGridPane = new GridPane();
+        actionsGridPane.setPadding(new Insets(5.0));
+        actionsGridPane.getStyleClass().add("action_grid_pane");
+        actionsGridPane.prefWidthProperty().bind(widthProperty().subtract(2));
+        actionsGridPane.prefHeightProperty().bind(heightProperty().subtract(2));
 
+        setContent(actionsGridPane);
 
-        setAlignment(Pos.CENTER);
+        actionsGridPane.setAlignment(Pos.CENTER);
+
 
         VBox.setVgrow(this, Priority.ALWAYS);
 
@@ -150,8 +158,8 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
     private Node folderBackButton = null;
     public void renderGrid()
     {
-        setHgap(getClientProfile().getActionGap());
-        setVgap(getClientProfile().getActionGap());
+        actionsGridPane.setHgap(getClientProfile().getActionGap());
+        actionsGridPane.setVgap(getClientProfile().getActionGap());
 
         if(isFreshRender)
         {
@@ -165,7 +173,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
         {
             if(folderBackButton != null)
             {
-                getChildren().remove(folderBackButton);
+                actionsGridPane.getChildren().remove(folderBackButton);
                 folderBackButton = null;
 
                 actionBoxes[0][0] = addBlankActionBox(0,0);
@@ -177,16 +185,16 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
             if(folderBackButton != null)
             {
-                getChildren().remove(folderBackButton);
+                actionsGridPane.getChildren().remove(folderBackButton);
                 folderBackButton = null;
             }
             else
             {
-                getChildren().remove(actionBoxes[0][0]);
+                actionsGridPane.getChildren().remove(actionBoxes[0][0]);
             }
 
             folderBackButton = getFolderBackButton();
-            add(folderBackButton, 0,0);
+            actionsGridPane.add(folderBackButton, 0,0);
         }
 
         for(int row = 0; row<rows; row++)
@@ -245,7 +253,7 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
     public void clear()
     {
-        getChildren().clear();
+        actionsGridPane.getChildren().clear();
     }
 
     private Logger logger;
@@ -267,13 +275,13 @@ public class ActionGridPane extends GridPane implements ActionGridPaneListener
 
         actionBox.setStreamPiParent(currentParent);
 
-        add(actionBox, col, row);
+        actionsGridPane.add(actionBox, col, row);
         return actionBox;
     }
 
     public void toggleOffAllToggleActions()
     {
-        for(Node each : getChildren())
+        for(Node each : actionsGridPane.getChildren())
         {
             if(each instanceof ActionBox)
             {

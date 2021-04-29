@@ -192,7 +192,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             if(getClientInfo().isPhone())
             {
-                System.out.println("FELLOW ANDROID ENJOYER :D");
                 firstTimeUse.setPadding(new Insets(10));
             }
 
@@ -200,7 +199,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             //resolution check
             resizeAccordingToResolution();
-
         }
         else
         {
@@ -216,8 +214,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             double height = getScreenHeight();
             double width = getScreenWidth();
-
-            logger.info("HEIGHT: "+height+", WIDTH: "+width);
 
             if(height < 500)
                 setPrefHeight(320);

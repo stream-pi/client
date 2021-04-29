@@ -1,5 +1,6 @@
 package com.stream_pi.client.controller;
 
+import com.gluonhq.attach.orientation.OrientationService;
 import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.connection.Client;
@@ -25,9 +26,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCombination;
+import javafx.stage.Screen;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -140,20 +144,11 @@ public class Controller extends Base
                 firstRun = false;
             }
 
-
-            ChangeListener<Number> windowResizeListener = (observableValue, number, t1) -> {
-                if(isConnected())
-                {
-                    try {
-                        client.sendClientScreenDetails();
-                    } catch (SevereException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            getStage().widthProperty().addListener(windowResizeListener);
-            getStage().heightProperty().addListener(windowResizeListener);
+            if(!getClientInfo().isPhone())
+            {
+                getStage().widthProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
+                getStage().heightProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
+            }
 
         }
         catch (SevereException e)
@@ -163,6 +158,18 @@ public class Controller extends Base
         catch (MinorException e)
         {
             handleMinorException(e);
+        }
+    }
+
+    public void syncClientSizeDetailsWithServer()
+    {
+        if(isConnected())
+        {
+            try {
+                client.sendClientScreenDetails();
+            } catch (SevereException e) {
+                e.printStackTrace();
+            }
         }
     }
 
