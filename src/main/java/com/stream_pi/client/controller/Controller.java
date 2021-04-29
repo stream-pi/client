@@ -55,8 +55,12 @@ public class Controller extends Base
 
             if(getClientInfo().getPlatform() != com.stream_pi.util.platform.Platform.ANDROID)
             {
-                getStage().setWidth(getConfig().getStartupWindowWidth());
-                getStage().setHeight(getConfig().getStartupWindowHeight());
+                if(!getConfig().getIsFullScreenMode())
+                {
+                    getStage().setWidth(getConfig().getStartupWindowWidth());
+                    getStage().setHeight(getConfig().getStartupWindowHeight());
+                }
+
                 getStage().centerOnScreen();
                 setupFlags();
             }

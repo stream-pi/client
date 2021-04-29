@@ -278,7 +278,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 boolean result = file.mkdirs();
                 if(result)
                 {
-                    Config.getInstance().unzipToDefaultPrePath();
+                    Config.unzipToDefaultPrePath();
                     initLogger();
                 }
                 else

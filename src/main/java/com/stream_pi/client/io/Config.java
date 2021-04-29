@@ -62,7 +62,7 @@ public class Config
         return instance;
     }
 
-    public void unzipToDefaultPrePath() throws Exception
+    public static void unzipToDefaultPrePath() throws Exception
     {
         IOHelper.unzip(Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
         Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
