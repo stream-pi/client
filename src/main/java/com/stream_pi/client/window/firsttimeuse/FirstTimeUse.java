@@ -1,7 +1,7 @@
 package com.stream_pi.client.window.firsttimeuse;
 
 import com.stream_pi.client.Main;
-import com.stream_pi.client.connection.ClientListener;
+import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.uihelper.SpaceFiller;
 

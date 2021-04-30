@@ -1,14 +1,12 @@
 package com.stream_pi.client.window.dashboard;
 
-import com.stream_pi.client.connection.ClientListener;
+import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionGridPane;
-import com.stream_pi.util.exception.SevereException;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;

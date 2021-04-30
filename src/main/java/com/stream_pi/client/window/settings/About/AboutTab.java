@@ -1,0 +1,102 @@
+package com.stream_pi.client.window.settings.About;
+
+import com.stream_pi.action_api.ActionAPI;
+import com.stream_pi.client.Main;
+import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.info.ClientInfo;
+import javafx.application.HostServices;
+import javafx.geometry.Pos;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+
+import java.util.Objects;
+
+public class AboutTab extends VBox
+{
+    private ClientListener clientListener;
+
+    public AboutTab(ClientListener clientListener)
+    {
+        this.clientListener = clientListener;
+
+        getStyleClass().add("about");
+
+        setAlignment(Pos.TOP_CENTER);
+
+        Image appIcon = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("app_icon.png")));
+        ImageView appIconImageView = new ImageView(appIcon);
+        appIconImageView.setFitHeight(196);
+        appIconImageView.setFitWidth(182);
+
+        TabPane tabPane = new TabPane();
+        tabPane.getStyleClass().add("settings_about_tab_internal");
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabPane.setMaxWidth(600);
+        VBox.setVgrow(tabPane, Priority.ALWAYS);
+
+        Tab licenseTab = new Tab("License");
+        licenseTab.setContent(new LicenseTab());
+
+
+        Tab contributorsTab = new Tab("Contributors");
+        contributorsTab.setContent(new ContributorsTab());
+
+        Tab contactTab = new Tab("Contact");
+        contactTab.setContent(new ContactTab(clientListener));
+
+        tabPane.getTabs().addAll(licenseTab, contributorsTab, contactTab);
+
+
+        Hyperlink donateButton = new Hyperlink("DONATE");
+        donateButton.setOnAction(event -> openWebpage("https://www.patreon.com/streampi"));
+        donateButton.getStyleClass().add("about_donate_hyperlink");
+
+
+        ClientInfo clientInfo = ClientInfo.getInstance();
+
+        Label versionText = new Label(clientInfo.getVersion().getText() + " - "+ clientInfo.getPlatform().getUIName() + " - "+ clientInfo.getReleaseStatus().getUIName());
+        versionText.getStyleClass().add("about_version_label");
+
+        Label commStandardLabel = new Label("Comm Standard "+clientInfo.getCommStandardVersion().getText());
+        commStandardLabel.getStyleClass().add("about_comm_standard_label");
+
+        Label minThemeAPILabel = new Label("Min ThemeAPI "+clientInfo.getMinThemeSupportVersion().getText());
+        minThemeAPILabel.getStyleClass().add("about_min_theme_api_label");
+
+        Label minActionAPILabel = new Label("Min ActionAPI "+clientInfo.getMinPluginSupportVersion().getText());
+        minActionAPILabel.getStyleClass().add("about_min_action_api_label");
+
+        Label currentActionAPILabel = new Label("ActionAPI "+ ActionAPI.API_VERSION.getText());
+        currentActionAPILabel.getStyleClass().add("about_current_action_api_label");
+
+        HBox hBox = new HBox(versionText, getSep(),
+                commStandardLabel, getSep(),
+                minThemeAPILabel, getSep(),
+                minActionAPILabel, getSep(),
+                currentActionAPILabel);
+
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(10);
+
+        getChildren().addAll(appIconImageView, tabPane, donateButton, hBox);
+    }
+
+    public void openWebpage(String url)
+    {
+        clientListener.openURL(url);
+    }
+
+    private Label getSep()
+    {
+        Label label = new Label("|");
+        label.getStyleClass().add("separator_ui_label");
+        return label;
+    }
+}

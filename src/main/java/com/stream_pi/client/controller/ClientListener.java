@@ -1,6 +1,7 @@
-package com.stream_pi.client.connection;
+package com.stream_pi.client.controller;
 
 import com.stream_pi.action_api.action.Action;
+import com.stream_pi.client.connection.Client;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
@@ -63,4 +64,6 @@ public interface ClientListener
     boolean getToggleStatus(String profileID, String actionID);
 
     ActionBox getActionBoxByProfileAndID(String profileID, String actionID);
+
+    void openURL(String URL);
 }

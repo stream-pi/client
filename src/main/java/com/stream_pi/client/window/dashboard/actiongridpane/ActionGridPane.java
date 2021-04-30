@@ -5,11 +5,9 @@ import java.util.logging.Logger;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.Location;
-import com.stream_pi.client.connection.ClientListener;
+import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.profile.ClientProfile;
-import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
-import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import javafx.concurrent.Task;
@@ -22,7 +20,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class ActionGridPane extends ScrollPane implements ActionGridPaneListener

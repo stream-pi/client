@@ -1,6 +1,6 @@
 package com.stream_pi.client.window.firsttimeuse;
 
-import com.stream_pi.client.connection.ClientListener;
+import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
@@ -8,15 +8,12 @@ import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.uihelper.HBoxInputBox;
-import com.stream_pi.util.uihelper.SpaceFiller;
 import com.stream_pi.util.platform.Platform;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 

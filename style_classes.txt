@@ -4,15 +4,16 @@ Dashboard - dashboard
             Icon - dashboard_settings_button_icon
 
 
-    Action Grid Pane - action_grid_pane
-        Action Box - action_box
+    Action Grid Pane Parent - action_grid_pane_parent
+        Action Grid Pane (Grid Pane) - action_grid_pane
+            Action Box - action_box
             if folder back button :
-                Icon : folder_action_back_button_icon
+                    Icon : folder_action_back_button_icon
 
-            Is Icon Present ?
-                yes : action_box_icon_present
-                no : action_box_icon_not_present
-            Is Action Valid (is plugin by module name found) ?
+                Is Icon Present ?
+                    yes : action_box_icon_present
+                    no : action_box_icon_not_present
+                Is Action Valid (is plugin by module name found) ?
                 yes : action_box_valid
                 no : action_box_invalid
 

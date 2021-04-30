@@ -234,11 +234,6 @@ public class Config
         return -1;
     }
 
-    public int getDefaultAutoReconnectTimeInterval()
-    {
-        return 300;
-    }
-
 
     public String getSavedServerHostNameOrIP()
     {
@@ -249,12 +244,6 @@ public class Config
     {
         return XMLConfigHelper.getIntProperty(getCommsServerElement(), "port", getDefaultSavedServerPort(), false, true, document, configFile);
     }
-
-    public int getAutoReconnectTimeInterval()
-    {
-        return XMLConfigHelper.getIntProperty(getCommsServerElement(), "auto-reconnect-interval", getDefaultSavedServerPort(), false, true, document, configFile);
-    }
-
 
     public void setServerHostNameOrIP(String hostNameOrIP)
     {

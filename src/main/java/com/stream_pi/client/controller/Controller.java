@@ -1,5 +1,6 @@
 package com.stream_pi.client.controller;
 
+import com.gluonhq.attach.browser.BrowserService;
 import com.gluonhq.attach.orientation.OrientationService;
 import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.action_api.action.Action;
@@ -87,7 +88,6 @@ public class Controller extends Base
                 {
                     getStage().setWidth(getConfig().getStartupWindowWidth());
                     getStage().setHeight(getConfig().getStartupWindowHeight());
-                    getStage().centerOnScreen();
                 }
             }
 
@@ -182,16 +182,16 @@ public class Controller extends Base
     @Override
     public void setupClientConnection(Runnable onConnect)
     {
-        if(getSettingsPane().getConnectDisconnectButton().isDisabled()) //probably already connecting
+        if(getSettingsPane().getGeneralTab().getConnectDisconnectButton().isDisabled()) //probably already connecting
             return;
 
-        Platform.runLater(()->getSettingsPane().setDisableStatus(true));
+        Platform.runLater(()->getSettingsPane().getGeneralTab().setDisableStatus(true));
         client = new Client(getConfig().getSavedServerHostNameOrIP(), getConfig().getSavedServerPort(), this, this, onConnect);
     }
 
     @Override
     public void updateSettingsConnectDisconnectButton() {
-        getSettingsPane().setConnectDisconnectButtonStatus();
+        getSettingsPane().getGeneralTab().setConnectDisconnectButtonStatus();
     }
 
     @Override
@@ -216,8 +216,12 @@ public class Controller extends Base
                 client.exit();
 
 
-            getConfig().setStartupWindowSize(getStageWidth(), getStageHeight());
-            getConfig().save();
+            if(!getClientInfo().isPhone() && !getConfig().getIsFullScreenMode())
+            {
+                getConfig().setStartupWindowSize(getStageWidth(), getStageHeight());
+                getConfig().save();
+            }
+
         }
         catch (SevereException e)
         {
@@ -237,7 +241,7 @@ public class Controller extends Base
     @Override
     public void loadSettings() {
         try {
-            getSettingsPane().loadData();
+            getSettingsPane().getGeneralTab().loadData();
         } catch (SevereException e) {
             e.printStackTrace();
             handleSevereException(e);
@@ -315,7 +319,7 @@ public class Controller extends Base
             dashboardNode.toFront();
             Platform.runLater(()-> {
                 try {
-                    getSettingsPane().loadData();
+                    getSettingsPane().getGeneralTab().loadData();
                 } catch (SevereException e) {
                     e.printStackTrace();
 
@@ -370,8 +374,7 @@ public class Controller extends Base
 
     public StreamPiAlert genNewAlert(String title, String message, StreamPiAlertType alertType)
     {
-        StreamPiAlert alert = new StreamPiAlert(title, message, alertType);
-        return alert;
+        return new StreamPiAlert(title, message, alertType);
     }
 
 
@@ -489,5 +492,32 @@ public class Controller extends Base
             return null;
 
         return getDashboardPane().getActionGridPane().getActionBoxByLocation(action.getLocation());
+    }
+
+    @Override
+    public void openURL(String url)
+    {
+        if(ClientInfo.getInstance().isPhone())
+        {
+            BrowserService.create().ifPresentOrElse(s->
+            {
+                try
+                {
+                    s.launchExternalBrowser(url);
+                }
+                catch (Exception e )
+                {
+                    handleMinorException(
+                            new MinorException("Cant start browser!")
+                    );
+                }
+            },()-> handleMinorException(
+                    new MinorException("Sorry!","No browser detected.")
+            ));
+        }
+        else
+        {
+            getHostServices().showDocument(url);
+        }
     }
 }

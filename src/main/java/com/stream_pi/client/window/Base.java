@@ -1,11 +1,10 @@
 package com.stream_pi.client.window;
 
-import com.stream_pi.client.connection.ClientListener;
+import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 
 import java.io.File;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.stream_pi.client.Main;
@@ -19,14 +18,12 @@ import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
-import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
 import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
 import com.stream_pi.util.platform.Platform;
 
 import javafx.application.HostServices;
 import javafx.geometry.Insets;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
@@ -150,7 +147,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         dashboardBase.prefWidthProperty().bind(widthProperty());
         dashboardBase.prefHeightProperty().bind(heightProperty());
 
-        settingsBase = new SettingsBase(this, this, getHostServices());
+        settingsBase = new SettingsBase(getHostServices(), this, this);
 
         alertStackPane = new StackPane();
         alertStackPane.setPadding(new Insets(10));
