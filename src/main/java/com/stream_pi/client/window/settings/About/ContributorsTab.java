@@ -1,5 +1,6 @@
 package com.stream_pi.client.window.settings.About;
 
+import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -60,14 +61,10 @@ public class ContributorsTab extends VBox
                         "India")
         );
 
-        Label disclaimerLabel = new Label("This contributor list shows only those who have contributed " +
-                "to the Server Source code.\nTo know about the contributors of Action API, Theme API, Util, " +
-                "visit the respective repositories.");
+        getChildren().addAll(tableView);
 
-        disclaimerLabel.getStyleClass().add("about_license_contributors_disclaimer_label");
 
-        disclaimerLabel.setWrapText(true);
-
-        getChildren().addAll(tableView, disclaimerLabel);
+        setCache(true);
+        setCacheHint(CacheHint.SPEED);
     }
 }

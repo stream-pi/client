@@ -199,3 +199,10 @@
 {
     -fx-background-color:white;
 }
+
+
+.about_donate_hyperlink
+{
+    -fx-padding : 10 0 0 0;
+    -fx-font-size : 25;
+}

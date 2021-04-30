@@ -48,7 +48,6 @@ public class GeneralTab extends VBox
 
     private TextField nickNameTextField;
 
-    private Button closeButton;
     private Button saveButton;
     private Button connectDisconnectButton;
     private Button shutdownButton;
@@ -199,8 +198,6 @@ public class GeneralTab extends VBox
         saveButton = new Button("Save");
         saveButton.setOnAction(event->onSaveButtonClicked());
 
-        closeButton = new Button("Close");
-
         connectDisconnectButton = new Button("Connect");
         connectDisconnectButton.setOnAction(event -> onConnectDisconnectButtonClicked());
 
@@ -230,10 +227,6 @@ public class GeneralTab extends VBox
 
 
 
-
-
-
-        buttonBar.getChildren().add(closeButton);
         buttonBar.getStyleClass().add("settings_button_bar");
 
 
@@ -363,10 +356,6 @@ public class GeneralTab extends VBox
                 connectDisconnectButton.setText("Connect");
         });
 
-    }
-
-    public Button getCloseButton() {
-        return closeButton;
     }
 
     public void loadData() throws SevereException

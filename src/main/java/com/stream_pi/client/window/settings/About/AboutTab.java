@@ -5,11 +5,10 @@ import com.stream_pi.client.Main;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
 import javafx.application.HostServices;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.CacheHint;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -18,9 +17,11 @@ import javafx.scene.layout.VBox;
 
 import java.util.Objects;
 
-public class AboutTab extends VBox
+public class AboutTab extends ScrollPane
 {
     private ClientListener clientListener;
+
+    private VBox mainVBox;
 
     public AboutTab(ClientListener clientListener)
     {
@@ -28,12 +29,18 @@ public class AboutTab extends VBox
 
         getStyleClass().add("about");
 
-        setAlignment(Pos.TOP_CENTER);
+        setPadding(new Insets(5));
+
+        mainVBox = new VBox();
+        mainVBox.setSpacing(5.0);
+
+
+        mainVBox.setAlignment(Pos.TOP_CENTER);
 
         Image appIcon = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("app_icon.png")));
         ImageView appIconImageView = new ImageView(appIcon);
-        appIconImageView.setFitHeight(196);
-        appIconImageView.setFitWidth(182);
+        appIconImageView.setFitHeight(146);
+        appIconImageView.setFitWidth(132);
 
         TabPane tabPane = new TabPane();
         tabPane.getStyleClass().add("settings_about_tab_internal");
@@ -76,27 +83,33 @@ public class AboutTab extends VBox
         Label currentActionAPILabel = new Label("ActionAPI "+ ActionAPI.API_VERSION.getText());
         currentActionAPILabel.getStyleClass().add("about_current_action_api_label");
 
-        HBox hBox = new HBox(versionText, getSep(),
-                commStandardLabel, getSep(),
-                minThemeAPILabel, getSep(),
-                minActionAPILabel, getSep(),
-                currentActionAPILabel);
+        HBox hBox1 = new HBox(versionText);
 
-        hBox.setAlignment(Pos.CENTER);
-        hBox.setSpacing(10);
+        hBox1.setAlignment(Pos.CENTER);
+        hBox1.setSpacing(10);
 
-        getChildren().addAll(appIconImageView, tabPane, donateButton, hBox);
+        Label disclaimerLabel = new Label("This contributor list shows only those who have contributed " +
+                "to the Client Source code.\nTo know about the contributors of Action API, Theme API, Util, " +
+                "visit the respective repositories.");
+
+        disclaimerLabel.getStyleClass().add("about_license_contributors_disclaimer_label");
+
+        disclaimerLabel.setWrapText(true);
+
+        mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
+                donateButton, hBox1);
+        mainVBox.prefWidthProperty().bind(widthProperty().subtract(25));
+
+        setContent(mainVBox);
+
+
+
+        setCache(true);
+        setCacheHint(CacheHint.SPEED);
     }
 
     public void openWebpage(String url)
     {
         clientListener.openURL(url);
-    }
-
-    private Label getSep()
-    {
-        Label label = new Label("|");
-        label.getStyleClass().add("separator_ui_label");
-        return label;
     }
 }
