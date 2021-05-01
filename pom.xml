@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <javafx.version>17-ea+7</javafx.version>
+        <javafx.version>17-ea+8</javafx.version>
 
         <javafx.scope>compile</javafx.scope>
         <javafx.systemPath>/opt/javafx-17-sdk/lib</javafx.systemPath>
