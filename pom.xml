@@ -177,6 +177,7 @@
                     <reflectionList>
                         <list>java.util.logging.FileHandler</list>
                         <list>javafx.scene.control.TableColumnBase</list>
+                        <list>javafx.scene.control.TableColumnBase</list>
                     </reflectionList>
                     <mainClass>${main.class.name}</mainClass>
                 </configuration>

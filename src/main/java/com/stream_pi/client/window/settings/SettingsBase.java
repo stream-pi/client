@@ -5,10 +5,12 @@ import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.client.window.settings.About.AboutTab;
 
 import javafx.application.HostServices;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.control.*;
+import javafx.scene.input.SwipeEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -30,6 +32,7 @@ public class SettingsBase extends VBox
         this.hostServices = hostServices;
 
         tabPane = new TabPane();
+        tabPane.addEventFilter(SwipeEvent.ANY, Event::consume);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         VBox.setVgrow(tabPane, Priority.ALWAYS);
 

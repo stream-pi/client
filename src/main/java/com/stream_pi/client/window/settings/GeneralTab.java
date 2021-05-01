@@ -119,6 +119,7 @@ public class GeneralTab extends VBox
         startOnBootToggleButton.managedProperty().bind(startOnBootToggleButton.visibleProperty());
 
         tryConnectingToServerIfActionClickedToggleButton  = new ToggleButton("Try Connecting to Server If not connected on Action click");
+        tryConnectingToServerIfActionClickedToggleButton.setWrapText(true);
         tryConnectingToServerIfActionClickedToggleButton.managedProperty().bind(tryConnectingToServerIfActionClickedToggleButton.visibleProperty());
 
         fullScreenModeToggleButton = new ToggleButton("Full Screen");
@@ -134,12 +135,6 @@ public class GeneralTab extends VBox
         showCursorToggleButton.managedProperty().bind(showCursorToggleButton.visibleProperty());
 
         int prefWidth = 200;
-
-        Label licenseLabel = new Label("This software is licensed to GNU GPLv3. Check StreamPi Server > settings > About to see full License Statement.");
-        licenseLabel.setWrapText(true);
-
-        Label versionLabel = new Label(ClientInfo.getInstance().getReleaseStatus().getUIName() +" "+ClientInfo.getInstance().getVersion().getText());
-
 
         HBoxInputBox themesPathInputBox = new HBoxInputBox("Themes Path", themesPathTextField, prefWidth);
         themesPathInputBox.managedProperty().bind(themesPathInputBox.visibleProperty());
@@ -220,9 +215,7 @@ public class GeneralTab extends VBox
                 vibrateOnActionPressToggleButton,
                 checkForUpdatesButton,
                 startOnBootToggleButton,
-                showCursorToggleButton,
-                licenseLabel,
-                versionLabel
+                showCursorToggleButton
         );
 
 

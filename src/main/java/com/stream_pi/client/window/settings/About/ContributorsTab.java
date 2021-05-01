@@ -9,12 +9,13 @@ import javafx.scene.layout.VBox;
 
 public class ContributorsTab extends VBox
 {
+    TableView<Contributor> tableView;
 
     public ContributorsTab()
     {
         getStyleClass().add("about_license_contributors_vbox");
 
-        TableView<Contributor> tableView = new TableView<>();
+        tableView = new TableView<>();
         tableView.getStyleClass().add("about_license_contributors_table_view");
 
         TableColumn<Contributor, String> descriptionColumn = new TableColumn<>("Description");
@@ -66,5 +67,10 @@ public class ContributorsTab extends VBox
 
         setCache(true);
         setCacheHint(CacheHint.SPEED);
+    }
+
+    public TableView<Contributor> getTableView()
+    {
+        return tableView;
     }
 }

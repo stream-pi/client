@@ -2,10 +2,10 @@ package com.stream_pi.client.window.settings.About;
 
 public class Contributor
 {
-    private String name = null;
-    private String email = null;
-    private String description = null;
-    private String location = null;
+    public String name = null;
+    public String email = null;
+    public String description = null;
+    public String location = null;
 
     public Contributor(String name, String email, String description, String location)
     {

@@ -5,12 +5,15 @@ import com.stream_pi.client.Main;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
 import javafx.application.HostServices;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.SwipeEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -21,6 +24,7 @@ public class AboutTab extends ScrollPane
 {
     private ClientListener clientListener;
 
+    private ContributorsTab contributorsTab;
     private VBox mainVBox;
 
     public AboutTab(ClientListener clientListener)
@@ -42,7 +46,15 @@ public class AboutTab extends ScrollPane
         appIconImageView.setFitHeight(146);
         appIconImageView.setFitWidth(132);
 
+
+        Tab contributorsT = new Tab("Contributors");
+        contributorsTab = new ContributorsTab();
+        contributorsT.setContent(contributorsTab);
+
+
         TabPane tabPane = new TabPane();
+        tabPane.addEventFilter(SwipeEvent.ANY, Event::consume);
+
         tabPane.getStyleClass().add("settings_about_tab_internal");
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabPane.setMaxWidth(600);
@@ -52,13 +64,11 @@ public class AboutTab extends ScrollPane
         licenseTab.setContent(new LicenseTab());
 
 
-        Tab contributorsTab = new Tab("Contributors");
-        contributorsTab.setContent(new ContributorsTab());
 
         Tab contactTab = new Tab("Contact");
         contactTab.setContent(new ContactTab(clientListener));
 
-        tabPane.getTabs().addAll(licenseTab, contributorsTab, contactTab);
+        tabPane.getTabs().addAll(licenseTab, contributorsT, contactTab);
 
 
         Hyperlink donateButton = new Hyperlink("DONATE");
