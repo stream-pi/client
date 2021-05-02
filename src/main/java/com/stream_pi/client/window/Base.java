@@ -356,7 +356,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     public void applyDefaultStylesheet()
     {
-        if(!clientInfo.isPhone())
+        if(clientInfo.getPlatform() != Platform.IOS)
             Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13);
 
         getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
