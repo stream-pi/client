@@ -356,13 +356,14 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     public void applyDefaultStylesheet()
     {
-        Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13);
+        if(!clientInfo.isPhone())
+            Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13);
+
         getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
     }
 
     public void applyDefaultIconsStylesheet()
     {
-        Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13);
         getStylesheets().add(Main.class.getResource("default_icons.css").toExternalForm());
     }
 

@@ -31,11 +31,12 @@ public class AboutTab extends ScrollPane
     {
         this.clientListener = clientListener;
 
-        getStyleClass().add("about");
+        getStyleClass().add("about_parent");
 
         setPadding(new Insets(5));
 
         mainVBox = new VBox();
+        mainVBox.getStyleClass().add("about");
         mainVBox.setSpacing(5.0);
 
 

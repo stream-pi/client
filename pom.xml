@@ -176,7 +176,7 @@
                     </attachList>
                     <reflectionList>
                         <list>java.util.logging.FileHandler</list>
-                        <list>javafx.scene.control.TableColumnBase</list>
+                        <list>com.stream_pi.client.window.settings.About.Contributor</list>
                         <list>javafx.scene.control.TableColumnBase</list>
                     </reflectionList>
                     <mainClass>${main.class.name}</mainClass>
