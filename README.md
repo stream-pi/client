@@ -18,4 +18,10 @@ This project depends on the following Stream-Pi modules:
 - [Stream-Pi Utilities](https://github.com/stream-pi/util) - **This needs to be installed first**
 
 
-Build and run using `mvn clean javafx:run`
+## Download binaries
+
+Downloadable Binaries for available platforms are available [here](https://github.com/stream-pi/server/releases)
+
+## Compile and Run from source 
+
+Run `mvn clean javafx:run`
