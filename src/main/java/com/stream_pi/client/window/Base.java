@@ -412,8 +412,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     public void initThemes() throws SevereException
     {
         logger.info("Loading themes ...");
-        themes = new Themes(getConfig().getThemesPath(), getConfig().getCurrentThemeFullName(), clientInfo.getMinThemeSupportVersion());
-
+        themes = new Themes(getConfig().getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName(), clientInfo.getMinThemeSupportVersion());
 
         if(themes.getErrors().size()>0)
         {
