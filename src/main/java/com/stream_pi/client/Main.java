@@ -25,7 +25,7 @@ public class Main extends Application {
     {
         for(String eachArg : args)
         {
-            if(!eachArg.startsWith("-DStreamPi"))
+            if(!eachArg.startsWith("-DStream-Pi"))
                 continue;
 
             String[] r = eachArg.split("=");
@@ -33,17 +33,20 @@ public class Main extends Application {
             String val = r[1];
 
             switch (arg) {
-                case "-DStreamPi.startupRunnerFileName":
+                case "-DStream-Pi.startupRunnerFileName":
                     ClientInfo.getInstance().setRunnerFileName(val);
                     break;
-                case "-DStreamPi.showShutDownButton":
+                case "-DStream-Pi.showShutDownButton":
                     ClientInfo.getInstance().setShowShutDownButton(val.equals("true"));
                     break;
-                case "-DStreamPi.isXMode":
+                case "-DStream-Pi.isXMode":
                     ClientInfo.getInstance().setXMode(val.equals("true"));
                     break;
-                case "-DStreamPi.isShowFullScreenToggleButton":
+                case "-DStream-Pi.isShowFullScreenToggleButton":
                     ClientInfo.getInstance().setShowFullScreenToggleButton(val.equals("true"));
+                    break;
+                case "-DStream-Pi.defaultFullScreenMode":
+                    ClientInfo.getInstance().setDefaultFullscreenMode(val.equals("true"));
                     break;
             }
         }

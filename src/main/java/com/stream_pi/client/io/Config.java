@@ -69,6 +69,8 @@ public class Config
         Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
         Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
 
+        Config.getInstance().setIsFullScreenMode(ClientInfo.getInstance().getDefaultFullScreenMode());
+
         Config.getInstance().save();
     }
 

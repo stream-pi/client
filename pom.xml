@@ -144,6 +144,13 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.5</version>
                 <configuration>
+                    <commandlineArgs>-DStream-Pi.defaultFullScreenMode=true</commandlineArgs>
+                    <options>
+                        <option>-Dglass.gtk.uiScale=1.0</option>
+                        <option>-Dprism.verbose=true</option>
+                        <option>-Djavafx.verbose=true</option>
+                        <option>-Dprism.forceGPU=true</option>
+                    </options>
                     <stripDebug>true</stripDebug>
                     <compress>2</compress>
                     <noHeaderFiles>true</noHeaderFiles>
