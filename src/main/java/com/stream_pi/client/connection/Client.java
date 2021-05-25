@@ -573,6 +573,7 @@ public class Client extends Thread
 
 
         a.add(action.getCurrentIconState()+"");
+        logger.info("CuRrent ICON state asdasd : "+action.getCurrentIconState());
 
         //text
         a.add(action.isShowDisplayText()+"");
