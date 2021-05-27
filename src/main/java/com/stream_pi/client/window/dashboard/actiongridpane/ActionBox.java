@@ -278,6 +278,8 @@ public class ActionBox extends StackPane
 
     public void init()
     {
+        setBackground(null);
+        setStyle(null);
 
         setDisplayTextFontColour(action.getDisplayTextFontColourHex());
         
@@ -418,13 +420,20 @@ public class ActionBox extends StackPane
 
         setBackground(null);
 
-        removeFontIcon();
-        fontIcon = new FontIcon();
+
+        if(fontIcon!=null)
+        {
+            fontIcon.getStyleClass().clear();
+        }
+        else
+        {
+            fontIcon = new FontIcon();
+            fontIcon.setIconSize((int) (size * 0.8));
+            getChildren().add(fontIcon);
+        }
+
         fontIcon.getStyleClass().add(styleClass);
-        fontIcon.setIconSize((int) (size * 0.8));
 
-
-        getChildren().add(fontIcon);
         fontIcon.toBack();
     }
 
