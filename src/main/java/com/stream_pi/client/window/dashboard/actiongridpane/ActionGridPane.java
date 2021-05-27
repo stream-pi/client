@@ -106,20 +106,6 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
     public void failShow(Action action)
     {
-        /*for(Node node : getChildren())
-        {
-            if(GridPane.getColumnIndex(node) == action.getLocation().getRow() &&
-                    GridPane.getRowIndex(node) == action.getLocation().getCol())
-            {
-
-                ActionBox actionBox = (ActionBox) node;
-
-                actionBox.animateStatus();
-
-                break;
-            }
-        }*/
-
         actionBoxes[action.getLocation().getCol()][action.getLocation().getRow()].animateStatus();
     }
 
