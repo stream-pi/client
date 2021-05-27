@@ -34,6 +34,8 @@
         <source.plugin.version>2.2.1</source.plugin.version>
         <javadoc.plugin.version>3.1.0</javadoc.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
+
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
 
     <dependencies>
@@ -144,7 +146,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.5</version>
                 <configuration>
-                    <commandlineArgs>-DStream-Pi.defaultFullScreenMode=true</commandlineArgs>
+                    <commandlineArgs>-DStream-Pi.defaultFullScreenMode=false</commandlineArgs>
                     <options>
                         <option>-Dglass.gtk.uiScale=1.0</option>
                         <option>-Dprism.verbose=true</option>
@@ -197,6 +199,12 @@
                 <configuration>
                 <includeEmptyDirs>true</includeEmptyDirs>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
         </plugins>
     </build>

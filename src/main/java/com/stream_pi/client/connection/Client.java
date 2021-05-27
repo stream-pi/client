@@ -524,7 +524,8 @@ public class Client extends Thread
 
     }
     
-    public void sendActionDetails(String profileID, Action action) throws SevereException {
+    public void sendActionDetails(String profileID, Action action) throws SevereException
+    {
         
         if(action == null)
         {
@@ -573,7 +574,6 @@ public class Client extends Thread
 
 
         a.add(action.getCurrentIconState()+"");
-        logger.info("CuRrent ICON state asdasd : "+action.getCurrentIconState());
 
         //text
         a.add(action.isShowDisplayText()+"");
@@ -677,7 +677,6 @@ public class Client extends Thread
         action.setDisplayTextAlignment(displayTextAlignment);
         action.setCurrentIconState(currentIconState);
 
-
         action.setLocation(location);
 
 
@@ -705,11 +704,6 @@ public class Client extends Thread
 
         action.setClientProperties(clientProperties);
 
-        for(String state : iconStates)
-        {
-            action.addIcon(state, null);
-        }
-
         try
         {
             Action old = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID());
@@ -724,6 +718,7 @@ public class Client extends Thread
                         if(state.equals(oldState))
                         {
                             isPresent = true;
+                            action.addIcon(state, old.getIcon(state));
                             break;
                         }
                     }

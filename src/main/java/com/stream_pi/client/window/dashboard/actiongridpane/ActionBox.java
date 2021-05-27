@@ -29,6 +29,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.nio.ByteBuffer;
+import java.util.logging.Logger;
 
 public class ActionBox extends StackPane
 {
@@ -45,6 +46,8 @@ public class ActionBox extends StackPane
     public int getCol() {
         return col;
     }
+    
+    private Logger logger;
 
     
 
@@ -201,8 +204,14 @@ public class ActionBox extends StackPane
         this.row = row;
         this.col = col;
         this.clientListener = clientListener;
+        this.logger = Logger.getLogger("");
 
         baseInit();
+    }
+
+    public Logger getLogger() 
+    {
+        return logger;
     }
 
     public static Action deserialize(ByteBuffer buffer) {
@@ -261,24 +270,6 @@ public class ActionBox extends StackPane
     public void setStreamPiParent(String parent) {
         this.parent = parent;
     }
-
-    /*
-    public ActionBox(int size, Action action, ExceptionAndAlertHandler exceptionAndAlertHandler,
-                     ClientListener clientListener, ActionGridPaneListener actionGridPaneListener, int row, int col)
-    {
-        this.actionGridPaneListener = actionGridPaneListener;
-        this.exceptionAndAlertHandler = exceptionAndAlertHandler;
-        this.action = action;
-        this.size = size;
-
-        this.row = row;
-        this.col = col;
-
-        baseInit();
-
-        init();
-
-    }*/
 
     public void setAction(Action action)
     {
@@ -470,23 +461,15 @@ public class ActionBox extends StackPane
     }
     public void setDisplayTextFontColour(String colour)
     {   
-        System.out.println("'"+colour+"'COLOR");
         if(!colour.isEmpty())
         {
-            System.out.println(
-                "putting ..." + Thread.currentThread().getName()
-            );
-            
-            
             displayTextLabel.setStyle("-fx-text-fill : "+colour+";");
         }
-
     }
 
 
     public void setBackgroundColour(String colour)
     {
-        System.out.println("COLOr : "+colour);
         if(!colour.isEmpty())
             setStyle("-fx-background-color : "+colour);
     }
