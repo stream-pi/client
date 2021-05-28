@@ -257,7 +257,7 @@
             <id>windows-x86_64</id>
             <properties>
                 <client.target>host</client.target>
-                <additional.native.client.args>-Dsvm.targetName=Linux</additional.native.client.args>
+                <additional.native.client.args>-Dsvm.targetName=Windows</additional.native.client.args>
             </properties>
         </profile>
 
