@@ -48,6 +48,9 @@ public class Main extends Application {
                 case "-DStream-Pi.defaultFullScreenMode":
                     ClientInfo.getInstance().setDefaultFullscreenMode(val.equals("true"));
                     break;
+                case "-DStream-Pi.enableScreenSaverFeature":
+                    ClientInfo.getInstance().setEnableScreenSaverFeature(val.equals("true"));
+                    break;
             }
         }
 

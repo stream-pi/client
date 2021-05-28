@@ -433,4 +433,35 @@ public class Config
     {
         getOthersElement().getElementsByTagName("try-connecting-when-action-clicked").item(0).setTextContent(value+"");
     }
+
+
+    public boolean getDefaultScreenSaverEnabled()
+    {
+        return false;
+    }
+
+    public boolean isScreenSaverEnabled()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "screen-saver", getDefaultScreenSaverEnabled(), false, true, document, configFile);
+    }
+
+    public void setScreenSaverEnabled(boolean value)
+    {
+        getOthersElement().getElementsByTagName("screen-saver").item(0).setTextContent(value+"");
+    }
+
+    public int getDefaultScreenSaverTimeout()
+    {
+        return 60;
+    }
+
+    public int getScreenSaverTimeout()
+    {
+        return XMLConfigHelper.getIntProperty(getOthersElement(), "screen-saver-timeout-seconds", getDefaultScreenSaverTimeout(), false, true, document, configFile);
+    }
+
+    public void setScreenSaverTimeout(String value)
+    {
+        getOthersElement().getElementsByTagName("screen-saver-timeout-seconds").item(0).setTextContent(value);
+    }
 }

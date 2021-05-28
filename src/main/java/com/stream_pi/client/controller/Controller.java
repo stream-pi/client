@@ -32,6 +32,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
@@ -50,6 +51,7 @@ public class Controller extends Base
 
 
     private boolean firstRun = true;
+    private ScreenSaver screenSaver = null;
 
     @Override
     public void init()
@@ -58,6 +60,18 @@ public class Controller extends Base
         {
             if(firstRun)
                 initBase();
+
+            if (screenSaver != null)
+            {
+                screenSaver.stop();
+                getChildren().remove(screenSaver);
+            }
+
+            screenSaver = new ScreenSaver(getConfig().isScreenSaverEnabled(), this, getConfig().getScreenSaverTimeout());
+
+            getChildren().add(screenSaver);
+            screenSaver.toBack();
+
 
 
             if(getClientInfo().getPlatform() != com.stream_pi.util.platform.Platform.ANDROID)
@@ -215,13 +229,13 @@ public class Controller extends Base
             if(isConnected())
                 client.exit();
 
+            screenSaver.stop();
 
             if(!getClientInfo().isPhone() && !getConfig().getIsFullScreenMode())
             {
                 getConfig().setStartupWindowSize(getStageWidth(), getStageHeight());
                 getConfig().save();
             }
-
         }
         catch (SevereException e)
         {
@@ -328,8 +342,6 @@ public class Controller extends Base
             });
         });
     }
-
-
 
 
 

@@ -31,6 +31,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.w3c.dom.Text;
 
 import java.io.File;
 
@@ -43,6 +44,8 @@ public class GeneralTab extends VBox
     private TextField serverPortTextField;
     private TextField serverHostNameOrIPTextField;
 
+    private TextField screenTimeoutTextField;
+
     private StreamPiComboBox<ClientProfile> clientProfileComboBox;
     private StreamPiComboBox<Theme> themeComboBox;
 
@@ -53,6 +56,8 @@ public class GeneralTab extends VBox
     private Button shutdownButton;
 
     private ToggleButton startOnBootToggleButton;
+
+    private ToggleButton screenSaverToggleButton;
 
     private ToggleButton tryConnectingToServerIfActionClickedToggleButton;
 
@@ -70,6 +75,8 @@ public class GeneralTab extends VBox
 
     private final Button checkForUpdatesButton;
 
+    private HBoxInputBox screenTimeoutSecondsHBoxInputBox;
+
     public GeneralTab(ExceptionAndAlertHandler exceptionAndAlertHandler,
                       ClientListener clientListener, HostServices hostServices)
     {
@@ -78,6 +85,9 @@ public class GeneralTab extends VBox
         this.hostServices = hostServices;
 
         serverPortTextField = new TextField();
+        screenTimeoutTextField = new TextField();
+
+
         serverHostNameOrIPTextField = new TextField();
         nickNameTextField = new TextField();
 
@@ -118,6 +128,9 @@ public class GeneralTab extends VBox
         startOnBootToggleButton = new ToggleButton("Start On Boot");
         startOnBootToggleButton.managedProperty().bind(startOnBootToggleButton.visibleProperty());
 
+        screenSaverToggleButton = new ToggleButton("Screen Saver");
+        screenSaverToggleButton.managedProperty().bind(screenSaverToggleButton.visibleProperty());
+
         tryConnectingToServerIfActionClickedToggleButton  = new ToggleButton("Try Connecting to Server If not connected on Action click");
         tryConnectingToServerIfActionClickedToggleButton.setWrapText(true);
         tryConnectingToServerIfActionClickedToggleButton.managedProperty().bind(tryConnectingToServerIfActionClickedToggleButton.visibleProperty());
@@ -150,6 +163,10 @@ public class GeneralTab extends VBox
         checkForUpdatesButton = new Button("Check for updates");
         checkForUpdatesButton.setOnAction(event->checkForUpdates());
 
+
+        screenTimeoutSecondsHBoxInputBox = new HBoxInputBox("Screen Timeout (seconds)", screenTimeoutTextField, prefWidth);
+        screenTimeoutSecondsHBoxInputBox.managedProperty().bind(screenTimeoutSecondsHBoxInputBox.visibleProperty());
+
         VBox vBox = new VBox(
                 new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
                 new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
@@ -166,7 +183,8 @@ public class GeneralTab extends VBox
                 ),
                 themesPathInputBox,
                 iconsPathInputBox,
-                profilesPathInputBox
+                profilesPathInputBox,
+                screenTimeoutSecondsHBoxInputBox
         );
 
 
@@ -214,6 +232,7 @@ public class GeneralTab extends VBox
                 connectOnStartupToggleButton,
                 vibrateOnActionPressToggleButton,
                 checkForUpdatesButton,
+                screenSaverToggleButton,
                 startOnBootToggleButton,
                 showCursorToggleButton
         );
@@ -243,7 +262,6 @@ public class GeneralTab extends VBox
 
         Platform platform = ClientInfo.getInstance().getPlatform();
 
-        System.out.println("PLATFORRRM : "+platform.getUIName()+"232323232323");
         if(platform == Platform.ANDROID ||
                 platform == Platform.IOS)
         {
@@ -264,14 +282,14 @@ public class GeneralTab extends VBox
             }
 
             vibrateOnActionPressToggleButton.setVisible(false);
+
+            fullScreenModeToggleButton.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
+            screenTimeoutSecondsHBoxInputBox.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
+
             buttonBar.getChildren().add(exitButton);
         }
 
-        if(!ClientInfo.getInstance().isShowFullScreenToggleButton())
-        {
-            fullScreenModeToggleButton.setVisible(false);
-        }
-
+        screenSaverToggleButton.setVisible(ClientInfo.getInstance().isEnableScreenSaverFeature());
     }
 
     private void checkForUpdates()
@@ -360,6 +378,11 @@ public class GeneralTab extends VBox
         serverHostNameOrIPTextField.setText(config.getSavedServerHostNameOrIP());
         serverPortTextField.setText(config.getSavedServerPort()+"");
 
+        screenTimeoutTextField.setText(config.getScreenSaverTimeout()+"");
+        screenSaverToggleButton.setSelected(config.isScreenSaverEnabled());
+
+        screenTimeoutSecondsHBoxInputBox.setVisible(config.isScreenSaverEnabled());
+
         clientProfileComboBox.setOptions(clientListener.getClientProfiles().getClientProfiles());
 
         int ind = 0;
@@ -419,6 +442,20 @@ public class GeneralTab extends VBox
         catch (NumberFormatException exception)
         {
             errors.append("* Server IP should be a number.\n");
+        }
+
+
+        int screenSaverTimeout = -1;
+        try
+        {
+            screenSaverTimeout = Integer.parseInt(serverPortTextField.getText());
+
+            if(screenSaverTimeout < 15)
+                errors.append("* Screen Timeout cannot be below 15 seconds.\n");
+        }
+        catch (NumberFormatException exception)
+        {
+            errors.append("* Screen Timeout should be a number.\n");
         }
 
 
@@ -538,6 +575,16 @@ public class GeneralTab extends VBox
                 toBeReloaded = true;
 
             config.setProfilesPath(profilesPathTextField.getText());
+
+            if(config.isScreenSaverEnabled() != screenSaverToggleButton.isSelected())
+                toBeReloaded = true;
+
+            config.setScreenSaverEnabled(screenSaverToggleButton.isSelected());
+
+            if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()))
+                toBeReloaded = true;
+
+            config.setScreenSaverTimeout(screenTimeoutTextField.getText());
 
             config.setConnectOnStartup(connectOnStartupToggleButton.isSelected());
 

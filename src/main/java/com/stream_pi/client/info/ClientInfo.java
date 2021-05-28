@@ -184,4 +184,16 @@ public class ClientInfo {
     {
         return defaultFullscreenMode;
     }
+
+    private boolean enableScreenSaverFeature = false;
+
+    public void setEnableScreenSaverFeature(boolean enableScreenSaverFeature)
+    {
+        this.enableScreenSaverFeature = enableScreenSaverFeature;
+    }
+
+    public boolean isEnableScreenSaverFeature()
+    {
+        return enableScreenSaverFeature;
+    }
 }

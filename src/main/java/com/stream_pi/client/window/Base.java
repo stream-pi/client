@@ -1,6 +1,7 @@
 package com.stream_pi.client.window;
 
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.controller.ScreenSaver;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 
@@ -159,6 +160,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         firstTimeUse = new FirstTimeUse(this, this);
 
         getChildren().clear();
+
+
         getChildren().addAll(alertStackPane);
 
         if(getClientInfo().isPhone())
@@ -177,7 +180,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         setStyle(null);
 
         config = Config.getInstance();
-
 
         if(config.isFirstTimeUse())
         {

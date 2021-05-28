@@ -206,3 +206,8 @@
     -fx-padding : 10 0 0 0;
     -fx-font-size : 25;
 }
+
+.screensaver
+{
+    -fx-background-color: black;
+}
