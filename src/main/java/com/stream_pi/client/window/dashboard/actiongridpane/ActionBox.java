@@ -214,17 +214,6 @@ public class ActionBox extends StackPane
         return logger;
     }
 
-    public static Action deserialize(ByteBuffer buffer) {
-        try {
-            ByteArrayInputStream is = new ByteArrayInputStream(buffer.array());
-            ObjectInputStream ois = new ObjectInputStream(is);
-            return (Action) ois.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
     public void setIcon(byte[] iconByteArray)
     {
         removeFontIcon();
