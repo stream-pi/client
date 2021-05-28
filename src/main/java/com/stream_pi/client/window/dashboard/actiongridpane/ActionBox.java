@@ -27,8 +27,6 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
-import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 
 public class ActionBox extends StackPane
@@ -412,7 +410,7 @@ public class ActionBox extends StackPane
 
         if(fontIcon!=null)
         {
-            fontIcon.getStyleClass().clear();
+            fontIcon.getStyleClass().removeIf(s -> s.equals("action_box_toggle_off") || s.equals("action_box_toggle_on"));
         }
         else
         {
