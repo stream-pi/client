@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <javafx.version>17-ea+8</javafx.version>
+        <javafx.version>17-ea+11</javafx.version>
 
         <javafx.scope>compile</javafx.scope>
         <javafx.systemPath>/opt/javafx-17-sdk/lib</javafx.systemPath>
@@ -189,6 +189,13 @@
                         <list>javafx.scene.control.TableColumnBase</list>
                     </reflectionList>
                     <mainClass>${main.class.name}</mainClass>
+                    <!--releaseConfiguration>
+                        <versionName>1.0.0 EA+3</versionName>
+                        <providedKeyStorePath>${android-keystore-path}</providedKeyStorePath>
+                        <providedKeyStorePassword>${android-keystore-password}</providedKeyStorePassword>
+                        <providedKeyAlias>${android-key-alias}</providedKeyAlias>
+                        <providedKeyAliasPassword>${android-key-password}</providedKeyAliasPassword>
+                    </releaseConfiguration-->
                 </configuration>
             </plugin>
 
