@@ -264,7 +264,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             String path = getClientInfo().getPrePath();
 
-            System.out.println("PAAAAAAAAAAAATH : '"+path+"'");
             if(path == null)
             {
                 throwStoragePermErrorAlert("Unable to access file system!");
