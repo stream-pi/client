@@ -92,13 +92,13 @@ public class FinalConfigPane extends VBox
             port = Integer.parseInt(serverPortTextField.getText());
 
             if(port < 1024)
-                errors.append("* Server IP should be above 1024.\n");
+                errors.append("* Server Port should be above 1024.\n");
             else if(port > 65535)
                 errors.append("* Server Port must be lesser than 65535\n");
         }
         catch (NumberFormatException exception)
         {
-            errors.append("* Server IP should be a number.\n");
+            errors.append("* Server Port should be a number.\n");
         }
 
         if(errors.toString().isEmpty())
