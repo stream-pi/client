@@ -11,7 +11,7 @@
     <url>https://stream-pi.com/</url>
 
     <properties>
-        <projec.version>1.0.0-EA+3</projec.version>
+        <projec.version>1.0.0-SNAPSHOT</projec.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <javafx.version>17-ea+11</javafx.version>
