@@ -37,6 +37,7 @@ public class License {
             "2. Gluon Attach - GPL License\nhttps://github.com/gluonhq/attach/blob/master/LICENSE\n\n"+
             "3. Gluon Client Maven Plugin - BSD-3 License\nhttps://github.com/gluonhq/client-maven-plugin/blob/master/LICENSE\n\n" +
             "4. Ikonli - Apache License\nhttps://github.com/kordamp/ikonli/blob/master/LICENSE\n\n"+
-            "5. Roboto Font - Apache License 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0\n\n";
+            "5. Roboto Font - Apache License 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0\n\n"+
+            "6. ControlsFX - BSD 3-Clause License\nhttps://github.com/controlsfx/controlsfx/blob/jfx-13/license.txt\n\n";
     }
 }
