@@ -101,7 +101,7 @@ public class AboutTab extends ScrollPane
 
         Label disclaimerLabel = new Label("This contributor list shows only those who have contributed " +
                 "to the Client Source code.\nTo know about the contributors of Action API, Theme API, Util, " +
-                "visit the respective repositories.");
+                "visit the respective repositories. If you want to know about the Core Team instead, please visit the website.");
 
         disclaimerLabel.getStyleClass().add("about_license_contributors_disclaimer_label");
 
