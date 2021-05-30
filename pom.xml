@@ -27,6 +27,8 @@
         <util.version>1.0.0-SNAPSHOT</util.version>
         <theme.api.version>1.0.0-SNAPSHOT</theme.api.version>
 
+        <controlsfx.version>11.1.0</controlsfx.version>
+
         <attach.version>4.0.11</attach.version>
 
         <main.class.name>com.stream_pi.client.Main</main.class.name>
@@ -119,6 +121,11 @@
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>vibration</artifactId>
             <version>${attach.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>${controlsfx.version}</version>
         </dependency>
     </dependencies>
 

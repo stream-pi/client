@@ -21,6 +21,7 @@ import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.startatboot.StartAtBoot;
 import com.stream_pi.util.uihelper.HBoxInputBox;
+import com.stream_pi.util.uihelper.HBoxWithSpaceBetween;
 import com.stream_pi.util.uihelper.SpaceFiller;
 import javafx.application.HostServices;
 import javafx.event.ActionEvent;
@@ -31,6 +32,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.controlsfx.control.ToggleSwitch;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -55,18 +57,26 @@ public class GeneralTab extends VBox
     private Button connectDisconnectButton;
     private Button shutdownButton;
 
-    private ToggleButton startOnBootToggleButton;
+    private HBoxWithSpaceBetween startOnBootHBox;
+    private ToggleSwitch startOnBootToggleSwitch;
 
-    private ToggleButton screenSaverToggleButton;
+    private HBoxWithSpaceBetween screenSaverHBox;
+    private ToggleSwitch screenSaverToggleSwitch;
 
-    private ToggleButton tryConnectingToServerIfActionClickedToggleButton;
+    private HBoxWithSpaceBetween tryConnectingToServerIfActionClickedHBox;
+    private ToggleSwitch tryConnectingToServerIfActionClickedToggleSwitch;
 
-    private ToggleButton connectOnStartupToggleButton;
-    private ToggleButton vibrateOnActionPressToggleButton;
+    private HBoxWithSpaceBetween connectOnStartupHBox;
+    private ToggleSwitch connectOnStartupToggleSwitch;
 
-    private ToggleButton fullScreenModeToggleButton;
+    private HBoxWithSpaceBetween vibrateOnActionPressHBox;
+    private ToggleSwitch vibrateOnActionPressToggleSwitch;
 
-    private ToggleButton showCursorToggleButton;
+    private HBoxWithSpaceBetween fullScreenModeHBox;
+    private ToggleSwitch fullScreenModeToggleSwitch;
+
+    private HBoxWithSpaceBetween showCursorHBox;
+    private ToggleSwitch showCursorToggleSwitch;
 
     private TextField themesPathTextField;
     private TextField iconsPathTextField;
@@ -125,27 +135,33 @@ public class GeneralTab extends VBox
         iconsPathTextField = new TextField();
         profilesPathTextField = new TextField();
 
-        startOnBootToggleButton = new ToggleButton("Start On Boot");
-        startOnBootToggleButton.managedProperty().bind(startOnBootToggleButton.visibleProperty());
+        startOnBootToggleSwitch = new ToggleSwitch();
+        startOnBootHBox = new HBoxWithSpaceBetween("Start On Boot", startOnBootToggleSwitch);
+        startOnBootHBox.managedProperty().bind(startOnBootHBox.visibleProperty());
 
-        screenSaverToggleButton = new ToggleButton("Screen Saver");
-        screenSaverToggleButton.managedProperty().bind(screenSaverToggleButton.visibleProperty());
+        screenSaverToggleSwitch = new ToggleSwitch();
+        screenSaverHBox = new HBoxWithSpaceBetween("Screen Saver", screenSaverToggleSwitch);
+        screenSaverHBox.managedProperty().bind(screenSaverHBox.visibleProperty());
 
-        tryConnectingToServerIfActionClickedToggleButton  = new ToggleButton("Try Connecting to Server If not connected on Action click");
-        tryConnectingToServerIfActionClickedToggleButton.setWrapText(true);
-        tryConnectingToServerIfActionClickedToggleButton.managedProperty().bind(tryConnectingToServerIfActionClickedToggleButton.visibleProperty());
+        tryConnectingToServerIfActionClickedToggleSwitch  = new ToggleSwitch();
+        tryConnectingToServerIfActionClickedHBox = new HBoxWithSpaceBetween("Try connect to server on action click", tryConnectingToServerIfActionClickedToggleSwitch);
+        tryConnectingToServerIfActionClickedHBox.managedProperty().bind(tryConnectingToServerIfActionClickedHBox.visibleProperty());
 
-        fullScreenModeToggleButton = new ToggleButton("Full Screen");
-        fullScreenModeToggleButton.managedProperty().bind(fullScreenModeToggleButton.visibleProperty());
+        fullScreenModeToggleSwitch = new ToggleSwitch();
+        fullScreenModeHBox = new HBoxWithSpaceBetween("Full Screen", fullScreenModeToggleSwitch);
+        fullScreenModeHBox.managedProperty().bind(fullScreenModeHBox.visibleProperty());
 
-        vibrateOnActionPressToggleButton = new ToggleButton("Vibrate On Action Press");
-        vibrateOnActionPressToggleButton.managedProperty().bind(vibrateOnActionPressToggleButton.visibleProperty());
+        vibrateOnActionPressToggleSwitch = new ToggleSwitch();
+        vibrateOnActionPressHBox = new HBoxWithSpaceBetween("Vibrate On Action Press", vibrateOnActionPressToggleSwitch);
+        vibrateOnActionPressHBox.managedProperty().bind(vibrateOnActionPressHBox.visibleProperty());
 
-        connectOnStartupToggleButton = new ToggleButton("Connect On Startup");
-        connectOnStartupToggleButton.managedProperty().bind(connectOnStartupToggleButton.visibleProperty());
+        connectOnStartupToggleSwitch = new ToggleSwitch();
+        connectOnStartupHBox = new HBoxWithSpaceBetween("Connect On Startup", connectOnStartupToggleSwitch);
+        connectOnStartupHBox.managedProperty().bind(connectOnStartupHBox.visibleProperty());
 
-        showCursorToggleButton = new ToggleButton("Show Cursor");
-        showCursorToggleButton.managedProperty().bind(showCursorToggleButton.visibleProperty());
+        showCursorToggleSwitch = new ToggleSwitch();
+        showCursorHBox = new HBoxWithSpaceBetween("Show Cursor", showCursorToggleSwitch);
+        showCursorHBox.managedProperty().bind(showCursorHBox.visibleProperty());
 
         int prefWidth = 200;
 
@@ -190,7 +206,7 @@ public class GeneralTab extends VBox
 
         vBox.getStyleClass().add("settings_base_vbox");
 
-        vBox.setSpacing(5.0);
+        vBox.setSpacing(10.0);
         vBox.setPadding(new Insets(5));
 
         ScrollPane scrollPane = new ScrollPane();
@@ -226,15 +242,15 @@ public class GeneralTab extends VBox
 
 
         vBox.getChildren().addAll(
-                shutdownButton,
-                tryConnectingToServerIfActionClickedToggleButton,
-                fullScreenModeToggleButton,
-                connectOnStartupToggleButton,
-                vibrateOnActionPressToggleButton,
+                tryConnectingToServerIfActionClickedHBox,
+                fullScreenModeHBox,
+                connectOnStartupHBox,
+                vibrateOnActionPressHBox,
+                screenSaverHBox,
+                startOnBootHBox,
+                showCursorHBox,
                 checkForUpdatesButton,
-                screenSaverToggleButton,
-                startOnBootToggleButton,
-                showCursorToggleButton
+                shutdownButton
         );
 
 
@@ -246,7 +262,7 @@ public class GeneralTab extends VBox
         buttonBar.setSpacing(5.0);
         buttonBar.setAlignment(Pos.CENTER_RIGHT);
 
-        setSpacing(5.0);
+        setSpacing(10.0);
 
         getChildren().addAll(
                 settingsLabel,
@@ -269,9 +285,9 @@ public class GeneralTab extends VBox
             iconsPathInputBox.setVisible(false);
             profilesPathInputBox.setVisible(false);
 
-            startOnBootToggleButton.setVisible(false);
-            showCursorToggleButton.setVisible(false);
-            fullScreenModeToggleButton.setVisible(false);
+            startOnBootHBox.setVisible(false);
+            showCursorHBox.setVisible(false);
+            fullScreenModeHBox.setVisible(false);
             shutdownButton.setVisible(false);
         }
         else
@@ -281,15 +297,17 @@ public class GeneralTab extends VBox
                 shutdownButton.setVisible(false);
             }
 
-            vibrateOnActionPressToggleButton.setVisible(false);
+            vibrateOnActionPressHBox.setVisible(false);
 
-            fullScreenModeToggleButton.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
-            screenTimeoutSecondsHBoxInputBox.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
+            fullScreenModeHBox.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
 
             buttonBar.getChildren().add(exitButton);
         }
 
-        screenSaverToggleButton.setVisible(ClientInfo.getInstance().isEnableScreenSaverFeature());
+
+        screenTimeoutSecondsHBoxInputBox.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
+        screenSaverHBox.setVisible(ClientInfo.getInstance().isEnableScreenSaverFeature());
+
     }
 
     private void checkForUpdates()
@@ -379,7 +397,7 @@ public class GeneralTab extends VBox
         serverPortTextField.setText(config.getSavedServerPort()+"");
 
         screenTimeoutTextField.setText(config.getScreenSaverTimeout()+"");
-        screenSaverToggleButton.setSelected(config.isScreenSaverEnabled());
+        screenSaverToggleSwitch.setSelected(config.isScreenSaverEnabled());
 
         screenTimeoutSecondsHBoxInputBox.setVisible(config.isScreenSaverEnabled());
 
@@ -415,14 +433,14 @@ public class GeneralTab extends VBox
         iconsPathTextField.setText(config.getIconsPath());
         profilesPathTextField.setText(config.getProfilesPath());
 
-        startOnBootToggleButton.setSelected(config.isStartOnBoot());
-        fullScreenModeToggleButton.setSelected(config.getIsFullScreenMode());
+        startOnBootToggleSwitch.setSelected(config.isStartOnBoot());
+        fullScreenModeToggleSwitch.setSelected(config.getIsFullScreenMode());
 
-        showCursorToggleButton.setSelected(config.isShowCursor());
+        showCursorToggleSwitch.setSelected(config.isShowCursor());
 
-        connectOnStartupToggleButton.setSelected(config.isConnectOnStartup());
-        vibrateOnActionPressToggleButton.setSelected(config.isVibrateOnActionClicked());
-        tryConnectingToServerIfActionClickedToggleButton.setSelected(config.isTryConnectingWhenActionClicked());
+        connectOnStartupToggleSwitch.setSelected(config.isConnectOnStartup());
+        vibrateOnActionPressToggleSwitch.setSelected(config.isVibrateOnActionClicked());
+        tryConnectingToServerIfActionClickedToggleSwitch.setSelected(config.isTryConnectingWhenActionClicked());
     }
 
     public void onSaveButtonClicked()
@@ -511,7 +529,7 @@ public class GeneralTab extends VBox
             config.setServerPort(port);
             config.setServerHostNameOrIP(serverHostNameOrIPTextField.getText());
 
-            boolean isFullScreen = fullScreenModeToggleButton.isSelected();
+            boolean isFullScreen = fullScreenModeToggleSwitch.isSelected();
 
             if(config.getIsFullScreenMode() != isFullScreen)
             {
@@ -522,11 +540,11 @@ public class GeneralTab extends VBox
 
 
 
-            config.setTryConnectingWhenActionClicked(tryConnectingToServerIfActionClickedToggleButton.isSelected());
+            config.setTryConnectingWhenActionClicked(tryConnectingToServerIfActionClickedToggleSwitch.isSelected());
 
 
 
-            boolean startOnBoot = startOnBootToggleButton.isSelected();
+            boolean startOnBoot = startOnBootToggleSwitch.isSelected();
 
             if(config.isStartOnBoot() != startOnBoot)
             {
@@ -556,7 +574,7 @@ public class GeneralTab extends VBox
 
             config.setStartOnBoot(startOnBoot);
 
-            config.setShowCursor(showCursorToggleButton.isSelected());
+            config.setShowCursor(showCursorToggleSwitch.isSelected());
 
 
 
@@ -576,19 +594,19 @@ public class GeneralTab extends VBox
 
             config.setProfilesPath(profilesPathTextField.getText());
 
-            if(config.isScreenSaverEnabled() != screenSaverToggleButton.isSelected())
+            if(config.isScreenSaverEnabled() != screenSaverToggleSwitch.isSelected())
                 toBeReloaded = true;
 
-            config.setScreenSaverEnabled(screenSaverToggleButton.isSelected());
+            config.setScreenSaverEnabled(screenSaverToggleSwitch.isSelected());
 
             if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()))
                 toBeReloaded = true;
 
             config.setScreenSaverTimeout(screenTimeoutTextField.getText());
 
-            config.setConnectOnStartup(connectOnStartupToggleButton.isSelected());
+            config.setConnectOnStartup(connectOnStartupToggleSwitch.isSelected());
 
-            boolean isVibrateOnActionClicked = vibrateOnActionPressToggleButton.isSelected();
+            boolean isVibrateOnActionClicked = vibrateOnActionPressToggleSwitch.isSelected();
 
             if(config.isVibrateOnActionClicked() != isVibrateOnActionClicked && isVibrateOnActionClicked)
             {

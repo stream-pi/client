@@ -22,5 +22,7 @@ module com.stream_pi.client {
 
     requires org.kordamp.ikonli.fontawesome5;
 
+    requires org.controlsfx.controls;
+
     exports com.stream_pi.client;
 }
