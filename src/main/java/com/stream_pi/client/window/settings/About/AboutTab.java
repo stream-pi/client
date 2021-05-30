@@ -24,6 +24,7 @@ public class AboutTab extends ScrollPane
 {
     private ClientListener clientListener;
 
+    private ContributorsTab contributorsTab;
     private VBox mainVBox;
 
     public AboutTab(ClientListener clientListener)
@@ -46,6 +47,12 @@ public class AboutTab extends ScrollPane
         appIconImageView.setFitHeight(146);
         appIconImageView.setFitWidth(132);
 
+
+        Tab contributorsT = new Tab("Contributors");
+        contributorsTab = new ContributorsTab();
+        contributorsT.setContent(contributorsTab);
+
+
         TabPane tabPane = new TabPane();
         tabPane.addEventFilter(SwipeEvent.ANY, Event::consume);
 
@@ -58,10 +65,11 @@ public class AboutTab extends ScrollPane
         licenseTab.setContent(new LicenseTab());
 
 
+
         Tab contactTab = new Tab("Contact");
         contactTab.setContent(new ContactTab(clientListener));
 
-        tabPane.getTabs().addAll(licenseTab, contactTab);
+        tabPane.getTabs().addAll(licenseTab, contributorsT, contactTab);
 
 
         Hyperlink donateButton = new Hyperlink("DONATE");
