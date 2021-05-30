@@ -6,11 +6,12 @@
 
     <groupId>com.stream-pi</groupId>
     <artifactId>client</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${project.version}</version>
 
     <url>https://stream-pi.com/</url>
 
     <properties>
+        <projec.version>1.0.0-EA+3</projec.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <javafx.version>17-ea+11</javafx.version>
@@ -197,7 +198,7 @@
                     </reflectionList>
                     <mainClass>${main.class.name}</mainClass>
                     <!--releaseConfiguration>
-                        <versionName>1.0.0 EA+3</versionName>
+                        <versionName>${project.version}</versionName>
                         <providedKeyStorePath>${android-keystore-path}</providedKeyStorePath>
                         <providedKeyStorePassword>${android-keystore-password}</providedKeyStorePassword>
                         <providedKeyAlias>${android-key-alias}</providedKeyAlias>
