@@ -155,7 +155,6 @@ public class ActionBox extends StackPane
                 }
             }
 
-
             if(action.getActionType() == ActionType.FOLDER)
             {
                 getActionGridPaneListener().renderFolder(action.getID());

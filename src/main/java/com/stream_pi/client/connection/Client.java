@@ -469,21 +469,21 @@ public class Client extends Thread
     {
         Message message = new Message("profiles");
 
-        String[] arr = new String[clientListener.getClientProfiles().getClientProfiles().size()];
+        String[] profilesArray = new String[clientListener.getClientProfiles().getClientProfiles().size()];
+        int[] profilesActionsArray = new int[profilesArray.length];
 
-        int totalActions = 0;
-
-        for(int i = 0;i<arr.length;i++)
+        for(int i = 0;i<profilesArray.length;i++)
         {
             ClientProfile clientProfile = clientListener.getClientProfiles().getClientProfiles().get(i);
-            totalActions += clientProfile.getActions().size();
-            arr[i] = clientProfile.getID();
+            profilesArray[i] = clientProfile.getID();
+            profilesActionsArray[i] = clientProfile.getActions().size();
         }
 
-        message.setStringArrValue(arr);
-        message.setIntValue(totalActions);
+        message.setStringArrValue(profilesArray);
+        message.setIntArrValue(profilesActionsArray);
         sendMessage(message);
     }
+
 
     public void sendProfileDetailsToServer(Message message) throws SevereException
     {
