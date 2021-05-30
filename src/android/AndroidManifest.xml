@@ -6,8 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
 
-    <application android:label='Stream-Pi Client' android:icon="@mipmap/ic_launcher" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                 android:requestLegacyExternalStorage="true"          android:keepScreenOn="true">
+    <application android:label='Stream-Pi Client' android:icon="@mipmap/ic_launcher" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity android:name='com.gluonhq.helloandroid.MainActivity'
                   android:configChanges="orientation|keyboardHidden">
              <intent-filter>
