@@ -55,21 +55,14 @@ public class ClientInfo {
         {
             platform = Platform.LINUX;
         }
-        else if(osName.contains("android")) // SPECIFY -Dsvm.targetName=android WHILE BUILDING ANDROID NATIVE IMAGE
-        {
-            StorageService.create().ifPresent(s-> s.getPublicStorage("Documents").ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
-                    ()-> prePath = null));
-
-            platform = Platform.ANDROID;
-        }
-        else if(osName.contains("ios")) // SPECIFY -Dsvm.targetName=ios WHILE BUILDING ANDROID NATIVE IMAGE
+        else if(osName.contains("android") || osName.contains("ios"))
         {
             StorageService.create().ifPresent(s->{
                 s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
                         ()-> prePath = null);
             });
 
-            platform = Platform.IOS;
+            platform = Platform.valueOf(osName.toUpperCase());
         }
         else if (osName.contains("mac"))
         {
