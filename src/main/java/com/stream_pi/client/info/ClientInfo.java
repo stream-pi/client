@@ -57,10 +57,8 @@ public class ClientInfo {
         }
         else if(osName.contains("android") || osName.contains("ios"))
         {
-            StorageService.create().ifPresent(s->{
-                s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
-                        ()-> prePath = null);
-            });
+            StorageService.create().ifPresent(s-> s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
+                    ()-> prePath = null));
 
             platform = Platform.valueOf(osName.toUpperCase());
         }
