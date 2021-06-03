@@ -1,6 +1,7 @@
 package com.stream_pi.client.window.settings.About;
 
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.util.contactlinks.ContactLinks;
 import javafx.application.HostServices;
 import javafx.scene.control.Hyperlink;

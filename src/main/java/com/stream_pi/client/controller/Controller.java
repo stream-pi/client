@@ -531,16 +531,28 @@ public class Controller extends Base
                 catch (Exception e )
                 {
                     handleMinorException(
-                            new MinorException("Cant start browser!")
+                            new MinorException("Cant start browser! You can go to Server Settings > About > Contact " +
+                                    "and open the links from there.")
                     );
                 }
             },()-> handleMinorException(
-                    new MinorException("Sorry!","No browser detected.")
+                    new MinorException("Sorry!","No browser detected. You can go to Server Settings > About > Contact " +
+                            "and open the links from there.")
             ));
         }
         else
         {
-            getHostServices().showDocument(url);
+            if(getClientInfo().getPlatform() == com.stream_pi.util.platform.Platform.LINUX &&
+                !StartupFlags.IS_X_MODE)
+            {
+               handleMinorException(new MinorException("Sorry!","Your system is running directly on framebuffer and " +
+                       "does not support opening a browser. You can go to Server Settings > About > Contact " +
+                       "and open the links from there."));
+            }
+            else
+            {
+                getHostServices().showDocument(url);
+            }
         }
     }
 }
