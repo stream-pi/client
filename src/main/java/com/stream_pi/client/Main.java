@@ -3,6 +3,7 @@ package com.stream_pi.client;
 import com.stream_pi.client.controller.Controller;
 import com.stream_pi.client.info.ClientInfo;
 
+import com.stream_pi.client.info.StartupFlags;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -34,22 +35,22 @@ public class Main extends Application {
 
             switch (arg) {
                 case "-DStream-Pi.startupRunnerFileName":
-                    ClientInfo.getInstance().setRunnerFileName(val);
+                    StartupFlags.RUNNER_FILE_NAME = val;
                     break;
                 case "-DStream-Pi.showShutDownButton":
-                    ClientInfo.getInstance().setShowShutDownButton(val.equals("true"));
+                    StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON = val.equals("true");
                     break;
                 case "-DStream-Pi.isXMode":
-                    ClientInfo.getInstance().setXMode(val.equals("true"));
+                    StartupFlags.IS_X_MODE = val.equals("true");
                     break;
                 case "-DStream-Pi.isShowFullScreenToggleButton":
-                    ClientInfo.getInstance().setShowFullScreenToggleButton(val.equals("true"));
+                    StartupFlags.SHOW_FULLSCREEN_TOGGLE_BUTTON = val.equals("true");
                     break;
                 case "-DStream-Pi.defaultFullScreenMode":
-                    ClientInfo.getInstance().setDefaultFullscreenMode(val.equals("true"));
+                    StartupFlags.DEFAULT_FULLSCREEN_MODE = val.equals("true");
                     break;
                 case "-DStream-Pi.enableScreenSaverFeature":
-                    ClientInfo.getInstance().setEnableScreenSaverFeature(val.equals("true"));
+                    StartupFlags.SCREEN_SAVER_FEATURE = val.equals("true");
                     break;
             }
         }

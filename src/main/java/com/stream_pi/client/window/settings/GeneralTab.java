@@ -4,6 +4,7 @@ import com.gluonhq.attach.browser.BrowserService;
 import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
@@ -292,7 +293,7 @@ public class GeneralTab extends VBox
         }
         else
         {
-            if(!ClientInfo.getInstance().isShowShutDownButton())
+            if(!StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON)
             {
                 shutdownButton.setVisible(false);
             }
@@ -306,7 +307,7 @@ public class GeneralTab extends VBox
 
 
         screenTimeoutSecondsHBoxInputBox.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
-        screenSaverHBox.setVisible(ClientInfo.getInstance().isEnableScreenSaverFeature());
+        screenSaverHBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
 
     }
 
@@ -548,7 +549,7 @@ public class GeneralTab extends VBox
 
             if(config.isStartOnBoot() != startOnBoot)
             {
-                if(ClientInfo.getInstance().getRunnerFileName() == null)
+                if(StartupFlags.RUNNER_FILE_NAME == null)
                 {
                     new StreamPiAlert("Uh Oh", "No Runner File Name Specified as startup arguments. Cant set run at boot.", StreamPiAlertType.ERROR).show();
                     startOnBoot = false;
@@ -558,10 +559,10 @@ public class GeneralTab extends VBox
                     StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform());
                     if(startOnBoot)
                     {
-                        startAtBoot.create(new File(ClientInfo.getInstance().getRunnerFileName()),
-                                ClientInfo.getInstance().isXMode());
+                        startAtBoot.create(new File(StartupFlags.RUNNER_FILE_NAME),
+                                StartupFlags.IS_X_MODE);
 
-                        config.setStartupIsXMode(ClientInfo.getInstance().isXMode());
+                        config.setStartupIsXMode(StartupFlags.IS_X_MODE);
                     }
                     else
                     {

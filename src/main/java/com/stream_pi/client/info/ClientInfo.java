@@ -30,8 +30,6 @@ public class ClientInfo {
     private Version minPluginSupportVersion;
     private Version commStandardVersion;
 
-    private String runnerFileName;
-
     private static ClientInfo instance = null;
 
     private ClientInfo()
@@ -72,16 +70,6 @@ public class ClientInfo {
         }
     }
 
-    public void setRunnerFileName(String runnerFileName)
-    {
-        this.runnerFileName = runnerFileName;
-    }
-
-    public String getRunnerFileName() 
-    {
-        return runnerFileName;
-    }
-
     public static synchronized ClientInfo getInstance(){
         if(instance == null)
         {
@@ -89,27 +77,6 @@ public class ClientInfo {
         }
 
         return instance;
-    }
-
-    private boolean isShowShutDownButton = false;
-
-    public void setShowShutDownButton(boolean showShutDownButton) {
-        isShowShutDownButton = showShutDownButton;
-    }
-
-    private boolean isXMode = false;
-
-    public void setXMode(boolean isXMode)
-    {
-        this.isXMode = isXMode;
-    }
-
-    public boolean isXMode() {
-        return isXMode;
-    }
-
-    public boolean isShowShutDownButton() {
-        return isShowShutDownButton;
     }
 
     public String getPrePath()
@@ -174,17 +141,5 @@ public class ClientInfo {
     public boolean getDefaultFullScreenMode()
     {
         return defaultFullscreenMode;
-    }
-
-    private boolean enableScreenSaverFeature = false;
-
-    public void setEnableScreenSaverFeature(boolean enableScreenSaverFeature)
-    {
-        this.enableScreenSaverFeature = enableScreenSaverFeature;
-    }
-
-    public boolean isEnableScreenSaverFeature()
-    {
-        return enableScreenSaverFeature;
     }
 }

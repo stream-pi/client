@@ -5,6 +5,7 @@ import com.gluonhq.attach.orientation.OrientationService;
 import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.connection.Client;
+import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.profile.ClientProfile;
@@ -78,7 +79,7 @@ public class Controller extends Base
             {
                 if(getConfig().isStartOnBoot())
                 {
-                    if(getClientInfo().isXMode() != getConfig().isStartupXMode())
+                    if(StartupFlags.IS_X_MODE != getConfig().isStartupXMode())
                     {
                         StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform());
 
@@ -89,9 +90,19 @@ public class Controller extends Base
                                     "delete the old starter file, then exit and restart Stream-Pi as normal user.", StreamPiAlertType.ERROR).show();
                         else
                         {
-                            startAtBoot.create(new File(ClientInfo.getInstance().getRunnerFileName()),
-                                    ClientInfo.getInstance().isXMode());
-                            getConfig().setStartupIsXMode(ClientInfo.getInstance().isXMode());
+                            if(StartupFlags.RUNNER_FILE_NAME == null)
+                            {
+                                new StreamPiAlert("Uh Oh!",
+                                        "It looks like the runner file name for startup isn't specified in " +
+                                                "startup arguments. The start on boot functionality will be turned off.").show();
+                                getConfig().setStartOnBoot(false);
+                            }
+                            else
+                            {
+                                startAtBoot.create(new File(StartupFlags.RUNNER_FILE_NAME),
+                                        StartupFlags.IS_X_MODE);
+                                getConfig().setStartupIsXMode(StartupFlags.IS_X_MODE);
+                            }
                         }
                     }
                 }
