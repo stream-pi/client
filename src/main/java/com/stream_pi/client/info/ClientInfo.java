@@ -118,16 +118,4 @@ public class ClientInfo {
     {
         return getPlatform() == Platform.ANDROID || getPlatform() == Platform.IOS;
     }
-
-    private boolean defaultFullscreenMode = false;
-
-    public void setDefaultFullscreenMode(boolean defaultFullscreenMode)
-    {
-        this.defaultFullscreenMode = defaultFullscreenMode;
-    }
-
-    public boolean getDefaultFullScreenMode()
-    {
-        return defaultFullscreenMode;
-    }
 }

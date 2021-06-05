@@ -22,6 +22,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import com.stream_pi.client.Main;
 import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.platform.Platform;
@@ -69,7 +70,7 @@ public class Config
         Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
         Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
 
-        Config.getInstance().setIsFullScreenMode(ClientInfo.getInstance().getDefaultFullScreenMode());
+        Config.getInstance().setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
 
         Config.getInstance().save();
     }
