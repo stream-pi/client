@@ -279,11 +279,6 @@ public class GeneralTab extends VBox
 
         Platform platform = ClientInfo.getInstance().getPlatform();
 
-        if(platform == Platform.LINUX)
-        {
-            fullScreenModeHBox.setVisible(StartupFlags.IS_X_MODE);
-        }
-
         if(platform == Platform.ANDROID ||
                 platform == Platform.IOS)
         {
@@ -305,13 +300,13 @@ public class GeneralTab extends VBox
 
             vibrateOnActionPressHBox.setVisible(false);
 
-            fullScreenModeHBox.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
+            fullScreenModeHBox.setVisible(StartupFlags.SHOW_FULLSCREEN_TOGGLE_BUTTON);
 
             buttonBar.getChildren().add(exitButton);
         }
 
 
-        screenTimeoutSecondsHBoxInputBox.setVisible(ClientInfo.getInstance().isShowFullScreenToggleButton());
+        screenTimeoutSecondsHBoxInputBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
         screenSaverHBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
 
     }

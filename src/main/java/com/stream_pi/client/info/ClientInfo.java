@@ -114,18 +114,6 @@ public class ClientInfo {
     }
 
 
-    private boolean showFullScreenToggleButton = true;
-
-    public boolean isShowFullScreenToggleButton()
-    {
-        return showFullScreenToggleButton;
-    }
-
-    public void setShowFullScreenToggleButton(boolean showFullScreenToggleButton)
-    {
-        this.showFullScreenToggleButton = showFullScreenToggleButton;
-    }
-
     public boolean isPhone()
     {
         return getPlatform() == Platform.ANDROID || getPlatform() == Platform.IOS;
