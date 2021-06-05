@@ -279,6 +279,11 @@ public class GeneralTab extends VBox
 
         Platform platform = ClientInfo.getInstance().getPlatform();
 
+        if(platform == Platform.LINUX)
+        {
+            fullScreenModeHBox.setVisible(StartupFlags.IS_X_MODE);
+        }
+
         if(platform == Platform.ANDROID ||
                 platform == Platform.IOS)
         {
