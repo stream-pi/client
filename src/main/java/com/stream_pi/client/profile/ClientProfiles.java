@@ -55,7 +55,7 @@ public class ClientProfiles {
 
         if(!profilesFolder.isDirectory())
         {
-            throw new SevereException("Profiles","profile folder doesn't exist! Cant continue.");
+            throw new SevereException("Profiles","Profile folder doesn't exist! Cant continue.");
         }
 
 

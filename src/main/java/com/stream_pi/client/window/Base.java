@@ -6,6 +6,7 @@ import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.stream_pi.client.Main;
@@ -141,7 +142,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         stage = (Stage) getScene().getWindow();
 
-        getStage().getIcons().add(new Image(Main.class.getResourceAsStream("app_icon.png")));
+        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("app_icon.png"))));
 
         clientInfo = ClientInfo.getInstance();
         dashboardBase = new DashboardBase(this, this);

@@ -21,6 +21,7 @@ import com.stream_pi.util.exception.SevereException;
 import com.gluonhq.attach.lifecycle.LifecycleService;
 import com.gluonhq.attach.util.Services;
 
+import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.startatboot.StartAtBoot;
 import javafx.animation.Interpolator;
@@ -228,7 +229,10 @@ public class Controller extends Base
     public void setupDashWindow()
     {
         getStage().setTitle("Stream-Pi Client");
-        getStage().setOnCloseRequest(e->onCloseRequest());
+        getStage().setOnCloseRequest(e->{
+            onCloseRequest();
+            exitApp();
+        });
     }
 
 
@@ -257,9 +261,20 @@ public class Controller extends Base
 
             getLogger().info("Shut down");
             closeLogger();
+            Config.nullify();
+        }
+    }
 
-            if (ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.ANDROID)
-                Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
+    @Override
+    public void exitApp()
+    {
+        if (ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.ANDROID)
+        {
+            Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
+        }
+        else
+        {
+            Platform.exit();
         }
     }
 
@@ -383,7 +398,7 @@ public class Controller extends Base
                 public void onClick(String txt)
                 {
                     onCloseRequest();
-                    Platform.exit();
+                    exitApp();
                 }
             });
             alert.show();
@@ -554,5 +569,30 @@ public class Controller extends Base
                 getHostServices().showDocument(url);
             }
         }
+    }
+
+    @Override
+    public void factoryReset()
+    {
+        getLogger().info("Reset to factory ...");
+
+        onCloseRequest();
+
+        boolean result = IOHelper.deleteFile(getClientInfo().getPrePath());
+
+        if(result)
+        {
+            setFirstRun(true);
+            init();
+        }
+        else
+        {
+            handleSevereException(new SevereException("Unable to delete all files successfully. Installation corrupt. Re-install."));
+        }
+    }
+
+    public void setFirstRun(boolean firstRun)
+    {
+        this.firstRun = firstRun;
     }
 }

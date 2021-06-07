@@ -1,6 +1,5 @@
 package com.stream_pi.client.window.settings;
 
-import com.gluonhq.attach.browser.BrowserService;
 import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
@@ -10,6 +9,7 @@ import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.theme_api.Theme;
 import com.stream_pi.util.alert.StreamPiAlert;
+import com.stream_pi.util.alert.StreamPiAlertListener;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.checkforupdates.CheckForUpdates;
 import com.stream_pi.util.checkforupdates.UpdateHyperlinkOnClick;
@@ -34,9 +34,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
-import org.w3c.dom.Text;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 public class GeneralTab extends VBox
 {
@@ -83,6 +83,10 @@ public class GeneralTab extends VBox
     private TextField iconsPathTextField;
     private TextField profilesPathTextField;
 
+    private final Button factoryResetButton;
+
+    private Logger logger;
+
 
     private final Button checkForUpdatesButton;
 
@@ -94,6 +98,8 @@ public class GeneralTab extends VBox
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.clientListener = clientListener;
         this.hostServices = hostServices;
+
+        logger = Logger.getLogger("");
 
         serverPortTextField = new TextField();
         screenTimeoutTextField = new TextField();
@@ -180,6 +186,9 @@ public class GeneralTab extends VBox
         checkForUpdatesButton = new Button("Check for updates");
         checkForUpdatesButton.setOnAction(event->checkForUpdates());
 
+        factoryResetButton = new Button("Factory Reset");
+        factoryResetButton.setOnAction(actionEvent -> onFactoryResetButtonClicked());
+
 
         screenTimeoutSecondsHBoxInputBox = new HBoxInputBox("Screen Timeout (seconds)", screenTimeoutTextField, prefWidth);
         screenTimeoutSecondsHBoxInputBox.managedProperty().bind(screenTimeoutSecondsHBoxInputBox.visibleProperty());
@@ -251,7 +260,8 @@ public class GeneralTab extends VBox
                 startOnBootHBox,
                 showCursorHBox,
                 checkForUpdatesButton,
-                shutdownButton
+                shutdownButton,
+                factoryResetButton
         );
 
 
@@ -311,6 +321,11 @@ public class GeneralTab extends VBox
 
     }
 
+    private Logger getLogger()
+    {
+        return logger;
+    }
+
     private void checkForUpdates()
     {
         new CheckForUpdates(checkForUpdatesButton,
@@ -329,11 +344,34 @@ public class GeneralTab extends VBox
         });
     }
 
+    private void onFactoryResetButtonClicked()
+    {
+        StreamPiAlert confirmation = new StreamPiAlert("Warning","Are you sure?\n" +
+                "This will erase everything.",StreamPiAlertType.WARNING);
+
+        String yesButton = "Yes";
+        String noButton = "No";
+
+        confirmation.setButtons(yesButton, noButton);
+
+        confirmation.setOnClicked(new StreamPiAlertListener() {
+            @Override
+            public void onClick(String s) {
+                if(s.equals(yesButton))
+                {
+                    clientListener.factoryReset();
+                }
+            }
+        });
+
+        confirmation.show();
+    }
+
 
     public void onExitButtonClicked()
     {
         clientListener.onCloseRequest();
-        javafx.application.Platform.exit();
+        clientListener.exitApp();
     }
 
     public void setDisableStatus(boolean status)
@@ -350,7 +388,9 @@ public class GeneralTab extends VBox
     public void onShutdownButtonClicked()
     {
         clientListener.onCloseRequest();
-        try {
+
+        try
+        {
             Runtime.getRuntime().exec("sudo halt");
         }
         catch (Exception e)
@@ -500,7 +540,8 @@ public class GeneralTab extends VBox
 
 
 
-        try {
+        try
+        {
             boolean toBeReloaded = false;
 
             boolean syncWithServer = false;

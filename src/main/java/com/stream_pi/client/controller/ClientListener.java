@@ -66,4 +66,7 @@ public interface ClientListener
     ActionBox getActionBoxByProfileAndID(String profileID, String actionID);
 
     void openURL(String URL);
+
+    void factoryReset();
+    void exitApp();
 }

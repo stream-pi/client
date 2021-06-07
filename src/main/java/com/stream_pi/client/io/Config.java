@@ -63,6 +63,11 @@ public class Config
         return instance;
     }
 
+    public static void nullify()
+    {
+        instance = null;
+    }
+
     public static void unzipToDefaultPrePath() throws Exception
     {
         IOHelper.unzip(Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
