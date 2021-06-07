@@ -109,11 +109,6 @@
     -fx-icon-size: 14;
 }
 
-.first_time_use_pane
-{
-    -fx-background-color:white;
-}
-
 .action_grid_pane_parent
 {
      -fx-background-color:transparent;
@@ -195,7 +190,7 @@
     -fx-border-color:white;
 }
 
-.alert_butaboutton_bar
+.alert_button_bar
 {
     -fx-background-color:white;
 }
