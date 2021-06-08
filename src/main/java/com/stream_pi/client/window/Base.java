@@ -2,6 +2,7 @@ package com.stream_pi.client.window;
 
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.controller.ScreenSaver;
+import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.stream_pi.client.Main;
+import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.dashboard.DashboardBase;
 import com.stream_pi.client.window.firsttimeuse.FirstTimeUse;
@@ -280,6 +282,31 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 if(result)
                 {
                     Config.unzipToDefaultPrePath();
+
+                    ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+
+                            Config.getInstance().getStartupProfileID()+".xml"), Config.getInstance().getIconsPath());
+
+                    int pre = clientProfile.getActionSize()+(clientProfile.getActionGap()*4);
+
+                    int rows,cols;
+
+                    if (StartupFlags.IS_X_MODE || StartupFlags.DEFAULT_FULLSCREEN_MODE)
+                    {
+                        setupFlags();
+                        getStage().show();
+                        rows = (int) (getStageHeight()/pre);
+                        cols = (int) (getStageWidth()/pre);
+                    }
+                    else
+                    {
+                        rows = (int) (Config.getInstance().getStartupWindowHeight()/pre);
+                        cols = (int) (Config.getInstance().getStartupWindowWidth()/pre);
+                    }
+
+                    clientProfile.setCols(cols);
+                    clientProfile.setRows(rows);
+                    clientProfile.saveProfileDetails();
+
                     initLogger();
                 }
                 else
@@ -306,10 +333,10 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         throw new SevereException(msg);
     }
 
-    public void setupFlags()
+    public void setupFlags() throws SevereException
     {
         //Full Screen
-        if(getConfig().getIsFullScreenMode())
+        if(Config.getInstance().getIsFullScreenMode())
         {
             getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             getStage().setFullScreen(true);
@@ -321,7 +348,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         }
 
         //Cursor
-        if(getConfig().isShowCursor())
+        if(Config.getInstance().isShowCursor())
         {
             setCursor(Cursor.DEFAULT);
         }
