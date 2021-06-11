@@ -7,7 +7,8 @@
 - Java >= 11
 - Maven >= 3.6.3
 
-Note: If compiling the Android binary (apk) then Graalvm 21.x JDK should be used.
+Note: If compiling the Android binary (apk) then GraalVM 21.1.0 (Java 11) should be used as JDK, or the path to it should be
+set as value of environment variable `GRAALVM_HOME`.
 
 ## Quick Start
 

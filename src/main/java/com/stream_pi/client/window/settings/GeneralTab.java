@@ -192,6 +192,7 @@ public class GeneralTab extends VBox
 
         screenTimeoutSecondsHBoxInputBox = new HBoxInputBox("Screen Timeout (seconds)", screenTimeoutTextField, prefWidth);
         screenTimeoutSecondsHBoxInputBox.managedProperty().bind(screenTimeoutSecondsHBoxInputBox.visibleProperty());
+        screenTimeoutTextField.disableProperty().bind(screenSaverToggleSwitch.selectedProperty().not());
 
         VBox vBox = new VBox(
                 new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
@@ -316,9 +317,8 @@ public class GeneralTab extends VBox
         }
 
 
-        screenTimeoutSecondsHBoxInputBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
         screenSaverHBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
-
+        screenTimeoutSecondsHBoxInputBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
     }
 
     private Logger getLogger()
@@ -439,8 +439,6 @@ public class GeneralTab extends VBox
 
         screenTimeoutTextField.setText(config.getScreenSaverTimeout()+"");
         screenSaverToggleSwitch.setSelected(config.isScreenSaverEnabled());
-
-        screenTimeoutSecondsHBoxInputBox.setVisible(config.isScreenSaverEnabled());
 
         clientProfileComboBox.setOptions(clientListener.getClientProfiles().getClientProfiles());
 
