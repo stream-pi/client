@@ -8,6 +8,8 @@ import com.stream_pi.client.info.ClientInfo;
 
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import com.stream_pi.client.Main;
@@ -36,7 +38,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public abstract class Base extends StackPane implements ExceptionAndAlertHandler, ClientListener {
+public abstract class Base extends StackPane implements ExceptionAndAlertHandler, ClientListener
+{
+    private final ExecutorService executor = Executors.newCachedThreadPool();
 
     private Config config;
 
@@ -223,6 +227,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             if(width < 500)
                 setPrefWidth(240);
         }
+    }
+
+    @Override
+    public ExecutorService getExecutor()
+    {
+        return executor;
     }
 
     @Override

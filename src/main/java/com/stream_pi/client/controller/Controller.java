@@ -39,6 +39,8 @@ import javafx.stage.Screen;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
 
@@ -268,6 +270,7 @@ public class Controller extends Base
     @Override
     public void exitApp()
     {
+        getExecutor().shutdown();
         if (ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.ANDROID)
         {
             Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);

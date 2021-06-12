@@ -64,7 +64,7 @@ public class Client extends Thread
 
         logger = Logger.getLogger(Client.class.getName());
 
-        new Thread(new Task<Void>() {
+        clientListener.getExecutor().submit(new Task<Void>() {
             @Override
             protected Void call()
             {
@@ -107,7 +107,7 @@ public class Client extends Thread
                 }
                 return null;
             }
-        }).start();
+        });
     }
 
     public synchronized void exit()

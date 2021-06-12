@@ -10,6 +10,8 @@ import com.stream_pi.theme_api.Theme;
 import com.stream_pi.theme_api.Themes;
 import com.stream_pi.util.exception.SevereException;
 
+import java.util.concurrent.ExecutorService;
+
 public interface ClientListener
 {
     void onActionFailed(String profileID, String actionID);
@@ -69,4 +71,6 @@ public interface ClientListener
 
     void factoryReset();
     void exitApp();
+
+    ExecutorService getExecutor();
 }
