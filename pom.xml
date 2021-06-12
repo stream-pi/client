@@ -20,7 +20,7 @@
         <javafx.drm.egl.lib.path>/home/rnayabed/openjfx/javafx-sdk-17/lib/libgluon_drm-1.1.3.so</javafx.drm.egl.lib.path>
         <javafx.drm.display.card>/dev/dri/card0</javafx.drm.display.card>
 
-        <client.plugin.version>1.0.0</client.plugin.version>
+        <gluonfx.plugin.version>1.0.0</gluonfx.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
 
         <action.api.version>1.0.0-SNAPSHOT</action.api.version>
@@ -172,7 +172,7 @@
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>${client.plugin.version}</version>
+                <version>${gluonfx.plugin.version}</version>
                 <configuration>
                     <target>${client.target}</target>
                     <verbose>true</verbose>
