@@ -76,16 +76,17 @@ public class Client extends Thread
                         socket = new Socket();
                         socket.connect(new InetSocketAddress(serverIP, serverPort), 5000);
                         clientListener.setConnected(true);
-                        clientListener.updateSettingsConnectDisconnectButton();
                         logger.info("Connected to "+socket.getRemoteSocketAddress()+" !");
                     }
                     catch (IOException e)
                     {
                         e.printStackTrace();
-
                         clientListener.setConnected(false);
-                        clientListener.updateSettingsConnectDisconnectButton();
                         throw new MinorException("Connection Error", "Unable to connect to server. Please check settings and connection and try again.");
+                    }
+                    finally
+                    {
+                        clientListener.updateSettingsConnectDisconnectButton();
                     }
 
                     try
