@@ -65,10 +65,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     private FirstTimeUse firstTimeUse;
 
-    public FirstTimeUse getFirstTimeUse() {
-        return firstTimeUse;
-    }
-    
 
     private StackPane alertStackPane;
 
@@ -164,7 +160,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         StreamPiAlert.setParent(alertStackPane);
         StreamPiComboBox.setParent(alertStackPane);
 
-        firstTimeUse = new FirstTimeUse(this, this);
 
         getChildren().clear();
 
@@ -188,11 +183,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         config = Config.getInstance();
 
+        initThemes();
+
         if(config.isFirstTimeUse())
         {
-            clearStylesheets();
-            applyDefaultStylesheet();
-            applyDefaultIconsStylesheet();
+
+            firstTimeUse = new FirstTimeUse(this, this);
 
             getChildren().add(firstTimeUse);
 
@@ -210,8 +206,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             dashboardBase.toFront();
         }
-
-        initThemes();
     }
 
     private void resizeAccordingToResolution()

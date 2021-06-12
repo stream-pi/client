@@ -49,17 +49,7 @@ public class FinalConfigPane extends VBox
         HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox("Server IP", serverIPHostNameTextField);
         HBoxInputBox serverIPPortInputBox = new HBoxInputBox("Server Port", serverPortTextField);
 
-        Platform platform = ClientInfo.getInstance().getPlatform();
-
-
-        VBox v = new VBox(clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox);
-        v.setSpacing(10.0);
-
-        ScrollPane scrollPane = new ScrollPane(v);
-        scrollPane.getStyleClass().add("first_time_use_final_config_pane_scroll_pane");
-        v.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
-
-        getChildren().addAll(label, scrollPane);
+        getChildren().addAll(label, clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox);
 
         setSpacing(10.0);
 
