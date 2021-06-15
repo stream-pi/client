@@ -193,6 +193,17 @@ public class Controller extends Base
                                     getCurrentParent(),
                                     true
                             );
+
+                            getExecutor().submit(()->{
+                                try
+                                {
+                                    getClient().updateOrientationOnClient(getCurrentOrientation());
+                                }
+                                catch (SevereException e)
+                                {
+                                    handleSevereException(e);
+                                }
+                            });
                         });
                     }
                 });

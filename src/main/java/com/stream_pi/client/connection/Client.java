@@ -21,6 +21,7 @@ import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.version.Version;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.geometry.Orientation;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -459,7 +460,8 @@ public class Client extends Thread
                 screenHeight,
                 OS,
                 defaultProfileID,
-                clientListener.getDefaultThemeFullName()
+                clientListener.getDefaultThemeFullName(),
+                clientListener.getCurrentOrientation().toString()
         );
 
         sendMessage(toBeSent);
@@ -931,7 +933,12 @@ public class Client extends Thread
         sendMessage(m);
     }
 
-
+    public void updateOrientationOnClient(Orientation orientation) throws SevereException
+    {
+        Message m = new Message("client_orientation");
+        m.setStringValue(orientation.toString());
+        sendMessage(m);
+    }
 
     public void actionFailed(Message message)
     {
