@@ -37,6 +37,8 @@
         <javadoc.plugin.version>3.1.0</javadoc.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
 
+        <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
+
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
 
@@ -151,7 +153,7 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.5</version>
+                <version>${javafx.maven.plugin.version}</version>
                 <configuration>
                     <commandlineArgs>-DStream-Pi.defaultFullScreenMode=false -DStream-Pi.enableScreenSaverFeature=false</commandlineArgs>
                     <options>
@@ -168,44 +170,6 @@
                     <!--options>${additional.javafx.plugin.options}</options-->
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>com.gluonhq</groupId>
-                <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>${gluonfx.plugin.version}</version>
-                <configuration>
-                    <target>${client.target}</target>
-                    <verbose>true</verbose>
-                    <nativeImageArgs>
-                        <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                        <list>${additional.native.client.args}</list>
-                    </nativeImageArgs>
-                    <bundlesList>
-                        <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
-                    </bundlesList>
-                    <attachList>
-                        <list>lifecycle</list>
-                        <list>storage</list>
-                        <list>browser</list>
-                        <list>vibration</list>
-                        <list>orientation</list>
-                    </attachList>
-                    <reflectionList>
-                        <list>java.util.logging.FileHandler</list>
-                        <list>com.stream_pi.client.window.settings.About.Contributor</list>
-                        <list>javafx.scene.control.TableColumnBase</list>
-                    </reflectionList>
-                    <mainClass>${main.class.name}</mainClass>
-                    <!--releaseConfiguration>
-                        <versionName>1.0.0 EA+3</versionName>
-                        <providedKeyStorePath>${android-keystore-path}</providedKeyStorePath>
-                        <providedKeyStorePassword>${android-keystore-password}</providedKeyStorePassword>
-                        <providedKeyAlias>${android-key-alias}</providedKeyAlias>
-                        <providedKeyAliasPassword>${android-key-password}</providedKeyAliasPassword>
-                    </releaseConfiguration-->
-                </configuration>
-            </plugin>
-
 
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -241,53 +205,125 @@
     <profiles>
         <profile>
             <id>android</id>
-            <properties>
-                <client.target>android</client.target>
-                <additional.native.client.args>-Dsvm.targetName=android</additional.native.client.args>
-            </properties>
-        </profile>
-        <profile>
-            <id>ios</id>
-            <properties>
-                <client.target>ios</client.target>
-                <additional.native.client.args>-Dsvm.targetName=iOS</additional.native.client.args>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux-aarch64</id>
-            <properties>
-                <client.target>linux-aarch64</client.target>
-                <additional.native.client.args>-Dsvm.targetName=Linux</additional.native.client.args>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux-x86_64</id>
-            <properties>
-                <client.target>host</client.target>
-                <additional.native.client.args>-Dsvm.targetName=Linux</additional.native.client.args>
-            </properties>
-        </profile>
-        <profile>
-            <id>windows-x86_64</id>
-            <properties>
-                <client.target>host</client.target>
-                <additional.native.client.args>-Dsvm.targetName=Windows</additional.native.client.args>
-            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.gluonhq</groupId>
+                        <artifactId>gluonfx-maven-plugin</artifactId>
+                        <version>${gluonfx.plugin.version}</version>
+                        <configuration>
+                            <target>android</target>
+                            <mainClass>${main.class.name}</mainClass>
+                            <verbose>true</verbose>
+                            <nativeImageArgs>
+                                <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
+                                <list>-Dsvm.targetName=android</list>
+                            </nativeImageArgs>
+                            <bundlesList>
+                                <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
+                            </bundlesList>
+                            <attachList>
+                                <list>lifecycle</list>
+                                <list>storage</list>
+                                <list>browser</list>
+                                <list>vibration</list>
+                                <list>orientation</list>
+                            </attachList>
+                            <reflectionList>
+                                <list>java.util.logging.FileHandler</list>
+                                <list>com.stream_pi.client.window.settings.About.Contributor</list>
+                                <list>javafx.scene.control.TableColumnBase</list>
+                            </reflectionList>
+                            <mainClass>${main.class.name}</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
 
-        <!--profile>
-            <id>ARM-DRM</id>
-            <properties>
-                <additional.javafx.plugin.options>
-                    <option>-Dmonocle.platform=EGL</option>
-                    <option>-Dembedded=monocle</option>
-                    <option>-Dglass.platform=Monocle</option>
-                    <option>-Degl.displayid=${javafx.drm.display.card}</option>
-                    <option>-Dmonocle.egl.lib=${javafx.drm.egl.lib.path}</option>
-                    <option>-Dprism.verbose=true</option>
-                </additional.javafx.plugin.options>
-            </properties>
-        </profile-->
+
+        <profile>
+            <id>ios</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.gluonhq</groupId>
+                        <artifactId>gluonfx-maven-plugin</artifactId>
+                        <version>${gluonfx.plugin.version}</version>
+                        <configuration>
+                            <target>android</target>
+                            <mainClass>${main.class.name}</mainClass>
+                            <verbose>true</verbose>
+                            <nativeImageArgs>
+                                <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
+                                <list>-Dsvm.targetName=iOS</list>
+                            </nativeImageArgs>
+                            <bundlesList>
+                                <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
+                            </bundlesList>
+                            <attachList>
+                                <list>lifecycle</list>
+                                <list>storage</list>
+                                <list>browser</list>
+                                <list>vibration</list>
+                                <list>orientation</list>
+                            </attachList>
+                            <reflectionList>
+                                <list>java.util.logging.FileHandler</list>
+                                <list>com.stream_pi.client.window.settings.About.Contributor</list>
+                                <list>javafx.scene.control.TableColumnBase</list>
+                            </reflectionList>
+                            <mainClass>${main.class.name}</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>linux-aarch64</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.gluonhq</groupId>
+                        <artifactId>gluonfx-maven-plugin</artifactId>
+                        <version>${gluonfx.plugin.version}</version>
+                        <configuration>
+                            <target>linux-aarch64</target>
+                            <mainClass>${main.class.name}</mainClass>
+                            <remoteHostName>pi@pi-4b.local</remoteHostName>
+                            <remoteDir>/home/rnayabed/native/</remoteDir>
+                            <runtimeArgs>
+                                <arg>-Dmonocle.platform=EGL</arg>
+                                <arg>-Dembedded=monocle</arg>
+                                <arg>-Dglass.platform=Monocle</arg>
+                                <arg>-Degl.displayid=/dev/dri/card1</arg>
+                            </runtimeArgs>
+                            <verbose>true</verbose>
+                            <nativeImageArgs>
+                                <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
+                            </nativeImageArgs>
+                            <bundlesList>
+                                <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
+                            </bundlesList>
+                            <attachList>
+                                <list>lifecycle</list>
+                                <list>storage</list>
+                                <list>browser</list>
+                                <list>vibration</list>
+                                <list>orientation</list>
+                            </attachList>
+                            <reflectionList>
+                                <list>java.util.logging.FileHandler</list>
+                                <list>com.stream_pi.client.window.settings.About.Contributor</list>
+                                <list>javafx.scene.control.TableColumnBase</list>
+                            </reflectionList>
+                            <mainClass>${main.class.name}</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
         <profile>
             <id>release</id>
