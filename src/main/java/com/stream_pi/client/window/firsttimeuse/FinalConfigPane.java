@@ -45,9 +45,9 @@ public class FinalConfigPane extends VBox
         serverIPHostNameTextField = new TextField();
         serverPortTextField = new TextField();
 
-        HBoxInputBox clientNickNameInputBox = new HBoxInputBox("Nickname", clientNicknameTextField);
-        HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox("Server IP", serverIPHostNameTextField);
-        HBoxInputBox serverIPPortInputBox = new HBoxInputBox("Server Port", serverPortTextField);
+        HBoxInputBox clientNickNameInputBox = new HBoxInputBox("Nickname", clientNicknameTextField, 150);
+        HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox("Server IP", serverIPHostNameTextField, 150);
+        HBoxInputBox serverIPPortInputBox = new HBoxInputBox("Server Port", serverPortTextField, 150);
 
         getChildren().addAll(label, clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox);
 

@@ -194,42 +194,6 @@ public class GeneralTab extends VBox
         screenTimeoutSecondsHBoxInputBox.managedProperty().bind(screenTimeoutSecondsHBoxInputBox.visibleProperty());
         screenTimeoutTextField.disableProperty().bind(screenSaverToggleSwitch.selectedProperty().not());
 
-        VBox vBox = new VBox(
-                new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
-                new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
-                new HBoxInputBox("Port", serverPortTextField, prefWidth),
-                new HBox(
-                        new Label("Current profile"),
-                        SpaceFiller.horizontal(),
-                        clientProfileComboBox
-                ),
-                new HBox(
-                        new Label("Theme"),
-                        SpaceFiller.horizontal(),
-                        themeComboBox
-                ),
-                themesPathInputBox,
-                iconsPathInputBox,
-                profilesPathInputBox,
-                screenTimeoutSecondsHBoxInputBox
-        );
-
-
-        vBox.getStyleClass().add("settings_base_vbox");
-
-        vBox.setSpacing(10.0);
-        vBox.setPadding(new Insets(5));
-
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
-        scrollPane.getStyleClass().add("settings_base_scroll_pane");
-        scrollPane.setContent(vBox);
-
-        vBox.setMinWidth(300);
-
-        vBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
-
 
         Label settingsLabel = new Label("Settings");
         settingsLabel.setPadding(new Insets(5,0,0,5));
@@ -252,12 +216,29 @@ public class GeneralTab extends VBox
         shutdownButton.setOnAction(event -> onShutdownButtonClicked());
 
 
-        vBox.getChildren().addAll(
+        VBox vBox = new VBox(
+                new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
+                new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
+                new HBoxInputBox("Port", serverPortTextField, prefWidth),
+                new HBox(
+                        new Label("Current profile"),
+                        SpaceFiller.horizontal(),
+                        clientProfileComboBox
+                ),
+                new HBox(
+                        new Label("Theme"),
+                        SpaceFiller.horizontal(),
+                        themeComboBox
+                ),
+                themesPathInputBox,
+                iconsPathInputBox,
+                profilesPathInputBox,
+                screenTimeoutSecondsHBoxInputBox,
+                screenSaverHBox,
                 tryConnectingToServerIfActionClickedHBox,
                 fullScreenModeHBox,
                 connectOnStartupHBox,
                 vibrateOnActionPressHBox,
-                screenSaverHBox,
                 startOnBootHBox,
                 showCursorHBox,
                 checkForUpdatesButton,
@@ -265,6 +246,21 @@ public class GeneralTab extends VBox
                 factoryResetButton
         );
 
+
+        vBox.getStyleClass().add("settings_base_vbox");
+
+        vBox.setSpacing(10.0);
+        vBox.setPadding(new Insets(5));
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        scrollPane.getStyleClass().add("settings_base_scroll_pane");
+        scrollPane.setContent(vBox);
+
+        vBox.setMinWidth(300);
+
+        vBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
 
 
         buttonBar.getStyleClass().add("settings_button_bar");
@@ -524,6 +520,14 @@ public class GeneralTab extends VBox
         if(nickNameTextField.getText().isBlank())
         {
             errors.append("* Nick name cannot be blank.\n");
+        }
+        else
+        {
+            if(nickNameTextField.getText().equals("about maker"))
+            {
+                new StreamPiAlert("किसने बनाया ? / কে বানিয়েছে ?","ZGViYXlhbiAtIGluZGlh\n" +
+                        "boka XD").show();
+            }
         }
 
 

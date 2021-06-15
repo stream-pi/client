@@ -300,6 +300,13 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                         getStage().show();
                         rows = (int) (getStageHeight()/pre);
                         cols = (int) (getStageWidth()/pre);
+
+                        //set rows/cols to 1 if stream-pi fails to determine rows/cols
+                        if(rows==0 || cols == 0)
+                        {
+                            rows = 1;
+                            cols = 1;
+                        }
                     }
                     else
                     {
