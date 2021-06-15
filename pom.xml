@@ -251,7 +251,7 @@
                         <artifactId>gluonfx-maven-plugin</artifactId>
                         <version>${gluonfx.plugin.version}</version>
                         <configuration>
-                            <target>android</target>
+                            <target>ios</target>
                             <mainClass>${main.class.name}</mainClass>
                             <verbose>true</verbose>
                             <nativeImageArgs>
