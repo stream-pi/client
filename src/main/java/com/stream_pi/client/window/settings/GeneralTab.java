@@ -79,6 +79,9 @@ public class GeneralTab extends VBox
     private HBoxWithSpaceBetween showCursorHBox;
     private ToggleSwitch showCursorToggleSwitch;
 
+    private HBoxWithSpaceBetween invertRowsColsHBox;
+    private ToggleSwitch invertRowsColsToggleSwitch;
+
     private TextField themesPathTextField;
     private TextField iconsPathTextField;
     private TextField profilesPathTextField;
@@ -170,6 +173,10 @@ public class GeneralTab extends VBox
         showCursorHBox = new HBoxWithSpaceBetween("Show Cursor", showCursorToggleSwitch);
         showCursorHBox.managedProperty().bind(showCursorHBox.visibleProperty());
 
+        invertRowsColsToggleSwitch = new ToggleSwitch();
+        invertRowsColsHBox = new HBoxWithSpaceBetween("Invert Grid on Rotate", invertRowsColsToggleSwitch);
+        invertRowsColsHBox.managedProperty().bind(invertRowsColsHBox.visibleProperty());
+
         int prefWidth = 200;
 
         HBoxInputBox themesPathInputBox = new HBoxInputBox("Themes Path", themesPathTextField, prefWidth);
@@ -234,6 +241,7 @@ public class GeneralTab extends VBox
                 iconsPathInputBox,
                 profilesPathInputBox,
                 screenTimeoutSecondsHBoxInputBox,
+                invertRowsColsHBox,
                 screenSaverHBox,
                 tryConnectingToServerIfActionClickedHBox,
                 fullScreenModeHBox,
@@ -300,12 +308,11 @@ public class GeneralTab extends VBox
         }
         else
         {
-            if(!StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON)
-            {
-                shutdownButton.setVisible(false);
-            }
+            shutdownButton.setVisible(StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON);
 
             vibrateOnActionPressHBox.setVisible(false);
+
+            invertRowsColsHBox.setVisible(false);
 
             fullScreenModeHBox.setVisible(StartupFlags.SHOW_FULLSCREEN_TOGGLE_BUTTON);
 
@@ -476,6 +483,7 @@ public class GeneralTab extends VBox
         connectOnStartupToggleSwitch.setSelected(config.isConnectOnStartup());
         vibrateOnActionPressToggleSwitch.setSelected(config.isVibrateOnActionClicked());
         tryConnectingToServerIfActionClickedToggleSwitch.setSelected(config.isTryConnectingWhenActionClicked());
+        invertRowsColsToggleSwitch.setSelected(config.isInvertRowsColsOnDeviceRotate());
     }
 
     public void onSaveButtonClicked()
@@ -662,7 +670,7 @@ public class GeneralTab extends VBox
             }
 
             config.setVibrateOnActionClicked(isVibrateOnActionClicked);
-
+            config.setInvertRowsColsOnDeviceRotate(invertRowsColsToggleSwitch.isSelected());
 
             config.save();
 

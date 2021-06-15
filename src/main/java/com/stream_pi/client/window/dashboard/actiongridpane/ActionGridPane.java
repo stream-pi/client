@@ -6,12 +6,16 @@ import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.Location;
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.info.StartupFlags;
+import com.stream_pi.client.io.Config;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -258,7 +262,30 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         actionBox.setStreamPiParent(currentParent);
 
-        actionsGridPane.add(actionBox, col, row);
+        try
+        {
+            if(Config.getInstance().isInvertRowsColsOnDeviceRotate() && ClientInfo.getInstance().isPhone())
+            {
+                if(clientListener.getCurrentOrientation() == Orientation.HORIZONTAL)
+                {
+                    actionsGridPane.add(actionBox, col, row);
+                }
+                else
+                {
+                    actionsGridPane.add(actionBox, row, col);
+                }
+            }
+            else
+            {
+                actionsGridPane.add(actionBox, col, row);
+            }
+        }
+        catch (SevereException e)
+        {
+            exceptionAndAlertHandler.handleSevereException(e);
+        }
+
+
         return actionBox;
     }
 

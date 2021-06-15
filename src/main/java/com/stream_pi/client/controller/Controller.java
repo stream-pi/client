@@ -31,6 +31,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCombination;
@@ -178,6 +179,24 @@ public class Controller extends Base
                 getStage().heightProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
             }
 
+            if(getClientInfo().isPhone() && getConfig().isInvertRowsColsOnDeviceRotate())
+            {
+                OrientationService.create().ifPresent(orientationService -> {
+                    if(orientationService.getOrientation().isPresent())
+                    {
+                        setCurrentOrientation(orientationService.getOrientation().get());
+                        orientationService.orientationProperty().addListener((observableValue, oldOrientation, newOrientation) -> {
+                            setCurrentOrientation(newOrientation);
+
+                            getDashboardPane().renderProfile(
+                                    getCurrentProfile(),
+                                    getCurrentParent(),
+                                    true
+                            );
+                        });
+                    }
+                });
+            }
         }
         catch (SevereException e)
         {
@@ -187,6 +206,19 @@ public class Controller extends Base
         {
             handleMinorException(e);
         }
+    }
+
+    private Orientation currentOrientation;
+
+    @Override
+    public Orientation getCurrentOrientation()
+    {
+        return currentOrientation;
+    }
+
+    private void setCurrentOrientation(Orientation currentOrientation)
+    {
+        this.currentOrientation = currentOrientation;
     }
 
     public void syncClientSizeDetailsWithServer()

@@ -2,6 +2,7 @@ package com.stream_pi.client.controller;
 
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.connection.Client;
+import com.stream_pi.client.io.Config;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
@@ -9,6 +10,7 @@ import com.stream_pi.client.window.dashboard.actiongridpane.ActionGridPaneListen
 import com.stream_pi.theme_api.Theme;
 import com.stream_pi.theme_api.Themes;
 import com.stream_pi.util.exception.SevereException;
+import javafx.geometry.Orientation;
 
 import java.util.concurrent.ExecutorService;
 
@@ -73,4 +75,6 @@ public interface ClientListener
     void exitApp();
 
     ExecutorService getExecutor();
+
+    Orientation getCurrentOrientation();
 }

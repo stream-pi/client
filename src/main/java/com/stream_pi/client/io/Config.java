@@ -470,4 +470,20 @@ public class Config
     {
         getOthersElement().getElementsByTagName("screen-saver-timeout-seconds").item(0).setTextContent(value);
     }
+
+
+    public boolean getDefaultInvertRowsColsOnDeviceRotate()
+    {
+        return true;
+    }
+
+    public boolean isInvertRowsColsOnDeviceRotate()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "invert-rows-cols-on-device-rotate", getDefaultInvertRowsColsOnDeviceRotate(), false, true, document, configFile);
+    }
+
+    public void setInvertRowsColsOnDeviceRotate(boolean value)
+    {
+        getOthersElement().getElementsByTagName("invert-rows-cols-on-device-rotate").item(0).setTextContent(value+"");
+    }
 }
