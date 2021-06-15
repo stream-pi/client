@@ -450,6 +450,15 @@ public class Client extends Thread
 
 
         Message toBeSent = new Message(header);
+
+        String tbs = null;
+
+        Orientation orientation = clientListener.getCurrentOrientation();
+        if(orientation!=null)
+        {
+            tbs = orientation.toString();
+        }
+
         toBeSent.setStringArrValue(
                 clientVersion,
                 releaseStatus,
@@ -461,7 +470,7 @@ public class Client extends Thread
                 OS,
                 defaultProfileID,
                 clientListener.getDefaultThemeFullName(),
-                clientListener.getCurrentOrientation().toString()
+                tbs
         );
 
         sendMessage(toBeSent);

@@ -161,23 +161,6 @@ public class Controller extends Base
                 throw new MinorException("Profiles", errors.toString());
             }
 
-            renderRootDefaultProfile();
-            loadSettings();
-
-            if(firstRun)
-            {
-                if(getConfig().isConnectOnStartup())
-                {
-                    setupClientConnection();
-                }
-                firstRun = false;
-            }
-
-            if(!getClientInfo().isPhone())
-            {
-                getStage().widthProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
-                getStage().heightProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
-            }
 
             if(getClientInfo().isPhone() && getConfig().isInvertRowsColsOnDeviceRotate())
             {
@@ -197,7 +180,10 @@ public class Controller extends Base
                             getExecutor().submit(()->{
                                 try
                                 {
-                                    getClient().updateOrientationOnClient(getCurrentOrientation());
+                                    if(isConnected())
+                                    {
+                                        getClient().updateOrientationOnClient(getCurrentOrientation());
+                                    }
                                 }
                                 catch (SevereException e)
                                 {
@@ -207,6 +193,24 @@ public class Controller extends Base
                         });
                     }
                 });
+            }
+
+            renderRootDefaultProfile();
+            loadSettings();
+
+            if(firstRun)
+            {
+                if(getConfig().isConnectOnStartup())
+                {
+                    setupClientConnection();
+                }
+                firstRun = false;
+            }
+
+            if(!getClientInfo().isPhone())
+            {
+                getStage().widthProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
+                getStage().heightProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
             }
         }
         catch (SevereException e)
@@ -219,7 +223,7 @@ public class Controller extends Base
         }
     }
 
-    private Orientation currentOrientation;
+    private Orientation currentOrientation = null;
 
     @Override
     public Orientation getCurrentOrientation()
