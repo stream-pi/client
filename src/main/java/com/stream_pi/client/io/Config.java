@@ -98,10 +98,6 @@ public class Config
 
 
     //Client Element
-    public Element getClientElement()
-    {
-        return (Element) document.getElementsByTagName("client").item(0);
-    }
     
     //Default Values
     public String getDefaultClientNickName()
@@ -138,17 +134,17 @@ public class Config
 
     public String getClientNickName()
     {
-        return XMLConfigHelper.getStringProperty(getClientElement(), "nickname", getDefaultClientNickName(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(document, "nickname", getDefaultClientNickName(), false, true, document, configFile);
     }
 
     public String getStartupProfileID()
     {
-        return XMLConfigHelper.getStringProperty(getClientElement(), "startup-profile", getDefaultStartupProfileID(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(document, "startup-profile", getDefaultStartupProfileID(), false, true, document, configFile);
     }
 
     public String getCurrentThemeFullName()
     {
-        return XMLConfigHelper.getStringProperty(getClientElement(), "current-theme-full-name", getDefaultCurrentThemeFullName(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(document, "current-theme-full-name", getDefaultCurrentThemeFullName(), false, true, document, configFile);
     }
 
     public String getThemesPath()
@@ -158,7 +154,7 @@ public class Config
                 platform != Platform.IOS)
             return ClientInfo.getInstance().getPrePath() + "Themes/";
 
-        return XMLConfigHelper.getStringProperty(getClientElement(), "themes-path", getDefaultThemesPath(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(document, "themes-path", getDefaultThemesPath(), false, true, document, configFile);
     }
 
     public String getProfilesPath()
@@ -168,7 +164,7 @@ public class Config
                 platform != Platform.IOS)
             return ClientInfo.getInstance().getPrePath() + "Profiles/";
         
-        return XMLConfigHelper.getStringProperty(getClientElement(), "profiles-path", getDefaultProfilesPath(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(document, "profiles-path", getDefaultProfilesPath(), false, true, document, configFile);
     }
 
     public String getIconsPath()
@@ -178,7 +174,7 @@ public class Config
                 platform != Platform.IOS)
             return ClientInfo.getInstance().getPrePath() + "Icons/";
         
-        return XMLConfigHelper.getStringProperty(getClientElement(), "icons-path", getDefaultIconsPath(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(document, "icons-path", getDefaultIconsPath(), false, true, document, configFile);
     }
 
     
@@ -187,43 +183,33 @@ public class Config
 
     public void setNickName(String nickName)
     {
-        getClientElement().getElementsByTagName("nickname").item(0).setTextContent(nickName);
+        document.getElementsByTagName("nickname").item(0).setTextContent(nickName);
     }
 
     public void setStartupProfileID(String id)
     {
-        getClientElement().getElementsByTagName("startup-profile").item(0).setTextContent(id);
+        document.getElementsByTagName("startup-profile").item(0).setTextContent(id);
     }
 
     public void setCurrentThemeFullName(String name)
     {
-        getClientElement().getElementsByTagName("current-theme-full-name").item(0).setTextContent(name);
+        document.getElementsByTagName("current-theme-full-name").item(0).setTextContent(name);
     }
 
     public void setProfilesPath(String profilesPath)
     {
-        getClientElement().getElementsByTagName("profiles-path").item(0).setTextContent(profilesPath);
+        document.getElementsByTagName("profiles-path").item(0).setTextContent(profilesPath);
     }
 
     public void setIconsPath(String iconsPath)
     {
-        getClientElement().getElementsByTagName("icons-path").item(0).setTextContent(iconsPath);
+        document.getElementsByTagName("icons-path").item(0).setTextContent(iconsPath);
     }
 
     public void setThemesPath(String themesPath)
     {
-        getClientElement().getElementsByTagName("themes-path").item(0).setTextContent(themesPath);
+        document.getElementsByTagName("themes-path").item(0).setTextContent(themesPath);
     }
-
-
-
-
-
-
-
-
-
-
 
 
     //comms-server
@@ -367,7 +353,7 @@ public class Config
 
     private Element getStartupWindowSizeElement()
     {
-        return (Element) getClientElement().getElementsByTagName("startup-window-size").item(0);
+        return (Element) document.getElementsByTagName("startup-window-size").item(0);
     }
 
     public double getStartupWindowWidth()
