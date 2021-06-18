@@ -35,6 +35,7 @@
         <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
 
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <jar.plugin>2.3.1</jar.plugin>
     </properties>
 
     <dependencies>
@@ -139,6 +140,32 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/lib</outputDirectory>
+                            <excludeGroupIds>org.openjfx</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${jar.plugin}</version>
+                <configuration>
+                    <outputDirectory>target/lib/</outputDirectory>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

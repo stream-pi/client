@@ -1,0 +1,65 @@
+name: Initial Setup
+
+on: [push]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install packages
+        run: sudo apt install unzip
+      - uses: actions/checkout@v2
+      - name: Setup java
+        uses: joschi/setup-jdk@v2
+        with:
+          java-version: 16
+      - name: Locally install util, action-api, theme-api
+        run: |
+          git clone https://github.com/stream-pi/util
+          cd util
+          mvn clean install
+          git clone https://github.com/stream-pi/theme-api
+          cd theme-api
+          mvn clean install
+          git clone https://github.com/stream-pi/action-api
+          cd action-api
+          mvn clean install
+      - name: Setup JavaFX
+        run: |
+          wget -P /tmp https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+11_linux-x64_bin-sdk.zip
+          unzip /tmp/openjfx-17-ea+11_linux-x64_bin-sdk.zip -d /tmp
+      - name: Build Jars
+        run: |
+          mvn -X package
+      - name: Save built jars
+        uses: actions/upload-artifact@v2
+        with:
+          name: built-jars
+          path: target/lib/*
+      - name: Set Version
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Calculate required modules
+        run: |
+          JDEPS_MODULES=$(jdeps --module-path $JAVAFX_SDK/:target/lib/ --print-module-deps --ignore-missing-deps target/lib/client-$VERSION.jar)
+          JAVAFX_MODULES=javafx.fxml,javafx.media,javafx.swing,javafx.web
+          echo "REQ_MODULES=$JDEPS_MODULES,$JAVAFX_MODULES" >> $GITHUB_ENV
+        env:
+          JAVAFX_SDK: /tmp/javafx-sdk-17/lib/
+      - name: Saving REQ_MODULES
+        run: |
+          echo $REQ_MODULES > req_modules.txt
+      - name: Uploading REQ_MODULES
+        uses: actions/upload-artifact@v2
+        with:
+          name: req_modules
+          path: req_modules.txt
+      - name: Saving VERSION
+        run: |
+          echo $VERSION > version.txt
+      - name: Uploading VERSION
+        uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: version.txt
