@@ -81,8 +81,8 @@ jobs:
           mv javafx-sdk-arm32/javafx-sdk-17/legal javafx-sdk-arm32/javafx-sdk-17/javafx-legal
           mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm* javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
           mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_ARM32/
-          cp arm32-launchers/run_console $INSTALL_ARM32/run_console
-          cp arm32-launchers/run_desktop $INSTALL_ARM32/run_desktop
+          cp assets/arm32-launchers/run_console $INSTALL_ARM32/run_console
+          cp assets/arm32-launchers/run_desktop $INSTALL_ARM32/run_desktop
           chmod +x $INSTALL_ARM32/run_desktop
           chmod +x $INSTALL_ARM32/run_console
           cd $INSTALL_ARM32
