@@ -85,8 +85,7 @@ jobs:
           cp assets/arm32-launchers/run_desktop $INSTALL_ARM32/run_desktop
           chmod +x $INSTALL_ARM32/run_desktop
           chmod +x $INSTALL_ARM32/run_console
-          cd $INSTALL_ARM32
-          zip -r stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip *
+          zip -r $INSTALL_DIR/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip $INSTALL_ARM32/*
 
 
 
