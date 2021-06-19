@@ -123,15 +123,7 @@ public class AboutTab extends ScrollPane
 
         try
         {
-            URL buildFile = Main.class.getResource("build-date");
-            if(buildFile != null)
-            {
-                buildDateLabel.setText("Build date/time: "+ Files.readString(Paths.get(Objects.requireNonNull(buildFile.toURI().getPath()))));
-            }
-            else
-            {
-                buildDateLabel.setText("Build date/time not available.");
-            }
+            buildDateLabel.setText("Build date/time: " +  new String(Objects.requireNonNull(Main.class.getResourceAsStream("build-date")).readAllBytes()));
         }
         catch (Exception e)
         {

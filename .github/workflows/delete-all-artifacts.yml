@@ -2,17 +2,7 @@ name: 'Delete all artifacts'
 
 on:
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Delete artifacts'
-        required: false
-      tags:
-        required: false
-        description: 'Delete artifacts'
-  workflow_run:
-    workflows: [ "Release" ]
-    types:
-      - completed
+
 
 jobs:
   delete-artifacts:
