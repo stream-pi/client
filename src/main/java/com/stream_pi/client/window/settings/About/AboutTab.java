@@ -18,7 +18,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class AboutTab extends ScrollPane
 {
@@ -114,6 +118,24 @@ public class AboutTab extends ScrollPane
         setContent(mainVBox);
 
 
+        try
+        {
+            URL buildFile = Main.class.getResource("build-date");
+            if(buildFile != null)
+            {
+                Label buildDateLabel = new Label("Build date/time: "+ Files.readString(Paths.get(Objects.requireNonNull(buildFile.toURI().getPath()))));
+                buildDateLabel.getStyleClass().add("build-date-label");
+                mainVBox.getChildren().addAll(buildDateLabel);
+            }
+            else
+            {
+                Logger.getLogger("").info("Build date not available");
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         setCache(true);
         setCacheHint(CacheHint.SPEED);

@@ -6,11 +6,11 @@ on:
       - completed
 
 jobs:
-  build-linux:
+  build-linux-and-android:
     runs-on: ubuntu-20.04
     steps:
       - name: Install packages
-        run: sudo apt install xdg-utils libc6 xdg-utils zlib1g libpng16-16 libasound2 libbsd-dev zip libblkid1 libdbus-1-3 libexpat1 libgpg-error0 liblzma5 libmount1 libpcre3 libselinux1 libsystemd0 libuuid1
+        run: sudo apt install libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev xdg-utils libc6 xdg-utils zlib1g libpng16-16 libasound2 libbsd-dev zip libblkid1 libdbus-1-3 libexpat1 libgpg-error0 liblzma5 libmount1 libpcre3 libselinux1 libsystemd0 libuuid1
       - uses: actions/checkout@v2
       - name: Setup java
         uses: joschi/setup-jdk@v2
@@ -42,7 +42,11 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Create Bundle using JPackage
+      - name: Setup Gluon GraalVM
+        uses: gluonhq/setup-graalvm@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create DEB, APP IMAGE, APK
         run: |
           # Create DEB
           .github/scripts/jpackage.sh \
@@ -57,6 +61,9 @@ jobs:
           --icon assets/linux-icon.png \
           --app-version ${{ env.VERSION }} \
           --type app-image
+
+          mvn -Pandroid gluonfx:build gluonfx:package
+          mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}
 
           cd $INSTALL_DIR
           mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
@@ -78,6 +85,11 @@ jobs:
         with:
           name: linux-zip
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip
+      - name: Saving Android aarch64 APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-apk
+          path: target/install/*.apk
   
   build-macos:
     runs-on: macos-10.15
