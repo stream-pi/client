@@ -43,15 +43,6 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Download GraalVM 21.1.0
-        run: |
-          cd /tmp
-          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
-          tar -xvzf *.gz
-      - name: Install native-image
-        run: |
-          cd /tmp/graalvm-ce-java11-21.1.0/bin
-          ./gu install native-image
       - name: Create DEB, APP IMAGE, APK
         run: |
           # Create DEB
@@ -68,9 +59,6 @@ jobs:
           --app-version ${{ env.VERSION }} \
           --type app-image
 
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
-          mvn -Pandroid gluonfx:build gluonfx:package
-          mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
 
           cd $INSTALL_DIR
           mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
@@ -92,11 +80,6 @@ jobs:
         with:
           name: linux-zip
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip
-      - name: Saving Android aarch64 APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: android-apk
-          path: target/install/*.apk
   
   build-macos:
     runs-on: macos-10.15
@@ -149,6 +132,10 @@ jobs:
           --license-file LICENSE.txt \
           --type dmg
 
+          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/Contents/Home/bin
+          mvn -Pandroid gluonfx:build gluonfx:package
+          mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
+
           cd $INSTALL_DIR
           mv *.dmg stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
         env:
@@ -161,6 +148,11 @@ jobs:
         with:
           name: macos-dmg
           path: target/install/stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
+      - name: Saving Android aarch64 APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-apk
+          path: target/install/*.apk
 
   build-windows:
     runs-on: windows-2019

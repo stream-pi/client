@@ -26,8 +26,8 @@ jobs:
       - name: Saving build-date
         run: |
           cd src/main/resources/com/stream_pi/client
-          echo $(date +'%d-%m-%Y %H:%M:%S "%Z"') > build-date
-          echo $(date +'%d-%m-%Y %H:%M:%S "%Z"')
+          echo $(date +'%d-%m-%Y %H:%M:%S %Z') > build-date
+          echo $(date +'%d-%m-%Y %H:%M:%S %Z')
           ls
           cat build-date
       - name: Build Jars
