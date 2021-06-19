@@ -1,6 +1,7 @@
 {
   "resources": [
     {"pattern": ".*/Default.zip$"},
+    {"pattern": ".*/build-date$"},
     {"pattern": ".*/(EmailBoard|NumericBoard|TextBoard|UriBoard).txt$"}
   ]
 }
