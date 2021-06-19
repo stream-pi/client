@@ -18,6 +18,7 @@ set /p VERSION=<version.txt
 --win-dir-chooser ^
 --win-menu ^
 --win-menu-group "Stream-Pi" ^
+--license-file LICENSE.txt ^
 --vendor "Stream-Pi"
 
 echo Done now renaming ..
