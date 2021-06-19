@@ -2,12 +2,12 @@ name: Release
 
 on:
   workflow_run:
-    workflows: ["Build Windows"]
+    workflows: ["Build"]
     types:
       - completed
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-20.04
     steps:
       - name: Download VERSION
@@ -54,7 +54,7 @@ jobs:
         uses: ncipollo/release-action@v1.8.6
         with:
           allowUpdates: true
-          name: Stream-Pi-Server ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
           artifacts: target/install/*
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{  env.VERSION }}
