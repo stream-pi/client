@@ -1,4 +1,4 @@
-name: 'nightly artifacts cleanup'
+name: 'Delete all artifacts'
 
 on:
   workflow_dispatch:
