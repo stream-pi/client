@@ -111,25 +111,26 @@ public class AboutTab extends ScrollPane
 
         disclaimerLabel.setWrapText(true);
 
+
+        Label buildDateLabel = new Label();
+        buildDateLabel.getStyleClass().add("build-date-label");
+
         mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
-                donateButton, hBox1);
+                donateButton, hBox1, buildDateLabel);
         mainVBox.prefWidthProperty().bind(widthProperty().subtract(25));
 
         setContent(mainVBox);
-
 
         try
         {
             URL buildFile = Main.class.getResource("build-date");
             if(buildFile != null)
             {
-                Label buildDateLabel = new Label("Build date/time: "+ Files.readString(Paths.get(Objects.requireNonNull(buildFile.toURI().getPath()))));
-                buildDateLabel.getStyleClass().add("build-date-label");
-                mainVBox.getChildren().addAll(buildDateLabel);
+                buildDateLabel.setText("Build date/time: "+ Files.readString(Paths.get(Objects.requireNonNull(buildFile.toURI().getPath()))));
             }
             else
             {
-                Logger.getLogger("").info("Build date not available");
+                buildDateLabel.setText("Build date/time not available.");
             }
         }
         catch (Exception e)
