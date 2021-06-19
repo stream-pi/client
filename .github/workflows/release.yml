@@ -21,25 +21,25 @@ jobs:
       - name: Download windows exe
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: windows.yml
+          workflow: build.yml
           name: windows-exe
           path: target/install
       - name: Download linux deb
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: linux.yml
+          workflow: build.yml
           name: linux-deb
           path: target/install
       - name: Download linux zip
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: linux.yml
+          workflow: build.yml
           name: linux-zip
           path: target/install
       - name: Download MacOS dmg
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: macos.yml
+          workflow: build.yml
           name: macos-dmg
           path: target/install
       - name: Delete old release if exists
