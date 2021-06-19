@@ -141,17 +141,13 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Create DMG, IPA
+      - name: Create DMG
         run: |
           # Create DMG
           .github/scripts/jpackage.sh \
           --icon assets/macos-icon.icns \
           --license-file LICENSE.txt \
           --type dmg
-
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/Contents/Home
-          mvn -Pios gluonfx:build gluonfx:package
-          mv target/gluonfx/arm64-ios/*.ipa ${{ env.INSTALL_DIR }}/stream-pi-client-ios-aarch64-${{ env.VERSION }}.dmg
 
           cd $INSTALL_DIR
           mv *.dmg stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
@@ -165,11 +161,6 @@ jobs:
         with:
           name: macos-dmg
           path: target/install/stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
-      - name: Saving iOS aarch64 IPA
-        uses: actions/upload-artifact@v2
-        with:
-          name: ios-ipa
-          path: target/install/*.ipa
 
   build-windows:
     runs-on: windows-2019

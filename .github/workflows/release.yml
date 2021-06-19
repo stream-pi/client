@@ -48,12 +48,6 @@ jobs:
           workflow: build.yml
           name: android-apk
           path: target/install
-      - name: Download iOS aarch64 ipa
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: build.yml
-          name: android-apk
-          path: target/install
       - name: Delete old release if exists
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         continue-on-error: true
