@@ -1,0 +1,20 @@
+name: 'nightly artifacts cleanup'
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Delete artifacts'
+        required: false
+      tags:
+        required: false
+        description: 'Delete artifacts'
+
+jobs:
+  delete-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: $
+          expire-in: 0
