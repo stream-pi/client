@@ -14,17 +14,6 @@ jobs:
         uses: joschi/setup-jdk@v2
         with:
           java-version: 16
-      - name: Locally install util, action-api, theme-api
-        run: |
-          git clone https://github.com/stream-pi/util
-          cd util
-          mvn clean install
-          git clone https://github.com/stream-pi/theme-api
-          cd theme-api
-          mvn clean install
-          git clone https://github.com/stream-pi/action-api
-          cd action-api
-          mvn clean install
       - name: Setup JavaFX
         run: |
           wget -P /tmp https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+11_linux-x64_bin-sdk.zip
