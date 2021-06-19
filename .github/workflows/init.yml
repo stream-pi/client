@@ -23,15 +23,9 @@ jobs:
         uses: szenius/set-timezone@v1.0
         with:
           timezoneLinux: "Asia/Kolkata"
-      - name: Saving build-date
-        run: |
-          cd src/main/resources/com/stream_pi/client
-          echo $(date +'%d-%m-%Y %H:%M:%S %Z') > build-date
-          echo $(date +'%d-%m-%Y %H:%M:%S %Z')
-          ls
-          cat build-date
       - name: Build Jars
         run: |
+          echo $(date +'%d-%m-%Y %H:%M:%S %Z') > src/main/resources/com/stream_pi/client/build-date
           mvn -X package
       - name: Save built jars
         uses: actions/upload-artifact@v2
