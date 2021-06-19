@@ -113,11 +113,11 @@ jobs:
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
-          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-darwin-amd64-21.1.0.tar.gz
           tar -xvzf *.gz
       - name: Install native-image
         run: |
-          cd /tmp/graalvm-ce-java11-21.1.0/bin
+          cd /tmp/graalvm-ce-java11-21.1.0/Contents/Home/bin
           ./gu install native-image
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
@@ -149,7 +149,7 @@ jobs:
           --license-file LICENSE.txt \
           --type dmg
 
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
+          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/Contents/Home
           mvn -Pios gluonfx:build gluonfx:package
           mv target/gluonfx/arm64-ios/*.ipa ${{ env.INSTALL_DIR }}/stream-pi-client-ios-aarch64-${{ env.VERSION }}.dmg
 
