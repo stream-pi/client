@@ -28,7 +28,7 @@ jobs:
           tar -xvzf *.gz
       - name: Install native-image
         run: |
-          cd /tmp/graalvm-ce-java11-21.1.0/
+          cd /tmp/graalvm-ce-java11-21.1.0/bin
           ./gu install native-image
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
