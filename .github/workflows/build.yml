@@ -52,7 +52,7 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Create DEB, APP IMAGE, APK
+      - name: Create Linux x64 DEB, Linux x64 APP IMAGE, Android aarch64 APK, Linux Arm32 ZIP
         run: |
           # Create DEB
           .github/scripts/jpackage.sh \
@@ -71,6 +71,24 @@ jobs:
           export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
           mvn -Pandroid gluonfx:build gluonfx:package
           mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
+
+          # Create linux arm32 zip
+          INSTALL_ARM32=$INSTALL_DIR/client-arm32
+          mkdir $INSTALL_ARM32
+          mv target/lib/* $INSTALL_ARM32
+          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+11_linux-arm32_bin-sdk.zip
+          unzip openjfx-17-ea+11_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+          mv javafx-sdk-arm32/javafx-sdk-17/legal javafx-sdk-arm32/javafx-sdk-17/javafx-legal
+          mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm* javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
+          mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_ARM32/
+          cp arm32-launchers/run_console $INSTALL_ARM32/run_console
+          cp arm32-launchers/run_desktop $INSTALL_ARM32/run_desktop
+          chmod +x $INSTALL_ARM32/run_desktop
+          chmod +x $INSTALL_ARM32/run_console
+          cd $INSTALL_ARM32
+          zip -r stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip *
+
+
 
           cd $INSTALL_DIR
           mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
@@ -92,6 +110,11 @@ jobs:
         with:
           name: linux-zip
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip
+      - name: Saving Linux ARM32 ZIP
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-arm32-zip
+          path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
       - name: Saving Android aarch64 APK
         uses: actions/upload-artifact@v2
         with:
