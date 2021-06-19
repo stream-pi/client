@@ -9,6 +9,10 @@ on:
       tags:
         required: false
         description: 'Delete artifacts'
+  workflow_run:
+    workflows: [ "Release" ]
+    types:
+      - completed
 
 jobs:
   delete-artifacts:
