@@ -132,7 +132,7 @@ jobs:
           --license-file LICENSE.txt \
           --type dmg
 
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/Contents/Home/bin
+          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/Contents/Home
           mvn -Pandroid gluonfx:build gluonfx:package
           mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
 
