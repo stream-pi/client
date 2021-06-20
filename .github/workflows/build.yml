@@ -201,6 +201,12 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2.1.0
+      - name: Download built jars
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: built-jars
+          path: target/lib/
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build & save Linux ARM32 ZIP
         with:
