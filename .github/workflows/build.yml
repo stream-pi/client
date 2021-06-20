@@ -204,7 +204,7 @@ jobs:
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build & save Linux ARM32 ZIP
         with:
-          arch: armv7
+          arch: armv6
           distro: buster
 
           githubToken: ${{ github.token }}
@@ -225,11 +225,11 @@ jobs:
             chmod +x $INSTALL_ARM32/run_console
 
             #Download jdk
-            axel -n 8 https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_arm_linux_hotspot_16.0.1_9.tar.gz
-            tar -xvzf OpenJDK16U-jdk_arm_linux_hotspot_16.0.1_9.tar.gz
+            axel -n 8 https://cdn.azul.com/zulu-embedded/bin/zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
+            tar -xvzf zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
 
             #Run jpackage
-            jdk-16.0.1+9/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_ARM32/jre
+            zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_ARM32/jre
 
             cd $INSTALL_ARM32
             zip -r stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip *
