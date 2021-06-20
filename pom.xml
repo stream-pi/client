@@ -179,7 +179,6 @@
                 <configuration>
                     <commandlineArgs>-DStream-Pi.defaultFullScreenMode=false -DStream-Pi.enableScreenSaverFeature=false</commandlineArgs>
                     <options>
-                        <option>-Dglass.gtk.uiScale=1.0</option>
                         <option>-Dprism.verbose=true</option>
                         <option>-Djavafx.verbose=true</option>
                         <option>-Dprism.forceGPU=true</option>
