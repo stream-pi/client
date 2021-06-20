@@ -207,9 +207,10 @@ jobs:
           arch: armv6
           distro: buster
 
-          githubToken: ${{ github.token }}
-
           run: |
+            sudo apt update
+            sudo apt install axel
+
             INSTALL_DIR=target/install
             INSTALL_ARM32=$INSTALL_DIR/client-arm32
             mkdir $INSTALL_ARM32
