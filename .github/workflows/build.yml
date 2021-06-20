@@ -215,7 +215,7 @@ jobs:
 
           run: |
             sudo apt update
-            sudo apt install axel
+            sudo apt install axel unzip zip
 
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
