@@ -212,27 +212,26 @@ jobs:
             sudo apt install axel
 
             INSTALL_DIR=target/install
-            INSTALL_ARM32=$INSTALL_DIR/client-arm32
-            mkdir $INSTALL_ARM32
-            mv target/lib/* $INSTALL_ARM32
+            mkdir -p $INSTALL_DIR
+            mv target/lib/* $INSTALL_DIR
             axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+11_linux-arm32_bin-sdk.zip
             unzip openjfx-17-ea+11_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-17/legal javafx-sdk-arm32/javafx-sdk-17/javafx-legal
             mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm* javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
-            mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_ARM32/
-            cp arm32-launchers/run_console $INSTALL_ARM32/run_console
-            cp arm32-launchers/run_desktop $INSTALL_ARM32/run_desktop
-            chmod +x $INSTALL_ARM32/run_desktop
-            chmod +x $INSTALL_ARM32/run_console
+            mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_DIR/
+            cp arm32-launchers/run_console $INSTALL_DIR/run_console
+            cp arm32-launchers/run_desktop $INSTALL_DIR/run_desktop
+            chmod +x $INSTALL_DIR/run_desktop
+            chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
             axel -n 8 https://cdn.azul.com/zulu-embedded/bin/zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
             tar -xvzf zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
 
             #Run jpackage
-            zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_ARM32/jre
+            zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
 
-            cd $INSTALL_ARM32
+            cd $INSTALL_DIR
             zip -r stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip *
 
       - name: Saving Linux ARM32 ZIP
