@@ -201,6 +201,14 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2.1.0
+      - name: Download VERSION
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: version
+      - name: Add VERSION to environment
+        run: |
+          echo "VERSION=$(<version.txt)" >> $GITHUB_ENV
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -217,6 +225,7 @@ jobs:
             sudo apt update
             sudo apt install axel unzip zip
 
+            VERSION=$(<version.txt)
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
@@ -238,7 +247,7 @@ jobs:
             zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
-            zip -r stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip *
+            zip -r stream-pi-client-linux-arm32-$VERSION-executable.zip *
 
       - name: Saving Linux ARM32 ZIP
         uses: actions/upload-artifact@v2
