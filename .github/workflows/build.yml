@@ -72,23 +72,6 @@ jobs:
           mvn -Pandroid gluonfx:build gluonfx:package
           mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
 
-          # Create linux arm32 zip
-          INSTALL_ARM32=$INSTALL_DIR/client-arm32
-          mkdir $INSTALL_ARM32
-          mv target/lib/* $INSTALL_ARM32
-          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+11_linux-arm32_bin-sdk.zip
-          unzip openjfx-17-ea+11_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
-          mv javafx-sdk-arm32/javafx-sdk-17/legal javafx-sdk-arm32/javafx-sdk-17/javafx-legal
-          mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm* javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
-          mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_ARM32/
-          cp assets/arm32-launchers/run_console $INSTALL_ARM32/run_console
-          cp assets/arm32-launchers/run_desktop $INSTALL_ARM32/run_desktop
-          chmod +x $INSTALL_ARM32/run_desktop
-          chmod +x $INSTALL_ARM32/run_console
-          zip -r $INSTALL_DIR/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip $INSTALL_ARM32/*
-
-
-
           cd $INSTALL_DIR
           mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
           mv 'Stream-Pi Client' stream-pi-client-${{ env.VERSION }}
@@ -109,11 +92,6 @@ jobs:
         with:
           name: linux-zip
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip
-      - name: Saving Linux ARM32 ZIP
-        uses: actions/upload-artifact@v2
-        with:
-          name: linux-arm32-zip
-          path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
       - name: Saving Android aarch64 APK
         uses: actions/upload-artifact@v2
         with:
@@ -218,3 +196,46 @@ jobs:
         with:
           name: windows-exe
           path: target/install/*.exe
+
+  armv32_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Build & save Linux ARM32 ZIP
+        with:
+          arch: armv7
+          distro: buster
+
+          githubToken: ${{ github.token }}
+
+          run: |
+            INSTALL_DIR=target/install
+            INSTALL_ARM32=$INSTALL_DIR/client-arm32
+            mkdir $INSTALL_ARM32
+            mv target/lib/* $INSTALL_ARM32
+            axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+11_linux-arm32_bin-sdk.zip
+            unzip openjfx-17-ea+11_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+            mv javafx-sdk-arm32/javafx-sdk-17/legal javafx-sdk-arm32/javafx-sdk-17/javafx-legal
+            mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm* javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
+            mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_ARM32/
+            cp arm32-launchers/run_console $INSTALL_ARM32/run_console
+            cp arm32-launchers/run_desktop $INSTALL_ARM32/run_desktop
+            chmod +x $INSTALL_ARM32/run_desktop
+            chmod +x $INSTALL_ARM32/run_console
+
+            #Download jdk
+            axel -n 8 https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_arm_linux_hotspot_16.0.1_9.tar.gz
+            tar -xvzf OpenJDK16U-jdk_arm_linux_hotspot_16.0.1_9.tar.gz
+
+            #Run jpackage
+            jdk-16.0.1+9/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_ARM32/jre
+
+            cd $INSTALL_ARM32
+            zip -r stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip *
+
+      - name: Saving Linux ARM32 ZIP
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-arm32-zip
+          path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
