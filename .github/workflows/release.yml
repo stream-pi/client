@@ -18,11 +18,11 @@ jobs:
       - name: Add Version to environment
         run: |
           echo "VERSION=$(<version.txt)" >> $GITHUB_ENV
-      - name: Download windows exe
+      - name: Download windows msi
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: windows-exe
+          name: windows-msi
           path: target/install
       - name: Download linux deb
         uses: dawidd6/action-download-artifact@v2

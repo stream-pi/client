@@ -194,8 +194,8 @@ jobs:
       - name: Saving Windows x64 EXE
         uses: actions/upload-artifact@v2
         with:
-          name: windows-exe
-          path: target/install/*.exe
+          name: windows-msi
+          path: target/install/*.msi
 
   armv32_job:
     runs-on: ubuntu-18.04
