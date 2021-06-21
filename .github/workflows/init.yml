@@ -59,3 +59,8 @@ jobs:
         with:
           name: version
           path: version.txt
+      - name: Uploading build-date
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-date
+          path: src/main/resources/com/stream_pi/client/build-date

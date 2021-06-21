@@ -52,6 +52,12 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
+      - name: Download build-date
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: build-date
+          path: src/main/resources/com/stream_pi/client/build-date
       - name: Create Linux x64 DEB, Linux x64 APP IMAGE, Android aarch64 APK, Linux Arm32 ZIP
         run: |
           # Create DEB
