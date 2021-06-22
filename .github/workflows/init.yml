@@ -1,7 +1,9 @@
 name: Init
 
 on:
-  [push]
+  push:
+    tags:
+      - '*'
   workflow_dispatch:
 
 
