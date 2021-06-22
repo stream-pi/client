@@ -232,7 +232,7 @@ jobs:
           name: windows-msi
           path: target/install/*.msi
 
-  armv32_job:
+  build-arm32:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2.1.0
