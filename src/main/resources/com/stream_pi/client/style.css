@@ -201,3 +201,8 @@
 {
     -fx-background-color: black;
 }
+
+.separator_ui_label
+{
+    -fx-text-fill: grey;
+}

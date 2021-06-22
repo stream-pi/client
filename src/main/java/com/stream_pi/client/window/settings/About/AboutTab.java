@@ -103,6 +103,19 @@ public class AboutTab extends ScrollPane
         hBox1.setAlignment(Pos.CENTER);
         hBox1.setSpacing(10);
 
+        Label javaVersionLabel = new Label("Java "+System.getProperty("java.version"));
+        javaVersionLabel.getStyleClass().add("about_java_version");
+
+        Label javafxVersionLabel = new Label("JavaFX "+System.getProperty("javafx.version"));
+        javafxVersionLabel.getStyleClass().add("about_javafx_version");
+
+        HBox hBox2 = new HBox(javaVersionLabel, getSep(),
+                javafxVersionLabel);
+
+        hBox2.setAlignment(Pos.CENTER);
+        hBox2.setSpacing(10);
+
+
         Label disclaimerLabel = new Label("This contributor list shows only those who have contributed " +
                 "to the Client Source code.\nTo know about the contributors of Action API, Theme API, Util, " +
                 "visit the respective repositories. If you want to know about the Core Team instead, please visit the website.");
@@ -116,7 +129,7 @@ public class AboutTab extends ScrollPane
         buildDateLabel.getStyleClass().add("build-date-label");
 
         mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
-                donateButton, hBox1, buildDateLabel);
+                donateButton, hBox1, hBox2, buildDateLabel);
         mainVBox.prefWidthProperty().bind(widthProperty().subtract(25));
 
         setContent(mainVBox);
@@ -132,6 +145,13 @@ public class AboutTab extends ScrollPane
 
         setCache(true);
         setCacheHint(CacheHint.SPEED);
+    }
+
+    private Label getSep()
+    {
+        Label label = new Label("|");
+        label.getStyleClass().add("separator_ui_label");
+        return label;
     }
 
     public void openWebpage(String url)

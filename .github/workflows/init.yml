@@ -17,8 +17,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+11_linux-x64_bin-sdk.zip
-          unzip /tmp/openjfx-17-ea+11_linux-x64_bin-sdk.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+12_linux-x64_bin-sdk.zip
+          unzip /tmp/openjfx-17-ea+12_linux-x64_bin-sdk.zip -d /tmp
       - name: Set Timezone
         uses: szenius/set-timezone@v1.0
         with:
