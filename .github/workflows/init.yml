@@ -39,9 +39,7 @@ jobs:
       - name: Calculate required modules
         run: |
           JDEPS_MODULES=$(jdeps --module-path $JAVAFX_SDK/:target/lib/ --print-module-deps --ignore-missing-deps target/lib/client-$VERSION.jar)
-          JAVAFX_MODULES=javafx.fxml,javafx.media,javafx.swing,javafx.web
-          EXTRA_MODULES=java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec
-          echo "REQ_MODULES=$EXTRA_MODULES,$JDEPS_MODULES,$JAVAFX_MODULES" >> $GITHUB_ENV
+          echo "REQ_MODULES=$JDEPS_MODULES" >> $GITHUB_ENV
         env:
           JAVAFX_SDK: /tmp/javafx-sdk-17/lib/
       - name: Saving REQ_MODULES
