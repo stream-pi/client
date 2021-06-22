@@ -108,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: linux-rpm
-          path: target/install/stream-pi-server-linux-x64-${{ env.VERSION }}.rpm
+          path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
       - name: Saving Linux x64 ZIP
         uses: actions/upload-artifact@v2
         with:
