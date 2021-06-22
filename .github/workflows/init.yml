@@ -1,6 +1,8 @@
 name: Init
 
-on: [push]
+on:
+  [push]
+  workflow_dispatch:
 
 
 jobs:

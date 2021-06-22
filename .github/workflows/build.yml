@@ -154,14 +154,8 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Create DMG, PKG
+      - name: Create PKG
         run: |
-          # Create DMG
-          .github/scripts/jpackage.sh \
-          --icon assets/macos-icon.icns \
-          --license-file LICENSE.txt \
-          --type dmg
-
           # Create PKG
           .github/scripts/jpackage.sh \
           --icon assets/macos-icon.icns \
@@ -170,18 +164,12 @@ jobs:
           --type pkg
 
           cd $INSTALL_DIR
-          mv *.dmg stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
           mv *.pkg stream-pi-client-macos-x64-${{ env.VERSION }}.pkg
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/install
-      - name: Saving MacOS x64 DMG
-        uses: actions/upload-artifact@v2
-        with:
-          name: macos-dmg
-          path: target/install/stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
       - name: Saving MacOS x64 PKG
         uses: actions/upload-artifact@v2
         with:
