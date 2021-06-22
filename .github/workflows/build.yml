@@ -1,6 +1,10 @@
 name: Build
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["Init"]
+    types:
+      - completed
 
 jobs:
   build-linux-and-android:

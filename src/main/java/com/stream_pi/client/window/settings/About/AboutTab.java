@@ -18,6 +18,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -134,13 +136,17 @@ public class AboutTab extends ScrollPane
 
         setContent(mainVBox);
 
-        try
+        InputStream inputStream = Main.class.getResourceAsStream("build-date");
+        if(inputStream != null)
         {
-            buildDateLabel.setText("Build date/time: " +  new String(Objects.requireNonNull(Main.class.getResourceAsStream("build-date")).readAllBytes()));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            try
+            {
+                buildDateLabel.setText("Build date/time: " +  new String(inputStream.readAllBytes()));
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         setCache(true);
