@@ -58,7 +58,7 @@ jobs:
           workflow: init.yml
           name: build-date
           path: src/main/resources/com/stream_pi/client/
-      - name: Create Linux x64 DEB, Linux x64 APP IMAGE, Android aarch64 APK, Linux Arm32 ZIP
+      - name: Create Linux x64 DEB, Linux x64 APP IMAGE, Linux x64 RPM, Android aarch64 APK, Linux Arm32 ZIP
         run: |
           # Create DEB
           .github/scripts/jpackage.sh \
@@ -74,12 +74,23 @@ jobs:
           --app-version ${{ env.VERSION }} \
           --type app-image
 
+          NEW_V=${{ env.VERSION }}
+          NEW_V=${NEW_V//-/_}
+
+          # Create RPM
+          .github/scripts/jpackage.sh \
+          --icon assets/linux-icon.png \
+          --license-file LICENSE.txt \
+          --app-version $NEW_V \
+          --type rpm
+
           export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
           mvn -Pandroid gluonfx:build gluonfx:package
           mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
 
           cd $INSTALL_DIR
           mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
+          mv *.rpm stream-pi-client-linux-x64-${{ env.VERSION }}-debian.rpm
           mv 'Stream-Pi Client' stream-pi-client-${{ env.VERSION }}
           zip -r stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip stream-pi-client-${{ env.VERSION }}
           rm -r stream-pi-client-${{ env.VERSION }}
@@ -93,6 +104,11 @@ jobs:
         with:
           name: linux-deb
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
+      - name: Saving Linux x64 RPM
+        uses: actions/upload-artifact@v2
+        with:
+            name: linux-rpm
+            path: target/install/stream-pi-server-linux-x64-${{ env.VERSION }}-debian.rpm
       - name: Saving Linux x64 ZIP
         uses: actions/upload-artifact@v2
         with:
@@ -138,7 +154,7 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Create DMG
+      - name: Create DMG, PKG
         run: |
           # Create DMG
           .github/scripts/jpackage.sh \
@@ -146,8 +162,16 @@ jobs:
           --license-file LICENSE.txt \
           --type dmg
 
+          # Create PKG
+          .github/scripts/jpackage.sh \
+          --icon assets/macos-icon.icns \
+          --license-file LICENSE.txt \
+          --mac-package-identifier stream-pi-client \
+          --type pkg
+
           cd $INSTALL_DIR
-          mv *.dmg stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
+          mv *.dmg stream-pi-server-macos-x64-${{ env.VERSION }}.dmg
+          mv *.pkg stream-pi-server-macos-x64-${{ env.VERSION }}.pkg
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/
@@ -158,6 +182,11 @@ jobs:
         with:
           name: macos-dmg
           path: target/install/stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
+      - name: Saving MacOS x64 PKG
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos-pkg
+          path: target/install/stream-pi-client-macos-x64-${{ env.VERSION }}.pkg
 
   build-windows:
     runs-on: windows-2019
