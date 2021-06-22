@@ -89,8 +89,8 @@ jobs:
           mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
 
           cd $INSTALL_DIR
-          mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
-          mv *.rpm stream-pi-client-linux-x64-${{ env.VERSION }}-debian.rpm
+          mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}.deb
+          mv *.rpm stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
           mv 'Stream-Pi Client' stream-pi-client-${{ env.VERSION }}
           zip -r stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip stream-pi-client-${{ env.VERSION }}
           rm -r stream-pi-client-${{ env.VERSION }}
@@ -103,12 +103,12 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: linux-deb
-          path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-debian.deb
+          path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}.deb
       - name: Saving Linux x64 RPM
         uses: actions/upload-artifact@v2
         with:
-            name: linux-rpm
-            path: target/install/stream-pi-server-linux-x64-${{ env.VERSION }}-debian.rpm
+          name: linux-rpm
+          path: target/install/stream-pi-server-linux-x64-${{ env.VERSION }}.rpm
       - name: Saving Linux x64 ZIP
         uses: actions/upload-artifact@v2
         with:
