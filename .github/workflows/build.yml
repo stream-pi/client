@@ -170,8 +170,8 @@ jobs:
           --type pkg
 
           cd $INSTALL_DIR
-          mv *.dmg stream-pi-server-macos-x64-${{ env.VERSION }}.dmg
-          mv *.pkg stream-pi-server-macos-x64-${{ env.VERSION }}.pkg
+          mv *.dmg stream-pi-client-macos-x64-${{ env.VERSION }}.dmg
+          mv *.pkg stream-pi-client-macos-x64-${{ env.VERSION }}.pkg
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/
