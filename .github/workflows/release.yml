@@ -62,6 +62,18 @@ jobs:
           tag_name: ${{ env.VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create relase body
+        run: |
+          touch body.md
+          if [[ $VERSION == *"SNAPSHOT"* ]]; then
+            echo "**These are snapshot builds. Untested and not recommended for daily use.**" >> body.md
+          fi
+
+          if [[ $VERSION == *"EA"* ]]; then
+            echo "PRE_RELEASE=true" >> $GITHUB_ENV
+          else
+            echo "PRE_RELEASE=false" >> $GITHUB_ENV
+          fi
       - name: Release nightly build
         uses: ncipollo/release-action@v1.8.6
         with:
@@ -70,3 +82,5 @@ jobs:
           artifacts: target/install/*
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{  env.VERSION }}
+          bodyFile: "body.md"
+          prerelease: ${{ env.PRE_RELEASE }}
