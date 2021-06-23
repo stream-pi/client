@@ -132,7 +132,7 @@ public class AboutTab extends ScrollPane
 
         mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
                 donateButton, hBox1, hBox2, buildDateLabel);
-        mainVBox.prefWidthProperty().bind(widthProperty().subtract(25));
+        mainVBox.prefWidthProperty().bind(widthProperty().subtract(30));
 
         setContent(mainVBox);
 

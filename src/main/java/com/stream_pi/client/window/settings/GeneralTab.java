@@ -268,7 +268,7 @@ public class GeneralTab extends VBox
 
         vBox.setMinWidth(300);
 
-        vBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(25));
+        vBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(30));
 
 
         buttonBar.getStyleClass().add("settings_button_bar");
