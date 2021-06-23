@@ -112,8 +112,8 @@ public class FinalConfigPane extends VBox
 
                 Config.getInstance().save();
 
-                clientListener.setFirstRun(true);
-                Platform.runLater(()->clientListener.init());
+                clientListener.setupClientConnection();
+                Platform.runLater(()-> clientListener.init());
             }
             catch(SevereException e)
             {
