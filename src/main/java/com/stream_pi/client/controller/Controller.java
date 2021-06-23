@@ -641,6 +641,7 @@ public class Controller extends Base
         }
     }
 
+    @Override
     public void setFirstRun(boolean firstRun)
     {
         this.firstRun = firstRun;

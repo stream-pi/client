@@ -8,8 +8,9 @@ import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.uihelper.HBoxInputBox;
-import com.stream_pi.util.platform.Platform;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -59,11 +60,20 @@ public class FinalConfigPane extends VBox
     public void makeChangesToNextButton()
     {
         nextButton.setText("Confirm");
-        nextButton.setOnAction(event -> onConfirmButtonClicked());
+        nextButton.setOnAction(actionEvent -> new Thread(new Task<Void>() {
+            @Override
+            protected Void call()
+            {
+                onConfirmButtonClicked();
+                return null;
+            }
+        }).start());
     }
 
     private void onConfirmButtonClicked()
     {
+        Platform.runLater(()->nextButton.setDisable(true));
+
         StringBuilder errors = new StringBuilder();
 
         if(clientNicknameTextField.getText().isBlank())
@@ -102,9 +112,8 @@ public class FinalConfigPane extends VBox
 
                 Config.getInstance().save();
 
-                clientListener.init();
-                clientListener.setupClientConnection();
-
+                clientListener.setFirstRun(true);
+                Platform.runLater(()->clientListener.init());
             }
             catch(SevereException e)
             {
@@ -113,7 +122,8 @@ public class FinalConfigPane extends VBox
         }
         else
         {
-            new StreamPiAlert("Uh Oh", "Please rectify the following errors and try again:\n"+errors.toString(), StreamPiAlertType.ERROR).show();
+            Platform.runLater(()->nextButton.setDisable(false));
+            new StreamPiAlert("Uh Oh", "Please rectify the following errors and try again:\n"+errors, StreamPiAlertType.ERROR).show();
         }
     }
 }

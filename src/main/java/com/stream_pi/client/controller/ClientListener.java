@@ -77,4 +77,6 @@ public interface ClientListener
     ExecutorService getExecutor();
 
     Orientation getCurrentOrientation();
+
+    void setFirstRun(boolean firstRun);
 }
