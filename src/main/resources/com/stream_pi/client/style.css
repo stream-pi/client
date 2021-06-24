@@ -206,3 +206,9 @@
 {
     -fx-text-fill: grey;
 }
+
+
+.action_grid_pane_parent, .action_grid_pane
+{
+    -fx-background: transparent;
+}
