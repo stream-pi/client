@@ -335,6 +335,9 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         Location location = action.getLocation();
 
+        if( getClientProfile().getCols() < location.getCol() || getClientProfile().getRows() < location.getRow())
+            return;
+
         ActionBox actionBox = actionBoxes[location.getCol()][location.getRow()];
 
         if(actionBox.getAction()!=null)
