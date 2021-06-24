@@ -182,7 +182,6 @@
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
                     <mainClass>${main.class.name}</mainClass>
-                    <!--options>${additional.javafx.plugin.options}</options-->
                 </configuration>
             </plugin>
 
