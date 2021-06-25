@@ -7,16 +7,18 @@ on:
       - completed
 
 jobs:
-  build-linux-and-android:
+  build-linux-x64-and-android-aarch64:
     runs-on: ubuntu-20.04
     steps:
       - name: Install packages
         run: sudo apt install axel libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev xdg-utils libc6 xdg-utils zlib1g libpng16-16 libasound2 libbsd-dev zip libblkid1 libdbus-1-3 libexpat1 libgpg-error0 liblzma5 libmount1 libpcre3 libselinux1 libsystemd0 libuuid1
       - uses: actions/checkout@v2
       - name: Setup java
-        uses: joschi/setup-jdk@v2
+        uses: actions/setup-java@v2
         with:
           java-version: 16
+          distribution: adopt
+          architecture: x64
       - name: Setup JavaFX
         run: |
           cd /tmp
@@ -103,32 +105,34 @@ jobs:
       - name: Saving Linux x64 DEB
         uses: actions/upload-artifact@v2
         with:
-          name: linux-deb
+          name: linux-deb-x64
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}.deb
       - name: Saving Linux x64 RPM
         uses: actions/upload-artifact@v2
         with:
-          name: linux-rpm
+          name: linux-rpm-x64
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
       - name: Saving Linux x64 ZIP
         uses: actions/upload-artifact@v2
         with:
-          name: linux-zip
+          name: linux-zip-x64
           path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip
       - name: Saving Android aarch64 APK
         uses: actions/upload-artifact@v2
         with:
-          name: android-apk
+          name: android-apk-aarch64
           path: target/install/*.apk
   
-  build-macos:
+  build-macos-x64:
     runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
       - name: Setup java
-        uses: joschi/setup-jdk@v2
+        uses: actions/setup-java@v2
         with:
           java-version: 16
+          distribution: adopt
+          architecture: x64
       - name: Setup JavaFX
         run: |
           wget -P /tmp https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+12_osx-x64_bin-jmods.zip
@@ -174,17 +178,19 @@ jobs:
       - name: Saving MacOS x64 PKG
         uses: actions/upload-artifact@v2
         with:
-          name: macos-pkg
+          name: macos-pkg-x64
           path: target/install/stream-pi-client-macos-x64-${{ env.VERSION }}.pkg
 
-  build-windows:
+  build-windows-x64:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
       - name: Setup java
-        uses: joschi/setup-jdk@v2
+        uses: actions/setup-java@v2
         with:
           java-version: 16
+          distribution: adopt
+          architecture: x64
       - name: Download REQ_MODULES
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -215,13 +221,61 @@ jobs:
           JAVAFX_JMODS: D:\javafx-jmods-17\
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/install
+          ARCH: x64
       - name: Saving Windows x64 EXE
         uses: actions/upload-artifact@v2
         with:
-          name: windows-msi
+          name: windows-msi-x64
           path: target/install/*.msi
 
-  build-arm32:
+  build-windows-x86:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 16
+          distribution: adopt
+          architecture: x86
+      - name: Download REQ_MODULES
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: req_modules
+      - name: Download VERSION
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: version
+      - name: Setup JavaFX
+        run: |
+          bitsadmin /Transfer DownloadJavaFX https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+12_windows-x86_bin-jmods.zip D:\openjfx-17-ea+12_windows-x86_bin-jmods.zip
+          Expand-Archive -Force D:\openjfx-17-ea+12_windows-x86_bin-jmods.zip D:\
+      - name: Download built jars
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: built-jars
+          path: target/lib/
+      - name: Create Bundle using JPackage
+        id: project
+        shell: cmd
+        run: |
+          call .github\scripts\jpackage.bat
+        env:
+          MAIN_CLASS: com.stream_pi.client.Main
+          JAVAFX_JMODS: D:\javafx-jmods-17\
+          JPACKAGE_HOME: ${{ env.JAVA_HOME }}
+          INSTALL_DIR: target/install
+          ARCH: x86
+      - name: Saving Windows x86 EXE
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-msi-x86
+          path: target/install/*.msi
+
+  build-linux-arm32:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2.1.0
@@ -277,5 +331,7 @@ jobs:
       - name: Saving Linux ARM32 ZIP
         uses: actions/upload-artifact@v2
         with:
-          name: linux-arm32-zip
+          name: linux-zip-arm32
           path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
+
+

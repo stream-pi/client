@@ -18,47 +18,53 @@ jobs:
       - name: Add Version to environment
         run: |
           echo "VERSION=$(<version.txt)" >> $GITHUB_ENV
-      - name: Download windows msi
+      - name: Download windows x64 msi
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: windows-msi
+          name: windows-msi-x64
           path: target/install
-      - name: Download linux deb
+      - name: Download windows x86 msi
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: linux-deb
+          name: windows-msi-x86
           path: target/install
-      - name: Download linux rpm
+      - name: Download linux x64 deb
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: linux-rpm
+          name: linux-deb-x64
           path: target/install
-      - name: Download linux zip
+      - name: Download linux x64 rpm
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: linux-zip
+          name: linux-rpm-x64
           path: target/install
-      - name: Download MacOS PKG
+      - name: Download linux x64 zip
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: macos-pkg
+          name: linux-zip-x64
           path: target/install
-      - name: Download Android APK
+      - name: Download MacOS x64 PKG
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: android-apk
+          name: macos-pkg-x64
           path: target/install
-      - name: Download Android APK
+      - name: Download Android aarch64 APK
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: linux-arm32-zip
+          name: android-apk-aarch64
+          path: target/install
+      - name: Download Linux arm32 APK
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          name: linux-zip-arm32
           path: target/install
       - name: Delete old release if exists
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
