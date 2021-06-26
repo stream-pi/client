@@ -135,32 +135,32 @@ public class ActionBox extends StackPane
     {
         if(action!=null)
         {
-            if(!getActionGridPaneListener().isConnected())
-            {
-                try
-                {
-                    if(Config.getInstance().isTryConnectingWhenActionClicked())
-                    {
-                        clientListener.setupClientConnection(this::actionClicked);
-                    }
-                    else
-                    {
-                        exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
-                    }
-                    return;
-                }
-                catch (SevereException e)
-                {
-                    exceptionAndAlertHandler.handleSevereException(e);
-                }
-            }
-
             if(action.getActionType() == ActionType.FOLDER)
             {
                 getActionGridPaneListener().renderFolder(action.getID());
             }
             else
             {
+                if(!getActionGridPaneListener().isConnected())
+                {
+                    try
+                    {
+                        if(Config.getInstance().isTryConnectingWhenActionClicked())
+                        {
+                            clientListener.setupClientConnection(this::actionClicked);
+                        }
+                        else
+                        {
+                            exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
+                        }
+                        return;
+                    }
+                    catch (SevereException e)
+                    {
+                        exceptionAndAlertHandler.handleSevereException(e);
+                    }
+                }
+
                 if(action.getActionType() == ActionType.COMBINE)
                 {
                     getActionGridPaneListener().combineActionClicked(action.getID());
