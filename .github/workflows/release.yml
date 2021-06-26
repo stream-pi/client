@@ -24,12 +24,6 @@ jobs:
           workflow: build.yml
           name: windows-msi-x64
           path: target/install
-      - name: Download windows x86 msi
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: build.yml
-          name: windows-msi-x86
-          path: target/install
       - name: Download linux x64 deb
         uses: dawidd6/action-download-artifact@v2
         with:
