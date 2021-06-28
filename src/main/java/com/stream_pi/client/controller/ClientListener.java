@@ -79,4 +79,6 @@ public interface ClientListener
     Orientation getCurrentOrientation();
 
     void setFirstRun(boolean firstRun);
+
+    ScreenSaver getScreenSaver();
 }

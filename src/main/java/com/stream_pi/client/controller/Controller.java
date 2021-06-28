@@ -59,6 +59,12 @@ public class Controller extends Base
     private ScreenSaver screenSaver = null;
 
     @Override
+    public ScreenSaver getScreenSaver()
+    {
+        return screenSaver;
+    }
+
+    @Override
     public void init()
     {
         try 
@@ -94,18 +100,16 @@ public class Controller extends Base
                                     "delete the old starter file, then exit and restart Stream-Pi as normal user.", StreamPiAlertType.ERROR).show();
                         else
                         {
-                            if(StartupFlags.RUNNER_FILE_NAME == null)
+                            try
                             {
-                                new StreamPiAlert("Uh Oh!",
-                                        "It looks like the runner file name for startup isn't specified in " +
-                                                "startup arguments. The start on boot functionality will be turned off.").show();
-                                getConfig().setStartOnBoot(false);
-                            }
-                            else
-                            {
-                                startAtBoot.create(new File(StartupFlags.RUNNER_FILE_NAME),
+                                startAtBoot.create(StartupFlags.RUNNER_FILE_NAME,
                                         StartupFlags.IS_X_MODE);
                                 getConfig().setStartupIsXMode(StartupFlags.IS_X_MODE);
+                            }
+                            catch (MinorException e)
+                            {
+                                getConfig().setStartOnBoot(false);
+                                handleMinorException(e);
                             }
                         }
                     }

@@ -56,6 +56,8 @@ public class ScreenSaver extends StackPane
         }
     }
 
+
+
     public void stop()
     {
         stopTimer();
@@ -93,7 +95,12 @@ public class ScreenSaver extends StackPane
         restartTimer();
     }
 
-    private void restartTimer()
+    public void setTimeout(long timeout)
+    {
+        this.timeout = timeout;
+    }
+
+    public void restartTimer()
     {
         stopTimer();
         startTimer();

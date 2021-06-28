@@ -600,27 +600,27 @@ public class GeneralTab extends VBox
 
             if(config.isStartOnBoot() != startOnBoot)
             {
-                if(StartupFlags.RUNNER_FILE_NAME == null)
+                StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform());
+                if(startOnBoot)
                 {
-                    new StreamPiAlert("Uh Oh", "No Runner File Name Specified as startup arguments. Cant set run at boot.", StreamPiAlertType.ERROR).show();
-                    startOnBoot = false;
-                }
-                else
-                {
-                    StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform());
-                    if(startOnBoot)
+                    try
                     {
-                        startAtBoot.create(new File(StartupFlags.RUNNER_FILE_NAME),
+                        startAtBoot.create(StartupFlags.RUNNER_FILE_NAME,
                                 StartupFlags.IS_X_MODE);
 
                         config.setStartupIsXMode(StartupFlags.IS_X_MODE);
                     }
-                    else
+                    catch (MinorException e)
                     {
-                        boolean result = startAtBoot.delete();
-                        if(!result)
-                            new StreamPiAlert("Uh Oh!", "Unable to delete starter file", StreamPiAlertType.ERROR).show();
+                        exceptionAndAlertHandler.handleMinorException(e);
+                        startOnBoot = false;
                     }
+                }
+                else
+                {
+                    boolean result = startAtBoot.delete();
+                    if(!result)
+                        new StreamPiAlert("Uh Oh!", "Unable to delete starter file", StreamPiAlertType.ERROR).show();
                 }
             }
 
@@ -651,10 +651,14 @@ public class GeneralTab extends VBox
 
             config.setScreenSaverEnabled(screenSaverToggleSwitch.isSelected());
 
-            if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()))
-                toBeReloaded = true;
+            if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()) && config.isScreenSaverEnabled())
+            {
+                config.setScreenSaverTimeout(screenTimeoutTextField.getText());
 
-            config.setScreenSaverTimeout(screenTimeoutTextField.getText());
+                clientListener.getScreenSaver().setTimeout(config.getScreenSaverTimeout());
+                clientListener.getScreenSaver().restartTimer();
+            }
+
 
             config.setConnectOnStartup(connectOnStartupToggleSwitch.isSelected());
 
@@ -687,6 +691,12 @@ public class GeneralTab extends VBox
 
             if(toBeReloaded)
             {
+                if(!ClientInfo.getInstance().isPhone() && !config.getIsFullScreenMode())
+                {
+                    config.setStartupWindowSize(clientListener.getStageWidth(), clientListener.getStageHeight());
+                    config.save();
+                }
+
                 clientListener.init();
                 clientListener.renderRootDefaultProfile();
             }
