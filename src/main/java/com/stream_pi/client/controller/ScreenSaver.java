@@ -95,9 +95,9 @@ public class ScreenSaver extends StackPane
         restartTimer();
     }
 
-    public void setTimeout(long timeout)
+    public void setTimeout(int seconds)
     {
-        this.timeout = timeout;
+        this.timeout = seconds* 1000L;
     }
 
     public void restartTimer()
