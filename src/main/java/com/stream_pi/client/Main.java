@@ -52,6 +52,9 @@ public class Main extends Application {
                 case "-DStream-Pi.enableScreenSaverFeature":
                     StartupFlags.SCREEN_SAVER_FEATURE = val.equals("true");
                     break;
+                case "-DStream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation":
+                    StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = val.equals("true");
+                    break;
             }
         }
 

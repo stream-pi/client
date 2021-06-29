@@ -4,6 +4,7 @@ import com.gluonhq.attach.browser.BrowserService;
 import com.gluonhq.attach.orientation.OrientationService;
 import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.action_api.action.Action;
+import com.stream_pi.client.Main;
 import com.stream_pi.client.connection.Client;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
@@ -40,6 +41,7 @@ import javafx.stage.Screen;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -102,14 +104,30 @@ public class Controller extends Base
                         {
                             try
                             {
-                                startAtBoot.create(StartupFlags.RUNNER_FILE_NAME,
-                                        StartupFlags.IS_X_MODE);
+                                if(StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION)
+                                {
+                                    startAtBoot.create(new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
+                                            .toURI()).getParentFile().getParentFile().getParentFile().getAbsolutePath() +
+                                            "/bin/" + StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
+                                }
+                                else
+                                {
+                                    startAtBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
+                                }
+
                                 getConfig().setStartupIsXMode(StartupFlags.IS_X_MODE);
                             }
                             catch (MinorException e)
                             {
                                 getConfig().setStartOnBoot(false);
                                 handleMinorException(e);
+                            }
+                            catch (URISyntaxException e)
+                            {
+                                getConfig().setStartOnBoot(false);
+                                handleMinorException(new MinorException(
+                                        "Unable to get path \n"+e.getMessage()
+                                ));
                             }
                         }
                     }

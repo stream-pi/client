@@ -1,6 +1,7 @@
 package com.stream_pi.client.window.settings;
 
 import com.gluonhq.attach.vibration.VibrationService;
+import com.stream_pi.client.Main;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.info.StartupFlags;
@@ -36,6 +37,7 @@ import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 public class GeneralTab extends VBox
@@ -605,14 +607,29 @@ public class GeneralTab extends VBox
                 {
                     try
                     {
-                        startAtBoot.create(StartupFlags.RUNNER_FILE_NAME,
-                                StartupFlags.IS_X_MODE);
+                        if(StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION)
+                        {
+                            startAtBoot.create(new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
+                                    .toURI()).getParentFile().getParentFile().getParentFile().getAbsolutePath() +
+                                    "/bin/" + StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
+                        }
+                        else
+                        {
+                            startAtBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
+                        }
 
                         config.setStartupIsXMode(StartupFlags.IS_X_MODE);
                     }
                     catch (MinorException e)
                     {
                         exceptionAndAlertHandler.handleMinorException(e);
+                        startOnBoot = false;
+                    }
+                    catch (URISyntaxException e)
+                    {
+                        exceptionAndAlertHandler.handleMinorException(new MinorException(
+                                "Unable to get path \n"+e.getMessage()
+                        ));
                         startOnBoot = false;
                     }
                 }

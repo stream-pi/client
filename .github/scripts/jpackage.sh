@@ -15,5 +15,5 @@ $JPACKAGE_HOME/bin/jpackage \
 --dest $INSTALL_DIR \
 --name 'Stream-Pi Client' \
 --java-options '-Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false' \
---arguments "-DStream-Pi.startupRunnerFileName='Stream-Pi Client'" \
+--arguments "-DStream-Pi.startupRunnerFileName='Stream-Pi Client' -DStream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation=true" \
 "$@"
