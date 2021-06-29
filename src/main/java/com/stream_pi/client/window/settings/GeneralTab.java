@@ -643,8 +643,10 @@ public class GeneralTab extends VBox
 
             config.setStartOnBoot(startOnBoot);
 
-            config.setShowCursor(showCursorToggleSwitch.isSelected());
+            if(!config.isShowCursor() ==showCursorToggleSwitch.isSelected())
+                toBeReloaded = true;
 
+            config.setShowCursor(showCursorToggleSwitch.isSelected());
 
 
             if(!config.getThemesPath().equals(themesPathTextField.getText()))
