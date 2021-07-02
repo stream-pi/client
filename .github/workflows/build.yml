@@ -91,7 +91,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: linux-zip-aarch64
-          path: target/install/stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip
+          path: target/stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip
 
   build-linux-x64:
     runs-on: ubuntu-20.04
@@ -266,12 +266,12 @@ jobs:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
-          INSTALL_DIR: target/install
+          INSTALL_DIR: target/
       - name: Saving Android aarch64 APK
         uses: actions/upload-artifact@v2
         with:
           name: android-apk-aarch64
-          path: target/install/*.apk
+          path: target/*.apk
   
   build-macos-x64:
     runs-on: macos-10.15
