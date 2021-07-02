@@ -248,7 +248,6 @@
                                 <list>com.stream_pi.client.window.settings.About.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
-                            <mainClass>${main.class.name}</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -287,7 +286,6 @@
                                 <list>com.stream_pi.client.window.settings.About.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
-                            <mainClass>${main.class.name}</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -305,14 +303,6 @@
                         <configuration>
                             <target>linux-aarch64</target>
                             <mainClass>${main.class.name}</mainClass>
-                            <remoteHostName>pi@pi-4b.local</remoteHostName>
-                            <remoteDir>/home/rnayabed/native/</remoteDir>
-                            <runtimeArgs>
-                                <arg>-Dmonocle.platform=EGL</arg>
-                                <arg>-Dembedded=monocle</arg>
-                                <arg>-Dglass.platform=Monocle</arg>
-                                <arg>-Degl.displayid=/dev/dri/card1</arg>
-                            </runtimeArgs>
                             <verbose>true</verbose>
                             <nativeImageArgs>
                                 <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
@@ -332,7 +322,6 @@
                                 <list>com.stream_pi.client.window.settings.About.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
-                            <mainClass>${main.class.name}</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
