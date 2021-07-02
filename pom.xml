@@ -6,14 +6,14 @@
 
     <groupId>com.stream-pi</groupId>
     <artifactId>client</artifactId>
-    <version>1.0.0-EA+3</version>
+    <version>1.0.0-EA+4-SNAPSHOT</version>
 
     <url>https://stream-pi.com/</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <javafx.version>17-ea+12</javafx.version>
+        <javafx.version>17-ea+14</javafx.version>
 
         <gluonfx.plugin.version>1.0.1</gluonfx.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>

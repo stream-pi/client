@@ -22,8 +22,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+12_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17-ea+12_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17-ea+14_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
@@ -61,7 +61,7 @@ jobs:
           workflow: init.yml
           name: build-date
           path: src/main/resources/com/stream_pi/client/
-      - name: Create Linux x64 DEB, Linux x64 APP IMAGE, Linux x64 RPM, Android aarch64 APK, Linux Arm32 ZIP
+      - name: Create Linux x64 DEB, Linux x64 APP IMAGE, Linux x64 RPM, Android aarch64 APK
         run: |
           # Create DEB
           .github/scripts/jpackage.sh \
@@ -135,8 +135,8 @@ jobs:
           architecture: x64
       - name: Setup JavaFX
         run: |
-          wget -P /tmp https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+12_osx-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17-ea+12_osx-x64_bin-jmods.zip -d /tmp
+          wget -P /tmp https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_osx-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17-ea+14_osx-x64_bin-jmods.zip -d /tmp
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -203,8 +203,8 @@ jobs:
           name: version
       - name: Setup JavaFX
         run: |
-          bitsadmin /Transfer DownloadJavaFX https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+12_windows-x64_bin-jmods.zip D:\openjfx-17-ea+12_windows-x64_bin-jmods.zip
-          Expand-Archive -Force D:\openjfx-17-ea+12_windows-x64_bin-jmods.zip D:\
+          bitsadmin /Transfer DownloadJavaFX https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_windows-x64_bin-jmods.zip D:\openjfx-17-ea+14_windows-x64_bin-jmods.zip
+          Expand-Archive -Force D:\openjfx-17-ea+14_windows-x64_bin-jmods.zip D:\
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -260,10 +260,18 @@ jobs:
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+12_linux-arm32_bin-sdk.zip
-            unzip openjfx-17-ea+12_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+            axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-arm32_bin-sdk.zip
+            unzip openjfx-17-ea+14_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-17/legal javafx-sdk-arm32/javafx-sdk-17/javafx-legal
-            mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm* javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
+
+            # Use Debug libgluon
+            mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
+            rm -rf javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm-1.1.6.so
+
+            # Use Non Debug libgluon
+            # mv javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm-1.1.6.so javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm.so
+            # rm -rf javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm_debug-1.1.6.so
+
             mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_DIR/
             cp assets/arm32/run_console $INSTALL_DIR/run_console
             cp assets/arm32/run_desktop $INSTALL_DIR/run_desktop
