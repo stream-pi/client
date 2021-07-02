@@ -67,7 +67,7 @@ jobs:
 
           #Build aarch64 linux native-image
 
-          mvn -Plinux-aarch64 gluonfx:build gluonfx:link
+          mvn -Plinux-aarch64 gluonfx:build gluonfx:package
           mkdir $INSTALL_DIR
           ls -R -l target/gluonfx/aarch64-linux/
           mv target/gluonfx/aarch64-linux/gvm/client* $INSTALL_DIR/client
