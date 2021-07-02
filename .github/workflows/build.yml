@@ -69,8 +69,7 @@ jobs:
 
           mvn -Plinux-aarch64 gluonfx:build gluonfx:package
           mkdir $INSTALL_DIR
-          ls -R -l target/gluonfx/aarch64-linux/
-          mv target/gluonfx/aarch64-linux/gvm/client* $INSTALL_DIR/client
+          mv target/gluonfx/aarch64-linux/client $INSTALL_DIR/client
 
 
           cp assets/aarch64/run_console $INSTALL_DIR/run_console
