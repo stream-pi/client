@@ -68,27 +68,25 @@ jobs:
           #Build aarch64 linux native-image
 
           mvn -Plinux-aarch64 gluonfx:build gluonfx:package
-          mkdir $INSTALL_DIR/linux-aarch64
-          mv target/gluonfx/aarch64-linux/gvm/client* ${{ env.INSTALL_DIR }}/linux-aarch64/client
+          mkdir $INSTALL_DIR
+          mv target/gluonfx/aarch64-linux/gvm/client* $INSTALL_DIR/client
 
 
-          cp assets/aarch64/run_console $INSTALL_DIR/linux-aarch64/run_console
-          cp assets/aarch64/run_desktop $INSTALL_DIR/linux-aarch64/run_desktop
-          cp assets/linux-icon.png $INSTALL_DIR/linux-aarch64/app-icon.png
-          chmod +x $INSTALL_DIR/linux-aarch64/run_desktop
-          chmod +x $INSTALL_DIR/linux-aarch64/run_console
+          cp assets/aarch64/run_console $INSTALL_DIR/run_console
+          cp assets/aarch64/run_desktop $INSTALL_DIR/run_desktop
+          cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
+          chmod +x $INSTALL_DIR/run_desktop
+          chmod +x $INSTALL_DIR/run_console
 
+          cd target
 
-          cd $INSTALL_DIR
-
-          mv linux-aarch64 stream-pi-client
           zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip stream-pi-client
           rm -r stream-pi-client
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
-          INSTALL_DIR: target/install
+          INSTALL_DIR: target/stream-pi-client
       - name: Saving Linux aarch64 ZIP
         uses: actions/upload-artifact@v2
         with:
