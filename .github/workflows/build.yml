@@ -461,11 +461,11 @@ jobs:
           workflow: init.yml
           name: built-jars
           path: target/lib/
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: darsvador/run-on-arch-action@v1.0.10
         name: Build & save Linux aarch64 ZIP
         with:
-          arch: aarch64
-          distro: ubuntu18.04
+          architecture: aarch64
+          distribution: buster
 
           run: |
             sudo apt update
