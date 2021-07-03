@@ -60,11 +60,17 @@ jobs:
           workflow: build.yml
           name: linux-zip-arm32
           path: target/install
-      - name: Download Linux aarch64 ZIP
+      - name: Download Linux native aarch64 ZIP
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          name: linux-zip-aarch64
+          name: linux-zip-aarch64-native
+          path: target/install
+      - name: Download Linux jvm aarch64 ZIP
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          name: linux-zip-aarch64-jvm
           path: target/install
       - name: Delete old release if exists
         uses: dev-drprasad/delete-tag-and-release@v0.2.0

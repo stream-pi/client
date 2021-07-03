@@ -7,7 +7,7 @@ on:
       - completed
 
 jobs:
-  build-linux-aarch64:
+  build-linux-aarch64-native:
     runs-on: ubuntu-20.04
     steps:
       - name: Install packages
@@ -72,14 +72,14 @@ jobs:
           mv target/gluonfx/aarch64-linux/client $INSTALL_DIR/client
 
 
-          cp assets/aarch64/run_console $INSTALL_DIR/run_console
-          cp assets/aarch64/run_desktop $INSTALL_DIR/run_desktop
+          cp assets/aarch64-native/run_console $INSTALL_DIR/run_console
+          cp assets/aarch64-native/run_desktop $INSTALL_DIR/run_desktop
           cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
           chmod +x $INSTALL_DIR/run_desktop
           chmod +x $INSTALL_DIR/run_console
 
           cd $INSTALL_DIR
-          zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip *
+          zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip *
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/
@@ -88,8 +88,8 @@ jobs:
       - name: Saving Linux aarch64 ZIP
         uses: actions/upload-artifact@v2
         with:
-          name: linux-zip-aarch64
-          path: target/stream-pi-client/stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip
+          name: linux-zip-aarch64-native
+          path: target/stream-pi-client/stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip
 
   build-linux-x64:
     runs-on: ubuntu-20.04
@@ -421,8 +421,8 @@ jobs:
             # rm -rf javafx-sdk-arm32/javafx-sdk-17/lib/libgluon_drm_debug-1.1.6.so
 
             mv javafx-sdk-arm32/javafx-sdk-17/lib/* $INSTALL_DIR/
-            cp assets/arm32/run_console $INSTALL_DIR/run_console
-            cp assets/arm32/run_desktop $INSTALL_DIR/run_desktop
+            cp assets/arm32-aarch64/run_console $INSTALL_DIR/run_console
+            cp assets/arm32-aarch64/run_desktop $INSTALL_DIR/run_desktop
             cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
             chmod +x $INSTALL_DIR/run_desktop
             chmod +x $INSTALL_DIR/run_console
@@ -442,5 +442,72 @@ jobs:
         with:
           name: linux-zip-arm32
           path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
+
+  build-linux-aarch64-jvm:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - name: Download VERSION
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: version
+      - name: Add VERSION to environment
+        run: |
+          echo "VERSION=$(<version.txt)" >> $GITHUB_ENV
+      - name: Download built jars
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: built-jars
+          path: target/lib/
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Build & save Linux aarch64 ZIP
+        with:
+          arch: aarch64
+          distro: buster
+
+          run: |
+            sudo apt update
+            sudo apt install axel unzip zip
+
+            VERSION=$(<version.txt)
+            INSTALL_DIR=target/install
+            mkdir -p $INSTALL_DIR
+            mv target/lib/* $INSTALL_DIR
+            axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_monocle-linux-aarch64_bin-sdk.zip
+            unzip openjfx-17-ea+14_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
+            mv javafx-sdk-aarch64/javafx-sdk-17/legal javafx-sdk-aarch64/javafx-sdk-17/javafx-legal
+
+            # Use Debug libgluon
+            mv javafx-sdk-aarch64/javafx-sdk-17/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-aarch64/javafx-sdk-17/lib/libgluon_drm.so
+            rm -rf javafx-sdk-aarch64/javafx-sdk-17/lib/libgluon_drm-1.1.6.so
+
+            # Use Non Debug libgluon
+            # mv javafx-sdk-aarch64/javafx-sdk-17/lib/libgluon_drm-1.1.6.so javafx-sdk-aarch64/javafx-sdk-17/lib/libgluon_drm.so
+            # rm -rf javafx-sdk-aarch64/javafx-sdk-17/lib/libgluon_drm_debug-1.1.6.so
+
+            mv javafx-sdk-aarch64/javafx-sdk-17/lib/* $INSTALL_DIR/
+            cp assets/arm32-aarch64/run_console $INSTALL_DIR/run_console
+            cp assets/arm32-aarch64/run_desktop $INSTALL_DIR/run_desktop
+            cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
+            chmod +x $INSTALL_DIR/run_desktop
+            chmod +x $INSTALL_DIR/run_console
+
+            #Download jdk
+            axel -n 8 https://cdn.azul.com/zulu/bin/zulu16.30.15-ca-jdk16.0.1-linux_aarch64.tar.gz
+            tar -xvzf zulu16.30.15-ca-jdk16.0.1-linux_aarch64.tar.gz
+
+            #Run jpackage
+            zulu16.30.15-ca-jdk16.0.1-linux_aarch64/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
+
+            cd $INSTALL_DIR
+            zip -r stream-pi-client-linux-aarch64-$VERSION-jvm-executable.zip *
+
+      - name: Saving Linux aarch64 ZIP
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-zip-aarch64-jvm
+          path: target/install/stream-pi-client-linux-aarch64-${{ env.VERSION }}-jvm-executable.zip
 
 
