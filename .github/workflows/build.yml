@@ -461,6 +461,8 @@ jobs:
           workflow: init.yml
           name: built-jars
           path: target/lib/
+      - name: Install sudo package
+        run: apt update && apt install sudo
       - uses: uraimo/run-on-arch-action@v2.0.10
         name: Build & save Linux aarch64 ZIP
         with:
