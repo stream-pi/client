@@ -1,6 +1,6 @@
 name: Init
 
-on: [push]
+on: [push, pull_request]
 
 
 jobs:

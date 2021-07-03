@@ -465,7 +465,7 @@ jobs:
         name: Build & save Linux aarch64 ZIP
         with:
           arch: aarch64
-          distro: buster
+          distro: bullseye
 
           run: |
             sudo apt update
