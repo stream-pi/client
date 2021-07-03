@@ -462,7 +462,7 @@ jobs:
           name: built-jars
           path: target/lib/
       - name: Install sudo package
-        run: apt update && apt install sudo
+        run: sudo apt update && sudo apt install sudo
       - uses: uraimo/run-on-arch-action@v2.0.10
         name: Build & save Linux aarch64 ZIP
         with:
