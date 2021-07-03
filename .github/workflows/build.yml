@@ -464,7 +464,7 @@ jobs:
       - uses: uraimo/run-on-arch-action@v2.0.10
         name: Build & save Linux ARM32 ZIP
         with:
-          arch: aarch64
+          arch: armv6
           distro: buster
 
           run: |
