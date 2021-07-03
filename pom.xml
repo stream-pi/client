@@ -171,7 +171,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <commandlineArgs>-DStream-Pi.defaultFullScreenMode=false -DStream-Pi.enableScreenSaverFeature=false</commandlineArgs>
+                    <commandlineArgs>Stream-Pi.defaultFullScreenMode=false Stream-Pi.enableScreenSaverFeature=false</commandlineArgs>
                     <options>
                         <option>-Dprism.verbose=true</option>
                         <option>-Djavafx.verbose=true</option>

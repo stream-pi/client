@@ -12,7 +12,7 @@ set /p VERSION=<version.txt
 --type msi ^
 --java-options "-Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false" ^
 --main-class %MAIN_CLASS% ^
---arguments "-DStream-Pi.startupRunnerFileName='Stream-Pi Client.exe'" ^
+--arguments "Stream-Pi.startupRunnerFileName='Stream-Pi Client.exe'" ^
 --icon assets/windows-icon.ico ^
 --dest %INSTALL_DIR% ^
 --win-dir-chooser ^
