@@ -394,7 +394,7 @@ jobs:
           workflow: init.yml
           name: built-jars
           path: target/lib/
-      - uses: uraimo/run-on-arch-action@v2.0.5
+      - uses: uraimo/run-on-arch-action@v2.0.10
         name: Build & save Linux ARM32 ZIP
         with:
           arch: armv6
@@ -461,11 +461,11 @@ jobs:
           workflow: init.yml
           name: built-jars
           path: target/lib/
-      - uses: darsvador/run-on-arch-action@v1.0.10
-        name: Build & save Linux aarch64 ZIP
+      - uses: uraimo/run-on-arch-action@v2.0.10
+        name: Build & save Linux ARM32 ZIP
         with:
-          architecture: aarch64
-          distribution: buster
+          arch: aarch64
+          distro: buster
 
           run: |
             sudo apt update
