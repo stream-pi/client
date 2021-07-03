@@ -89,7 +89,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: linux-zip-aarch64
-          path: target/stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip
+          path: target/stream-pi-client/stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip
 
   build-linux-x64:
     runs-on: ubuntu-20.04
