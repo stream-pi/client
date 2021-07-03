@@ -465,7 +465,7 @@ jobs:
         name: Build & save Linux aarch64 ZIP
         with:
           arch: aarch64
-          distro: bullseye
+          distro: ubuntu20.04
 
           run: |
             sudo apt update
