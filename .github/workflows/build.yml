@@ -464,10 +464,8 @@ jobs:
       - uses: uraimo/run-on-arch-action@v2.0.10
         name: Build & save Linux aarch64 ZIP
         with:
-          arch: aarch64
+          arch: arm64
           distro: buster
-          dockerRunArgs: |
-            --platform linux/arm64
 
           run: |
             sudo apt update
