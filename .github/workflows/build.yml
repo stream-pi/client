@@ -78,10 +78,8 @@ jobs:
           chmod +x $INSTALL_DIR/run_desktop
           chmod +x $INSTALL_DIR/run_console
 
-          cd target
-
-          zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip stream-pi-client
-          rm -r stream-pi-client
+          cd $INSTALL_DIR
+          zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-executable.zip *
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/

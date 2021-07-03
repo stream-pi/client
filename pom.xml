@@ -305,6 +305,7 @@
                             <mainClass>${main.class.name}</mainClass>
                             <verbose>true</verbose>
                             <nativeImageArgs>
+                                <list>-H:-ParseRuntimeOptions</list>
                                 <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
                             </nativeImageArgs>
                             <bundlesList>
