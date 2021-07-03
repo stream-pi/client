@@ -466,7 +466,8 @@ jobs:
         with:
           arch: aarch64
           distro: buster
-          dockerRunArgs: '--platform linux/amd64'
+          dockerRunArgs: |
+            --platform linux/amd64
 
           run: |
             sudo apt update
