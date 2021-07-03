@@ -461,8 +461,6 @@ jobs:
           workflow: init.yml
           name: built-jars
           path: target/lib/
-      - name: Install sudo package
-        run: sudo apt update && sudo apt install sudo
       - uses: uraimo/run-on-arch-action@v2.0.10
         name: Build & save Linux aarch64 ZIP
         with:
@@ -471,9 +469,7 @@ jobs:
 
           run: |
             apt update
-            apt install sudo
-
-            sudo apt install axel unzip zip
+            apt install axel unzip zip
 
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
