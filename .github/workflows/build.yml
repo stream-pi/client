@@ -466,6 +466,7 @@ jobs:
         with:
           arch: aarch64
           distro: buster
+          shell: /bin/bash
 
           run: |
             sudo apt update
