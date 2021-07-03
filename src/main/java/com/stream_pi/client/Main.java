@@ -26,7 +26,7 @@ public class Main extends Application {
     {
         for(String eachArg : args)
         {
-            if(!eachArg.startsWith("-DStream-Pi"))
+            if(!eachArg.startsWith("Stream-Pi"))
                 continue;
 
             String[] r = eachArg.split("=");
@@ -34,25 +34,25 @@ public class Main extends Application {
             String val = r[1];
 
             switch (arg) {
-                case "-DStream-Pi.startupRunnerFileName":
+                case "Stream-Pi.startupRunnerFileName":
                     StartupFlags.RUNNER_FILE_NAME = val;
                     break;
-                case "-DStream-Pi.showShutDownButton":
+                case "Stream-Pi.showShutDownButton":
                     StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON = val.equals("true");
                     break;
-                case "-DStream-Pi.isXMode":
+                case "Stream-Pi.isXMode":
                     StartupFlags.IS_X_MODE = val.equals("true");
                     break;
-                case "-DStream-Pi.isShowFullScreenToggleButton":
+                case "Stream-Pi.isShowFullScreenToggleButton":
                     StartupFlags.SHOW_FULLSCREEN_TOGGLE_BUTTON = val.equals("true");
                     break;
-                case "-DStream-Pi.defaultFullScreenMode":
+                case "Stream-Pi.defaultFullScreenMode":
                     StartupFlags.DEFAULT_FULLSCREEN_MODE = val.equals("true");
                     break;
-                case "-DStream-Pi.enableScreenSaverFeature":
+                case "Stream-Pi.enableScreenSaverFeature":
                     StartupFlags.SCREEN_SAVER_FEATURE = val.equals("true");
                     break;
-                case "-DStream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation":
+                case "Stream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation":
                     StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = val.equals("true");
                     break;
             }
