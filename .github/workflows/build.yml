@@ -444,7 +444,7 @@ jobs:
           path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
 
   build-linux-aarch64-jvm:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2.1.0
       - name: Download VERSION
