@@ -475,7 +475,7 @@ jobs:
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_monocle-linux-aarch64_bin-sdk.zip
+            axel -k -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_monocle-linux-aarch64_bin-sdk.zip
             unzip openjfx-17-ea+14_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
             mv javafx-sdk-aarch64/javafx-sdk-17/legal javafx-sdk-aarch64/javafx-sdk-17/javafx-legal
 
@@ -495,7 +495,7 @@ jobs:
             chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
-            axel -n 8 https://cdn.azul.com/zulu/bin/zulu16.30.15-ca-jdk16.0.1-linux_aarch64.tar.gz
+            axel -k -n 8 https://cdn.azul.com/zulu/bin/zulu16.30.15-ca-jdk16.0.1-linux_aarch64.tar.gz
             tar -xvzf zulu16.30.15-ca-jdk16.0.1-linux_aarch64.tar.gz
 
             #Run jpackage
