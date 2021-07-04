@@ -12,8 +12,6 @@ target/
 .classpath
 
 # Misc
-streampi.log
-streampi.log.lck
 gen/
 data/
 
