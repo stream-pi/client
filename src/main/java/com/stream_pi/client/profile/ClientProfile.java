@@ -276,6 +276,10 @@ public class ClientProfile implements Cloneable{
 
                 action.setDisplayText(displayText);
 
+                double fontSize = XMLConfigHelper.getDoubleProperty(textElement, "font-size");
+
+                action.setNameFontSize(fontSize);
+
                 action.setCurrentToggleStatus(false); // Always fault at default
 
                 addAction(action);
@@ -366,7 +370,8 @@ public class ClientProfile implements Cloneable{
     }
 
 
-    public void saveAction(Action action) throws Exception {
+    public void saveAction(Action action) throws Exception
+    {
 
         int ind = getActionIndexInConfig(action.getID());
         if(ind != -1)
@@ -456,6 +461,10 @@ public class ClientProfile implements Cloneable{
         Element textDisplayTextElement = document.createElement("display-text");
         textDisplayTextElement.setTextContent(action.getDisplayText());
         textElement.appendChild(textDisplayTextElement);
+
+        Element textDisplayTextFontSizeElement = document.createElement("font-size");
+        textDisplayTextFontSizeElement.setTextContent(action.getNameFontSize()+"");
+        textElement.appendChild(textDisplayTextFontSizeElement);
 
         Element textAlignmentElement = document.createElement("alignment");
         textAlignmentElement.setTextContent(action.getDisplayTextAlignment()+"");

@@ -591,6 +591,7 @@ public class Client extends Thread
         a.add(action.isShowDisplayText()+"");
         a.add(action.getDisplayTextFontColourHex());
         a.add(action.getDisplayText());
+        a.add(action.getNameFontSize()+"");
         a.add(action.getDisplayTextAlignment()+"");
 
         //location
@@ -656,11 +657,12 @@ public class Client extends Thread
         boolean isShowDisplayText = r[8].equals("true");
         String displayFontColor = r[9];
         String displayText = r[10];
-        DisplayTextAlignment displayTextAlignment = DisplayTextAlignment.valueOf(r[11]);
+        double displayLabelFontSize = Double.parseDouble(r[11]);
+        DisplayTextAlignment displayTextAlignment = DisplayTextAlignment.valueOf(r[12]);
 
         //location
-        String row = r[12];
-        String col = r[13];
+        String row = r[13];
+        String col = r[14];
 
         Location location = new Location(Integer.parseInt(row), Integer.parseInt(col));
 
@@ -687,26 +689,27 @@ public class Client extends Thread
         action.setDisplayTextFontColourHex(displayFontColor);
         action.setDisplayText(displayText);
         action.setDisplayTextAlignment(displayTextAlignment);
+        action.setNameFontSize(displayLabelFontSize);
         action.setCurrentIconState(currentIconState);
 
         action.setLocation(location);
 
 
-        String parent = r[14];
+        String parent = r[15];
         action.setParent(parent);
 
         //client properties
 
-        action.setDelayBeforeExecuting(Integer.parseInt(r[15]));
+        action.setDelayBeforeExecuting(Integer.parseInt(r[16]));
 
-        int clientPropertiesSize = Integer.parseInt(r[16]);
+        int clientPropertiesSize = Integer.parseInt(r[17]);
 
         ClientProperties clientProperties = new ClientProperties();
 
         if(actionType == ActionType.FOLDER)
             clientProperties.setDuplicatePropertyAllowed(true);
 
-        for(int i = 17;i<((clientPropertiesSize*2) + 17); i+=2)
+        for(int i = 18;i<((clientPropertiesSize*2) + 18); i+=2)
         {
             Property property = new Property(r[i], Type.STRING);
             property.setRawValue(r[i+1]);
