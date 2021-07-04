@@ -16,3 +16,6 @@ streampi.log
 streampi.log.lck
 gen/
 data/
+
+#VS Code
+.vscode/
