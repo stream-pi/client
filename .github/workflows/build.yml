@@ -7,90 +7,6 @@ on:
       - completed
 
 jobs:
-  linux-aarch64-native:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Install packages
-        run: sudo apt install g++-aarch64-linux-gnu axel libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev xdg-utils libc6 xdg-utils zlib1g libpng16-16 libasound2 libbsd-dev zip libblkid1 libdbus-1-3 libexpat1 libgpg-error0 liblzma5 libmount1 libpcre3 libselinux1 libsystemd0 libuuid1
-      - uses: actions/checkout@v2
-      - name: Setup java
-        uses: actions/setup-java@v2
-        with:
-          java-version: 16
-          distribution: adopt
-          architecture: x64
-      - name: Setup JavaFX
-        run: |
-          cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17-ea+14_linux-x64_bin-jmods.zip -d /tmp
-      - name: Download GraalVM 21.1.0
-        run: |
-          cd /tmp
-          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
-          tar -xvzf *.gz
-      - name: Install native-image
-        run: |
-          cd /tmp/graalvm-ce-java11-21.1.0/bin
-          ./gu install native-image
-      - name: Download built jars
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: init.yml
-          name: built-jars
-          path: target/lib/
-      - name: Download REQ_MODULES
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: init.yml
-          name: req_modules
-      - name: Download VERSION
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: init.yml
-          name: version
-      - name: Add VERSION to environment
-        run: |
-          echo "VERSION=$(<version.txt)" >> $GITHUB_ENV
-      - name: Add REQ_MODULES to environment
-        run: |
-          echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Download build-date
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: init.yml
-          name: build-date
-          path: src/main/resources/com/stream_pi/client/
-      - name: Create Linux aarch64
-        run: |
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
-
-          #Build aarch64 linux native-image
-
-          mvn -Plinux-aarch64 gluonfx:build gluonfx:package
-          mkdir $INSTALL_DIR
-          mv target/gluonfx/aarch64-linux/client $INSTALL_DIR/client
-
-
-          cp assets/aarch64-native/run_console $INSTALL_DIR/run_console
-          cp assets/aarch64-native/run_desktop $INSTALL_DIR/run_desktop
-          cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
-          chmod +x $INSTALL_DIR/run_desktop
-          chmod +x $INSTALL_DIR/run_console
-
-          cd $INSTALL_DIR
-          zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip *
-        env:
-          MAIN_CLASS: com.stream_pi.client.Main
-          JAVAFX_JMODS: /tmp/javafx-jmods-17/
-          JPACKAGE_HOME: ${{ env.JAVA_HOME }}
-          INSTALL_DIR: target/stream-pi-client
-      - name: Saving Linux aarch64 ZIP
-        uses: actions/upload-artifact@v2
-        with:
-          name: linux-zip-aarch64-native
-          path: target/stream-pi-client/stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip
-
   linux-x64:
     runs-on: ubuntu-20.04
     steps:
@@ -442,6 +358,90 @@ jobs:
         with:
           name: linux-zip-arm32
           path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
+
+  linux-aarch64-native:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install packages
+        run: sudo apt install g++-aarch64-linux-gnu axel libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev xdg-utils libc6 xdg-utils zlib1g libpng16-16 libasound2 libbsd-dev zip libblkid1 libdbus-1-3 libexpat1 libgpg-error0 liblzma5 libmount1 libpcre3 libselinux1 libsystemd0 libuuid1
+      - uses: actions/checkout@v2
+      - name: Setup java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 16
+          distribution: adopt
+          architecture: x64
+      - name: Setup JavaFX
+        run: |
+          cd /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17-ea+14_linux-x64_bin-jmods.zip -d /tmp
+      - name: Download GraalVM 21.1.0
+        run: |
+          cd /tmp
+          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          tar -xvzf *.gz
+      - name: Install native-image
+        run: |
+          cd /tmp/graalvm-ce-java11-21.1.0/bin
+          ./gu install native-image
+      - name: Download built jars
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: built-jars
+          path: target/lib/
+      - name: Download REQ_MODULES
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: req_modules
+      - name: Download VERSION
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: version
+      - name: Add VERSION to environment
+        run: |
+          echo "VERSION=$(<version.txt)" >> $GITHUB_ENV
+      - name: Add REQ_MODULES to environment
+        run: |
+          echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
+      - name: Download build-date
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: build-date
+          path: src/main/resources/com/stream_pi/client/
+      - name: Create Linux aarch64
+        run: |
+          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
+
+          #Build aarch64 linux native-image
+
+          mvn -Plinux-aarch64 gluonfx:build gluonfx:package
+          mkdir $INSTALL_DIR
+          mv target/gluonfx/aarch64-linux/client $INSTALL_DIR/client
+
+
+          cp assets/aarch64-native/run_console $INSTALL_DIR/run_console
+          cp assets/aarch64-native/run_desktop $INSTALL_DIR/run_desktop
+          cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
+          chmod +x $INSTALL_DIR/run_desktop
+          chmod +x $INSTALL_DIR/run_console
+
+          cd $INSTALL_DIR
+          zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip *
+        env:
+          MAIN_CLASS: com.stream_pi.client.Main
+          JAVAFX_JMODS: /tmp/javafx-jmods-17/
+          JPACKAGE_HOME: ${{ env.JAVA_HOME }}
+          INSTALL_DIR: target/stream-pi-client
+      - name: Saving Linux aarch64 ZIP
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-zip-aarch64-native
+          path: target/stream-pi-client/stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip
 
   linux-aarch64-jvm:
     runs-on: ubuntu-18.04
