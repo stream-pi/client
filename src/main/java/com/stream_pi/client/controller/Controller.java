@@ -93,7 +93,9 @@ public class Controller extends Base
                 {
                     if(StartupFlags.IS_X_MODE != getConfig().isStartupXMode())
                     {
-                        StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(), StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
+                        StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
+                                Main.class.getProtectionDomain().getCodeSource().getLocation(),
+                                StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
 
                         boolean result = startAtBoot.delete();
                         if(!result)

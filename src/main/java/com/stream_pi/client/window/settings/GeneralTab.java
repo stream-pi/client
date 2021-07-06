@@ -610,7 +610,10 @@ public class GeneralTab extends VBox
 
             if(config.isStartOnBoot() != startOnBoot)
             {
-                StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(), StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
+                StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
+                        Main.class.getProtectionDomain().getCodeSource().getLocation(),
+                        StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
+
                 if(startOnBoot)
                 {
                     try
