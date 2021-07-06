@@ -610,34 +610,17 @@ public class GeneralTab extends VBox
 
             if(config.isStartOnBoot() != startOnBoot)
             {
-                StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform());
+                StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(), StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
                 if(startOnBoot)
                 {
                     try
                     {
-                        if(StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION)
-                        {
-                            startAtBoot.create(new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
-                                    .toURI()).getParentFile().getParentFile().getParentFile().getAbsolutePath() +
-                                    "/bin/" + StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
-                        }
-                        else
-                        {
-                            startAtBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
-                        }
-
+                        startAtBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
                         config.setStartupIsXMode(StartupFlags.IS_X_MODE);
                     }
                     catch (MinorException e)
                     {
                         exceptionAndAlertHandler.handleMinorException(e);
-                        startOnBoot = false;
-                    }
-                    catch (URISyntaxException e)
-                    {
-                        exceptionAndAlertHandler.handleMinorException(new MinorException(
-                                "Unable to get path \n"+e.getMessage()
-                        ));
                         startOnBoot = false;
                     }
                 }
