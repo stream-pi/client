@@ -31,6 +31,7 @@ import com.stream_pi.util.platform.Platform;
 
 import javafx.application.HostServices;
 import javafx.geometry.Insets;
+import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
@@ -155,6 +156,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         settingsBase = new SettingsBase(getHostServices(), this, this);
 
         alertStackPane = new StackPane();
+        alertStackPane.setCache(true);
+        alertStackPane.setCacheHint(CacheHint.SPEED);
         alertStackPane.setPadding(new Insets(10));
         alertStackPane.setOpacity(0);
 
