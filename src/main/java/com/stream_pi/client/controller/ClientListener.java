@@ -81,4 +81,6 @@ public interface ClientListener
     void setFirstRun(boolean firstRun);
 
     ScreenSaver getScreenSaver();
+
+    void initThemes() throws SevereException;
 }

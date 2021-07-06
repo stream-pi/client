@@ -867,25 +867,21 @@ public class Client extends Thread
             String oldThemeFullName = Config.getInstance().getCurrentThemeFullName();
             String newThemeFullName = sep[2];
 
-            if(!oldThemeFullName.equals(newThemeFullName))
-            {
-                reInit = true;
-            }
-
             Config.getInstance().setCurrentThemeFullName(sep[2]);
-
-
-
             Config.getInstance().save();
 
-            if(reInit)
+            if(!oldThemeFullName.equals(newThemeFullName))
             {
-                Platform.runLater(clientListener::init);
+                Platform.runLater(()-> {
+                    try {
+                        clientListener.initThemes();
+                    } catch (SevereException e) {
+                        exceptionAndAlertHandler.handleSevereException(e);
+                    }
+                });
             }
-            else
-            {
-                Platform.runLater(clientListener::loadSettings);
-            }
+
+            Platform.runLater(clientListener::loadSettings);
         }
         catch (SevereException e)
         {

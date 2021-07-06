@@ -143,9 +143,6 @@ public class Controller extends Base
             }
 
 
-            applyDefaultTheme();
-
-
             setupDashWindow();
 
             getStage().show();
@@ -156,6 +153,8 @@ public class Controller extends Base
             if(Config.getInstance().isFirstTimeUse())
                 return;
         
+            getLogger().info("XYZZZ : "+Config.getInstance().isFirstTimeUse());
+            
             setupSettingsWindowsAnimations();
 
 
@@ -169,7 +168,7 @@ public class Controller extends Base
             });
 
             setClientProfiles(new ClientProfiles(new File(getConfig().getProfilesPath()), getConfig().getStartupProfileID()));
-
+            
             if(getClientProfiles().getLoadingErrors().size() > 0)
             {
                 StringBuilder errors = new StringBuilder("Please rectify the following errors and try again");

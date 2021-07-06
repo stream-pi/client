@@ -7,6 +7,7 @@ import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -155,7 +156,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         alertStackPane = new StackPane();
         alertStackPane.setPadding(new Insets(10));
-        alertStackPane.setVisible(false);
+        alertStackPane.setOpacity(0);
 
         StreamPiAlert.setParent(alertStackPane);
         StreamPiComboBox.setParent(alertStackPane);
@@ -206,6 +207,17 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             dashboardBase.toFront();
         }
+    }
+
+    public void initThemes() throws SevereException 
+    {
+        clearStylesheets();
+        if(themes==null)
+            registerThemes();
+        applyDefaultStylesheet();
+        applyDefaultTheme();
+        applyDefaultIconsStylesheet();
+        applyGlobalDefaultStylesheet();
     }
 
     private void resizeAccordingToResolution()
@@ -340,6 +352,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         clearStylesheets();
         applyDefaultStylesheet();
         applyDefaultIconsStylesheet();
+        applyGlobalDefaultStylesheet();
         getStage().show();
         throw new SevereException(msg);
     }
@@ -439,22 +452,29 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             }
         }
         currentTheme = t;
-
-        clearStylesheets();
-        applyDefaultStylesheet();
         getStylesheets().addAll(t.getStylesheets());
-        applyDefaultIconsStylesheet();
-
+      
         logger.info("... Done!");
     }
 
+    public void applyGlobalDefaultStylesheet()
+    {
+        File globalCSSFile = new File(getConfig().getDefaultThemesPath()+"/global.css");
+        if(globalCSSFile.exists())
+        {
+            getLogger().info("Found global default style sheet. Adding ...");
+            getStylesheets().add(globalCSSFile.toURI().toString());
+        }
+    }
+
     Themes themes;
-    public void initThemes() throws SevereException
+    public void registerThemes() throws SevereException
     {
         logger.info("Loading themes ...");
-        themes = new Themes(getConfig().getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName(), clientInfo.getMinThemeSupportVersion());
 
-        if(themes.getErrors().size()>0)
+        themes = new Themes(getConfig().getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName(), clientInfo.getMinThemeSupportVersion());
+        
+        if(!themes.getErrors().isEmpty())
         {
             StringBuilder themeErrors = new StringBuilder();
 
@@ -465,6 +485,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             if(themes.getIsBadThemeTheCurrentOne())
             {
+                if(getConfig().getCurrentThemeFullName().equals(getConfig().getDefaultCurrentThemeFullName()))
+                {
+                    throw new SevereException("Unable to get default theme ("+getConfig().getDefaultCurrentThemeFullName()+")\n" +
+                            "Please restore the theme or reinstall.");
+                }
+
                 themeErrors.append("\n\nReverted to default theme! (").append(getConfig().getDefaultCurrentThemeFullName()).append(")");
 
                 getConfig().setCurrentThemeFullName(getConfig().getDefaultCurrentThemeFullName());
@@ -473,15 +499,14 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             handleMinorException(new MinorException("Theme Loading issues", themeErrors.toString()));
         }
-
-        logger.info("... Done!");
+        logger.info("...Themes loaded successfully !");
     }
 
     @Override
-    public Themes getThemes() {
+    public Themes getThemes()
+    {
         return themes;
     }
-
 
 
     public void applyDefaultTheme()

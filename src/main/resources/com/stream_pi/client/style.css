@@ -72,8 +72,8 @@
 
 .alert_scroll_pane {
     -fx-max-height : 300;
-    /*-fx-focus-color: #FFFFFF;
-    -fx-faint-focus-color:#FFFFFF;*/
+    -fx-focus-color: #FFFFFF;
+    -fx-faint-focus-color:#FFFFFF;
 }
 
 
@@ -84,13 +84,13 @@
     -fx-padding: 5;
     -fx-border-width : 1;
     -fx-border-color : grey;
-    -fx-border-radius : 3;
+    -fx-border-radius : 5;
 }
 
 .combo_box_popup
 {
     -fx-border-width : 5;
-    -fx-border-radius : 5; 
+    -fx-border-radius : 5;
     -fx-background-radius : 5;
     -fx-max-height : 300;
     -fx-max-width : 410;

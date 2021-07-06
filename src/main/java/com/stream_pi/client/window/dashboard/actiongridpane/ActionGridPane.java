@@ -326,7 +326,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
             return;
         }
 
-        if(action.getLocation().getRow() > rows || action.getLocation().getCol() > cols)
+        if(action.getLocation().getRow() >= rows || action.getLocation().getCol() >= cols)
         {
             throw new MinorException("Action "+action.getDisplayText()+" ("+action.getID()+") falls outside bounds.\n" +
                     "   Consider increasing rows/cols from client settings and relocating/deleting it.");

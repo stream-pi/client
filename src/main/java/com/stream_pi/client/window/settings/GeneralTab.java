@@ -563,10 +563,18 @@ public class GeneralTab extends VBox
             if(!config.getCurrentThemeFullName().equals(themeComboBox.getCurrentSelectedItem().getFullName()))
             {
                 syncWithServer = true;
-                toBeReloaded = true;
+                
+                try
+                {
+                    config.setCurrentThemeFullName(themeComboBox.getCurrentSelectedItem().getFullName());
+                    config.save();
+                    clientListener.initThemes();
+                }
+                catch(SevereException e)
+                {
+                    exceptionAndAlertHandler.handleSevereException(e);
+                }
             }
-
-            config.setCurrentThemeFullName(themeComboBox.getCurrentSelectedItem().getFullName());
 
             if(!config.getClientNickName().equals(nickNameTextField.getText()))
             {

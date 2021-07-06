@@ -12,7 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class DashboardBase extends VBox {
+public class DashboardBase extends VBox
+{
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
 
     private ActionGridPane actionGridPane;
