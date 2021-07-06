@@ -50,11 +50,11 @@ public class ContributorsTab extends VBox
         tableView.getItems().addAll(
                 new Contributor("Debayan Sutradhar (rnayabed)",
                         "debayansutradhar3@gmail.com",
-                        "Co-Founder, Author, Maintainer",
+                        "Founder, Author, Maintainer",
                         "India"),
                 new Contributor("Samuel Quiñones (SamuelQuinones)",
                         "sdquinones1@gmail.com",
-                        "Co-Founder",
+                        "Founder",
                         "United States"),
                 new Contributor("Abhinay Agarwal (abhinayagarwal)",
                         "abhinay_agarwal@live.com",
