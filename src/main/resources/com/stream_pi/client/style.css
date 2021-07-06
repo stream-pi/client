@@ -163,8 +163,8 @@
 /*Alert Classes added to default stylesheet to show init error, if occurs */
 .action_box_display_text_label
 {
-    -fx-font-size : 16;
     -fx-background-color : transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
 }
 
 .alert_pane
