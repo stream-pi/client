@@ -162,13 +162,9 @@ public class ActionBox extends StackPane
                     }
                 }
 
-                if(action.getActionType() == ActionType.COMBINE)
+                if(action.getActionType() == ActionType.COMBINE || action.getActionType() == ActionType.NORMAL)
                 {
-                    getActionGridPaneListener().combineActionClicked(action.getID());
-                }
-                else if(action.getActionType() == ActionType.NORMAL)
-                {
-                    getActionGridPaneListener().normalActionClicked(action.getID());
+                    getActionGridPaneListener().normalOrCombineActionClicked(action.getID());
                 }
                 else if(action.getActionType() == ActionType.TOGGLE)
                 {

@@ -8,8 +8,7 @@ public interface ActionGridPaneListener
 {
     void renderFolder(String ID);
 
-    void normalActionClicked(String ID);
-    void combineActionClicked(String ID);
+    void normalOrCombineActionClicked(String ID);
     void toggleActionClicked(String ID, boolean toggleState);
 
     ActionBox getActionBoxByLocation(Location location);

@@ -416,7 +416,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     }
 
     @Override
-    public void normalActionClicked(String ID)
+    public void normalOrCombineActionClicked(String ID)
     {
         clientListener.onActionClicked(getClientProfile().getID(), ID, false);
     }
@@ -439,34 +439,6 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     {
         return clientListener.isConnected();
     }
-
-    @Override
-    public void combineActionClicked(String ID) {
-        if(clientListener.isConnected())
-        {
-            new Thread(new Task<Void>() {
-                @Override
-                protected Void call()
-                {
-                    Action action = getClientProfile().getActionFromID(ID);
-
-                    for(int i = 0;i<action.getClientProperties().get().size();i++)
-                    {
-                        try {
-                            logger.info("Clicking "+i+", '"+action.getClientProperties().getSingleProperty(i+"").getRawValue()+"'");
-                            normalActionClicked(action.getClientProperties().getSingleProperty(i+"").getRawValue());
-                        } catch (MinorException e) {
-                            e.printStackTrace();
-                            exceptionAndAlertHandler.handleMinorException(e);
-                        }
-                    }
-
-                    return null;
-                }
-            }).start();
-        }
-    }
-
 
 
     public void returnToPreviousParent()
