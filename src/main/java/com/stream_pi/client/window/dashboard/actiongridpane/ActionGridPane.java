@@ -353,7 +353,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         }
 
 
-        boolean oldToggleStatus = actionBox.getCurrentToggleStatus();
+        boolean oldToggleStatus = action.getCurrentToggleStatus();
 
 
         actionBox.setAction(action);
