@@ -36,7 +36,7 @@ public class SettingsBase extends VBox
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         VBox.setVgrow(tabPane, Priority.ALWAYS);
 
-        Tab generalSettingsTab = new Tab("General");
+        Tab generalSettingsTab = new Tab("Settings");
         generalTab = new GeneralTab(exceptionAndAlertHandler, clientListener, hostServices);
         generalSettingsTab.setContent(generalTab);
 

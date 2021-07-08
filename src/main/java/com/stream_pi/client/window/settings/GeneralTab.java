@@ -203,11 +203,6 @@ public class GeneralTab extends VBox
         screenTimeoutSecondsHBoxInputBox.managedProperty().bind(screenTimeoutSecondsHBoxInputBox.visibleProperty());
         screenTimeoutTextField.disableProperty().bind(screenSaverToggleSwitch.selectedProperty().not());
 
-
-        Label settingsLabel = new Label("Settings");
-        settingsLabel.setPadding(new Insets(5,0,0,5));
-        settingsLabel.getStyleClass().add("settings_heading_label");
-
         saveButton = new Button("Save");
         saveButton.setOnAction(event->onSaveButtonClicked());
 
@@ -283,7 +278,6 @@ public class GeneralTab extends VBox
         setSpacing(10.0);
 
         getChildren().addAll(
-                settingsLabel,
                 scrollPane,
                 buttonBar
         );

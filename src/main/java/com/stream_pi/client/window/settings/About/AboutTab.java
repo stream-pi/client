@@ -124,6 +124,8 @@ public class AboutTab extends ScrollPane
 
         disclaimerLabel.getStyleClass().add("about_license_contributors_disclaimer_label");
 
+        disclaimerLabel.prefWidthProperty().bind(tabPane.widthProperty());
+
         disclaimerLabel.setWrapText(true);
 
 
