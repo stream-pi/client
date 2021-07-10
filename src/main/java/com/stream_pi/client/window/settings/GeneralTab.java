@@ -221,9 +221,11 @@ public class GeneralTab extends VBox
 
 
         VBox vBox = new VBox(
+                generateSubHeading("Connection"),
                 new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
                 new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
                 new HBoxInputBox("Port", serverPortTextField, prefWidth),
+                generateSubHeading("Client"),
                 new HBox(
                         new Label("Current profile"),
                         SpaceFiller.horizontal(),
@@ -234,6 +236,7 @@ public class GeneralTab extends VBox
                         SpaceFiller.horizontal(),
                         themeComboBox
                 ),
+                generateSubHeading("Others"),
                 themesPathInputBox,
                 iconsPathInputBox,
                 profilesPathInputBox,
@@ -318,6 +321,13 @@ public class GeneralTab extends VBox
 
         screenSaverHBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
         screenTimeoutSecondsHBoxInputBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
+    }
+
+    private Label generateSubHeading(String text)
+    {
+        Label label = new Label(text);
+        label.getStyleClass().add("general_settings_sub_heading");
+        return label;
     }
 
     private Logger getLogger()

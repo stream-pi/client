@@ -134,13 +134,8 @@ public class Controller extends Base
 
             getStage().show();
 
-
-            requestFocus();
-
             if(Config.getInstance().isFirstTimeUse())
                 return;
-        
-            getLogger().info("XYZZZ : "+Config.getInstance().isFirstTimeUse());
             
             setupSettingsWindowsAnimations();
 
@@ -436,7 +431,7 @@ public class Controller extends Base
         e.printStackTrace();
 
 
-        Platform.runLater(()-> genNewAlert(e.getTitle(), e.getShortMessage(), StreamPiAlertType.WARNING).show());
+        Platform.runLater(()-> genNewAlert(e.getTitle(), e.getMessage(), StreamPiAlertType.WARNING).show());
     }
 
     @Override
@@ -448,7 +443,7 @@ public class Controller extends Base
 
         Platform.runLater(()->
         {
-            StreamPiAlert alert = genNewAlert(e.getTitle(), e.getShortMessage(), StreamPiAlertType.ERROR);
+            StreamPiAlert alert = genNewAlert(e.getTitle(), e.getMessage(), StreamPiAlertType.ERROR);
 
             alert.setOnClicked(new StreamPiAlertListener()
             {

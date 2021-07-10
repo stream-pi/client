@@ -265,7 +265,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     @Override
     public double getStageHeight()
     {
-        if(ClientInfo.getInstance().getPlatform() == Platform.ANDROID)
+        if(ClientInfo.getInstance().isPhone())
         {
             return getScreenHeight();
         }
@@ -301,37 +301,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 if(result)
                 {
                     Config.unzipToDefaultPrePath();
-
-                    ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+
-                            Config.getInstance().getStartupProfileID()+".xml"), Config.getInstance().getIconsPath());
-
-                    int pre = clientProfile.getActionSize()+(clientProfile.getActionGap()*4);
-
-                    int rows,cols;
-
-                    if (StartupFlags.IS_X_MODE || StartupFlags.DEFAULT_FULLSCREEN_MODE)
-                    {
-                        setupFlags();
-                        getStage().show();
-                        rows = (int) (getStageHeight()/pre);
-                        cols = (int) (getStageWidth()/pre);
-
-                        //set rows/cols to 1 if stream-pi fails to determine rows/cols
-                        if(rows==0 || cols == 0)
-                        {
-                            rows = 1;
-                            cols = 1;
-                        }
-                    }
-                    else
-                    {
-                        rows = (int) (Config.getInstance().getStartupWindowHeight()/pre);
-                        cols = (int) (Config.getInstance().getStartupWindowWidth()/pre);
-                    }
-
-                    clientProfile.setCols(cols);
-                    clientProfile.setRows(rows);
-                    clientProfile.saveProfileDetails();
 
                     initLogger();
                 }
@@ -483,7 +452,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             for(MinorException eachException : themes.getErrors())
             {
-                themeErrors.append("\n * ").append(eachException.getShortMessage());
+                themeErrors.append("\n * ").append(eachException.getMessage());
             }
 
             if(themes.getIsBadThemeTheCurrentOne())

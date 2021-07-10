@@ -1,11 +1,14 @@
 package com.stream_pi.client.window.firsttimeuse;
 
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
+import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 
@@ -17,6 +20,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import javax.xml.transform.TransformerException;
+import java.io.File;
 
 public class FinalConfigPane extends VBox
 {
@@ -112,14 +118,23 @@ public class FinalConfigPane extends VBox
 
                 Config.getInstance().save();
 
+                ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+
+                        Config.getInstance().getStartupProfileID()+".xml"), Config.getInstance().getIconsPath());
+
+                int pre = clientProfile.getActionSize()+(clientProfile.getActionGap()*4);
+
+                clientProfile.setCols((int) (clientListener.getStageWidth()/pre));
+                clientProfile.setRows((int) (clientListener.getStageHeight()/pre));
+                clientProfile.saveProfileDetails();
+
                 Platform.runLater(()-> {
                     clientListener.init();
                     clientListener.setupClientConnection();
                 });
             }
-            catch(SevereException e)
+            catch(Exception e)
             {
-                exceptionAndAlertHandler.handleSevereException(e);
+                exceptionAndAlertHandler.handleSevereException(new SevereException(e.getMessage()));
             }
         }
         else

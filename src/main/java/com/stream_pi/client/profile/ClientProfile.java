@@ -11,10 +11,7 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -590,7 +587,7 @@ public class ClientProfile implements Cloneable{
         }
     }
     
-    private void save() throws Exception
+    private void save() throws TransformerException
     {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         Result output = new StreamResult(file);
@@ -599,7 +596,8 @@ public class ClientProfile implements Cloneable{
         transformer.transform(input, output);
     }
 
-    public void saveProfileDetails() throws Exception {
+    public void saveProfileDetails() throws TransformerException
+    {
         XMLConfigHelper.removeChilds(getProfileElement());
 
         Element nameElement = document.createElement("name");

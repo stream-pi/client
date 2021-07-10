@@ -228,7 +228,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
             }
             catch (MinorException e)
             {
-                errors.append("*").append(e.getShortMessage()).append("\n");
+                errors.append("*").append(e.getMessage()).append("\n");
             }
         }
 

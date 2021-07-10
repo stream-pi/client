@@ -70,10 +70,9 @@
     -fx-padding: 5;
 }
 
-.alert_scroll_pane {
+.alert_scroll_pane
+{
     -fx-max-height : 300;
-    -fx-focus-color: #FFFFFF;
-    -fx-faint-focus-color:#FFFFFF;
 }
 
 
@@ -195,6 +194,7 @@
 {
     -fx-padding : 10 0 0 0;
     -fx-font-size : 25;
+    -fx-border-color: transparent;
 }
 
 .screensaver
@@ -211,4 +211,10 @@
 .action_grid_pane_parent, .action_grid_pane
 {
     -fx-background: transparent;
+}
+
+.general_settings_sub_heading
+{
+    -fx-font-size: 18;
+    -fx-padding: 10 0 5 0;
 }
