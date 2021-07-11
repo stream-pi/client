@@ -1,5 +1,6 @@
 package com.stream_pi.client.window.firsttimeuse;
 
+import com.gluonhq.attach.orientation.OrientationService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
@@ -14,6 +15,7 @@ import com.stream_pi.util.uihelper.HBoxInputBox;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -123,8 +125,28 @@ public class FinalConfigPane extends VBox
 
                 int pre = clientProfile.getActionSize()+(clientProfile.getActionGap()*4);
 
-                clientProfile.setCols((int) (clientListener.getStageWidth()/pre));
-                clientProfile.setRows((int) (clientListener.getStageHeight()/pre));
+
+                rowsToSet = (int) (clientListener.getStageHeight()/pre);
+                colsToSet = (int) (clientListener.getStageWidth()/pre);
+
+                if(ClientInfo.getInstance().isPhone())
+                {
+                    OrientationService.create().ifPresent(orientationService -> {
+                        if(orientationService.getOrientation().isPresent() &&
+                                orientationService.getOrientation().get().equals(Orientation.VERTICAL))
+                        {
+                            int tmp = rowsToSet;
+                            rowsToSet = colsToSet;
+                            colsToSet = tmp;
+                        }
+                    });
+                }
+                else
+                {
+                    clientProfile.setCols((int) (clientListener.getStageWidth()/pre));
+                    clientProfile.setRows((int) (clientListener.getStageHeight()/pre));
+                }
+
                 clientProfile.saveProfileDetails();
 
                 Platform.runLater(()-> {
@@ -143,4 +165,6 @@ public class FinalConfigPane extends VBox
             new StreamPiAlert("Uh Oh", "Please rectify the following errors and try again:\n"+errors, StreamPiAlertType.ERROR).show();
         }
     }
+
+    private int rowsToSet,colsToSet;
 }
