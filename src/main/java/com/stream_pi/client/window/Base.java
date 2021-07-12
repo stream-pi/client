@@ -98,9 +98,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             {
                 String path = ClientInfo.getInstance().getPrePath()+"../stream-pi-client.log";
 
-                Platform platform = getClientInfo().getPlatform();
-                if(platform == Platform.ANDROID ||
-                        platform == Platform.IOS)
+                if(getClientInfo().isPhone())
                     path = ClientInfo.getInstance().getPrePath()+"stream-pi-client.log";
 
                 logFileHandler = new StreamPiLogFileHandler(path);
