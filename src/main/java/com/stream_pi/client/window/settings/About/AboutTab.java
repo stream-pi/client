@@ -133,11 +133,8 @@ public class AboutTab extends ScrollPane
         disclaimerLabel.setWrapText(true);
 
 
-        Label buildDateLabel = new Label();
-        buildDateLabel.getStyleClass().add("build-date-label");
-
         mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
-                donateButton, hBox1, hBox2,javaGCLabel, buildDateLabel);
+                donateButton, hBox1, hBox2,javaGCLabel);
         mainVBox.prefWidthProperty().bind(widthProperty().subtract(30));
 
         setContent(mainVBox);
@@ -147,7 +144,9 @@ public class AboutTab extends ScrollPane
         {
             try
             {
-                buildDateLabel.setText("Build date/time: " +  new String(inputStream.readAllBytes()));
+                Label buildDateLabel = new Label("Build date/time: " +  new String(inputStream.readAllBytes()));
+                buildDateLabel.getStyleClass().add("build-date-label");
+                mainVBox.getChildren().add(buildDateLabel);
             }
             catch (IOException e)
             {
