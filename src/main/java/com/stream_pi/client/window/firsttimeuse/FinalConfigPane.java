@@ -141,11 +141,9 @@ public class FinalConfigPane extends VBox
                         }
                     });
                 }
-                else
-                {
-                    clientProfile.setCols((int) (clientListener.getStageWidth()/pre));
-                    clientProfile.setRows((int) (clientListener.getStageHeight()/pre));
-                }
+
+                clientProfile.setCols(colsToSet);
+                clientProfile.setRows(rowsToSet);
 
                 clientProfile.saveProfileDetails();
 
