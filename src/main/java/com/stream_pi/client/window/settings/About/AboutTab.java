@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -111,8 +112,11 @@ public class AboutTab extends ScrollPane
         Label javafxVersionLabel = new Label("JavaFX "+System.getProperty("javafx.version"));
         javafxVersionLabel.getStyleClass().add("about_javafx_version");
 
+        Label javaGCLabel = new Label("GC: "+ ManagementFactory.getGarbageCollectorMXBeans().get(0).getName());
+        javaGCLabel.getStyleClass().add("about_java_gc");
+
         HBox hBox2 = new HBox(javaVersionLabel, getSep(),
-                javafxVersionLabel);
+                javafxVersionLabel, getSep(), javaGCLabel);
 
         hBox2.setAlignment(Pos.CENTER);
         hBox2.setSpacing(10);

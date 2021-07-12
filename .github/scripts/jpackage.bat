@@ -10,7 +10,7 @@ set /p VERSION=<version.txt
 --input target/lib ^
 --main-jar client-%VERSION%.jar ^
 --type msi ^
---java-options "-Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false" ^
+--java-options "-XX:+UnlockExperimentalVMOptions -XX:+UseZGC -Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false" ^
 --main-class %MAIN_CLASS% ^
 --arguments "Stream-Pi.startupRunnerFileName='Stream-Pi Client.exe'" ^
 --icon assets/windows-icon.ico ^

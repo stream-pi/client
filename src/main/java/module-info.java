@@ -12,6 +12,8 @@ module com.stream_pi.client {
     requires com.gluonhq.attach.vibration;
     requires com.gluonhq.attach.orientation;
 
+    requires java.management;
+
     requires java.xml;
 
     opens com.stream_pi.client.window.settings.About to javafx.base;

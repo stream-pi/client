@@ -173,6 +173,7 @@
                 <configuration>
                     <commandlineArgs>Stream-Pi.defaultFullScreenMode=false Stream-Pi.enableScreenSaverFeature=false</commandlineArgs>
                     <options>
+                        <option>-XX:+UnlockExperimentalVMOptions -XX:+UseZGC</option>
                         <option>-Dprism.verbose=true</option>
                         <option>-Djavafx.verbose=true</option>
                         <option>-Dprism.forceGPU=true</option>
