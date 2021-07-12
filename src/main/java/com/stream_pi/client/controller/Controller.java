@@ -631,16 +631,16 @@ public class Controller extends Base
 
         onCloseRequest();
 
-        boolean result = IOHelper.deleteFile(getClientInfo().getPrePath());
-
-        if(result)
+        try
         {
+            IOHelper.deleteFile(getClientInfo().getPrePath());
+
             setFirstRun(true);
             init();
         }
-        else
+        catch (SevereException e)
         {
-            handleSevereException(new SevereException("Unable to delete all files successfully. Installation corrupt. Re-install."));
+            handleSevereException("Unable to successfully factory reset. Delete directory \n'"+getClientInfo().getPrePath()+"'\nMessage:\n"+e.getMessage(),e);
         }
     }
 
