@@ -7,6 +7,7 @@ import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.alert.StreamPiAlertType;
+import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -152,7 +153,7 @@ public class ActionBox extends StackPane
                         }
                         else
                         {
-                            exceptionAndAlertHandler.onAlert("Not Connected", "Not Connected to any Server", StreamPiAlertType.ERROR);
+                            exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
                         }
                         return;
                     }

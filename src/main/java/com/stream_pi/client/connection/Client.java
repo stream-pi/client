@@ -396,9 +396,9 @@ public class Client extends Thread
         String m = message.getStringValue();
 
         if(!m.isBlank())
-            txt = "Message : "+m;
+            txt = "\nMessage : "+m;
 
-        exceptionAndAlertHandler.onAlert("Disconnected from Server", txt, StreamPiAlertType.WARNING);
+        exceptionAndAlertHandler.handleMinorException(new MinorException("Disconnected from Server"+txt));
 
         if(!socket.isClosed()) {
             try {

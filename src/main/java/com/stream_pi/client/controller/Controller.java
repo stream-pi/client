@@ -423,27 +423,38 @@ public class Controller extends Base
     }
 
 
+    @Override
+    public void handleMinorException(MinorException e)
+    {
+        handleMinorException(e.getMessage(), e);
+    }
 
     @Override
-    public void handleMinorException(MinorException e) 
+    public void handleMinorException(String message, MinorException e)
     {
-        getLogger().log(Level.SEVERE, e.getMessage(), e);
+        getLogger().log(Level.SEVERE, message, e);
         e.printStackTrace();
 
 
-        Platform.runLater(()-> genNewAlert(e.getTitle(), e.getMessage(), StreamPiAlertType.WARNING).show());
+        Platform.runLater(()-> genNewAlert(e.getTitle(), message, StreamPiAlertType.WARNING).show());
     }
 
     @Override
     public void handleSevereException(SevereException e)
     {
-        getLogger().log(Level.SEVERE, e.getMessage(), e);
+        handleSevereException(e.getMessage(), e);
+    }
+
+    @Override
+    public void handleSevereException(String message, SevereException e)
+    {
+        getLogger().log(Level.SEVERE, message, e);
         e.printStackTrace();
 
 
         Platform.runLater(()->
         {
-            StreamPiAlert alert = genNewAlert(e.getTitle(), e.getMessage(), StreamPiAlertType.ERROR);
+            StreamPiAlert alert = genNewAlert(e.getTitle(), message, StreamPiAlertType.ERROR);
 
             alert.setOnClicked(new StreamPiAlertListener()
             {
@@ -640,7 +651,7 @@ public class Controller extends Base
         }
         catch (SevereException e)
         {
-            handleSevereException("Unable to successfully factory reset. Delete directory \n'"+getClientInfo().getPrePath()+"'\nMessage:\n"+e.getMessage(),e);
+            handleSevereException("Unable to successfully factory reset. Delete directory \n'"+getClientInfo().getPrePath()+"/home/rnayabed/HDD_1/projects/stream-pi/server'\nMessage:\n"+e.getMessage(),e);
         }
     }
 
