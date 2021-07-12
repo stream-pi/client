@@ -116,7 +116,7 @@ public class AboutTab extends ScrollPane
         javaGCLabel.getStyleClass().add("about_java_gc");
 
         HBox hBox2 = new HBox(javaVersionLabel, getSep(),
-                javafxVersionLabel, getSep(), javaGCLabel);
+                javafxVersionLabel);
 
         hBox2.setAlignment(Pos.CENTER);
         hBox2.setSpacing(10);
@@ -137,7 +137,7 @@ public class AboutTab extends ScrollPane
         buildDateLabel.getStyleClass().add("build-date-label");
 
         mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
-                donateButton, hBox1, hBox2, buildDateLabel);
+                donateButton, hBox1, hBox2,javaGCLabel, buildDateLabel);
         mainVBox.prefWidthProperty().bind(widthProperty().subtract(30));
 
         setContent(mainVBox);
