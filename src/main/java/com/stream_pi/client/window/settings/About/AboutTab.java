@@ -144,13 +144,14 @@ public class AboutTab extends ScrollPane
         {
             try
             {
+                Logger.getLogger(getClass().getName()).info("build-date present");
                 Label buildDateLabel = new Label("Build date/time: " +  new String(inputStream.readAllBytes()));
                 buildDateLabel.getStyleClass().add("build-date-label");
                 mainVBox.getChildren().add(buildDateLabel);
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                Logger.getLogger(getClass().getName()).info("build-date not present");
             }
         }
 
