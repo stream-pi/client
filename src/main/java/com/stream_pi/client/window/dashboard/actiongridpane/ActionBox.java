@@ -264,15 +264,18 @@ public class ActionBox extends StackPane
     {
         setBackground(null);
         setStyle(null);
+        displayTextLabel.setStyle(null);
 
-        setDisplayTextFontColour(action.getDisplayTextFontColourHex());
-        
-        if(action.isShowDisplayText())
-            setDisplayTextLabel(action.getDisplayText());
+
+        if(getAction().isShowDisplayText())
+        {
+            setDisplayTextAlignment(action.getDisplayTextAlignment());
+            setDisplayTextFontColourAndSize(action.getDisplayTextFontColourHex());
+            setDisplayTextLabel(getAction().getDisplayText());
+        }
         else
             setDisplayTextLabel("");
 
-        setDisplayTextAlignment(action.getDisplayTextAlignment());
         setBackgroundColour(action.getBgColourHex());
 
         try
@@ -441,15 +444,6 @@ public class ActionBox extends StackPane
     public void setDisplayTextLabel(String text)
     {
         displayTextLabel.setText(text);
-        
-        if(getAction().getNameFontSize() > -1)
-        { 
-            displayTextLabel.setStyle("-fx-font-size: "+getAction().getNameFontSize());
-        }
-        else
-        {
-            displayTextLabel.setStyle(null);
-        }
     }
 
     public void setDisplayTextAlignment(DisplayTextAlignment displayTextAlignment)
@@ -461,11 +455,23 @@ public class ActionBox extends StackPane
         else if (displayTextAlignment == DisplayTextAlignment.TOP)
             displayTextLabel.setAlignment(Pos.TOP_CENTER);
     }
-    public void setDisplayTextFontColour(String colour)
-    {   
+
+    public void setDisplayTextFontColourAndSize(String colour)
+    {
+        String totalStyle = "";
         if(!colour.isEmpty())
         {
-            displayTextLabel.setStyle("-fx-text-fill : "+colour+";");
+            totalStyle+="-fx-text-fill : "+colour+";";
+        }
+
+        if(getAction().getNameFontSize() > -1)
+        {
+            totalStyle+="-fx-font-size: "+getAction().getNameFontSize()+";";
+        }
+
+        if(!totalStyle.isBlank())
+        {
+            displayTextLabel.setStyle(totalStyle);
         }
     }
 
