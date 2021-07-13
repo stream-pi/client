@@ -1,0 +1,4 @@
+#!/bin/bash
+cd "${0%/*}"
+
+DISPLAY=:0 jre/bin/java -Xmx700m --module-path . --add-modules ALL-MODULE-PATH -Djavafx.platform=gtk -Djavafx.verbose=true -Dprism.verbose=true -Dcom.sun.javafx.isEmbedded=true -Dcom.sun.javafx.virtualKeyboard=javafx com.stream_pi.client.Main Stream-Pi.showShutDownButton=true Stream-Pi.startupRunnerFileName=run_desktop Stream-Pi.isXMode=true Stream-Pi.defaultFullScreenMode=true
