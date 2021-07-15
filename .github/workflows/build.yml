@@ -172,10 +172,22 @@ jobs:
       - name: Create Android aarch64 APK
         run: |
           export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
+          export ANDROID_SDK_ROOT=$HOME/.gluon/substrate/Android/
 
           #Build aarch64 android native-image
           mvn -Pandroid gluonfx:build gluonfx:package
-          mv target/gluonfx/aarch64-android/gvm/*.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
+
+          # Use modded MainActivity to prevent sleep
+          rm -rf target/gluonfx/aarch64-android/gvm/android_project/app/src/main/java/com/gluonhq/helloandroid/MainActivity.java
+          mv src/android/mods/MainActivity.java target/gluonfx/aarch64-android/gvm/android_project/app/src/main/java/com/gluonhq/helloandroid/MainActivity.java
+
+          # Create modded APK to prevent sleep
+          pushd .
+          cd target/gluonfx/aarch64-android/gvm/android_project
+          ./gradlew assembleDebug
+          popd
+
+          mv target/gluonfx/aarch64-android/gvm/android_project/app/build/outputs/apk/debug/app-debug.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-17/
