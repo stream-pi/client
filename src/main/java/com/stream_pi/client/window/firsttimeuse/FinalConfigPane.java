@@ -118,6 +118,11 @@ public class FinalConfigPane extends VBox
                 Config.getInstance().setServerPort(port);
                 Config.getInstance().setFirstTimeUse(false);
 
+                if(ClientInfo.getInstance().isPhone())
+                {
+                    Config.getInstance().setScreenMoverEnabled(true);
+                }
+
                 Config.getInstance().save();
 
                 ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+
@@ -154,6 +159,7 @@ public class FinalConfigPane extends VBox
             }
             catch(Exception e)
             {
+                e.printStackTrace();
                 exceptionAndAlertHandler.handleSevereException(new SevereException(e.getMessage()));
             }
         }

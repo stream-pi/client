@@ -66,6 +66,9 @@ public class GeneralTab extends VBox
     private HBoxWithSpaceBetween screenSaverHBox;
     private ToggleSwitch screenSaverToggleSwitch;
 
+    private HBoxWithSpaceBetween screenMoverHBox;
+    private ToggleSwitch screenMoverToggleSwitch;
+
     private HBoxWithSpaceBetween tryConnectingToServerIfActionClickedHBox;
     private ToggleSwitch tryConnectingToServerIfActionClickedToggleSwitch;
 
@@ -155,6 +158,10 @@ public class GeneralTab extends VBox
         screenSaverHBox = new HBoxWithSpaceBetween("Screen Saver", screenSaverToggleSwitch);
         screenSaverHBox.managedProperty().bind(screenSaverHBox.visibleProperty());
 
+        screenMoverToggleSwitch = new ToggleSwitch();
+        screenMoverHBox = new HBoxWithSpaceBetween("OLED Burn-In Protector", screenMoverToggleSwitch);
+        screenMoverHBox.managedProperty().bind(screenMoverHBox.visibleProperty());
+
         tryConnectingToServerIfActionClickedToggleSwitch  = new ToggleSwitch();
         tryConnectingToServerIfActionClickedHBox = new HBoxWithSpaceBetween("Try connect to server on action click", tryConnectingToServerIfActionClickedToggleSwitch);
         tryConnectingToServerIfActionClickedHBox.managedProperty().bind(tryConnectingToServerIfActionClickedHBox.visibleProperty());
@@ -243,6 +250,7 @@ public class GeneralTab extends VBox
                 screenTimeoutSecondsHBoxInputBox,
                 invertRowsColsHBox,
                 screenSaverHBox,
+                screenMoverHBox,
                 tryConnectingToServerIfActionClickedHBox,
                 fullScreenModeHBox,
                 connectOnStartupHBox,
@@ -291,10 +299,7 @@ public class GeneralTab extends VBox
 
         //Perform platform checks
 
-        Platform platform = ClientInfo.getInstance().getPlatform();
-
-        if(platform == Platform.ANDROID ||
-                platform == Platform.IOS)
+        if(ClientInfo.getInstance().isPhone())
         {
             themesPathInputBox.setVisible(false);
             iconsPathInputBox.setVisible(false);
@@ -307,15 +312,14 @@ public class GeneralTab extends VBox
         }
         else
         {
-            shutdownButton.setVisible(StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON);
-
-            vibrateOnActionPressHBox.setVisible(false);
-
             invertRowsColsHBox.setVisible(false);
+            vibrateOnActionPressHBox.setVisible(false);
+            buttonBar.getChildren().add(exitButton);
+
 
             fullScreenModeHBox.setVisible(StartupFlags.SHOW_FULLSCREEN_TOGGLE_BUTTON);
 
-            buttonBar.getChildren().add(exitButton);
+            shutdownButton.setVisible(StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON);
         }
 
 
@@ -448,6 +452,7 @@ public class GeneralTab extends VBox
 
         screenTimeoutTextField.setText(config.getScreenSaverTimeout()+"");
         screenSaverToggleSwitch.setSelected(config.isScreenSaverEnabled());
+        screenMoverToggleSwitch.setSelected(config.isScreenMoverEnabled());
 
         clientProfileComboBox.setOptions(clientListener.getClientProfiles().getClientProfiles());
 
@@ -667,6 +672,11 @@ public class GeneralTab extends VBox
                 toBeReloaded = true;
 
             config.setScreenSaverEnabled(screenSaverToggleSwitch.isSelected());
+
+            if(config.isScreenMoverEnabled() != screenMoverToggleSwitch.isSelected())
+                toBeReloaded = true;
+
+            config.setScreenMoverEnabled(screenMoverToggleSwitch.isSelected());
 
             if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()) && config.isScreenSaverEnabled())
             {
