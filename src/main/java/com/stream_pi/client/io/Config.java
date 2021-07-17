@@ -51,7 +51,7 @@ public class Config
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new SevereException("Config", "unable to read config.xml");
+            throw new SevereException("Config", "unable to read config.xml\n"+e.getMessage());
         }
     }
 
@@ -253,7 +253,11 @@ public class Config
 
 
 
-    
+    //screen-mover
+    public Element getScreenMoverElement()
+    {
+        return (Element) document.getElementsByTagName("screen-mover").item(0);
+    }
 
 
     //others
@@ -457,6 +461,65 @@ public class Config
         getOthersElement().getElementsByTagName("screen-saver-timeout-seconds").item(0).setTextContent(value);
     }
 
+    public int getDefaultScreenMoverInterval()
+    {
+        return 120000;
+    }
+
+    public int getScreenMoverInterval()
+    {
+        return XMLConfigHelper.getIntProperty(getScreenMoverElement(), "interval", getDefaultScreenMoverInterval(), false, true, document, configFile);
+    }
+
+    public void setScreenMoverInterval(String value)
+    {
+        getScreenMoverElement().getElementsByTagName("interval").item(0).setTextContent(value);
+    }
+
+    public int getDefaultScreenMoverXChange()
+    {
+        return 5;
+    }
+
+    public int getScreenMoverXChange()
+    {
+        return XMLConfigHelper.getIntProperty(getScreenMoverElement(), "x-change", getDefaultScreenMoverXChange(), false, true, document, configFile);
+    }
+
+    public void setScreenMoverXChange(String value)
+    {
+        getScreenMoverElement().getElementsByTagName("x-change").item(0).setTextContent(value);
+    }
+
+    public int getDefaultScreenMoverYChange()
+    {
+        return 5;
+    }
+
+    public int getScreenMoverYChange()
+    {
+        return XMLConfigHelper.getIntProperty(getScreenMoverElement(), "y-change", getDefaultScreenMoverYChange(), false, true, document, configFile);
+    }
+
+    public void setScreenMoverYChange(String value)
+    {
+        getScreenMoverElement().getElementsByTagName("y-change").item(0).setTextContent(value);
+    }
+
+    public boolean getDefaultScreenMoverEnabled()
+    {
+        return false;
+    }
+
+    public boolean isScreenMoverEnabled()
+    {
+        return XMLConfigHelper.getBooleanProperty(getScreenMoverElement(), "status", getDefaultScreenMoverEnabled(), false, true, document, configFile);
+    }
+
+    public void setScreenMoverEnabled(boolean value)
+    {
+        getScreenMoverElement().getElementsByTagName("status").item(0).setTextContent(value+"");
+    }
 
     public boolean getDefaultInvertRowsColsOnDeviceRotate()
     {

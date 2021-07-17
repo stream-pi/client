@@ -59,6 +59,7 @@ public class Controller extends Base
 
     private boolean firstRun = true;
     private ScreenSaver screenSaver = null;
+    private ScreenMover screenMover = null;
 
     @Override
     public ScreenSaver getScreenSaver()
@@ -74,17 +75,30 @@ public class Controller extends Base
             if(firstRun)
                 initBase();
 
-            if (screenSaver != null)
+
+            if(getConfig().isScreenSaverEnabled())
             {
-                screenSaver.stop();
-                getChildren().remove(screenSaver);
+                if(screenSaver == null)
+                {
+                    screenSaver = new ScreenSaver(this, getConfig().getScreenSaverTimeout());
+                    getChildren().add(screenSaver);
+                    screenSaver.toBack();
+                }
+                else
+                {
+                    screenSaver.setTimeout(getConfig().getScreenSaverTimeout());
+                    screenSaver.restart();
+                }
             }
-
-            screenSaver = new ScreenSaver(getConfig().isScreenSaverEnabled(), this, getConfig().getScreenSaverTimeout());
-
-            getChildren().add(screenSaver);
-            screenSaver.toBack();
-
+            else
+            {
+                if(screenSaver != null)
+                {
+                    screenSaver.stop();
+                    getChildren().remove(screenSaver);
+                    screenSaver = null;
+                }
+            }
 
 
             if(getClientInfo().getPlatform() != com.stream_pi.util.platform.Platform.ANDROID)
@@ -133,6 +147,31 @@ public class Controller extends Base
             setupDashWindow();
 
             getStage().show();
+
+
+            if(getConfig().isScreenMoverEnabled())
+            {
+                if(screenMover == null)
+                {
+                    screenMover = new ScreenMover(getStage(), getConfig().getScreenMoverInterval(),
+                            getConfig().getScreenMoverXChange(),
+                            getConfig().getScreenMoverYChange());
+                }
+                else
+                {
+                    screenMover.setInterval(getConfig().getScreenMoverInterval());
+                    screenMover.restart();
+                }
+            }
+            else
+            {
+                if(screenMover != null)
+                {
+                    screenMover.stop();
+                    screenMover = null;
+                }
+            }
+
 
             if(Config.getInstance().isFirstTimeUse())
                 return;
@@ -296,12 +335,23 @@ public class Controller extends Base
             if(isConnected())
                 client.exit();
 
-            screenSaver.stop();
-
-            if(!getClientInfo().isPhone() && !getConfig().getIsFullScreenMode())
+            if(screenSaver != null)
             {
-                getConfig().setStartupWindowSize(getStageWidth(), getStageHeight());
-                getConfig().save();
+                screenSaver.stop();
+            }
+
+            if(screenMover != null)
+            {
+                screenMover.stop();
+            }
+
+            if(getConfig() != null)
+            {
+                if(!getClientInfo().isPhone() && !getConfig().getIsFullScreenMode())
+                {
+                    getConfig().setStartupWindowSize(getStageWidth(), getStageHeight());
+                    getConfig().save();
+                }
             }
         }
         catch (SevereException e)
@@ -310,7 +360,6 @@ public class Controller extends Base
         }
         finally
         {
-
             getLogger().info("Shut down");
             closeLogger();
             Config.nullify();
@@ -435,8 +484,14 @@ public class Controller extends Base
         getLogger().log(Level.SEVERE, message, e);
         e.printStackTrace();
 
+        Platform.runLater(()-> {
+            if(getScreenSaver() != null)
+            {
+                getScreenSaver().restart();
+            }
 
-        Platform.runLater(()-> genNewAlert(e.getTitle(), message, StreamPiAlertType.WARNING).show());
+            genNewAlert(e.getTitle(), message, StreamPiAlertType.WARNING).show();
+        });
     }
 
     @Override
@@ -454,6 +509,11 @@ public class Controller extends Base
 
         Platform.runLater(()->
         {
+            if(getScreenSaver() != null)
+            {
+                getScreenSaver().restart();
+            }
+
             StreamPiAlert alert = genNewAlert(e.getTitle(), message, StreamPiAlertType.ERROR);
 
             alert.setOnClicked(new StreamPiAlertListener()

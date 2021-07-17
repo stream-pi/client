@@ -752,6 +752,8 @@ public class Client extends Thread
             clientListener.getClientProfiles().getProfileFromID(profileID).saveAction(action);
 
             clientListener.renderAction(profileID, action);
+
+            Platform.runLater(()->clientListener.getScreenSaver().restart());
         }
         catch (Exception e)
         {
