@@ -396,9 +396,9 @@ public class Client extends Thread
         String m = message.getStringValue();
 
         if(!m.isBlank())
-            txt = "\nMessage : "+m;
+            txt = "Message : "+m;
 
-        exceptionAndAlertHandler.handleMinorException(new MinorException("Disconnected from Server"+txt));
+        exceptionAndAlertHandler.handleMinorException(new MinorException("Disconnected from Server",txt));
 
         if(!socket.isClosed()) {
             try {
@@ -753,7 +753,10 @@ public class Client extends Thread
 
             clientListener.renderAction(profileID, action);
 
-            Platform.runLater(()->clientListener.getScreenSaver().restart());
+            if(clientListener.getScreenSaver()!=null)
+            {
+                Platform.runLater(()->clientListener.getScreenSaver().restart());
+            }
         }
         catch (Exception e)
         {
