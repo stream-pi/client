@@ -114,6 +114,11 @@ public class Config
     {
         return "com.stream_pi.defaultlight";
     }
+    
+    public String getDefaultCurrentAnimationName()
+    {
+        return "None";
+    }
 
     public String getDefaultThemesPath()
     {
@@ -145,6 +150,11 @@ public class Config
     public String getCurrentThemeFullName()
     {
         return XMLConfigHelper.getStringProperty(document, "current-theme-full-name", getDefaultCurrentThemeFullName(), false, true, document, configFile);
+    }
+    
+    public String getCurrentAnimationName()
+    {
+        return XMLConfigHelper.getStringProperty(document, "current-animation-name", getDefaultCurrentAnimationName(), false, true, document, configFile);
     }
 
     public String getThemesPath()
@@ -194,6 +204,11 @@ public class Config
     public void setCurrentThemeFullName(String name)
     {
         document.getElementsByTagName("current-theme-full-name").item(0).setTextContent(name);
+    }
+    
+    public void setCurrentAnimationFullName(String name)
+    {
+        document.getElementsByTagName("current-animation-name").item(0).setTextContent(name);
     }
 
     public void setProfilesPath(String profilesPath)

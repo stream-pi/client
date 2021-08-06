@@ -6,6 +6,7 @@ import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
+import com.stream_pi.client.animations.*;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
@@ -173,6 +174,12 @@ public class ActionBox extends StackPane
                     getActionGridPaneListener().toggleActionClicked(action.getID(), getCurrentToggleStatus());
                 }
             }
+        }
+        try
+        {
+            playActionAnimation();
+        } catch (SevereException e){
+            Logger.getLogger("").warning(e.getMessage());
         }
     }
 
@@ -474,7 +481,48 @@ public class ActionBox extends StackPane
             displayTextLabel.setStyle(totalStyle);
         }
     }
-
+    
+    public void playActionAnimation() throws SevereException
+    {
+        Config config = Config.getInstance();
+        switch(config.getCurrentAnimationName())
+        {
+            case "None":
+                break;
+            case "Flip":
+                new Flip(getChildren().get(1)).play();
+                break;
+            case "Bounce":
+                new Bounce(getChildren().get(1)).play();
+                break;
+            case "Jack In The Box":
+                new JackInTheBox(getChildren().get(1)).play();
+                break;
+            case "Swing":
+                new Swing(getChildren().get(1)).play();
+                break;
+            case "Jello":
+                new Jello(getChildren().get(1)).play();
+                break;
+            case "Pulse":
+                new Pulse(getChildren().get(1)).play();
+                break;
+            case "RubberBand":
+                new RubberBand(getChildren().get(1)).play();
+                break;
+            case "Shake":
+                new Shake(getChildren().get(1)).play();
+                break;
+            case "Tada":
+                new Tada(getChildren().get(1)).play();
+                break;
+            case "Wobble":
+                new Wobble(getChildren().get(1)).play();
+                break;
+            default:
+                Logger.getLogger("").warning("Invalid Option/n Please contact quimodotcom to solve this error!");
+        }
+    }
 
     public void setBackgroundColour(String colour)
     {
