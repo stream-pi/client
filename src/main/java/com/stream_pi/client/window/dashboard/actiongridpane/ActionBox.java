@@ -179,7 +179,9 @@ public class ActionBox extends StackPane
         {
             playActionAnimation();
         } catch (SevereException e){
-            Logger.getLogger("").warning(e.getMessage());
+            exceptionAndAlertHandler.handleSevereException(e);
+        } catch (MinorException ex){
+            exceptionAndAlertHandler.handleMinorException(ex);
         }
     }
 
@@ -482,7 +484,7 @@ public class ActionBox extends StackPane
         }
     }
     
-    public void playActionAnimation() throws SevereException
+    public void playActionAnimation() throws MinorException, SevereException
     {
         Config config = Config.getInstance();
         switch(config.getCurrentAnimationName())
@@ -520,7 +522,7 @@ public class ActionBox extends StackPane
                 new Wobble(getChildren().get(1)).play();
                 break;
             default:
-                Logger.getLogger("").warning("Invalid Option/n Please contact quimodotcom to solve this error!");
+                throw new MinorException("Invalid Animation Type");
         }
     }
 

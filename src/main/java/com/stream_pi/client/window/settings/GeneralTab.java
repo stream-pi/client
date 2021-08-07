@@ -626,15 +626,7 @@ public class GeneralTab extends VBox
             {
                 syncWithServer = true;
                 
-                try
-                {
-                    config.setCurrentAnimationFullName(animationComboBox.getCurrentSelectedItem());
-                    config.save();
-                }
-                catch(SevereException e)
-                {
-                    exceptionAndAlertHandler.handleSevereException(e);
-                }
+                config.setCurrentAnimationFullName(animationComboBox.getCurrentSelectedItem());
             }
 
             if(!config.getClientNickName().equals(nickNameTextField.getText()))
