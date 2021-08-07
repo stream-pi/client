@@ -19,4 +19,4 @@ data/
 .vscode/
 
 #macOS
-.DS_STORE
+**/.DS_Store
