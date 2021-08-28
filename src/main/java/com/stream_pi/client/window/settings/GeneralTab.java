@@ -36,9 +36,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
 
-import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 public class GeneralTab extends VBox
@@ -54,7 +53,6 @@ public class GeneralTab extends VBox
 
     private StreamPiComboBox<ClientProfile> clientProfileComboBox;
     private StreamPiComboBox<Theme> themeComboBox;
-    private StreamPiComboBox<String> animationComboBox;
 
     private TextField nickNameTextField;
 
@@ -128,18 +126,7 @@ public class GeneralTab extends VBox
                 return object.getName();
             }
         });
-        
-        animationComboBox = new StreamPiComboBox<>();
-        
-        animationComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<String>()
-        {
-            @Override
-            public String getOptionDisplayText(String object)
-            {
-                return object;
-            }
-        });
-        
+
         clientProfileComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<ClientProfile>(){
             @Override
             public void onNewItemSelected(ClientProfile selectedItem)
@@ -255,11 +242,6 @@ public class GeneralTab extends VBox
                         new Label("Theme"),
                         SpaceFiller.horizontal(),
                         themeComboBox
-                ),
-                new HBox(
-                        new Label("Action Animation"),
-                        SpaceFiller.horizontal(),
-                        animationComboBox
                 ),
                 generateSubHeading("Others"),
                 themesPathInputBox,
@@ -458,8 +440,6 @@ public class GeneralTab extends VBox
         });
 
     }
-    
-    private List<String> animationList = Arrays.asList("None", "Bounce", "Flip", "Jack In The Box", "Jello", "Pulse", "RubberBand", "Shake", "Swing", "Tada", "Wobble");
 
     public void loadData() throws SevereException
     {
@@ -475,8 +455,6 @@ public class GeneralTab extends VBox
         screenMoverToggleSwitch.setSelected(config.isScreenMoverEnabled());
 
         clientProfileComboBox.setOptions(clientListener.getClientProfiles().getClientProfiles());
-        
-        animationComboBox.setOptions(animationList);
 
         int ind = 0;
         for(int i = 0;i<clientProfileComboBox.getOptions().size();i++)
@@ -502,18 +480,7 @@ public class GeneralTab extends VBox
             }
         }
 
-        int ind3 = 0;
-        for(int i = 0;i<animationComboBox.getOptions().size();i++)
-        {
-            if(animationComboBox.getOptions().get(i).equals(config.getCurrentAnimationName()))
-            {
-                ind3 = i;
-                break;
-            }
-        }
-
         themeComboBox.setCurrentSelectedItemIndex(ind2);
-        animationComboBox.setCurrentSelectedItemIndex(ind3);
 
         themesPathTextField.setText(config.getThemesPath());
         iconsPathTextField.setText(config.getIconsPath());
@@ -580,10 +547,6 @@ public class GeneralTab extends VBox
                 new StreamPiAlert("किसने बनाया ? / কে বানিয়েছে ?","ZGViYXlhbiAtIGluZGlh\n" +
                         "boka XD").show();
             }
-            else if(nickNameTextField.getText().equals("imachonk"))
-            {
-                new StreamPiAlert("bigquimo is mega chonk","i cant stop sweating lol").show();
-            }
         }
 
 
@@ -620,13 +583,6 @@ public class GeneralTab extends VBox
                 {
                     exceptionAndAlertHandler.handleSevereException(e);
                 }
-            }
-            
-            if(!config.getCurrentAnimationName().equals(animationComboBox.getCurrentSelectedItem()))
-            {
-                syncWithServer = true;
-                
-                config.setCurrentAnimationFullName(animationComboBox.getCurrentSelectedItem());
             }
 
             if(!config.getClientNickName().equals(nickNameTextField.getText()))
