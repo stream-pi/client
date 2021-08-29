@@ -1,17 +1,20 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package com.stream_pi.client.window.dashboard.actiongridpane;
 
-import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.Location;
-import com.stream_pi.action_api.otheractions.FolderAction;
 
 public interface ActionGridPaneListener
 {
-    void renderFolder(String ID);
-
-    void normalOrCombineActionClicked(String ID);
-    void toggleActionClicked(String ID, boolean toggleState);
-
-    ActionBox getActionBoxByLocation(Location location);
-
+    void renderFolder(final String p0);
+    
+    void normalOrCombineActionClicked(final String p0);
+    
+    void toggleActionClicked(final String p0, final boolean p1);
+    
+    ActionBox getActionBoxByLocation(final Location p0);
+    
     boolean isConnected();
 }

@@ -1,530 +1,386 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package com.stream_pi.client.window;
 
-import com.stream_pi.client.controller.ClientListener;
-import com.stream_pi.client.controller.ScreenSaver;
-import com.stream_pi.client.info.StartupFlags;
-import com.stream_pi.client.io.Config;
-import com.stream_pi.client.info.ClientInfo;
-
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Logger;
-
-import com.stream_pi.client.Main;
-import com.stream_pi.client.profile.ClientProfile;
-import com.stream_pi.client.profile.ClientProfiles;
-import com.stream_pi.client.window.dashboard.DashboardBase;
-import com.stream_pi.client.window.firsttimeuse.FirstTimeUse;
-import com.stream_pi.client.window.settings.SettingsBase;
-import com.stream_pi.theme_api.Theme;
-import com.stream_pi.theme_api.Themes;
-import com.stream_pi.util.alert.StreamPiAlert;
-import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.exception.MinorException;
-import com.stream_pi.util.exception.SevereException;
-import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
-import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
+import java.util.Iterator;
+import java.util.Collection;
+import javafx.scene.text.Font;
 import com.stream_pi.util.platform.Platform;
-
-import javafx.application.HostServices;
+import javafx.scene.Cursor;
+import javafx.scene.input.KeyCombination;
+import javafx.stage.Screen;
+import com.stream_pi.util.exception.SevereException;
+import javafx.scene.Node;
+import com.stream_pi.util.combobox.StreamPiComboBox;
+import com.stream_pi.util.alert.StreamPiAlert;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
-import javafx.scene.Cursor;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
-import javafx.stage.Screen;
+import java.util.Objects;
+import com.stream_pi.client.Main;
+import java.io.InputStream;
+import java.util.logging.Handler;
+import java.io.File;
+import java.util.concurrent.Executors;
+import com.stream_pi.theme_api.Themes;
+import com.stream_pi.theme_api.Theme;
+import javafx.application.HostServices;
+import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
+import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
+import java.util.logging.Logger;
+import com.stream_pi.client.window.firsttimeuse.FirstTimeUse;
+import com.stream_pi.client.window.settings.SettingsBase;
+import com.stream_pi.client.window.dashboard.DashboardBase;
 import javafx.stage.Stage;
+import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.profile.ClientProfiles;
+import com.stream_pi.client.io.Config;
+import java.util.concurrent.ExecutorService;
+import com.stream_pi.client.controller.ClientListener;
+import javafx.scene.layout.StackPane;
 
 public abstract class Base extends StackPane implements ExceptionAndAlertHandler, ClientListener
 {
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-
+    private final ExecutorService executor;
     private Config config;
-
     private ClientProfiles clientProfiles;
-
     private ClientInfo clientInfo;
-
     private Stage stage;
-
-    public Stage getStage()
-    {
-        return stage;
-    }
-
-    public Logger getLogger()
-    {
-        return logger;
-    }
-
     private DashboardBase dashboardBase;
     private SettingsBase settingsBase;
-
     private FirstTimeUse firstTimeUse;
-
-
     private StackPane alertStackPane;
-
-    @Override
-    public ClientProfiles getClientProfiles() {
-        return clientProfiles;
+    private Logger logger;
+    private StreamPiLogFileHandler logFileHandler;
+    private StreamPiLogFallbackHandler logFallbackHandler;
+    private HostServices hostServices;
+    private Theme currentTheme;
+    Themes themes;
+    
+    public Base() {
+        this.executor = Executors.newCachedThreadPool();
+        this.logger = null;
+        this.logFileHandler = null;
+        this.logFallbackHandler = null;
     }
-
-    public void setClientProfiles(ClientProfiles clientProfiles) {
+    
+    public Stage getStage() {
+        return this.stage;
+    }
+    
+    public Logger getLogger() {
+        return this.logger;
+    }
+    
+    public ClientProfiles getClientProfiles() {
+        return this.clientProfiles;
+    }
+    
+    public void setClientProfiles(final ClientProfiles clientProfiles) {
         this.clientProfiles = clientProfiles;
     }
-
-    private Logger logger = null;
-    private StreamPiLogFileHandler logFileHandler = null;
-    private StreamPiLogFallbackHandler logFallbackHandler = null;
-
-    @Override
-    public void initLogger()
-    {
-        try
-        {
-            if(logFileHandler != null)
+    
+    public void initLogger() {
+        try {
+            if (this.logFileHandler != null) {
                 return;
-
-            closeLogger();
-            logger = Logger.getLogger("com.stream_pi");
-
-            if(new File(ClientInfo.getInstance().getPrePath()).getAbsoluteFile().getParentFile().canWrite())
-            {
-                String path = ClientInfo.getInstance().getPrePath()+"../stream-pi-client.log";
-
-                if(getClientInfo().isPhone())
-                    path = ClientInfo.getInstance().getPrePath()+"stream-pi-client.log";
-
-                logFileHandler = new StreamPiLogFileHandler(path);
-                logger.addHandler(logFileHandler);
             }
-            else
-            {
-                logFallbackHandler = new StreamPiLogFallbackHandler();
-                logger.addHandler(logFallbackHandler);
+            this.closeLogger();
+            this.logger = Logger.getLogger("com.stream_pi");
+            if (new File(ClientInfo.getInstance().getPrePath()).getAbsoluteFile().getParentFile().canWrite()) {
+                String path = invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+                if (this.getClientInfo().isPhone()) {
+                    path = invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+                }
+                this.logFileHandler = new StreamPiLogFileHandler(path);
+                this.logger.addHandler((Handler)this.logFileHandler);
             }
-            
+            else {
+                this.logFallbackHandler = new StreamPiLogFallbackHandler();
+                this.logger.addHandler((Handler)this.logFallbackHandler);
+            }
         }
-        catch(Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
-
-            logFallbackHandler = new StreamPiLogFallbackHandler();
-            logger.addHandler(logFallbackHandler);
+            this.logFallbackHandler = new StreamPiLogFallbackHandler();
+            this.logger.addHandler((Handler)this.logFallbackHandler);
         }
     }
     
-    public void closeLogger()
-    {
-        if(logFileHandler != null)
-            logFileHandler.close();
-        else if(logFallbackHandler != null)
-            logFallbackHandler.close();
+    public void closeLogger() {
+        if (this.logFileHandler != null) {
+            this.logFileHandler.close();
+        }
+        else if (this.logFallbackHandler != null) {
+            this.logFallbackHandler.close();
+        }
     }
-
-    private HostServices hostServices;
-
-    public void setHostServices(HostServices hostServices)
-    {
+    
+    public void setHostServices(final HostServices hostServices) {
         this.hostServices = hostServices;
     }
-
-    public HostServices getHostServices()
-    {
-        return hostServices;
+    
+    public HostServices getHostServices() {
+        return this.hostServices;
     }
-
-    public void initBase() throws SevereException
-    {
-        stage = (Stage) getScene().getWindow();
-
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon256x256.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon48x48.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon32x32.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon24x24.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon16x16.png"))));
-
-        clientInfo = ClientInfo.getInstance();
-        dashboardBase = new DashboardBase(this, this);
-        dashboardBase.prefWidthProperty().bind(widthProperty());
-        dashboardBase.prefHeightProperty().bind(heightProperty());
-
-        settingsBase = new SettingsBase(getHostServices(), this, this);
-
-        alertStackPane = new StackPane();
-        alertStackPane.setCache(true);
-        alertStackPane.setCacheHint(CacheHint.SPEED);
-        alertStackPane.setPadding(new Insets(10));
-        alertStackPane.setOpacity(0);
-
-        StreamPiAlert.setParent(alertStackPane);
-        StreamPiComboBox.setParent(alertStackPane);
-
-
-        getChildren().clear();
-
-
-        getChildren().addAll(alertStackPane);
-
-        if(getClientInfo().isPhone())
-        {
-            dashboardBase.setPadding(new Insets(10));
-            settingsBase.setPadding(new Insets(10));
+    
+    public void initBase() throws SevereException {
+        this.stage = (Stage)this.getScene().getWindow();
+        this.getStage().getIcons().add((Object)new Image((InputStream)Objects.requireNonNull(Main.class.getResourceAsStream("app_icon.png"))));
+        this.clientInfo = ClientInfo.getInstance();
+        this.dashboardBase = new DashboardBase(this, this);
+        this.dashboardBase.prefWidthProperty().bind((ObservableValue)this.widthProperty());
+        this.dashboardBase.prefHeightProperty().bind((ObservableValue)this.heightProperty());
+        this.settingsBase = new SettingsBase(this.getHostServices(), this, this);
+        (this.alertStackPane = new StackPane()).setCache(true);
+        this.alertStackPane.setCacheHint(CacheHint.SPEED);
+        this.alertStackPane.setPadding(new Insets(10.0));
+        this.alertStackPane.setOpacity(0.0);
+        StreamPiAlert.setParent(this.alertStackPane);
+        StreamPiComboBox.setParent(this.alertStackPane);
+        this.getChildren().clear();
+        this.getChildren().addAll((Object[])new Node[] { (Node)this.alertStackPane });
+        if (this.getClientInfo().isPhone()) {
+            this.dashboardBase.setPadding(new Insets(10.0));
+            this.settingsBase.setPadding(new Insets(10.0));
         }
-
-        initLogger();
-
-        checkPrePathDirectory();
-
-
-        getChildren().addAll(settingsBase, dashboardBase);
-
-        setStyle(null);
-
-        config = Config.getInstance();
-
-        initThemes();
-
-        if(config.isFirstTimeUse())
-        {
-
-            firstTimeUse = new FirstTimeUse(this, this);
-
-            getChildren().add(firstTimeUse);
-
-            if(getClientInfo().isPhone())
-            {
-                firstTimeUse.setPadding(new Insets(10));
+        this.initLogger();
+        this.checkPrePathDirectory();
+        this.getChildren().addAll((Object[])new Node[] { (Node)this.settingsBase, (Node)this.dashboardBase });
+        this.setStyle((String)null);
+        this.config = Config.getInstance();
+        this.initThemes();
+        if (this.config.isFirstTimeUse()) {
+            this.firstTimeUse = new FirstTimeUse(this, this);
+            this.getChildren().add((Object)this.firstTimeUse);
+            if (this.getClientInfo().isPhone()) {
+                this.firstTimeUse.setPadding(new Insets(10.0));
             }
-
-            firstTimeUse.toFront();
-
-            //resolution check
-            resizeAccordingToResolution();
+            this.firstTimeUse.toFront();
+            this.resizeAccordingToResolution();
         }
-        else
-        {
-            dashboardBase.toFront();
+        else {
+            this.dashboardBase.toFront();
         }
     }
-
-    public void initThemes() throws SevereException 
-    {
-        clearStylesheets();
-        if(themes==null)
-            registerThemes();
-        applyDefaultStylesheet();
-        applyDefaultTheme();
-        applyDefaultIconsStylesheet();
-        applyGlobalDefaultStylesheet();
+    
+    public void initThemes() throws SevereException {
+        this.clearStylesheets();
+        if (this.themes == null) {
+            this.registerThemes();
+        }
+        this.applyDefaultStylesheet();
+        this.applyDefaultTheme();
+        this.applyDefaultIconsStylesheet();
+        this.applyGlobalDefaultStylesheet();
     }
-
-    private void resizeAccordingToResolution()
-    {
-        if(!getClientInfo().isPhone())
-        {
-            double height = getScreenHeight();
-            double width = getScreenWidth();
-
-            if(height < 500)
-                setPrefHeight(320);
-
-            if(width < 500)
-                setPrefWidth(240);
+    
+    private void resizeAccordingToResolution() {
+        if (!this.getClientInfo().isPhone()) {
+            final double height = this.getScreenHeight();
+            final double width = this.getScreenWidth();
+            if (height < 500.0) {
+                this.setPrefHeight(320.0);
+            }
+            if (width < 500.0) {
+                this.setPrefWidth(240.0);
+            }
         }
     }
-
-    @Override
-    public ExecutorService getExecutor()
-    {
-        return executor;
+    
+    public ExecutorService getExecutor() {
+        return this.executor;
     }
-
-    @Override
-    public double getStageWidth()
-    {
-        if(getClientInfo().isPhone())
-        {
-            return getScreenWidth();
+    
+    public double getStageWidth() {
+        if (this.getClientInfo().isPhone()) {
+            return this.getScreenWidth();
         }
-        else
-        {
-            return getStage().getWidth();
-        }
+        return this.getStage().getWidth();
     }
-
-    public double getScreenWidth()
-    {
+    
+    public double getScreenWidth() {
         return Screen.getPrimary().getBounds().getWidth();
     }
-
-    @Override
-    public double getStageHeight()
-    {
-        if(ClientInfo.getInstance().isPhone())
-        {
-            return getScreenHeight();
+    
+    public double getStageHeight() {
+        if (ClientInfo.getInstance().isPhone()) {
+            return this.getScreenHeight();
         }
-        else
-        {
-            return getStage().getHeight();
-        }
+        return this.getStage().getHeight();
     }
-
-    public double getScreenHeight()
-    {
+    
+    public double getScreenHeight() {
         return Screen.getPrimary().getBounds().getHeight();
     }
-
-    private void checkPrePathDirectory() throws SevereException
-    {
-        try
-        {
-            String path = getClientInfo().getPrePath();
-
-            if(path == null)
-            {
-                throwStoragePermErrorAlert("Unable to access file system!");
+    
+    private void checkPrePathDirectory() throws SevereException {
+        try {
+            final String path = this.getClientInfo().getPrePath();
+            if (path == null) {
+                this.throwStoragePermErrorAlert("Unable to access file system!");
                 return;
             }
-
-            File file = new File(path);
-
-
-            if(!file.exists())
-            {
-                boolean result = file.mkdirs();
-                if(result)
-                {
+            final File file = new File(path);
+            if (!file.exists()) {
+                final boolean result = file.mkdirs();
+                if (result) {
                     Config.unzipToDefaultPrePath();
-
-                    initLogger();
+                    this.initLogger();
                 }
-                else
-                {
-                    throwStoragePermErrorAlert("No storage permission. Give it!");
+                else {
+                    this.throwStoragePermErrorAlert("No storage permission. Give it!");
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
             throw new SevereException(e.getMessage());
         }
     }
-
-    private void throwStoragePermErrorAlert(String msg) throws SevereException
-    {
-        resizeAccordingToResolution();
-
-        clearStylesheets();
-        applyDefaultStylesheet();
-        applyDefaultIconsStylesheet();
-        applyGlobalDefaultStylesheet();
-        getStage().show();
+    
+    private void throwStoragePermErrorAlert(final String msg) throws SevereException {
+        this.resizeAccordingToResolution();
+        this.clearStylesheets();
+        this.applyDefaultStylesheet();
+        this.applyDefaultIconsStylesheet();
+        this.applyGlobalDefaultStylesheet();
+        this.getStage().show();
         throw new SevereException(msg);
     }
-
-    public void setupFlags() throws SevereException
-    {
-        //Full Screen
-        if(Config.getInstance().getIsFullScreenMode())
-        {
-            getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            getStage().setFullScreen(true);
+    
+    public void setupFlags() throws SevereException {
+        if (Config.getInstance().getIsFullScreenMode()) {
+            this.getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+            this.getStage().setFullScreen(true);
         }
-        else
-        {
-            getStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
-            getStage().setFullScreen(false);
+        else {
+            this.getStage().setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
+            this.getStage().setFullScreen(false);
         }
-
-        //Cursor
-        if(Config.getInstance().isShowCursor())
-        {
-            setCursor(Cursor.DEFAULT);
+        if (Config.getInstance().isShowCursor()) {
+            this.setCursor(Cursor.DEFAULT);
         }
-        else
-        {
-            setCursor(Cursor.NONE);
+        else {
+            this.setCursor(Cursor.NONE);
         }
     }
-
-
+    
     public SettingsBase getSettingsPane() {
-        return settingsBase;
+        return this.settingsBase;
     }
-
+    
     public DashboardBase getDashboardPane() {
-        return dashboardBase;
+        return this.dashboardBase;
     }
-
-    public void renderRootDefaultProfile()
-    {
-        getDashboardPane().renderProfile(getClientProfiles().getProfileFromID(
-                getConfig().getStartupProfileID()
-        ), true);
+    
+    public void renderRootDefaultProfile() {
+        this.getDashboardPane().renderProfile(this.getClientProfiles().getProfileFromID(this.getConfig().getStartupProfileID()), true);
     }
-
-
-
-    public void clearStylesheets()
-    {
-        getStylesheets().clear();
+    
+    public void clearStylesheets() {
+        this.getStylesheets().clear();
     }
-
-
-
-    public void applyDefaultStylesheet()
-    {
-        if(clientInfo.getPlatform() != Platform.IOS)
-            Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13);
-
-        getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+    
+    public void applyDefaultStylesheet() {
+        if (this.clientInfo.getPlatform() != Platform.IOS) {
+            Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13.0);
+        }
+        this.getStylesheets().add((Object)Main.class.getResource("style.css").toExternalForm());
     }
-
-    public void applyDefaultIconsStylesheet()
-    {
-        getStylesheets().add(Main.class.getResource("default_icons.css").toExternalForm());
+    
+    public void applyDefaultIconsStylesheet() {
+        this.getStylesheets().add((Object)Main.class.getResource("default_icons.css").toExternalForm());
     }
-
-
-    public Config getConfig()
-    {
-        return config;
+    
+    public Config getConfig() {
+        return this.config;
     }
-
-    public ClientInfo getClientInfo()
-    {
-        return clientInfo;
+    
+    public ClientInfo getClientInfo() {
+        return this.clientInfo;
     }
-
-    private Theme currentTheme;
-
-    @Override
-    public Theme getCurrentTheme()
-    {
-        return currentTheme;
+    
+    public Theme getCurrentTheme() {
+        return this.currentTheme;
     }
-
-
-    public void applyTheme(Theme t)
-    {
-        logger.info("Applying theme '"+t.getFullName()+"' ...");
-
-        if(t.getFonts() != null)
-        {
-            for(String fontFile : t.getFonts())
-            {
-                Font.loadFont(fontFile.replace("%20",""), 13);
+    
+    public void applyTheme(final Theme t) {
+        this.logger.info(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, t.getFullName()));
+        if (t.getFonts() != null) {
+            for (final String fontFile : t.getFonts()) {
+                Font.loadFont(fontFile.replace("%20", ""), 13.0);
             }
         }
-        currentTheme = t;
-        getStylesheets().addAll(t.getStylesheets());
-      
-        logger.info("... Done!");
+        this.currentTheme = t;
+        this.getStylesheets().addAll((Collection)t.getStylesheets());
+        this.logger.info("... Done!");
     }
-
-    public void applyGlobalDefaultStylesheet()
-    {
-        File globalCSSFile = new File(getConfig().getDefaultThemesPath()+"/global.css");
-        if(globalCSSFile.exists())
-        {
-            getLogger().info("Found global default style sheet. Adding ...");
-            getStylesheets().add(globalCSSFile.toURI().toString());
+    
+    public void applyGlobalDefaultStylesheet() {
+        final File globalCSSFile = new File(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, this.getConfig().getDefaultThemesPath()));
+        if (globalCSSFile.exists()) {
+            this.getLogger().info("Found global default style sheet. Adding ...");
+            this.getStylesheets().add((Object)globalCSSFile.toURI().toString());
         }
     }
-
-    Themes themes;
-    public void registerThemes() throws SevereException
-    {
-        logger.info("Loading themes ...");
-
-        themes = new Themes(getConfig().getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName(), clientInfo.getMinThemeSupportVersion());
-        
-        if(!themes.getErrors().isEmpty())
-        {
-            StringBuilder themeErrors = new StringBuilder();
-
-            for(MinorException eachException : themes.getErrors())
-            {
+    
+    public void registerThemes() throws SevereException {
+        this.logger.info("Loading themes ...");
+        this.themes = new Themes(this.getConfig().getDefaultThemesPath(), this.getConfig().getThemesPath(), this.getConfig().getCurrentThemeFullName(), this.clientInfo.getMinThemeSupportVersion());
+        if (!this.themes.getErrors().isEmpty()) {
+            final StringBuilder themeErrors = new StringBuilder();
+            for (final MinorException eachException : this.themes.getErrors()) {
                 themeErrors.append("\n * ").append(eachException.getMessage());
             }
-
-            if(themes.getIsBadThemeTheCurrentOne())
-            {
-                if(getConfig().getCurrentThemeFullName().equals(getConfig().getDefaultCurrentThemeFullName()))
-                {
-                    throw new SevereException("Unable to get default theme ("+getConfig().getDefaultCurrentThemeFullName()+")\n" +
-                            "Please restore the theme or reinstall.");
+            if (this.themes.getIsBadThemeTheCurrentOne()) {
+                if (this.getConfig().getCurrentThemeFullName().equals(this.getConfig().getDefaultCurrentThemeFullName())) {
+                    throw new SevereException(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, this.getConfig().getDefaultCurrentThemeFullName()));
                 }
-
-                themeErrors.append("\n\nReverted to default theme! (").append(getConfig().getDefaultCurrentThemeFullName()).append(")");
-
-                getConfig().setCurrentThemeFullName(getConfig().getDefaultCurrentThemeFullName());
-                getConfig().save();
+                themeErrors.append("\n\nReverted to default theme! (").append(this.getConfig().getDefaultCurrentThemeFullName()).append(")");
+                this.getConfig().setCurrentThemeFullName(this.getConfig().getDefaultCurrentThemeFullName());
+                this.getConfig().save();
             }
-
-            handleMinorException(new MinorException("Theme Loading issues", themeErrors.toString()));
+            this.handleMinorException(new MinorException("Theme Loading issues", themeErrors.toString()));
         }
-        logger.info("...Themes loaded successfully !");
+        this.logger.info("...Themes loaded successfully !");
     }
-
-    @Override
-    public Themes getThemes()
-    {
-        return themes;
+    
+    public Themes getThemes() {
+        return this.themes;
     }
-
-
-    public void applyDefaultTheme()
-    {
-        logger.info("Applying default theme ...");
-
+    
+    public void applyDefaultTheme() {
+        this.logger.info("Applying default theme ...");
         boolean foundTheme = false;
-        for(Theme t: themes.getThemeList())
-        {
-            if(t.getFullName().equals(config.getCurrentThemeFullName()))
-            {
+        for (final Theme t : this.themes.getThemeList()) {
+            if (t.getFullName().equals(this.config.getCurrentThemeFullName())) {
                 foundTheme = true;
-                applyTheme(t);
+                this.applyTheme(t);
                 break;
             }
         }
-
-        if(foundTheme)
-        {
-            logger.info("... Done!");
+        if (foundTheme) {
+            this.logger.info("... Done!");
         }
-        else
-        {
-            logger.info("Theme not found. reverting to light theme ...");
+        else {
+            this.logger.info("Theme not found. reverting to light theme ...");
             try {
                 Config.getInstance().setCurrentThemeFullName("com.stream_pi.defaultlight");
                 Config.getInstance().save();
-
-                applyDefaultTheme();
+                this.applyDefaultTheme();
             }
-            catch (SevereException e)
-            {
-                handleSevereException(e);
+            catch (SevereException e) {
+                this.handleSevereException(e);
             }
         }
-
-
     }
-
-    @Override
-    public String getDefaultThemeFullName()
-    {
-        return config.getCurrentThemeFullName();
+    
+    public String getDefaultThemeFullName() {
+        return this.config.getCurrentThemeFullName();
     }
-
-
 }
