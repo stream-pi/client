@@ -44,6 +44,12 @@
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>io.github.typhon0</groupId>
+            <artifactId>AnimateFX</artifactId>
+            <version>1.2.1</version>
+        </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
