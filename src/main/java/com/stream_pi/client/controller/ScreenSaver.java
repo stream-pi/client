@@ -1,92 +1,124 @@
-// 
-// Decompiled by Procyon v0.6-prerelease
-// 
-
 package com.stream_pi.client.controller;
 
-import javafx.scene.input.MouseEvent;
-import java.util.TimerTask;
-import javafx.animation.Animation;
-import javafx.application.Platform;
-import javafx.beans.value.WritableValue;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyValue;
-import javafx.util.Duration;
-import javafx.animation.KeyFrame;
 import com.stream_pi.client.window.Base;
-import javafx.animation.Timeline;
-import java.util.Timer;
+import com.stream_pi.util.exception.SevereException;
+import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ScreenSaver extends StackPane
 {
     private Timer timer;
+
     private Timeline showScreenSaverTimeline;
     private long timeout;
-    
-    public ScreenSaver(final Base base, final int timeout) {
-        this.timeout = timeout * 1000L;
-        this.setOpacity(0.0);
-        this.getStyleClass().add((Object)"screensaver");
-        (this.showScreenSaverTimeline = new Timeline()).setCycleCount(1);
-        this.showScreenSaverTimeline.getKeyFrames().addAll((Object[])new KeyFrame[] { new KeyFrame(Duration.millis(0.0), new KeyValue[] { new KeyValue((WritableValue)this.opacityProperty(), (Object)0.0, Interpolator.EASE_IN) }), new KeyFrame(Duration.seconds(15.0), new KeyValue[] { new KeyValue((WritableValue)this.opacityProperty(), (Object)1.0, Interpolator.LINEAR) }) });
-        this.startTimer();
-        base.setOnMouseClicked(mouseEvent -> this.restart());
+
+    public ScreenSaver(Base base, int timeout)
+    {
+        this.timeout = timeout* 1000L;
+
+        setOpacity(0);
+        getStyleClass().add("screensaver");
+
+
+        showScreenSaverTimeline = new Timeline();
+        showScreenSaverTimeline.setCycleCount(1);
+
+
+        showScreenSaverTimeline.getKeyFrames().addAll(
+                new KeyFrame(Duration.millis(0.0D),
+                        new KeyValue(opacityProperty(),
+                                0.0D, Interpolator.EASE_IN)),
+                new KeyFrame(Duration.seconds(15D),
+                        new KeyValue(opacityProperty(),
+                                1.0D, Interpolator.LINEAR))
+        );
+
+        startTimer();
+
+        base.setOnMouseClicked(mouseEvent -> {
+            restart();
+        });
+
     }
-    
-    public void restart() {
-        this.close();
-        this.restartTimer();
+
+    public void restart()
+    {
+        close();
+        restartTimer();
     }
-    
-    public void stop() {
-        this.stopTimer();
-        this.setOpacity(0.0);
-        this.toBack();
+
+
+
+    public void stop()
+    {
+        stopTimer();
+        setOpacity(0);
+        toBack();
     }
-    
-    private void show() {
-        Platform.runLater(() -> {
-            this.setOpacity(0.0);
-            this.toFront();
-            this.showScreenSaverTimeline.play();
+
+
+    private void show()
+    {
+        Platform.runLater(()->{
+            setOpacity(0);
+            toFront();
+            showScreenSaverTimeline.play();
         });
     }
-    
-    private void close() {
-        Platform.runLater(() -> {
-            if (this.showScreenSaverTimeline.getStatus() == Animation.Status.RUNNING) {
-                this.showScreenSaverTimeline.stop();
+
+    private void close()
+    {
+        Platform.runLater(()->{
+            if(showScreenSaverTimeline.getStatus() == Animation.Status.RUNNING)
+            {
+                showScreenSaverTimeline.stop();
             }
-            this.setOpacity(0.0);
-            this.toBack();
-            return;
+
+
+            setOpacity(0.0);
+            toBack();
         });
-        this.restartTimer();
+
+        restartTimer();
     }
-    
-    public void setTimeout(final int seconds) {
-        this.timeout = seconds * 1000L;
+
+    public void setTimeout(int seconds)
+    {
+        this.timeout = seconds* 1000L;
     }
-    
-    public void restartTimer() {
-        this.stopTimer();
-        this.startTimer();
+
+    public void restartTimer()
+    {
+        stopTimer();
+        startTimer();
     }
-    
-    private void stopTimer() {
-        if (this.timer != null) {
-            this.timer.cancel();
-            this.timer.purge();
+
+    private void stopTimer()
+    {
+        if(timer != null)
+        {
+            timer.cancel();
+            timer.purge();
         }
     }
-    
-    private void startTimer() {
-        (this.timer = new Timer()).schedule(new TimerTask() {
+
+    private void startTimer()
+    {
+        timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
             @Override
-            public void run() {
-                ScreenSaver.this.show();
+            public void run()
+            {
+                show();
             }
-        }, this.timeout);
+        },timeout);
     }
 }

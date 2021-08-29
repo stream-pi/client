@@ -1,420 +1,538 @@
-// 
-// Decompiled by Procyon v0.6-prerelease
-// 
+/*
+Config.java
+
+Contributor(s) : Debayan Sutradhar (@rnayabed)
+
+handler for config.xml
+ */
 
 package com.stream_pi.client.io;
 
-import org.w3c.dom.Element;
-import com.stream_pi.util.platform.Platform;
-import com.stream_pi.util.xmlconfighelper.XMLConfigHelper;
-import javax.xml.transform.Source;
+import java.io.File;
+import java.util.Objects;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import org.w3c.dom.Node;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.TransformerFactory;
-import com.stream_pi.client.info.StartupFlags;
-import com.stream_pi.util.iohelper.IOHelper;
-import java.util.Objects;
+
 import com.stream_pi.client.Main;
-import java.io.InputStream;
-import javax.xml.parsers.DocumentBuilder;
-import com.stream_pi.util.exception.SevereException;
-import javax.xml.parsers.DocumentBuilderFactory;
 import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.info.StartupFlags;
+import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.iohelper.IOHelper;
+import com.stream_pi.util.platform.Platform;
+import com.stream_pi.util.xmlconfighelper.XMLConfigHelper;
+
 import org.w3c.dom.Document;
-import java.io.File;
+import org.w3c.dom.Element;
 
 public class Config
 {
-    private static Config instance;
+    private static Config instance = null;
+
     private final File configFile;
+
     private Document document;
-    
-    private Config() throws SevereException {
-        try {
-            this.configFile = new File(ClientInfo.getInstance().getPrePath() + "config.xml");
-            final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            this.document = docBuilder.parse(this.configFile);
+
+    private Config() throws SevereException
+    {
+        try
+        {
+            configFile = new File(ClientInfo.getInstance().getPrePath()+"config.xml");
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            document = docBuilder.parse(configFile);
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
-            throw new SevereException("Config", "unable to read config.xml\n" + e.getMessage());
+            throw new SevereException("Config", "unable to read config.xml\n"+e.getMessage());
         }
     }
-    
-    public static synchronized Config getInstance() throws SevereException {
-        if (Config.instance == null) {
-            Config.instance = new Config();
-        }
-        return Config.instance;
+
+    public static synchronized Config getInstance() throws SevereException
+    {
+        if(instance == null)
+            instance = new Config();
+
+        return instance;
     }
-    
-    public static void nullify() {
-        Config.instance = null;
+
+    public static void nullify()
+    {
+        instance = null;
     }
-    
-    public static void unzipToDefaultPrePath() throws Exception {
-        IOHelper.unzip((InputStream)Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
-        getInstance().setThemesPath(ClientInfo.getInstance().getPrePath() + "Themes/");
-        getInstance().setIconsPath(ClientInfo.getInstance().getPrePath() + "Icons/");
-        getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath() + "Profiles/");
-        getInstance().setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
-        getInstance().save();
+
+    public static void unzipToDefaultPrePath() throws Exception
+    {
+        IOHelper.unzip(Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
+        Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
+        Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
+        Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
+
+        Config.getInstance().setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
+
+        Config.getInstance().save();
     }
-    
-    public void save() throws SevereException {
-        try {
-            final Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            final Result output = new StreamResult(this.configFile);
-            final Source input = new DOMSource(this.document);
+
+    public void save() throws SevereException
+    {
+        try
+        {
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            Result output = new StreamResult(configFile);
+            Source input = new DOMSource(document);
+
             transformer.transform(input, output);
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             throw new SevereException("Config", "unable to save config.xml");
         }
     }
+
+
+    //Client Element
     
-    public String getDefaultClientNickName() {
+    //Default Values
+    public String getDefaultClientNickName()
+    {
         return "Stream-Pi Client";
     }
-    
-    public String getDefaultStartupProfileID() {
+
+    public String getDefaultStartupProfileID()
+    {
         return "default";
     }
-    
-    public String getDefaultCurrentThemeFullName() {
+
+    public String getDefaultCurrentThemeFullName()
+    {
         return "com.stream_pi.defaultlight";
     }
-    
-    public String getDefaultCurrentAnimationName() {
-        return "None";
+
+    public String getDefaultThemesPath()
+    {
+        return ClientInfo.getInstance().getPrePath()+"Themes/";
     }
-    
-    public String getDefaultThemesPath() {
-        return ClientInfo.getInstance().getPrePath() + "Themes/";
+
+    public String getDefaultProfilesPath()
+    {
+        return ClientInfo.getInstance().getPrePath()+"Profiles/";
     }
-    
-    public String getDefaultProfilesPath() {
-        return ClientInfo.getInstance().getPrePath() + "Profiles/";
+
+    public String getDefaultIconsPath()
+    {
+        return ClientInfo.getInstance().getPrePath()+"Icons/";
     }
-    
-    public String getDefaultIconsPath() {
-        return ClientInfo.getInstance().getPrePath() + "Icons/";
+
+    //Getters
+
+    public String getClientNickName()
+    {
+        return XMLConfigHelper.getStringProperty(document, "nickname", getDefaultClientNickName(), false, true, document, configFile);
     }
-    
-    public String getClientNickName() {
-        return XMLConfigHelper.getStringProperty((Node)this.document, "nickname", this.getDefaultClientNickName(), false, true, this.document, this.configFile);
+
+    public String getStartupProfileID()
+    {
+        return XMLConfigHelper.getStringProperty(document, "startup-profile", getDefaultStartupProfileID(), false, true, document, configFile);
     }
-    
-    public String getStartupProfileID() {
-        return XMLConfigHelper.getStringProperty((Node)this.document, "startup-profile", this.getDefaultStartupProfileID(), false, true, this.document, this.configFile);
+
+    public String getCurrentThemeFullName()
+    {
+        return XMLConfigHelper.getStringProperty(document, "current-theme-full-name", getDefaultCurrentThemeFullName(), false, true, document, configFile);
     }
-    
-    public String getCurrentThemeFullName() {
-        return XMLConfigHelper.getStringProperty((Node)this.document, "current-theme-full-name", this.getDefaultCurrentThemeFullName(), false, true, this.document, this.configFile);
-    }
-    
-    public String getCurrentAnimationName() {
-        return XMLConfigHelper.getStringProperty((Node)this.document, "current-animation-name", this.getDefaultCurrentAnimationName(), false, true, this.document, this.configFile);
-    }
-    
-    public String getThemesPath() {
-        final Platform platform = ClientInfo.getInstance().getPlatform();
-        if (platform != Platform.ANDROID && platform != Platform.IOS) {
+
+    public String getThemesPath()
+    {
+        Platform platform = ClientInfo.getInstance().getPlatform();
+        if(platform != Platform.ANDROID &&
+                platform != Platform.IOS)
             return ClientInfo.getInstance().getPrePath() + "Themes/";
-        }
-        return XMLConfigHelper.getStringProperty((Node)this.document, "themes-path", this.getDefaultThemesPath(), false, true, this.document, this.configFile);
+
+        return XMLConfigHelper.getStringProperty(document, "themes-path", getDefaultThemesPath(), false, true, document, configFile);
     }
-    
-    public String getProfilesPath() {
-        final Platform platform = ClientInfo.getInstance().getPlatform();
-        if (platform != Platform.ANDROID && platform != Platform.IOS) {
+
+    public String getProfilesPath()
+    {
+        Platform platform = ClientInfo.getInstance().getPlatform();
+        if(platform != Platform.ANDROID &&
+                platform != Platform.IOS)
             return ClientInfo.getInstance().getPrePath() + "Profiles/";
-        }
-        return XMLConfigHelper.getStringProperty((Node)this.document, "profiles-path", this.getDefaultProfilesPath(), false, true, this.document, this.configFile);
+        
+        return XMLConfigHelper.getStringProperty(document, "profiles-path", getDefaultProfilesPath(), false, true, document, configFile);
     }
-    
-    public String getIconsPath() {
-        final Platform platform = ClientInfo.getInstance().getPlatform();
-        if (platform != Platform.ANDROID && platform != Platform.IOS) {
+
+    public String getIconsPath()
+    {
+        Platform platform = ClientInfo.getInstance().getPlatform();
+        if(platform != Platform.ANDROID &&
+                platform != Platform.IOS)
             return ClientInfo.getInstance().getPrePath() + "Icons/";
-        }
-        return XMLConfigHelper.getStringProperty((Node)this.document, "icons-path", this.getDefaultIconsPath(), false, true, this.document, this.configFile);
+        
+        return XMLConfigHelper.getStringProperty(document, "icons-path", getDefaultIconsPath(), false, true, document, configFile);
     }
+
     
-    public void setNickName(final String nickName) {
-        this.document.getElementsByTagName("nickname").item(0).setTextContent(nickName);
+
+    //Setters
+
+    public void setNickName(String nickName)
+    {
+        document.getElementsByTagName("nickname").item(0).setTextContent(nickName);
     }
-    
-    public void setStartupProfileID(final String id) {
-        this.document.getElementsByTagName("startup-profile").item(0).setTextContent(id);
+
+    public void setStartupProfileID(String id)
+    {
+        document.getElementsByTagName("startup-profile").item(0).setTextContent(id);
     }
-    
-    public void setCurrentThemeFullName(final String name) {
-        this.document.getElementsByTagName("current-theme-full-name").item(0).setTextContent(name);
+
+    public void setCurrentThemeFullName(String name)
+    {
+        document.getElementsByTagName("current-theme-full-name").item(0).setTextContent(name);
     }
-    
-    public void setCurrentAnimationFullName(final String name) {
-        this.document.getElementsByTagName("current-animation-name").item(0).setTextContent(name);
+
+    public void setProfilesPath(String profilesPath)
+    {
+        document.getElementsByTagName("profiles-path").item(0).setTextContent(profilesPath);
     }
-    
-    public void setProfilesPath(final String profilesPath) {
-        this.document.getElementsByTagName("profiles-path").item(0).setTextContent(profilesPath);
+
+    public void setIconsPath(String iconsPath)
+    {
+        document.getElementsByTagName("icons-path").item(0).setTextContent(iconsPath);
     }
-    
-    public void setIconsPath(final String iconsPath) {
-        this.document.getElementsByTagName("icons-path").item(0).setTextContent(iconsPath);
+
+    public void setThemesPath(String themesPath)
+    {
+        document.getElementsByTagName("themes-path").item(0).setTextContent(themesPath);
     }
-    
-    public void setThemesPath(final String themesPath) {
-        this.document.getElementsByTagName("themes-path").item(0).setTextContent(themesPath);
+
+
+    //comms-server
+    public Element getCommsServerElement()
+    {
+        return (Element) document.getElementsByTagName("comms-server").item(0);
     }
-    
-    public Element getCommsServerElement() {
-        return (Element)this.document.getElementsByTagName("comms-server").item(0);
-    }
-    
-    public String getDefaultSavedServerHostNameOrIP() {
+
+    public String getDefaultSavedServerHostNameOrIP()
+    {
         return "127.0.0.1";
     }
-    
-    public int getDefaultSavedServerPort() {
+
+    public int getDefaultSavedServerPort()
+    {
         return -1;
     }
-    
-    public String getSavedServerHostNameOrIP() {
-        return XMLConfigHelper.getStringProperty((Node)this.getCommsServerElement(), "hostname-ip", this.getDefaultSavedServerHostNameOrIP(), false, true, this.document, this.configFile);
+
+
+    public String getSavedServerHostNameOrIP()
+    {
+        return XMLConfigHelper.getStringProperty(getCommsServerElement(), "hostname-ip", getDefaultSavedServerHostNameOrIP(), false, true, document, configFile);
     }
-    
-    public int getSavedServerPort() {
-        return XMLConfigHelper.getIntProperty((Node)this.getCommsServerElement(), "port", this.getDefaultSavedServerPort(), false, true, this.document, this.configFile);
+
+    public int getSavedServerPort()
+    {
+        return XMLConfigHelper.getIntProperty(getCommsServerElement(), "port", getDefaultSavedServerPort(), false, true, document, configFile);
     }
-    
-    public void setServerHostNameOrIP(final String hostNameOrIP) {
-        this.getCommsServerElement().getElementsByTagName("hostname-ip").item(0).setTextContent(hostNameOrIP);
+
+    public void setServerHostNameOrIP(String hostNameOrIP)
+    {
+        getCommsServerElement().getElementsByTagName("hostname-ip").item(0).setTextContent(hostNameOrIP);
     }
-    
-    public void setServerPort(final int port) {
-        this.getCommsServerElement().getElementsByTagName("port").item(0).setTextContent("" + port);
+
+    public void setServerPort(int port)
+    {
+        getCommsServerElement().getElementsByTagName("port").item(0).setTextContent(port+"");
     }
-    
-    public Element getScreenMoverElement() {
-        return (Element)this.document.getElementsByTagName("screen-mover").item(0);
+
+
+
+
+
+    //screen-mover
+    public Element getScreenMoverElement()
+    {
+        return (Element) document.getElementsByTagName("screen-mover").item(0);
     }
-    
-    public Element getOthersElement() {
-        return (Element)this.document.getElementsByTagName("others").item(0);
+
+
+    //others
+    public Element getOthersElement()
+    {
+        return (Element) document.getElementsByTagName("others").item(0);
     }
-    
-    public boolean getDefaultStartOnBoot() {
+
+    //others-default
+
+    public boolean getDefaultStartOnBoot()
+    {
         return false;
     }
-    
-    public boolean getDefaultIsShowCursor() {
+
+    public boolean getDefaultIsShowCursor()
+    {
         return true;
     }
-    
-    public boolean getDefaultFirstTimeUse() {
+
+    public boolean getDefaultFirstTimeUse()
+    {
         return true;
     }
+
+
     
-    public boolean isShowCursor() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "show-cursor", this.getDefaultIsShowCursor(), false, true, this.document, this.configFile);
+    public boolean isShowCursor()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "show-cursor", getDefaultIsShowCursor(), false, true, document, configFile);
     }
+
     
-    public boolean isStartOnBoot() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "start-on-boot", this.getDefaultStartOnBoot(), false, true, this.document, this.configFile);
+    public boolean isStartOnBoot()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "start-on-boot", getDefaultStartOnBoot(), false, true, document, configFile);
     }
+
     
-    public boolean isFirstTimeUse() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "first-time-use", true, false, true, this.document, this.configFile);
+    public boolean isFirstTimeUse()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "first-time-use", true, false, true, document, configFile);
     }
-    
-    public boolean isVibrateOnActionClicked() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "vibrate-on-action-clicked", false, false, true, this.document, this.configFile);
+
+    public boolean isVibrateOnActionClicked()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "vibrate-on-action-clicked", false, false, true, document, configFile);
     }
-    
-    public boolean isConnectOnStartup() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "connect-on-startup", false, false, true, this.document, this.configFile);
+
+    public boolean isConnectOnStartup()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "connect-on-startup", false, false, true, document, configFile);
     }
-    
-    public boolean getIsFullScreenMode() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "full-screen-mode", false, false, true, this.document, this.configFile);
+
+    public boolean getIsFullScreenMode()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "full-screen-mode", false, false, true, document, configFile);
     }
-    
-    public void setStartOnBoot(final boolean value) {
-        this.getOthersElement().getElementsByTagName("start-on-boot").item(0).setTextContent("" + value);
+
+
+    public void setStartOnBoot(boolean value)
+    {
+        getOthersElement().getElementsByTagName("start-on-boot").item(0).setTextContent(value+"");
     }
-    
-    public void setShowCursor(final boolean value) {
-        this.getOthersElement().getElementsByTagName("show-cursor").item(0).setTextContent("" + value);
+
+    public void setShowCursor(boolean value)
+    {
+        getOthersElement().getElementsByTagName("show-cursor").item(0).setTextContent(value+"");
     }
-    
-    public void setFullscreen(final boolean value) {
-        this.getOthersElement().getElementsByTagName("fullscreen").item(0).setTextContent("" + value);
+
+    public void setFullscreen(boolean value)
+    {
+        getOthersElement().getElementsByTagName("fullscreen").item(0).setTextContent(value+"");
     }
-    
-    public void setFirstTimeUse(final boolean value) {
-        this.getOthersElement().getElementsByTagName("first-time-use").item(0).setTextContent("" + value);
+
+    public void setFirstTimeUse(boolean value)
+    {
+        getOthersElement().getElementsByTagName("first-time-use").item(0).setTextContent(value+"");
     }
-    
-    public void setVibrateOnActionClicked(final boolean value) {
-        this.getOthersElement().getElementsByTagName("vibrate-on-action-clicked").item(0).setTextContent("" + value);
+
+    public void setVibrateOnActionClicked(boolean value)
+    {
+        getOthersElement().getElementsByTagName("vibrate-on-action-clicked").item(0).setTextContent(value+"");
     }
-    
-    public void setConnectOnStartup(final boolean value) {
-        this.getOthersElement().getElementsByTagName("connect-on-startup").item(0).setTextContent("" + value);
+
+    public void setConnectOnStartup(boolean value)
+    {
+        getOthersElement().getElementsByTagName("connect-on-startup").item(0).setTextContent(value+"");
     }
-    
-    public void setIsFullScreenMode(final boolean value) {
-        this.getOthersElement().getElementsByTagName("full-screen-mode").item(0).setTextContent("" + value);
+
+    public void setIsFullScreenMode(boolean value)
+    {
+        getOthersElement().getElementsByTagName("full-screen-mode").item(0).setTextContent(value+"");
     }
-    
-    private Element getStartupWindowSizeElement() {
-        return (Element)this.document.getElementsByTagName("startup-window-size").item(0);
+
+
+
+    private Element getStartupWindowSizeElement()
+    {
+        return (Element) document.getElementsByTagName("startup-window-size").item(0);
     }
-    
-    public double getStartupWindowWidth() {
-        return XMLConfigHelper.getDoubleProperty((Node)this.getStartupWindowSizeElement(), "width", (double)this.getDefaultStartupWindowWidth(), false, true, this.document, this.configFile);
+
+    public double getStartupWindowWidth()
+    {
+        return XMLConfigHelper.getDoubleProperty(getStartupWindowSizeElement(), "width",
+                getDefaultStartupWindowWidth(), false, true, document, configFile);
     }
-    
-    public double getStartupWindowHeight() {
-        return XMLConfigHelper.getDoubleProperty((Node)this.getStartupWindowSizeElement(), "height", (double)this.getDefaultStartupWindowHeight(), false, true, this.document, this.configFile);
+
+    public double getStartupWindowHeight()
+    {
+        return XMLConfigHelper.getDoubleProperty(getStartupWindowSizeElement(), "height",
+                getDefaultStartupWindowHeight(), false, true, document, configFile);
     }
-    
-    public int getDefaultStartupWindowWidth() {
+
+
+    public int getDefaultStartupWindowWidth()
+    {
         return 800;
     }
-    
-    public int getDefaultStartupWindowHeight() {
+
+    public int getDefaultStartupWindowHeight()
+    {
         return 400;
     }
-    
-    public void setStartupWindowSize(final double width, final double height) {
-        this.setStartupWindowWidth(width);
-        this.setStartupWindowHeight(height);
+
+    public void setStartupWindowSize(double width, double height)
+    {
+        setStartupWindowWidth(width);
+        setStartupWindowHeight(height);
     }
-    
-    public void setStartupWindowWidth(final double width) {
-        this.getStartupWindowSizeElement().getElementsByTagName("width").item(0).setTextContent("" + width);
+
+    public void setStartupWindowWidth(double width)
+    {
+        getStartupWindowSizeElement().getElementsByTagName("width").item(0).setTextContent(width+"");
     }
-    
-    public void setStartupWindowHeight(final double height) {
-        this.getStartupWindowSizeElement().getElementsByTagName("height").item(0).setTextContent("" + height);
+
+    public void setStartupWindowHeight(double height)
+    {
+        getStartupWindowSizeElement().getElementsByTagName("height").item(0).setTextContent(height+"");
     }
-    
-    public void setStartupIsXMode(final boolean value) {
-        this.getOthersElement().getElementsByTagName("start-on-boot-x-mode").item(0).setTextContent("" + value);
+
+    public void setStartupIsXMode(boolean value)
+    {
+        getOthersElement().getElementsByTagName("start-on-boot-x-mode").item(0).setTextContent(value+"");
     }
-    
-    public boolean getDefaultIsStartupXMode() {
+
+    public boolean getDefaultIsStartupXMode()
+    {
         return false;
     }
-    
-    public boolean isStartupXMode() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "start-on-boot-x-mode", this.getDefaultIsStartupXMode(), false, true, this.document, this.configFile);
+
+    public boolean isStartupXMode()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "start-on-boot-x-mode", getDefaultIsStartupXMode(), false, true, document, configFile);
     }
-    
-    public boolean getDefaultIsTryConnectingWhenActionClicked() {
+
+
+    public boolean getDefaultIsTryConnectingWhenActionClicked()
+    {
         return false;
     }
-    
-    public boolean isTryConnectingWhenActionClicked() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "try-connecting-when-action-clicked", this.getDefaultIsTryConnectingWhenActionClicked(), false, true, this.document, this.configFile);
+
+    public boolean isTryConnectingWhenActionClicked()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "try-connecting-when-action-clicked", getDefaultIsTryConnectingWhenActionClicked(), false, true, document, configFile);
     }
-    
-    public void setTryConnectingWhenActionClicked(final boolean value) {
-        this.getOthersElement().getElementsByTagName("try-connecting-when-action-clicked").item(0).setTextContent("" + value);
+
+    public void setTryConnectingWhenActionClicked(boolean value)
+    {
+        getOthersElement().getElementsByTagName("try-connecting-when-action-clicked").item(0).setTextContent(value+"");
     }
-    
-    public boolean getDefaultScreenSaverEnabled() {
+
+
+    public boolean getDefaultScreenSaverEnabled()
+    {
         return false;
     }
-    
-    public boolean isScreenSaverEnabled() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "screen-saver", this.getDefaultScreenSaverEnabled(), false, true, this.document, this.configFile);
+
+    public boolean isScreenSaverEnabled()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "screen-saver", getDefaultScreenSaverEnabled(), false, true, document, configFile);
     }
-    
-    public void setScreenSaverEnabled(final boolean value) {
-        this.getOthersElement().getElementsByTagName("screen-saver").item(0).setTextContent("" + value);
+
+    public void setScreenSaverEnabled(boolean value)
+    {
+        getOthersElement().getElementsByTagName("screen-saver").item(0).setTextContent(value+"");
     }
-    
-    public int getDefaultScreenSaverTimeout() {
+
+    public int getDefaultScreenSaverTimeout()
+    {
         return 60;
     }
-    
-    public int getScreenSaverTimeout() {
-        return XMLConfigHelper.getIntProperty((Node)this.getOthersElement(), "screen-saver-timeout-seconds", this.getDefaultScreenSaverTimeout(), false, true, this.document, this.configFile);
+
+    public int getScreenSaverTimeout()
+    {
+        return XMLConfigHelper.getIntProperty(getOthersElement(), "screen-saver-timeout-seconds", getDefaultScreenSaverTimeout(), false, true, document, configFile);
     }
-    
-    public void setScreenSaverTimeout(final String value) {
-        this.getOthersElement().getElementsByTagName("screen-saver-timeout-seconds").item(0).setTextContent(value);
+
+    public void setScreenSaverTimeout(String value)
+    {
+        getOthersElement().getElementsByTagName("screen-saver-timeout-seconds").item(0).setTextContent(value);
     }
-    
-    public int getDefaultScreenMoverInterval() {
+
+    public int getDefaultScreenMoverInterval()
+    {
         return 120000;
     }
-    
-    public int getScreenMoverInterval() {
-        return XMLConfigHelper.getIntProperty((Node)this.getScreenMoverElement(), "interval", this.getDefaultScreenMoverInterval(), false, true, this.document, this.configFile);
+
+    public int getScreenMoverInterval()
+    {
+        return XMLConfigHelper.getIntProperty(getScreenMoverElement(), "interval", getDefaultScreenMoverInterval(), false, true, document, configFile);
     }
-    
-    public void setScreenMoverInterval(final String value) {
-        this.getScreenMoverElement().getElementsByTagName("interval").item(0).setTextContent(value);
+
+    public void setScreenMoverInterval(String value)
+    {
+        getScreenMoverElement().getElementsByTagName("interval").item(0).setTextContent(value);
     }
-    
-    public int getDefaultScreenMoverXChange() {
+
+    public int getDefaultScreenMoverXChange()
+    {
         return 5;
     }
-    
-    public int getScreenMoverXChange() {
-        return XMLConfigHelper.getIntProperty((Node)this.getScreenMoverElement(), "x-change", this.getDefaultScreenMoverXChange(), false, true, this.document, this.configFile);
+
+    public int getScreenMoverXChange()
+    {
+        return XMLConfigHelper.getIntProperty(getScreenMoverElement(), "x-change", getDefaultScreenMoverXChange(), false, true, document, configFile);
     }
-    
-    public void setScreenMoverXChange(final String value) {
-        this.getScreenMoverElement().getElementsByTagName("x-change").item(0).setTextContent(value);
+
+    public void setScreenMoverXChange(String value)
+    {
+        getScreenMoverElement().getElementsByTagName("x-change").item(0).setTextContent(value);
     }
-    
-    public int getDefaultScreenMoverYChange() {
+
+    public int getDefaultScreenMoverYChange()
+    {
         return 5;
     }
-    
-    public int getScreenMoverYChange() {
-        return XMLConfigHelper.getIntProperty((Node)this.getScreenMoverElement(), "y-change", this.getDefaultScreenMoverYChange(), false, true, this.document, this.configFile);
+
+    public int getScreenMoverYChange()
+    {
+        return XMLConfigHelper.getIntProperty(getScreenMoverElement(), "y-change", getDefaultScreenMoverYChange(), false, true, document, configFile);
     }
-    
-    public void setScreenMoverYChange(final String value) {
-        this.getScreenMoverElement().getElementsByTagName("y-change").item(0).setTextContent(value);
+
+    public void setScreenMoverYChange(String value)
+    {
+        getScreenMoverElement().getElementsByTagName("y-change").item(0).setTextContent(value);
     }
-    
-    public boolean getDefaultScreenMoverEnabled() {
+
+    public boolean getDefaultScreenMoverEnabled()
+    {
         return false;
     }
-    
-    public boolean isScreenMoverEnabled() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getScreenMoverElement(), "status", this.getDefaultScreenMoverEnabled(), false, true, this.document, this.configFile);
+
+    public boolean isScreenMoverEnabled()
+    {
+        return XMLConfigHelper.getBooleanProperty(getScreenMoverElement(), "status", getDefaultScreenMoverEnabled(), false, true, document, configFile);
     }
-    
-    public void setScreenMoverEnabled(final boolean value) {
-        this.getScreenMoverElement().getElementsByTagName("status").item(0).setTextContent("" + value);
+
+    public void setScreenMoverEnabled(boolean value)
+    {
+        getScreenMoverElement().getElementsByTagName("status").item(0).setTextContent(value+"");
     }
-    
-    public boolean getDefaultInvertRowsColsOnDeviceRotate() {
+
+    public boolean getDefaultInvertRowsColsOnDeviceRotate()
+    {
         return true;
     }
-    
-    public boolean isInvertRowsColsOnDeviceRotate() {
-        return XMLConfigHelper.getBooleanProperty((Node)this.getOthersElement(), "invert-rows-cols-on-device-rotate", this.getDefaultInvertRowsColsOnDeviceRotate(), false, true, this.document, this.configFile);
+
+    public boolean isInvertRowsColsOnDeviceRotate()
+    {
+        return XMLConfigHelper.getBooleanProperty(getOthersElement(), "invert-rows-cols-on-device-rotate", getDefaultInvertRowsColsOnDeviceRotate(), false, true, document, configFile);
     }
-    
-    public void setInvertRowsColsOnDeviceRotate(final boolean value) {
-        this.getOthersElement().getElementsByTagName("invert-rows-cols-on-device-rotate").item(0).setTextContent("" + value);
-    }
-    
-    static {
-        Config.instance = null;
+
+    public void setInvertRowsColsOnDeviceRotate(boolean value)
+    {
+        getOthersElement().getElementsByTagName("invert-rows-cols-on-device-rotate").item(0).setTextContent(value+"");
     }
 }

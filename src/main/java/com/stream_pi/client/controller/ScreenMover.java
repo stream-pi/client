@@ -1,26 +1,33 @@
-// 
-// Decompiled by Procyon v0.6-prerelease
-// 
-
 package com.stream_pi.client.controller;
 
-import java.util.TimerTask;
+import com.stream_pi.client.window.Base;
+import com.stream_pi.util.exception.SevereException;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class ScreenMover
 {
     private Timer timer;
+
     private long interval;
+
     private boolean isOldLocation;
-    private double originalX;
-    private double originalY;
-    private double changeX;
-    private double changeY;
+    private double originalX, originalY;
+    private double changeX, changeY;
+
     private Stage stage;
-    
-    public ScreenMover(final Stage stage, final long interval, final int changeX, final int changeY) {
+
+    public ScreenMover(Stage stage, long interval, int changeX, int changeY)
+    {
         this.stage = stage;
         this.changeX = changeX;
         this.changeY = changeY;
@@ -28,52 +35,69 @@ public class ScreenMover
         this.originalY = stage.getY();
         this.isOldLocation = true;
         this.interval = interval;
-        this.startTimer();
+
+        startTimer();
     }
-    
-    public void stop() {
-        this.isOldLocation = true;
-        this.shiftScreen();
-        this.stopTimer();
+
+
+    public void stop()
+    {
+        isOldLocation = true;
+        shiftScreen();
+
+        stopTimer();
     }
-    
-    public void restart() {
-        this.stop();
-        this.startTimer();
+
+    public void restart()
+    {
+        stop();
+        startTimer();
     }
-    
-    private void shiftScreen() {
-        Platform.runLater(() -> {
-            if (this.isOldLocation) {
-                this.isOldLocation = false;
-                this.stage.setX(this.originalX + this.changeX);
-                this.stage.setY(this.originalY + this.changeY);
+
+    private void shiftScreen()
+    {
+        Platform.runLater(()->{
+            if(isOldLocation)
+            {
+                isOldLocation = false;
+
+                stage.setX(originalX+changeX);
+                stage.setY(originalY+changeY);
             }
-            else {
-                this.isOldLocation = true;
-                this.stage.setX(this.originalX);
-                this.stage.setY(this.originalY);
+            else
+            {
+                isOldLocation = true;
+
+                stage.setX(originalX);
+                stage.setY(originalY);
             }
         });
     }
-    
-    public void setInterval(final int seconds) {
+
+    public void setInterval(int seconds)
+    {
         this.interval = seconds;
     }
-    
-    private void stopTimer() {
-        if (this.timer != null) {
-            this.timer.cancel();
-            this.timer.purge();
+
+    private void stopTimer()
+    {
+        if(timer != null)
+        {
+            timer.cancel();
+            timer.purge();
         }
     }
-    
-    private void startTimer() {
-        (this.timer = new Timer()).scheduleAtFixedRate(new TimerTask() {
+
+    private void startTimer()
+    {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask()
+        {
             @Override
-            public void run() {
-                ScreenMover.this.shiftScreen();
+            public void run()
+            {
+                shiftScreen();
             }
-        }, this.interval, this.interval);
+        },interval, interval);
     }
 }

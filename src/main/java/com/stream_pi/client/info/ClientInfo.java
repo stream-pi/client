@@ -1,92 +1,121 @@
-// 
-// Decompiled by Procyon v0.6-prerelease
-// 
+/*
+ServerInfo.java
+
+Stores basic information about the server - name, platform type
+
+Contributors: Debayan Sutradhar (@dubbadhar)
+ */
 
 package com.stream_pi.client.info;
 
-import java.io.File;
 import com.gluonhq.attach.storage.StorageService;
+import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.ReleaseStatus;
 import com.stream_pi.util.version.Version;
 
-public class ClientInfo
-{
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Optional;
+import java.util.function.Function;
+
+public class ClientInfo {
     private Version version;
     private final ReleaseStatus releaseStatus;
     private Platform platform;
+
     private String prePath;
+
     private Version minThemeSupportVersion;
     private Version minPluginSupportVersion;
     private Version commStandardVersion;
-    private static ClientInfo instance;
-    
-    private ClientInfo() {
-        this.version = new Version(1, 0, 0);
-        this.minThemeSupportVersion = new Version(1, 0, 0);
-        this.minPluginSupportVersion = new Version(1, 0, 0);
-        this.commStandardVersion = new Version(1, 0, 0);
-        this.releaseStatus = ReleaseStatus.EA;
-        final String osName = System.getProperty("os.name").toLowerCase();
-        this.prePath = System.getProperty("user.home") + "/Stream-Pi/Client/";
-        if (osName.contains("windows")) {
-            this.platform = Platform.WINDOWS;
+
+    private static ClientInfo instance = null;
+
+    private ClientInfo()
+    {
+        version = new Version(1,0,0);
+        minThemeSupportVersion = new Version(1,0,0);
+        minPluginSupportVersion = new Version(1,0,0);
+        commStandardVersion = new Version(1,0,0);
+
+        releaseStatus = ReleaseStatus.EA;
+
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        prePath = System.getProperty("user.home")+"/Stream-Pi/Client/";
+
+        if(osName.contains("windows"))
+        {
+            platform = Platform.WINDOWS;
         }
-        else if (osName.contains("linux")) {
-            this.platform = Platform.LINUX;
+        else if (osName.contains("linux"))
+        {
+            platform = Platform.LINUX;
         }
-        else if (osName.contains("android") || osName.contains("ios")) {
-            StorageService.create().ifPresent(s -> s.getPrivateStorage().ifPresentOrElse(sp -> this.prePath = sp.getAbsolutePath() + "/Stream-Pi/Client/", () -> this.prePath = null));
-            this.platform = Platform.valueOf(osName.toUpperCase());
+        else if(osName.contains("android") || osName.contains("ios"))
+        {
+            StorageService.create().ifPresent(s-> s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
+                    ()-> prePath = null));
+
+            platform = Platform.valueOf(osName.toUpperCase());
         }
-        else if (osName.contains("mac")) {
-            this.platform = Platform.MAC;
+        else if (osName.contains("mac"))
+        {
+            platform = Platform.MAC;
         }
-        else {
-            this.platform = Platform.UNKNOWN;
+        else
+        {
+            platform = Platform.UNKNOWN;
         }
     }
-    
-    public static synchronized ClientInfo getInstance() {
-        if (ClientInfo.instance == null) {
-            ClientInfo.instance = new ClientInfo();
+
+    public static synchronized ClientInfo getInstance(){
+        if(instance == null)
+        {
+            instance = new ClientInfo();
         }
-        return ClientInfo.instance;
+
+        return instance;
     }
-    
-    public String getPrePath() {
-        return this.prePath;
+
+    public String getPrePath()
+    {
+        return prePath;
     }
-    
-    public Platform getPlatform() {
-        return this.platform;
+
+    public Platform getPlatform()
+    {
+        return platform;
     }
-    
+
     public Version getVersion() {
-        return this.version;
+        return version;
     }
-    
-    public ReleaseStatus getReleaseStatus() {
-        return this.releaseStatus;
+
+    public ReleaseStatus getReleaseStatus()
+    {
+        return releaseStatus;
     }
-    
-    public Version getMinThemeSupportVersion() {
-        return this.minThemeSupportVersion;
+
+    public Version getMinThemeSupportVersion()
+    {
+        return minThemeSupportVersion;
     }
-    
-    public Version getMinPluginSupportVersion() {
-        return this.minPluginSupportVersion;
+
+    public Version getMinPluginSupportVersion()
+    {
+        return minPluginSupportVersion;
     }
-    
-    public Version getCommStandardVersion() {
-        return this.commStandardVersion;
+
+    public Version getCommStandardVersion()
+    {
+        return commStandardVersion;
     }
-    
-    public boolean isPhone() {
-        return this.getPlatform() == Platform.ANDROID || this.getPlatform() == Platform.IOS;
-    }
-    
-    static {
-        ClientInfo.instance = null;
+
+
+    public boolean isPhone()
+    {
+        return getPlatform() == Platform.ANDROID || getPlatform() == Platform.IOS;
     }
 }

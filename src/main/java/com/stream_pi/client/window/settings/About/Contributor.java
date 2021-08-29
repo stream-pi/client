@@ -1,56 +1,49 @@
-// 
-// Decompiled by Procyon v0.6-prerelease
-// 
-
 package com.stream_pi.client.window.settings.About;
 
 public class Contributor
 {
-    public String name;
-    public String email;
-    public String description;
-    public String location;
-    
-    public Contributor(final String name, final String email, final String description, final String location) {
-        this.name = null;
-        this.email = null;
-        this.description = null;
-        this.location = null;
+    public String name = null;
+    public String email = null;
+    public String description = null;
+    public String location = null;
+
+    public Contributor(String name, String email, String description, String location)
+    {
         this.name = name;
         this.email = email;
         this.description = description;
         this.location = location;
     }
-    
-    public void setName(final String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-    
-    public void setEmail(final String email) {
+
+    public void setEmail(String email) {
         this.email = email;
     }
-    
-    public void setDescription(final String description) {
+
+    public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public String getName() {
-        return this.name;
+        return name;
     }
-    
+
     public String getEmail() {
-        return this.email;
+        return email;
     }
-    
+
     public String getDescription() {
-        return this.description;
+        return description;
     }
-    
+
     public String getLocation() {
-        return this.location;
+        return location;
     }
-    
-    public void setLocation(final String location) {
+
+    public void setLocation(String location) {
         this.location = location;
     }
 }
