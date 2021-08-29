@@ -28,6 +28,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import animatefx.animation.*;
+
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
 
@@ -173,6 +175,11 @@ public class ActionBox extends StackPane
                     getActionGridPaneListener().toggleActionClicked(action.getID(), getCurrentToggleStatus());
                 }
             }
+            try {
+                playActionAnimation();
+            } catch (SevereException e) {
+                Logger.getLogger("").warning(e.getMessage());
+            }
         }
     }
 
@@ -258,6 +265,35 @@ public class ActionBox extends StackPane
     public void setAction(Action action)
     {
         this.action = action;
+    }
+    
+    public void playActionAnimation() throws SevereException {
+        Config config = Config.getInstance();
+        switch (config.getCurrentAnimationName()) {
+        case "None":
+            return;
+        case "Flip":
+            (new Flip(getChildren().get(1))).play();
+        case "Bounce":
+            (new Bounce(getChildren().get(1))).play();
+        case "Jack In The Box":
+            (new JackInTheBox(getChildren().get(1))).play();
+        case "Swing":
+            (new Swing(getChildren().get(1))).play();
+        case "Jello":
+            (new Jello(getChildren().get(1))).play();
+        case "Pulse":
+            (new Pulse(getChildren().get(1))).play();
+        case "RubberBand":
+            (new RubberBand(getChildren().get(1))).play();
+        case "Shake":
+            (new Shake(getChildren().get(1))).play();
+        case "Tada":
+            (new Tada(getChildren().get(1))).play();
+        case "Wobble":
+            (new Wobble(getChildren().get(1))).play();
+        } 
+        Logger.getLogger("").warning("Invalid Option/n Please contact quimodotcom to solve this error!");
     }
 
     public void init()

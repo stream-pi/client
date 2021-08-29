@@ -19,7 +19,6 @@ import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
-import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.startatboot.StartAtBoot;
 import com.stream_pi.util.uihelper.HBoxInputBox;
@@ -34,6 +33,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import java.util.Arrays;
+import java.util.List;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public class GeneralTab extends VBox
 
     private StreamPiComboBox<ClientProfile> clientProfileComboBox;
     private StreamPiComboBox<Theme> themeComboBox;
+    private StreamPiComboBox<String> animationComboBox;
 
     private TextField nickNameTextField;
 
@@ -99,10 +101,16 @@ public class GeneralTab extends VBox
     private final Button checkForUpdatesButton;
 
     private HBoxInputBox screenTimeoutSecondsHBoxInputBox;
+    
+    private List<String> animationList;
 
     public GeneralTab(ExceptionAndAlertHandler exceptionAndAlertHandler,
                       ClientListener clientListener, HostServices hostServices)
     {
+        this.animationList = Arrays.asList(new String[] {
+            "None", "Bounce", "Flip", "Jack In The Box", "Jello", "Pulse", "RubberBand", "Shake", "Swing", "Tada", 
+            "Wobble"
+        });
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.clientListener = clientListener;
         this.hostServices = hostServices;
@@ -126,6 +134,17 @@ public class GeneralTab extends VBox
                 return object.getName();
             }
         });
+        animationComboBox = new StreamPiComboBox();
+        
+        animationComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<String>() 
+        {
+            @Override
+            public String getOptionDisplayText(String object) 
+            {
+                return object;
+            }
+        });
+        
 
         clientProfileComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<ClientProfile>(){
             @Override
@@ -242,6 +261,11 @@ public class GeneralTab extends VBox
                         new Label("Theme"),
                         SpaceFiller.horizontal(),
                         themeComboBox
+                ),
+                new HBox(
+                        new Label("Action Animation"),
+                        SpaceFiller.horizontal(),
+                        animationComboBox
                 ),
                 generateSubHeading("Others"),
                 themesPathInputBox,
@@ -453,7 +477,7 @@ public class GeneralTab extends VBox
         screenTimeoutTextField.setText(config.getScreenSaverTimeout()+"");
         screenSaverToggleSwitch.setSelected(config.isScreenSaverEnabled());
         screenMoverToggleSwitch.setSelected(config.isScreenMoverEnabled());
-
+        animationComboBox.setOptions(animationList);
         clientProfileComboBox.setOptions(clientListener.getClientProfiles().getClientProfiles());
 
         int ind = 0;
@@ -479,8 +503,19 @@ public class GeneralTab extends VBox
                 break;
             }
         }
+        
+        int ind3 = 0;
+        for(int i = 0;i<animationComboBox.getOptions().size();i++)
+        {
+            if(animationComboBox.getOptions().get(i).equals(config.getCurrentAnimationName()))
+            {
+                ind3 = i;
+                break;
+            }
+        }
 
         themeComboBox.setCurrentSelectedItemIndex(ind2);
+        animationComboBox.setCurrentSelectedItemIndex(ind3);
 
         themesPathTextField.setText(config.getThemesPath());
         iconsPathTextField.setText(config.getIconsPath());
@@ -584,6 +619,20 @@ public class GeneralTab extends VBox
                     exceptionAndAlertHandler.handleSevereException(e);
                 }
             }
+            
+            if (!config.getCurrentAnimationName().equals(animationComboBox.getCurrentSelectedItem())) 
+            {
+                syncWithServer = true;
+                
+                try 
+                {
+                    config.setCurrentAnimationFullName(animationComboBox.getCurrentSelectedItem());
+                    config.save();
+                } catch (SevereException e) 
+                {
+                    exceptionAndAlertHandler.handleSevereException(e);
+                } 
+            } 
 
             if(!config.getClientNickName().equals(nickNameTextField.getText()))
             {
