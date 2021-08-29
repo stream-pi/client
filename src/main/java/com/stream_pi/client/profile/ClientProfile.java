@@ -1,758 +1,507 @@
+// 
+// Decompiled by Procyon v0.6-prerelease
+// 
+
 package com.stream_pi.client.profile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.TransformerException;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.util.Iterator;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
-
-import com.stream_pi.action_api.action.Action;
-import com.stream_pi.action_api.action.ActionType;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.TransformerFactory;
+import org.w3c.dom.NodeList;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
+import java.nio.file.Files;
 import com.stream_pi.action_api.action.Location;
-import com.stream_pi.action_api.actionproperty.ClientProperties;
 import com.stream_pi.action_api.actionproperty.property.Property;
 import com.stream_pi.action_api.actionproperty.property.Type;
-import com.stream_pi.client.info.ClientInfo;
-import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.version.Version;
-import com.stream_pi.util.xmlconfighelper.XMLConfigHelper;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import com.stream_pi.action_api.actionproperty.ClientProperties;
+import com.stream_pi.action_api.action.ActionType;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import com.stream_pi.util.xmlconfighelper.XMLConfigHelper;
+import org.w3c.dom.Element;
+import javax.xml.parsers.DocumentBuilder;
+import com.stream_pi.util.exception.MinorException;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import java.util.logging.Logger;
+import java.io.File;
+import com.stream_pi.action_api.action.Action;
+import java.util.HashMap;
 
-public class ClientProfile implements Cloneable{
-    private String name, ID;
-
-    private int rows, cols, actionSize, actionGap;
-
-    
+public class ClientProfile implements Cloneable
+{
+    private String name;
+    private String ID;
+    private int rows;
+    private int cols;
+    private int actionSize;
+    private int actionGap;
     private HashMap<String, Action> actions;
     private String iconsPath;
-
     private File file;
-
     private Logger logger;
     private Document document;
-
-    public ClientProfile(File file, String iconsPath) throws MinorException
-    {
+    
+    public ClientProfile(final File file, final String iconsPath) throws MinorException {
         this.file = file;
         this.iconsPath = iconsPath;
-
-        actions = new HashMap<>();
-
-        logger = Logger.getLogger(ClientProfile.class.getName());
-
-        if(!file.exists() && !file.isFile())
-            createConfigFile(file);
-
-        try
-        {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            document = docBuilder.parse(file);
+        this.actions = new HashMap<String, Action>();
+        this.logger = Logger.getLogger(ClientProfile.class.getName());
+        if (!file.exists() && !file.isFile()) {
+            this.createConfigFile(file);
         }
-        catch (Exception e)
-        {
+        try {
+            final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            this.document = docBuilder.parse(file);
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new MinorException("profile", "Unable to read profile config file.");
         }
-
-
-        setID(file.getName().replace(".xml", ""));
-        load();
+        this.setID(file.getName().replace(".xml", ""));
+        this.load();
     }
-
-
-    private Element getProfileElement()
-    {
-        return (Element) document.getElementsByTagName("profile").item(0);
+    
+    private Element getProfileElement() {
+        return (Element)this.document.getElementsByTagName("profile").item(0);
     }
-
-    private Element getActionsElement()
-    {
-        return (Element) document.getElementsByTagName("actions").item(0);
+    
+    private Element getActionsElement() {
+        return (Element)this.document.getElementsByTagName("actions").item(0);
     }
-
-    public void load() throws MinorException
-    {
-        try
-        {
-            actions.clear();
-
-            logger.info("Loading profile "+getID()+" ...");
-
-            String name = XMLConfigHelper.getStringProperty(getProfileElement(), "name");
-            int rows = XMLConfigHelper.getIntProperty(getProfileElement(), "rows");
-            int cols = XMLConfigHelper.getIntProperty(getProfileElement(), "cols");
-            int actionSize = XMLConfigHelper.getIntProperty(getProfileElement(), "action-size");
-            int actionGap = XMLConfigHelper.getIntProperty(getProfileElement(), "action-gap");
-
-            setName(name);
-            setRows(rows);
-            setCols(cols);
-            setActionSize(actionSize);
-            setActionGap(actionGap);
-
-
-            //Load Actions
-
-            NodeList actionsNodesList = getActionsElement().getChildNodes();
-
-            int actionsSize = actionsNodesList.getLength();
-
-            logger.info("Actions Size : "+actionsSize);
-
-            for(int item = 0; item<actionsSize; item++)
-            {
-                Node eachActionNode = actionsNodesList.item(item);
-
-                if(eachActionNode.getNodeType() != Node.ELEMENT_NODE)
-                    continue;
-
-                Element eachActionElement = (Element) eachActionNode;
-
-                if(!eachActionElement.getNodeName().equals("action"))
-                    continue;
-
-                
-
-                String id = XMLConfigHelper.getStringProperty(eachActionElement, "id");
-                String parent = XMLConfigHelper.getStringProperty(eachActionElement, "parent");
-
-                logger.info("Loading action "+id+" ...");
-
-                ActionType actionType = ActionType.valueOf(XMLConfigHelper.getStringProperty(eachActionElement, "action-type"));
-
-                Action action = new Action(id, actionType);
-                action.setParent(parent);
-
-                ClientProperties properties = new ClientProperties();
-
-                if(actionType == ActionType.FOLDER)
-                    properties.setDuplicatePropertyAllowed(true);
-
-
-                if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE)
-                {
-                    action.setVersion(new Version(XMLConfigHelper.getStringProperty(eachActionElement, "version")));
-                    action.setModuleName(XMLConfigHelper.getStringProperty(eachActionElement, "module-name"));
-                    action.setDelayBeforeExecuting(Integer.parseInt(
-                            XMLConfigHelper.getStringProperty(eachActionElement, "delay-before-running")
-                    ));
-                }
-
-                Node propertiesNode = eachActionElement.getElementsByTagName("properties").item(0);
-
-                NodeList propertiesNodesList = propertiesNode.getChildNodes();
-
-                int propertiesSize = propertiesNodesList.getLength();
-
-                for(int propItem = 0; propItem < propertiesSize; propItem++)
-                {
-                    Node eachPropertyNode = propertiesNodesList.item(propItem);
-
-                    if(eachPropertyNode.getNodeType() != Node.ELEMENT_NODE)
-                        continue;
     
-                    Element eachPropertyElement = (Element) eachPropertyNode;
-    
-                    if(!eachPropertyElement.getNodeName().equals("property"))
-                        continue;
-    
-                    
-
-                    String propertyName = XMLConfigHelper.getStringProperty(eachPropertyElement, "name");
-                    String propertyValue = XMLConfigHelper.getStringProperty(eachPropertyElement, "value");
-
-                    logger.info("Property Name : "+propertyName);
-                    logger.info("Property Value : "+propertyValue);
-
-                    Property p = new Property(propertyName, Type.STRING);
-                    p.setRawValue(propertyValue);
-
-                    properties.addProperty(p);
-                }
-
-                action.setClientProperties(properties);
-
-
-
-                Element displayElement = (Element) eachActionElement.getElementsByTagName("display").item(0);
-
-                //display
-
-                //location
-
-                try
-                {
-                    Element locationElement = (Element) displayElement.getElementsByTagName("location").item(0);
-                    int row = XMLConfigHelper.getIntProperty(locationElement, "row");
-                    int col = XMLConfigHelper.getIntProperty(locationElement, "col");
-                    action.setLocation(new Location(row, col));
-                }
-                catch (Exception e)
-                {
-                    logger.info("Action has no location, most probably a combine action child");
-                }
-
-                //background
-
-                Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
-
-                action.setBgColourHex(XMLConfigHelper.getStringProperty(backgroundElement, "colour-hex"));
-
-                Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
-                
-                //boolean showIcon = XMLConfigHelper.getBooleanProperty(iconElement, "show");
-                //boolean hasIcon = XMLConfigHelper.getBooleanProperty(iconElement, "has");
-
-                String currentIconState = XMLConfigHelper.getStringProperty(iconElement, "current-state");
-
-                action.setCurrentIconState(currentIconState);
-
-                Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
-
-                NodeList statesNodeList = statesElements.getChildNodes();
-
-                for (int i = 0;i<statesNodeList.getLength();i++)
-                {
-                    Node eachStateNode = statesNodeList.item(i);
-
-                    if(eachStateNode.getNodeType() != Node.ELEMENT_NODE)
-                        continue;
-
-                    Element eachIconStateElement = (Element) eachStateNode;
-
-                    if(!eachIconStateElement.getNodeName().equals("state"))
-                        continue;
-
-                    String state = eachIconStateElement.getTextContent();
-
-                    File f = new File(iconsPath+"/"+id+"___"+state);
-
-                    try
-                    {
-                        byte[] iconFileByteArray = Files.readAllBytes(f.toPath());
-                        action.addIcon(state, iconFileByteArray);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
+    public void load() throws MinorException {
+        try {
+            this.actions.clear();
+            this.logger.info("Loading profile " + this.getID() + " ...");
+            final String name = XMLConfigHelper.getStringProperty((Node)this.getProfileElement(), "name");
+            final int rows = XMLConfigHelper.getIntProperty((Node)this.getProfileElement(), "rows");
+            final int cols = XMLConfigHelper.getIntProperty((Node)this.getProfileElement(), "cols");
+            final int actionSize = XMLConfigHelper.getIntProperty((Node)this.getProfileElement(), "action-size");
+            final int actionGap = XMLConfigHelper.getIntProperty((Node)this.getProfileElement(), "action-gap");
+            this.setName(name);
+            this.setRows(rows);
+            this.setCols(cols);
+            this.setActionSize(actionSize);
+            this.setActionGap(actionGap);
+            final NodeList actionsNodesList = this.getActionsElement().getChildNodes();
+            final int actionsSize = actionsNodesList.getLength();
+            this.logger.info("Actions Size : " + actionsSize);
+            for (int item = 0; item < actionsSize; ++item) {
+                final Node eachActionNode = actionsNodesList.item(item);
+                if (eachActionNode.getNodeType() == 1) {
+                    final Element eachActionElement = (Element)eachActionNode;
+                    if (eachActionElement.getNodeName().equals("action")) {
+                        final String id = XMLConfigHelper.getStringProperty((Node)eachActionElement, "id");
+                        final String parent = XMLConfigHelper.getStringProperty((Node)eachActionElement, "parent");
+                        this.logger.info("Loading action " + id + " ...");
+                        final ActionType actionType = ActionType.valueOf(XMLConfigHelper.getStringProperty((Node)eachActionElement, "action-type"));
+                        final Action action = new Action(id, actionType);
+                        action.setParent(parent);
+                        final ClientProperties properties = new ClientProperties();
+                        if (actionType == ActionType.FOLDER) {
+                            properties.setDuplicatePropertyAllowed(true);
+                        }
+                        if (actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE) {
+                            action.setVersion(new Version(XMLConfigHelper.getStringProperty((Node)eachActionElement, "version")));
+                            action.setModuleName(XMLConfigHelper.getStringProperty((Node)eachActionElement, "module-name"));
+                            action.setDelayBeforeExecuting(Integer.parseInt(XMLConfigHelper.getStringProperty((Node)eachActionElement, "delay-before-running")));
+                        }
+                        final Node propertiesNode = eachActionElement.getElementsByTagName("properties").item(0);
+                        final NodeList propertiesNodesList = propertiesNode.getChildNodes();
+                        for (int propertiesSize = propertiesNodesList.getLength(), propItem = 0; propItem < propertiesSize; ++propItem) {
+                            final Node eachPropertyNode = propertiesNodesList.item(propItem);
+                            if (eachPropertyNode.getNodeType() == 1) {
+                                final Element eachPropertyElement = (Element)eachPropertyNode;
+                                if (eachPropertyElement.getNodeName().equals("property")) {
+                                    final String propertyName = XMLConfigHelper.getStringProperty((Node)eachPropertyElement, "name");
+                                    final String propertyValue = XMLConfigHelper.getStringProperty((Node)eachPropertyElement, "value");
+                                    this.logger.info("Property Name : " + propertyName);
+                                    this.logger.info("Property Value : " + propertyValue);
+                                    final Property p = new Property(propertyName, Type.STRING);
+                                    p.setRawValue(propertyValue);
+                                    properties.addProperty(p);
+                                }
+                            }
+                        }
+                        action.setClientProperties(properties);
+                        final Element displayElement = (Element)eachActionElement.getElementsByTagName("display").item(0);
+                        try {
+                            final Element locationElement = (Element)displayElement.getElementsByTagName("location").item(0);
+                            final int row = XMLConfigHelper.getIntProperty((Node)locationElement, "row");
+                            final int col = XMLConfigHelper.getIntProperty((Node)locationElement, "col");
+                            action.setLocation(new Location(row, col));
+                        }
+                        catch (Exception e) {
+                            this.logger.info("Action has no location, most probably a combine action child");
+                        }
+                        final Element backgroundElement = (Element)displayElement.getElementsByTagName("background").item(0);
+                        action.setBgColourHex(XMLConfigHelper.getStringProperty((Node)backgroundElement, "colour-hex"));
+                        final Element iconElement = (Element)backgroundElement.getElementsByTagName("icon").item(0);
+                        final String currentIconState = XMLConfigHelper.getStringProperty((Node)iconElement, "current-state");
+                        action.setCurrentIconState(currentIconState);
+                        final Element statesElements = (Element)iconElement.getElementsByTagName("states").item(0);
+                        final NodeList statesNodeList = statesElements.getChildNodes();
+                        for (int i = 0; i < statesNodeList.getLength(); ++i) {
+                            final Node eachStateNode = statesNodeList.item(i);
+                            if (eachStateNode.getNodeType() == 1) {
+                                final Element eachIconStateElement = (Element)eachStateNode;
+                                if (eachIconStateElement.getNodeName().equals("state")) {
+                                    final String state = eachIconStateElement.getTextContent();
+                                    final File f = new File(this.iconsPath + "/" + id + "___" + state);
+                                    try {
+                                        final byte[] iconFileByteArray = Files.readAllBytes(f.toPath());
+                                        action.addIcon(state, iconFileByteArray);
+                                    }
+                                    catch (Exception e2) {
+                                        e2.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                        final Element textElement = (Element)displayElement.getElementsByTagName("text").item(0);
+                        final boolean showText = XMLConfigHelper.getBooleanProperty((Node)textElement, "show");
+                        final String displayTextFontColour = XMLConfigHelper.getStringProperty((Node)textElement, "colour-hex");
+                        final DisplayTextAlignment displayTextAlignment = DisplayTextAlignment.valueOf(XMLConfigHelper.getStringProperty((Node)textElement, "alignment"));
+                        action.setDisplayTextAlignment(displayTextAlignment);
+                        action.setShowDisplayText(showText);
+                        action.setDisplayTextFontColourHex(displayTextFontColour);
+                        final String displayText = XMLConfigHelper.getStringProperty((Node)textElement, "display-text");
+                        action.setDisplayText(displayText);
+                        final double fontSize = XMLConfigHelper.getDoubleProperty((Node)textElement, "font-size");
+                        action.setNameFontSize(fontSize);
+                        action.setCurrentToggleStatus(false);
+                        this.addAction(action);
+                        this.logger.info("... Done!");
                     }
                 }
-
-
-
-                Element textElement = (Element) displayElement.getElementsByTagName("text").item(0);
-            
-                boolean showText = XMLConfigHelper.getBooleanProperty(textElement, "show");
-                String displayTextFontColour = XMLConfigHelper.getStringProperty(textElement, "colour-hex");
-                DisplayTextAlignment displayTextAlignment = DisplayTextAlignment.valueOf(XMLConfigHelper.getStringProperty(textElement, "alignment"));
-
-
-                action.setDisplayTextAlignment(displayTextAlignment);
-                action.setShowDisplayText(showText);
-
-                action.setDisplayTextFontColourHex(displayTextFontColour);
-
-
-                String displayText = XMLConfigHelper.getStringProperty(textElement, "display-text");
-
-                action.setDisplayText(displayText);
-
-                double fontSize = XMLConfigHelper.getDoubleProperty(textElement, "font-size");
-
-                action.setNameFontSize(fontSize);
-
-                action.setCurrentToggleStatus(false); // Always fault at default
-
-                addAction(action);
-
-
-                logger.info("... Done!");
             }
-
-            logger.info("Loaded profile "+getID()+" ("+getName()+") !");
+            this.logger.info("Loaded profile " + this.getID() + " (" + this.getName() + ") !");
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-
+        catch (Exception e3) {
+            e3.printStackTrace();
             throw new MinorException("profile", "profile is corrupt.");
         }
-
     }
-
-    public void addAction(Action action) throws CloneNotSupportedException {
-        actions.put(action.getID(), (Action) action.clone());
+    
+    public void addAction(final Action action) throws CloneNotSupportedException {
+        this.actions.put(action.getID(), action.clone());
     }
-
-
-
-
-    private void createConfigFile(File file) throws MinorException
-    {
-        try
-        {
+    
+    private void createConfigFile(final File file) throws MinorException {
+        try {
             file.createNewFile();
-
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document newDocument = dBuilder.newDocument();
-
-
-            Element rootElement = newDocument.createElement("config");
+            final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            final Document newDocument = dBuilder.newDocument();
+            final Element rootElement = newDocument.createElement("config");
             newDocument.appendChild(rootElement);
-
-            Element profileElement = newDocument.createElement("profile");
+            final Element profileElement = newDocument.createElement("profile");
             rootElement.appendChild(profileElement);
-
-            Element actionsElement = newDocument.createElement("actions");
+            final Element actionsElement = newDocument.createElement("actions");
             rootElement.appendChild(actionsElement);
-
-            Element nameElement = newDocument.createElement("name");
+            final Element nameElement = newDocument.createElement("name");
             nameElement.setTextContent("Untitled profile");
             profileElement.appendChild(nameElement);
-
-            Element rowsElement = newDocument.createElement("rows");
+            final Element rowsElement = newDocument.createElement("rows");
             rowsElement.setTextContent("3");
             profileElement.appendChild(rowsElement);
-
-            Element colsElement = newDocument.createElement("cols");
+            final Element colsElement = newDocument.createElement("cols");
             colsElement.setTextContent("3");
             profileElement.appendChild(colsElement);
-
-            Element actionSizeElement = newDocument.createElement("action-size");
+            final Element actionSizeElement = newDocument.createElement("action-size");
             actionSizeElement.setTextContent("100");
             profileElement.appendChild(actionSizeElement);
-
-            Element actionGapElement = newDocument.createElement("action-gap");
+            final Element actionGapElement = newDocument.createElement("action-gap");
             actionGapElement.setTextContent("5");
             profileElement.appendChild(actionGapElement);
-
-
-
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(newDocument);
-            StreamResult result = new StreamResult(file);
+            final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            final Transformer transformer = transformerFactory.newTransformer();
+            final DOMSource source = new DOMSource(newDocument);
+            final StreamResult result = new StreamResult(file);
             transformer.transform(source, result);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
             throw new MinorException(e.getMessage());
         }
     }
-
-
-
-    public void deleteProfile()
-    {
-        file.delete();
+    
+    public void deleteProfile() {
+        this.file.delete();
     }
-
-
-    public void saveAction(Action action) throws Exception
-    {
-
-        int ind = getActionIndexInConfig(action.getID());
-        if(ind != -1)
-        {
-            Element actionElement = (Element) getActionsElement().getElementsByTagName("action").item(ind);
-            getActionsElement().removeChild(actionElement);
+    
+    public void saveAction(final Action action) throws Exception {
+        final int ind = this.getActionIndexInConfig(action.getID());
+        if (ind != -1) {
+            final Element actionElement = (Element)this.getActionsElement().getElementsByTagName("action").item(ind);
+            this.getActionsElement().removeChild(actionElement);
         }
-
-        Element newActionElement = document.createElement("action");
-        getActionsElement().appendChild(newActionElement);
-
-        Element idElement = document.createElement("id");
+        final Element newActionElement = this.document.createElement("action");
+        this.getActionsElement().appendChild(newActionElement);
+        final Element idElement = this.document.createElement("id");
         idElement.setTextContent(action.getID());
         newActionElement.appendChild(idElement);
-
-        Element parentElement = document.createElement("parent");
+        final Element parentElement = this.document.createElement("parent");
         parentElement.setTextContent(action.getParent());
         newActionElement.appendChild(parentElement);
-
-        Element actionTypeElement = document.createElement("action-type");
-        actionTypeElement.setTextContent(action.getActionType()+"");
+        final Element actionTypeElement = this.document.createElement("action-type");
+        actionTypeElement.setTextContent("" + action.getActionType());
         newActionElement.appendChild(actionTypeElement);
-
-        if(action.getActionType() == ActionType.NORMAL || action.getActionType() == ActionType.TOGGLE)
-        {
-            Element versionElement = document.createElement("version");
+        if (action.getActionType() == ActionType.NORMAL || action.getActionType() == ActionType.TOGGLE) {
+            final Element versionElement = this.document.createElement("version");
             versionElement.setTextContent(action.getVersion().getText());
             newActionElement.appendChild(versionElement);
-
             System.out.println(action.getModuleName());
-
-            Element moduleNameElement = document.createElement("module-name");
+            final Element moduleNameElement = this.document.createElement("module-name");
             moduleNameElement.setTextContent(action.getModuleName());
             newActionElement.appendChild(moduleNameElement);
-
-            Element delayBeforeRunningElement = document.createElement("delay-before-running");
-            delayBeforeRunningElement.setTextContent(action.getDelayBeforeExecuting()+"");
+            final Element delayBeforeRunningElement = this.document.createElement("delay-before-running");
+            delayBeforeRunningElement.setTextContent("" + action.getDelayBeforeExecuting());
             newActionElement.appendChild(delayBeforeRunningElement);
         }
-
-        Element displayElement = document.createElement("display");
+        final Element displayElement = this.document.createElement("display");
         newActionElement.appendChild(displayElement);
-    
-        Element backgroundElement = document.createElement("background");
+        final Element backgroundElement = this.document.createElement("background");
         displayElement.appendChild(backgroundElement);
-
-        Element colourHexElement = document.createElement("colour-hex");
+        final Element colourHexElement = this.document.createElement("colour-hex");
         colourHexElement.setTextContent(action.getBgColourHex());
         backgroundElement.appendChild(colourHexElement);
-
-
-        Element iconElement = document.createElement("icon");
-
-
-        Element currentIconStateElement = document.createElement("current-state");
+        final Element iconElement = this.document.createElement("icon");
+        final Element currentIconStateElement = this.document.createElement("current-state");
         currentIconStateElement.setTextContent(action.getCurrentIconState());
         iconElement.appendChild(currentIconStateElement);
-
-
-
-        Element iconStatesElement = document.createElement("states");
-
-        for(String state : action.getIcons().keySet())
-        {
-            Element eachStateElement = document.createElement("state");
+        final Element iconStatesElement = this.document.createElement("states");
+        for (final String state : action.getIcons().keySet()) {
+            final Element eachStateElement = this.document.createElement("state");
             eachStateElement.setTextContent(state);
             iconStatesElement.appendChild(eachStateElement);
         }
-
         iconElement.appendChild(iconStatesElement);
-
-
-
         backgroundElement.appendChild(iconElement);
-
-        Element textElement = document.createElement("text");
+        final Element textElement = this.document.createElement("text");
         displayElement.appendChild(textElement);
-
-        Element textTolourHexElement = document.createElement("colour-hex");
+        final Element textTolourHexElement = this.document.createElement("colour-hex");
         textTolourHexElement.setTextContent(action.getDisplayTextFontColourHex());
         textElement.appendChild(textTolourHexElement);
-
-        Element textShowElement = document.createElement("show");
-        textShowElement.setTextContent(action.isShowDisplayText()+"");
+        final Element textShowElement = this.document.createElement("show");
+        textShowElement.setTextContent("" + action.isShowDisplayText());
         textElement.appendChild(textShowElement);
-
-        Element textDisplayTextElement = document.createElement("display-text");
+        final Element textDisplayTextElement = this.document.createElement("display-text");
         textDisplayTextElement.setTextContent(action.getDisplayText());
         textElement.appendChild(textDisplayTextElement);
-
-        Element textDisplayTextFontSizeElement = document.createElement("font-size");
-        textDisplayTextFontSizeElement.setTextContent(action.getNameFontSize()+"");
+        final Element textDisplayTextFontSizeElement = this.document.createElement("font-size");
+        textDisplayTextFontSizeElement.setTextContent("" + action.getNameFontSize());
         textElement.appendChild(textDisplayTextFontSizeElement);
-
-        Element textAlignmentElement = document.createElement("alignment");
-        textAlignmentElement.setTextContent(action.getDisplayTextAlignment()+"");
+        final Element textAlignmentElement = this.document.createElement("alignment");
+        textAlignmentElement.setTextContent("" + action.getDisplayTextAlignment());
         textElement.appendChild(textAlignmentElement);
-
-
-        Element locationElement = document.createElement("location");
+        final Element locationElement = this.document.createElement("location");
         displayElement.appendChild(locationElement);
-
-        Element colElement = document.createElement("col");
-        colElement.setTextContent(action.getLocation().getCol()+"");
+        final Element colElement = this.document.createElement("col");
+        colElement.setTextContent("" + action.getLocation().getCol());
         locationElement.appendChild(colElement);
-
-        Element rowElement = document.createElement("row");
-        rowElement.setTextContent(action.getLocation().getRow()+"");
+        final Element rowElement = this.document.createElement("row");
+        rowElement.setTextContent("" + action.getLocation().getRow());
         locationElement.appendChild(rowElement);
-
-
-        Element propertiesElement = document.createElement("properties");
+        final Element propertiesElement = this.document.createElement("properties");
         newActionElement.appendChild(propertiesElement);
-
-        for(String key : action.getClientProperties().getNames())
-        {
-            for(Property eachProperty : action.getClientProperties().getMultipleProperties(key))
-            {
-                Element propertyElement = document.createElement("property");
+        for (final String key : action.getClientProperties().getNames()) {
+            for (final Property eachProperty : action.getClientProperties().getMultipleProperties(key)) {
+                final Element propertyElement = this.document.createElement("property");
                 propertiesElement.appendChild(propertyElement);
-    
-                Element nameElement = document.createElement("name");
+                final Element nameElement = this.document.createElement("name");
                 nameElement.setTextContent(eachProperty.getName());
                 propertyElement.appendChild(nameElement);
-
-                Element valueElement = document.createElement("value");
+                final Element valueElement = this.document.createElement("value");
                 valueElement.setTextContent(eachProperty.getRawValue());
                 propertyElement.appendChild(valueElement);
             }
         }
-
-
-        save();
+        this.save();
     }
-
-    private int getActionIndexInConfig(String actionID)
-    {
-        NodeList actionsList = getActionsElement().getChildNodes();
-
-        int actionsSize = actionsList.getLength();
-
+    
+    private int getActionIndexInConfig(final String actionID) {
+        final NodeList actionsList = this.getActionsElement().getChildNodes();
+        final int actionsSize = actionsList.getLength();
         int index = 0;
-
-        for(int i = 0;i<actionsSize;i++)
-        {
-            Node eachActionNode = actionsList.item(index);
-
-            if(eachActionNode.getNodeType() != Node.ELEMENT_NODE)
-                continue;
-             
-            if(!eachActionNode.getNodeName().equals("action")) 
-                continue;
-            
-            Element eachActionElement = (Element) eachActionNode;
-
-            Element idElement = (Element) eachActionElement.getElementsByTagName("id").item(0);
-
-        
-            if(idElement.getTextContent().equals(actionID))
-                return index;
-
-
-            index++;
+        for (int i = 0; i < actionsSize; ++i) {
+            final Node eachActionNode = actionsList.item(index);
+            if (eachActionNode.getNodeType() == 1) {
+                if (eachActionNode.getNodeName().equals("action")) {
+                    final Element eachActionElement = (Element)eachActionNode;
+                    final Element idElement = (Element)eachActionElement.getElementsByTagName("id").item(0);
+                    if (idElement.getTextContent().equals(actionID)) {
+                        return index;
+                    }
+                    ++index;
+                }
+            }
         }
-
-
         return -1;
     }
     
-    public void saveActionIcon(String actionID, byte[] array, String state) throws MinorException
-    {
-        int index = getActionIndexInConfig(actionID);
-
-        logger.info("INDEXXXX : "+index);
-
-        getActionFromID(actionID).addIcon(state, array);
-
-
-        File iconFile = new File(iconsPath+"/"+actionID+"___"+state);
-        if(iconFile.exists())
-        {
-            boolean result = iconFile.delete();
-            System.out.println("result : "+result);
+    public void saveActionIcon(final String actionID, final byte[] array, final String state) throws MinorException {
+        final int index = this.getActionIndexInConfig(actionID);
+        this.logger.info("INDEXXXX : " + index);
+        this.getActionFromID(actionID).addIcon(state, array);
+        final File iconFile = new File(this.iconsPath + "/" + actionID + "___" + state);
+        if (iconFile.exists()) {
+            final boolean result = iconFile.delete();
+            System.out.println("result : " + result);
         }
-
-        try
-        {
-            OutputStream outputStream = new FileOutputStream(iconFile);
+        try {
+            final OutputStream outputStream = new FileOutputStream(iconFile);
             outputStream.write(array);
             outputStream.flush();
             outputStream.close();
-
-
-            Element actionElement = (Element) getActionsElement().getElementsByTagName("action").item(index);
-
-            getActionsElement().removeChild(actionElement);
-
-            Element displayElement = (Element) actionElement.getElementsByTagName("display").item(0);
-            Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
-            Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
-
-            Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
-
-            Element stateElement = document.createElement("state");
+            final Element actionElement = (Element)this.getActionsElement().getElementsByTagName("action").item(index);
+            this.getActionsElement().removeChild(actionElement);
+            final Element displayElement = (Element)actionElement.getElementsByTagName("display").item(0);
+            final Element backgroundElement = (Element)displayElement.getElementsByTagName("background").item(0);
+            final Element iconElement = (Element)backgroundElement.getElementsByTagName("icon").item(0);
+            final Element statesElements = (Element)iconElement.getElementsByTagName("states").item(0);
+            final Element stateElement = this.document.createElement("state");
             stateElement.setTextContent(state);
-
             statesElements.appendChild(stateElement);
-
-            getActionsElement().appendChild(actionElement);
-
-            save();
+            this.getActionsElement().appendChild(actionElement);
+            this.save();
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    private void save() throws TransformerException
-    {
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        Result output = new StreamResult(file);
-        Source input = new DOMSource(document);
-
+    private void save() throws TransformerException {
+        final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        final Result output = new StreamResult(this.file);
+        final Source input = new DOMSource(this.document);
         transformer.transform(input, output);
     }
-
-    public void saveProfileDetails() throws TransformerException
-    {
-        XMLConfigHelper.removeChilds(getProfileElement());
-
-        Element nameElement = document.createElement("name");
-        nameElement.setTextContent(getName());
-        getProfileElement().appendChild(nameElement);
-
-        Element rowsElement = document.createElement("rows");
-        rowsElement.setTextContent(getRows()+"");
-        getProfileElement().appendChild(rowsElement);
-
-        Element colsElement = document.createElement("cols");
-        colsElement.setTextContent(getCols()+"");
-        getProfileElement().appendChild(colsElement);
-
-        Element actionSizeElement = document.createElement("action-size");
-        actionSizeElement.setTextContent(getActionSize()+"");
-        getProfileElement().appendChild(actionSizeElement);
-
-        Element actionGapElement = document.createElement("action-gap");
-        actionGapElement.setTextContent(getActionGap()+"");
-        getProfileElement().appendChild(actionGapElement);
-        
-        save();
+    
+    public void saveProfileDetails() throws TransformerException {
+        XMLConfigHelper.removeChilds((Node)this.getProfileElement());
+        final Element nameElement = this.document.createElement("name");
+        nameElement.setTextContent(this.getName());
+        this.getProfileElement().appendChild(nameElement);
+        final Element rowsElement = this.document.createElement("rows");
+        rowsElement.setTextContent("" + this.getRows());
+        this.getProfileElement().appendChild(rowsElement);
+        final Element colsElement = this.document.createElement("cols");
+        colsElement.setTextContent("" + this.getCols());
+        this.getProfileElement().appendChild(colsElement);
+        final Element actionSizeElement = this.document.createElement("action-size");
+        actionSizeElement.setTextContent("" + this.getActionSize());
+        this.getProfileElement().appendChild(actionSizeElement);
+        final Element actionGapElement = this.document.createElement("action-gap");
+        actionGapElement.setTextContent("" + this.getActionGap());
+        this.getProfileElement().appendChild(actionGapElement);
+        this.save();
     }
-
-    public void saveActions() throws Exception
-    {
-        XMLConfigHelper.removeChilds(getActionsElement());
-        save();
-        for(Action action : getActions())
-        {
-            logger.info("ACTION ID :"+action.getID());
-            logger.info("Action ICON : "+action.isHasIcon());
-            saveAction(action);
+    
+    public void saveActions() throws Exception {
+        XMLConfigHelper.removeChilds((Node)this.getActionsElement());
+        this.save();
+        for (Action action : this.getActions()) {
+            this.logger.info("ACTION ID :" + action.getID());
+            this.logger.info("Action ICON : " + action.isHasIcon());
+            this.saveAction(action);
         }
     }
-
-
-
-    public void removeAction(String ID) throws Exception {
-        int index = getActionIndexInConfig(ID);
-
-        if(index>-1)
-        {
-
-            Element actionElement = (Element) getActionsElement().getElementsByTagName("action").item(index);
-
-            Element displayElement = (Element) actionElement.getElementsByTagName("display").item(0);
-            Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
-            Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
-
-            Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
-
-            NodeList statesNodeList = statesElements.getChildNodes();
-
-            for (int i = 0;i<statesNodeList.getLength();i++)
-            {
-                Node eachStateNode = statesNodeList.item(i);
-
-                if(eachStateNode.getNodeType() != Node.ELEMENT_NODE)
-                    continue;
-
-                Element eachIconStateElement = (Element) eachStateNode;
-
-                if(!eachIconStateElement.getNodeName().equals("state"))
-                    continue;
-
-                String state = eachIconStateElement.getTextContent();
-
-                new File(iconsPath+"/"+ID+"___"+state).delete();
+    
+    public void removeAction(final String ID) throws Exception {
+        final int index = this.getActionIndexInConfig(ID);
+        if (index > -1) {
+            final Element actionElement = (Element)this.getActionsElement().getElementsByTagName("action").item(index);
+            final Element displayElement = (Element)actionElement.getElementsByTagName("display").item(0);
+            final Element backgroundElement = (Element)displayElement.getElementsByTagName("background").item(0);
+            final Element iconElement = (Element)backgroundElement.getElementsByTagName("icon").item(0);
+            final Element statesElements = (Element)iconElement.getElementsByTagName("states").item(0);
+            final NodeList statesNodeList = statesElements.getChildNodes();
+            for (int i = 0; i < statesNodeList.getLength(); ++i) {
+                final Node eachStateNode = statesNodeList.item(i);
+                if (eachStateNode.getNodeType() == 1) {
+                    final Element eachIconStateElement = (Element)eachStateNode;
+                    if (eachIconStateElement.getNodeName().equals("state")) {
+                        final String state = eachIconStateElement.getTextContent();
+                        new File(this.iconsPath + "/" + ID + "___" + state).delete();
+                    }
+                }
             }
-
-
-
-            actions.remove(ID);
+            this.actions.remove(ID);
         }
-
     }
-
-    public ArrayList<Action> getActions()
-    {
-        ArrayList<Action> p = new ArrayList<>();
-        for(String profile : actions.keySet())
-            p.add(actions.get(profile));
+    
+    public ArrayList<Action> getActions() {
+        final ArrayList<Action> p = new ArrayList<Action>();
+        for (final String profile : this.actions.keySet()) {
+            p.add(this.actions.get(profile));
+        }
         return p;
     }
-
-    public String getID()
-    {
-        return ID;
+    
+    public String getID() {
+        return this.ID;
     }
-
-    public String getName()
-    {
-        return name;
+    
+    public String getName() {
+        return this.name;
     }
-
-    public int getRows()
-    {
-        return rows;
+    
+    public int getRows() {
+        return this.rows;
     }
-
-    public int getCols()
-    {
-        return cols;
+    
+    public int getCols() {
+        return this.cols;
     }
-
-    public int getActionSize()
-    {
-        return actionSize;
+    
+    public int getActionSize() {
+        return this.actionSize;
     }
-
-    public Action getActionFromID(String ID)
-    {
-        return actions.getOrDefault(ID, null);
+    
+    public Action getActionFromID(final String ID) {
+        return this.actions.getOrDefault(ID, null);
     }
-
-    public int getActionGap()
-    {
-        return actionGap;
+    
+    public int getActionGap() {
+        return this.actionGap;
     }
-
-    public void setRows(int rows)
-    {
+    
+    public void setRows(final int rows) {
         this.rows = rows;
     }
-
-    public void setCols(int cols)
-    {
+    
+    public void setCols(final int cols) {
         this.cols = cols;
     }
-
-    public void setID(String ID)
-    {
+    
+    public void setID(final String ID) {
         this.ID = ID;
     }
-
-    public void setActionSize(int actionSize)
-    {
+    
+    public void setActionSize(final int actionSize) {
         this.actionSize = actionSize;
     }
-
-    public void setActionGap(int actionGap)
-    {
+    
+    public void setActionGap(final int actionGap) {
         this.actionGap = actionGap;
     }
-
-    public void setName(String name)
-    {
+    
+    public void setName(final String name) {
         this.name = name;
     }
     
-
-    public Object clone() throws CloneNotSupportedException
-    {
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 }

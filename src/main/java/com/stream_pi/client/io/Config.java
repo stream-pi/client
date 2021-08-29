@@ -1,5 +1,5 @@
 // 
-// Decompiled by Procyon v0.5.36
+// Decompiled by Procyon v0.6-prerelease
 // 
 
 package com.stream_pi.client.io;
@@ -34,14 +34,14 @@ public class Config
     
     private Config() throws SevereException {
         try {
-            this.configFile = new File(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath()));
+            this.configFile = new File(ClientInfo.getInstance().getPrePath() + "config.xml");
             final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             this.document = docBuilder.parse(this.configFile);
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new SevereException("Config", invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, e.getMessage()));
+            throw new SevereException("Config", "unable to read config.xml\n" + e.getMessage());
         }
     }
     
@@ -58,9 +58,9 @@ public class Config
     
     public static void unzipToDefaultPrePath() throws Exception {
         IOHelper.unzip((InputStream)Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
-        getInstance().setThemesPath(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath()));
-        getInstance().setIconsPath(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath()));
-        getInstance().setProfilesPath(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath()));
+        getInstance().setThemesPath(ClientInfo.getInstance().getPrePath() + "Themes/");
+        getInstance().setIconsPath(ClientInfo.getInstance().getPrePath() + "Icons/");
+        getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath() + "Profiles/");
         getInstance().setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
         getInstance().save();
     }
@@ -94,15 +94,15 @@ public class Config
     }
     
     public String getDefaultThemesPath() {
-        return invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+        return ClientInfo.getInstance().getPrePath() + "Themes/";
     }
     
     public String getDefaultProfilesPath() {
-        return invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+        return ClientInfo.getInstance().getPrePath() + "Profiles/";
     }
     
     public String getDefaultIconsPath() {
-        return invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+        return ClientInfo.getInstance().getPrePath() + "Icons/";
     }
     
     public String getClientNickName() {
@@ -124,7 +124,7 @@ public class Config
     public String getThemesPath() {
         final Platform platform = ClientInfo.getInstance().getPlatform();
         if (platform != Platform.ANDROID && platform != Platform.IOS) {
-            return invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+            return ClientInfo.getInstance().getPrePath() + "Themes/";
         }
         return XMLConfigHelper.getStringProperty((Node)this.document, "themes-path", this.getDefaultThemesPath(), false, true, this.document, this.configFile);
     }
@@ -132,7 +132,7 @@ public class Config
     public String getProfilesPath() {
         final Platform platform = ClientInfo.getInstance().getPlatform();
         if (platform != Platform.ANDROID && platform != Platform.IOS) {
-            return invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+            return ClientInfo.getInstance().getPrePath() + "Profiles/";
         }
         return XMLConfigHelper.getStringProperty((Node)this.document, "profiles-path", this.getDefaultProfilesPath(), false, true, this.document, this.configFile);
     }
@@ -140,7 +140,7 @@ public class Config
     public String getIconsPath() {
         final Platform platform = ClientInfo.getInstance().getPlatform();
         if (platform != Platform.ANDROID && platform != Platform.IOS) {
-            return invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+            return ClientInfo.getInstance().getPrePath() + "Icons/";
         }
         return XMLConfigHelper.getStringProperty((Node)this.document, "icons-path", this.getDefaultIconsPath(), false, true, this.document, this.configFile);
     }
@@ -198,7 +198,7 @@ public class Config
     }
     
     public void setServerPort(final int port) {
-        this.getCommsServerElement().getElementsByTagName("port").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(I)Ljava/lang/String;, port));
+        this.getCommsServerElement().getElementsByTagName("port").item(0).setTextContent("" + port);
     }
     
     public Element getScreenMoverElement() {
@@ -246,31 +246,31 @@ public class Config
     }
     
     public void setStartOnBoot(final boolean value) {
-        this.getOthersElement().getElementsByTagName("start-on-boot").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("start-on-boot").item(0).setTextContent("" + value);
     }
     
     public void setShowCursor(final boolean value) {
-        this.getOthersElement().getElementsByTagName("show-cursor").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("show-cursor").item(0).setTextContent("" + value);
     }
     
     public void setFullscreen(final boolean value) {
-        this.getOthersElement().getElementsByTagName("fullscreen").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("fullscreen").item(0).setTextContent("" + value);
     }
     
     public void setFirstTimeUse(final boolean value) {
-        this.getOthersElement().getElementsByTagName("first-time-use").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("first-time-use").item(0).setTextContent("" + value);
     }
     
     public void setVibrateOnActionClicked(final boolean value) {
-        this.getOthersElement().getElementsByTagName("vibrate-on-action-clicked").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("vibrate-on-action-clicked").item(0).setTextContent("" + value);
     }
     
     public void setConnectOnStartup(final boolean value) {
-        this.getOthersElement().getElementsByTagName("connect-on-startup").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("connect-on-startup").item(0).setTextContent("" + value);
     }
     
     public void setIsFullScreenMode(final boolean value) {
-        this.getOthersElement().getElementsByTagName("full-screen-mode").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("full-screen-mode").item(0).setTextContent("" + value);
     }
     
     private Element getStartupWindowSizeElement() {
@@ -299,15 +299,15 @@ public class Config
     }
     
     public void setStartupWindowWidth(final double width) {
-        this.getStartupWindowSizeElement().getElementsByTagName("width").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(D)Ljava/lang/String;, width));
+        this.getStartupWindowSizeElement().getElementsByTagName("width").item(0).setTextContent("" + width);
     }
     
     public void setStartupWindowHeight(final double height) {
-        this.getStartupWindowSizeElement().getElementsByTagName("height").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(D)Ljava/lang/String;, height));
+        this.getStartupWindowSizeElement().getElementsByTagName("height").item(0).setTextContent("" + height);
     }
     
     public void setStartupIsXMode(final boolean value) {
-        this.getOthersElement().getElementsByTagName("start-on-boot-x-mode").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("start-on-boot-x-mode").item(0).setTextContent("" + value);
     }
     
     public boolean getDefaultIsStartupXMode() {
@@ -327,7 +327,7 @@ public class Config
     }
     
     public void setTryConnectingWhenActionClicked(final boolean value) {
-        this.getOthersElement().getElementsByTagName("try-connecting-when-action-clicked").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("try-connecting-when-action-clicked").item(0).setTextContent("" + value);
     }
     
     public boolean getDefaultScreenSaverEnabled() {
@@ -339,7 +339,7 @@ public class Config
     }
     
     public void setScreenSaverEnabled(final boolean value) {
-        this.getOthersElement().getElementsByTagName("screen-saver").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("screen-saver").item(0).setTextContent("" + value);
     }
     
     public int getDefaultScreenSaverTimeout() {
@@ -399,7 +399,7 @@ public class Config
     }
     
     public void setScreenMoverEnabled(final boolean value) {
-        this.getScreenMoverElement().getElementsByTagName("status").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getScreenMoverElement().getElementsByTagName("status").item(0).setTextContent("" + value);
     }
     
     public boolean getDefaultInvertRowsColsOnDeviceRotate() {
@@ -411,7 +411,7 @@ public class Config
     }
     
     public void setInvertRowsColsOnDeviceRotate(final boolean value) {
-        this.getOthersElement().getElementsByTagName("invert-rows-cols-on-device-rotate").item(0).setTextContent(invokedynamic(makeConcatWithConstants:(Z)Ljava/lang/String;, value));
+        this.getOthersElement().getElementsByTagName("invert-rows-cols-on-device-rotate").item(0).setTextContent("" + value);
     }
     
     static {

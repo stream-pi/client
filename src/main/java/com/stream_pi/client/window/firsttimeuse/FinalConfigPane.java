@@ -1,5 +1,5 @@
 // 
-// Decompiled by Procyon v0.5.36
+// Decompiled by Procyon v0.6-prerelease
 // 
 
 package com.stream_pi.client.window.firsttimeuse;
@@ -99,15 +99,14 @@ public class FinalConfigPane extends VBox
                     Config.getInstance().setScreenMoverEnabled(true);
                 }
                 Config.getInstance().save();
-                final ClientProfile clientProfile = new ClientProfile(new File(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, Config.getInstance().getProfilesPath(), Config.getInstance().getStartupProfileID())), Config.getInstance().getIconsPath());
+                final ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath() + "/" + Config.getInstance().getStartupProfileID() + ".xml"), Config.getInstance().getIconsPath());
                 final int pre = clientProfile.getActionSize() + clientProfile.getActionGap() * 4;
                 this.rowsToSet = (int)(this.clientListener.getStageHeight() / pre);
                 this.colsToSet = (int)(this.clientListener.getStageWidth() / pre);
                 if (ClientInfo.getInstance().isPhone()) {
-                    int tmp;
                     OrientationService.create().ifPresent(orientationService -> {
-                        if (orientationService.getOrientation().isPresent() && ((Orientation)orientationService.getOrientation().get()).equals((Object)Orientation.VERTICAL)) {
-                            tmp = this.rowsToSet;
+                        if (orientationService.getOrientation().isPresent() && orientationService.getOrientation().get().equals((Object)Orientation.VERTICAL)) {
+                            final int tmp = this.rowsToSet;
                             this.rowsToSet = this.colsToSet;
                             this.colsToSet = tmp;
                         }
@@ -129,7 +128,7 @@ public class FinalConfigPane extends VBox
         }
         else {
             Platform.runLater(() -> this.nextButton.setDisable(false));
-            new StreamPiAlert("Uh Oh", invokedynamic(makeConcatWithConstants:(Ljava/lang/StringBuilder;)Ljava/lang/String;, errors), StreamPiAlertType.ERROR).show();
+            new StreamPiAlert("Uh Oh", "Please rectify the following errors and try again:\n" + errors, StreamPiAlertType.ERROR).show();
         }
     }
 }

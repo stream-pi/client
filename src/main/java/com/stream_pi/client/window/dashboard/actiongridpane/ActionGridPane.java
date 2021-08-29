@@ -1,5 +1,5 @@
 // 
-// Decompiled by Procyon v0.5.36
+// Decompiled by Procyon v0.6-prerelease
 // 
 
 package com.stream_pi.client.window.dashboard.actiongridpane;
@@ -162,8 +162,8 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     
     public void renderActions() {
         final StringBuilder errors = new StringBuilder();
-        for (final Action eachAction : this.getClientProfile().getActions()) {
-            this.logger.info(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;Z)Ljava/lang/String;, eachAction.getID(), eachAction.isInvalid()));
+        for (Action eachAction : this.getClientProfile().getActions()) {
+            this.logger.info("Action ID : " + eachAction.getID() + "\nInvalid : " + eachAction.isInvalid());
             try {
                 this.renderAction(eachAction);
             }
@@ -227,7 +227,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     
     public void renderAction(final Action action) throws SevereException, MinorException {
         if (!action.getParent().equals(this.currentParent)) {
-            this.logger.info(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, action.getID()));
+            this.logger.info("Skipping action " + action.getID() + ", not current parent!");
             return;
         }
         if (action.getLocation().getRow() == -1) {
@@ -235,7 +235,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
             return;
         }
         if (action.getLocation().getRow() >= this.rows || action.getLocation().getCol() >= this.cols) {
-            throw new MinorException(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, action.getDisplayText(), action.getID()));
+            throw new MinorException("Action " + action.getDisplayText() + " (" + action.getID() + ") falls outside bounds.\n   Consider increasing rows/cols from client settings and relocating/deleting it.");
         }
         final Location location = action.getLocation();
         if (this.getClientProfile().getCols() < location.getCol() || this.getClientProfile().getRows() < location.getRow()) {
@@ -307,7 +307,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     public void returnToPreviousParent() {
         this.setCurrentParent(this.getPreviousParent());
         if (!this.getPreviousParent().equals("root")) {
-            System.out.println(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, this.getPreviousParent()));
+            System.out.println("parent : " + this.getPreviousParent());
             this.setPreviousParent(this.getClientProfile().getActionFromID(this.getPreviousParent()).getParent());
         }
         this.renderGrid();

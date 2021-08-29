@@ -1,5 +1,5 @@
 // 
-// Decompiled by Procyon v0.5.36
+// Decompiled by Procyon v0.6-prerelease
 // 
 
 package com.stream_pi.client.window;
@@ -92,9 +92,9 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             this.closeLogger();
             this.logger = Logger.getLogger("com.stream_pi");
             if (new File(ClientInfo.getInstance().getPrePath()).getAbsoluteFile().getParentFile().canWrite()) {
-                String path = invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+                String path = ClientInfo.getInstance().getPrePath() + "../stream-pi-client.log";
                 if (this.getClientInfo().isPhone()) {
-                    path = invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, ClientInfo.getInstance().getPrePath());
+                    path = ClientInfo.getInstance().getPrePath() + "stream-pi-client.log";
                 }
                 this.logFileHandler = new StreamPiLogFileHandler(path);
                 this.logger.addHandler((Handler)this.logFileHandler);
@@ -310,7 +310,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     }
     
     public void applyTheme(final Theme t) {
-        this.logger.info(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, t.getFullName()));
+        this.logger.info("Applying theme '" + t.getFullName() + "' ...");
         if (t.getFonts() != null) {
             for (final String fontFile : t.getFonts()) {
                 Font.loadFont(fontFile.replace("%20", ""), 13.0);
@@ -322,7 +322,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     }
     
     public void applyGlobalDefaultStylesheet() {
-        final File globalCSSFile = new File(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, this.getConfig().getDefaultThemesPath()));
+        final File globalCSSFile = new File(this.getConfig().getDefaultThemesPath() + "/global.css");
         if (globalCSSFile.exists()) {
             this.getLogger().info("Found global default style sheet. Adding ...");
             this.getStylesheets().add((Object)globalCSSFile.toURI().toString());
@@ -339,7 +339,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             }
             if (this.themes.getIsBadThemeTheCurrentOne()) {
                 if (this.getConfig().getCurrentThemeFullName().equals(this.getConfig().getDefaultCurrentThemeFullName())) {
-                    throw new SevereException(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, this.getConfig().getDefaultCurrentThemeFullName()));
+                    throw new SevereException("Unable to get default theme (" + this.getConfig().getDefaultCurrentThemeFullName() + ")\nPlease restore the theme or reinstall.");
                 }
                 themeErrors.append("\n\nReverted to default theme! (").append(this.getConfig().getDefaultCurrentThemeFullName()).append(")");
                 this.getConfig().setCurrentThemeFullName(this.getConfig().getDefaultCurrentThemeFullName());

@@ -1,5 +1,5 @@
 // 
-// Decompiled by Procyon v0.5.36
+// Decompiled by Procyon v0.6-prerelease
 // 
 
 package com.stream_pi.client.window.dashboard.actiongridpane;
@@ -100,7 +100,7 @@ public class ActionBox extends StackPane
         this.setMaxSize((double)this.size, (double)this.size);
         this.getStyleClass().clear();
         this.getStyleClass().add((Object)"action_box");
-        this.getStyleClass().add(invokedynamic(makeConcatWithConstants:(II)Ljava/lang/String;, this.row, this.col));
+        this.getStyleClass().add("action_box_" + this.row + "_" + this.col);
         this.setIcon(null);
         this.setOnMouseClicked(touchEvent -> this.actionClicked());
         this.setOnMousePressed(TouchEvent -> {
@@ -349,10 +349,10 @@ public class ActionBox extends StackPane
     public void setDisplayTextFontColourAndSize(final String colour) {
         String totalStyle = "";
         if (!colour.isEmpty()) {
-            totalStyle = invokedynamic(makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;, totalStyle, colour);
+            totalStyle = totalStyle + "-fx-text-fill : " + colour;
         }
         if (this.getAction().getNameFontSize() > -1.0) {
-            totalStyle = invokedynamic(makeConcatWithConstants:(Ljava/lang/String;D)Ljava/lang/String;, totalStyle, this.getAction().getNameFontSize());
+            totalStyle = totalStyle + "-fx-font-size: " + this.getAction().getNameFontSize();
         }
         if (!totalStyle.isBlank()) {
             this.displayTextLabel.setStyle(totalStyle);
@@ -415,7 +415,7 @@ public class ActionBox extends StackPane
     
     public void setBackgroundColour(final String colour) {
         if (!colour.isEmpty()) {
-            this.setStyle(invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, colour));
+            this.setStyle("-fx-background-color : " + colour);
         }
     }
 }

@@ -1,5 +1,5 @@
 // 
-// Decompiled by Procyon v0.5.36
+// Decompiled by Procyon v0.6-prerelease
 // 
 
 package com.stream_pi.client.window.settings;
@@ -303,8 +303,8 @@ public class GeneralTab extends VBox
         final Config config = Config.getInstance();
         this.nickNameTextField.setText(config.getClientNickName());
         this.serverHostNameOrIPTextField.setText(config.getSavedServerHostNameOrIP());
-        this.serverPortTextField.setText(invokedynamic(makeConcatWithConstants:(I)Ljava/lang/String;, config.getSavedServerPort()));
-        this.screenTimeoutTextField.setText(invokedynamic(makeConcatWithConstants:(I)Ljava/lang/String;, config.getScreenSaverTimeout()));
+        this.serverPortTextField.setText("" + config.getSavedServerPort());
+        this.screenTimeoutTextField.setText("" + config.getScreenSaverTimeout());
         this.screenSaverToggleSwitch.setSelected(config.isScreenSaverEnabled());
         this.screenMoverToggleSwitch.setSelected(config.isScreenMoverEnabled());
         this.clientProfileComboBox.setOptions((List)this.clientListener.getClientProfiles().getClientProfiles());
@@ -384,7 +384,7 @@ public class GeneralTab extends VBox
             new StreamPiAlert("bigquimo is mega chonk", "i cant stop sweating lol").show();
         }
         if (!errors.toString().isEmpty()) {
-            this.exceptionAndAlertHandler.handleMinorException(new MinorException("You made mistakes", invokedynamic(makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;, errors.toString())));
+            this.exceptionAndAlertHandler.handleMinorException(new MinorException("You made mistakes", "Please fix the errors and try again :\n" + errors.toString()));
             return;
         }
         try {
@@ -472,7 +472,7 @@ public class GeneralTab extends VBox
                 toBeReloaded = true;
             }
             config.setScreenMoverEnabled(this.screenMoverToggleSwitch.isSelected());
-            if (!invokedynamic(makeConcatWithConstants:(I)Ljava/lang/String;, screenSaverTimeout).equals(this.screenTimeoutTextField.getText()) && config.isScreenSaverEnabled()) {
+            if (!("" + screenSaverTimeout).equals(this.screenTimeoutTextField.getText()) && config.isScreenSaverEnabled()) {
                 config.setScreenSaverTimeout(this.screenTimeoutTextField.getText());
                 this.clientListener.getScreenSaver().setTimeout(config.getScreenSaverTimeout());
                 this.clientListener.getScreenSaver().restartTimer();
