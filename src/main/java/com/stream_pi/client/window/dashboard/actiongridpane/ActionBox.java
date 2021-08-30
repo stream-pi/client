@@ -268,33 +268,58 @@ public class ActionBox extends StackPane
     
     public void playActionAnimation() throws SevereException {
         Config config = Config.getInstance();
+        
         switch (config.getCurrentAnimationName()) {
         case "None":
             return;
         case "Flip":
             new Flip(getChildren().get(1)).play();
-        case "Flash":
-            new Flash(getChildren().get(1)).play();
+            break;
         case "Bounce":
             new Bounce(getChildren().get(1)).play();
+            break;
+        case "Bounce In/Out":
+            new BounceOut(getChildren().get(1)).playOnFinished(new BounceIn(getChildren().get(1))).play();
+            break;
+        case "Fade In/Out":
+            new FadeOut(getChildren().get(1)).playOnFinished(new FadeIn(getChildren().get(1))).play();
+            break;
+        case "Roll In/Out":
+            new RollOut(getChildren().get(1)).playOnFinished(new RollIn(getChildren().get(1))).play();
+            break;
+        case "Rotate In/Out":
+            new RotateOut(getChildren().get(1)).playOnFinished(new RotateIn(getChildren().get(1))).play();
+            break;
+        case "Zoom In/Out":
+            new ZoomOut(getChildren().get(1)).playOnFinished(new ZoomIn(getChildren().get(1))).play();
+            break;
         case "Jack In The Box":
             new JackInTheBox(getChildren().get(1)).play();
+            break;
         case "Swing":
             new Swing(getChildren().get(1)).play();
+            break;
         case "Jello":
             new Jello(getChildren().get(1)).play();
+            break;
         case "Pulse":
             new Pulse(getChildren().get(1)).play();
+            break;
         case "RubberBand":
             new RubberBand(getChildren().get(1)).play();
+            break;
         case "Shake":
             new Shake(getChildren().get(1)).play();
+            break;
         case "Tada":
             new Tada(getChildren().get(1)).play();
+            break;
         case "Wobble":
             new Wobble(getChildren().get(1)).play();
-        } 
-        Logger.getLogger("").warning("Invalid Option/n Please contact quimodotcom to solve this error!");
+            break;
+        default:
+            Logger.getLogger("").warning("Invalid Option/n Please contact quimodotcom to solve this error!");
+        }
     }
 
     public void init()

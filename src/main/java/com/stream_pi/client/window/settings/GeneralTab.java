@@ -107,10 +107,7 @@ public class GeneralTab extends VBox
     public GeneralTab(ExceptionAndAlertHandler exceptionAndAlertHandler,
                       ClientListener clientListener, HostServices hostServices)
     {
-        this.animationList = Arrays.asList(new String[] {
-            "None", "Bounce", "Flip", "Flash", "Jack In The Box", "Jello", "Pulse", "RubberBand", "Shake", "Swing", "Tada", 
-            "Wobble"
-        });
+        animationList = Arrays.asList("None", "Bounce", "Bounce In/Out", "Fade In/Out", "Flash", "Flip", "Jack In The Box", "Jello", "Pulse", "Roll In/Out", "Rotate In/Out", "RubberBand", "Shake", "Swing", "Tada", "Wobble", "Zoom In/Out");
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.clientListener = clientListener;
         this.hostServices = hostServices;
@@ -495,21 +492,21 @@ public class GeneralTab extends VBox
         themeComboBox.setOptions(clientListener.getThemes().getThemeList());
 
         int ind2 = 0;
-        for(int i = 0;i<themeComboBox.getOptions().size();i++)
+        for(int j = 0;j<themeComboBox.getOptions().size();j++)
         {
-            if(themeComboBox.getOptions().get(i).getFullName().equals(clientListener.getCurrentTheme().getFullName()))
+            if(themeComboBox.getOptions().get(j).getFullName().equals(clientListener.getCurrentTheme().getFullName()))
             {
-                ind2 = i;
+                ind2 = j;
                 break;
             }
         }
         
         int ind3 = 0;
-        for(int i = 0;i<animationComboBox.getOptions().size();i++)
+        for(int k = 0;k<animationComboBox.getOptions().size();k++)
         {
-            if(animationComboBox.getOptions().get(i).equals(config.getCurrentAnimationName()))
+            if(animationComboBox.getOptions().get(k).equals(config.getCurrentAnimationName()))
             {
-                ind3 = i;
+                ind3 = k;
                 break;
             }
         }
@@ -582,6 +579,12 @@ public class GeneralTab extends VBox
                 new StreamPiAlert("किसने बनाया ? / কে বানিয়েছে ?","ZGViYXlhbiAtIGluZGlh\n" +
                         "boka XD").show();
             }
+            
+            if(nickNameTextField.getText().equals("quimo is pog"))
+            {
+                new StreamPiAlert("wow! i am very cool! i found an easter egg made by quimo!\n" +
+                        "good job").show();
+            }
         }
 
 
@@ -624,14 +627,7 @@ public class GeneralTab extends VBox
             {
                 syncWithServer = true;
                 
-                try 
-                {
-                    config.setCurrentAnimationFullName(animationComboBox.getCurrentSelectedItem());
-                    config.save();
-                } catch (SevereException e) 
-                {
-                    exceptionAndAlertHandler.handleSevereException(e);
-                } 
+                config.setCurrentAnimationName(animationComboBox.getCurrentSelectedItem());
             } 
 
             if(!config.getClientNickName().equals(nickNameTextField.getText()))

@@ -205,7 +205,7 @@ public class Config
         document.getElementsByTagName("current-theme-full-name").item(0).setTextContent(name);
     }
     
-    public void setCurrentAnimationFullName(String name) {
+    public void setCurrentAnimationName(String name) {
         this.document.getElementsByTagName("current-animation-name").item(0).setTextContent(name);
     }
 

@@ -41,8 +41,6 @@ public abstract class AnimationFX {
     public AnimationFX() {
         hasNextAnimation = false;
         this.reset = false;
-
-
     }
 
     /**

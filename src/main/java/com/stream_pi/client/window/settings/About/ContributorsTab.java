@@ -59,7 +59,11 @@ public class ContributorsTab extends VBox
                 new Contributor("Abhinay Agarwal (abhinayagarwal)",
                         "abhinay_agarwal@live.com",
                         "Refactoring, Fixes",
-                        "India")
+                        "India"),
+                new Contributor("Evan Donald (quimodotcom)",
+                        "evandonald01@gmail.com",
+                        "Action Animations",
+                        "United Kingdom")
         );
 
         getChildren().addAll(tableView);
