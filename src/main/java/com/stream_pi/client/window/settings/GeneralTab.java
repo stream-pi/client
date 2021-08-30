@@ -108,7 +108,7 @@ public class GeneralTab extends VBox
                       ClientListener clientListener, HostServices hostServices)
     {
         this.animationList = Arrays.asList(new String[] {
-            "None", "Bounce", "Flip", "Jack In The Box", "Jello", "Pulse", "RubberBand", "Shake", "Swing", "Tada", 
+            "None", "Bounce", "Flip", "Flash", "Jack In The Box", "Jello", "Pulse", "RubberBand", "Shake", "Swing", "Tada", 
             "Wobble"
         });
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;

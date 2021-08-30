@@ -3,6 +3,7 @@ package com.stream_pi.client.window.dashboard.actiongridpane;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
+import com.stream_pi.client.animations.*;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
@@ -27,8 +28,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
-
-import animatefx.animation.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
@@ -273,25 +272,27 @@ public class ActionBox extends StackPane
         case "None":
             return;
         case "Flip":
-            (new Flip(getChildren().get(1))).play();
+            new Flip(getChildren().get(1)).play();
+        case "Flash":
+            new Flash(getChildren().get(1)).play();
         case "Bounce":
-            (new Bounce(getChildren().get(1))).play();
+            new Bounce(getChildren().get(1)).play();
         case "Jack In The Box":
-            (new JackInTheBox(getChildren().get(1))).play();
+            new JackInTheBox(getChildren().get(1)).play();
         case "Swing":
-            (new Swing(getChildren().get(1))).play();
+            new Swing(getChildren().get(1)).play();
         case "Jello":
-            (new Jello(getChildren().get(1))).play();
+            new Jello(getChildren().get(1)).play();
         case "Pulse":
-            (new Pulse(getChildren().get(1))).play();
+            new Pulse(getChildren().get(1)).play();
         case "RubberBand":
-            (new RubberBand(getChildren().get(1))).play();
+            new RubberBand(getChildren().get(1)).play();
         case "Shake":
-            (new Shake(getChildren().get(1))).play();
+            new Shake(getChildren().get(1)).play();
         case "Tada":
-            (new Tada(getChildren().get(1))).play();
+            new Tada(getChildren().get(1)).play();
         case "Wobble":
-            (new Wobble(getChildren().get(1))).play();
+            new Wobble(getChildren().get(1)).play();
         } 
         Logger.getLogger("").warning("Invalid Option/n Please contact quimodotcom to solve this error!");
     }
