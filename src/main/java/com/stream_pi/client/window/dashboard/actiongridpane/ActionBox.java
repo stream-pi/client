@@ -308,8 +308,11 @@ public class ActionBox extends StackPane
         case "RubberBand":
             new RubberBand(getChildren().get(1)).play();
             break;
-        case "Shake":
+        case "Shake Left/Right":
             new Shake(getChildren().get(1)).play();
+            break;
+        case "Shake Up/Down":
+            new ShakeUpDown(getChildren().get(1)).play();
             break;
         case "Tada":
             new Tada(getChildren().get(1)).play();

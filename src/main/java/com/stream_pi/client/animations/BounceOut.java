@@ -39,16 +39,16 @@ public class BounceOut extends AnimationFX {
                         new KeyValue(getNode().scaleXProperty(), 1, AnimateFXInterpolator.EASE),
                         new KeyValue(getNode().scaleYProperty(), 1, AnimateFXInterpolator.EASE)
                 ),
-                new KeyFrame(Duration.millis(200),
+                new KeyFrame(Duration.millis(50),
                         new KeyValue(getNode().scaleXProperty(), 0.9, AnimateFXInterpolator.EASE),
                         new KeyValue(getNode().scaleYProperty(), 0.9, AnimateFXInterpolator.EASE)
                 ),
-                new KeyFrame(Duration.millis(550),
+                new KeyFrame(Duration.millis(112),
                         new KeyValue(getNode().opacityProperty(), 1, AnimateFXInterpolator.EASE),
                         new KeyValue(getNode().scaleXProperty(), 1.1, AnimateFXInterpolator.EASE),
                         new KeyValue(getNode().scaleYProperty(), 1.1, AnimateFXInterpolator.EASE)
                 ),
-                new KeyFrame(Duration.millis(1000),
+                new KeyFrame(Duration.millis(225),
                         new KeyValue(getNode().opacityProperty(), 0, AnimateFXInterpolator.EASE),
                         new KeyValue(getNode().scaleXProperty(), 0.3, AnimateFXInterpolator.EASE),
                         new KeyValue(getNode().scaleYProperty(), 0.3, AnimateFXInterpolator.EASE)

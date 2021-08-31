@@ -107,7 +107,7 @@ public class GeneralTab extends VBox
     public GeneralTab(ExceptionAndAlertHandler exceptionAndAlertHandler,
                       ClientListener clientListener, HostServices hostServices)
     {
-        animationList = Arrays.asList("None", "Bounce", "Bounce In/Out", "Fade In/Out", "Flash", "Flip", "Jack In The Box", "Jello", "Pulse", "Roll In/Out", "Rotate In/Out", "RubberBand", "Shake", "Swing", "Tada", "Wobble", "Zoom In/Out");
+        animationList = Arrays.asList("None", "Bounce", "Bounce In/Out", "Fade In/Out", "Flash", "Flip", "Jack In The Box", "Jello", "Pulse", "Roll In/Out", "Rotate In/Out", "RubberBand", "Shake Left/Right", "Shake Up/Down","Swing", "Tada", "Wobble", "Zoom In/Out");
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.clientListener = clientListener;
         this.hostServices = hostServices;
