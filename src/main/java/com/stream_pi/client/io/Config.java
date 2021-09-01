@@ -109,6 +109,11 @@ public class Config
     {
         return "default";
     }
+    
+    public String getDefaultCurrentAnimationName()
+    {
+        return "None";
+    }
 
     public String getDefaultCurrentThemeFullName()
     {
@@ -145,6 +150,10 @@ public class Config
     public String getCurrentThemeFullName()
     {
         return XMLConfigHelper.getStringProperty(document, "current-theme-full-name", getDefaultCurrentThemeFullName(), false, true, document, configFile);
+    }
+    
+    public String getCurrentAnimationName() {
+        return XMLConfigHelper.getStringProperty(this.document, "current-animation-name", getDefaultCurrentAnimationName(), false, true, this.document, this.configFile);
     }
 
     public String getThemesPath()
@@ -194,6 +203,10 @@ public class Config
     public void setCurrentThemeFullName(String name)
     {
         document.getElementsByTagName("current-theme-full-name").item(0).setTextContent(name);
+    }
+    
+    public void setCurrentAnimationName(String name) {
+        this.document.getElementsByTagName("current-animation-name").item(0).setTextContent(name);
     }
 
     public void setProfilesPath(String profilesPath)
