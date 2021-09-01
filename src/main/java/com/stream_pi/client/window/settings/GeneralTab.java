@@ -19,6 +19,7 @@ import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.startatboot.StartAtBoot;
 import com.stream_pi.util.uihelper.HBoxInputBox;
@@ -33,8 +34,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import java.util.Arrays;
-import java.util.List;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.io.File;
@@ -54,7 +53,6 @@ public class GeneralTab extends VBox
 
     private StreamPiComboBox<ClientProfile> clientProfileComboBox;
     private StreamPiComboBox<Theme> themeComboBox;
-    private StreamPiComboBox<String> animationComboBox;
 
     private TextField nickNameTextField;
 
@@ -101,13 +99,10 @@ public class GeneralTab extends VBox
     private final Button checkForUpdatesButton;
 
     private HBoxInputBox screenTimeoutSecondsHBoxInputBox;
-    
-    private List<String> animationList;
 
     public GeneralTab(ExceptionAndAlertHandler exceptionAndAlertHandler,
                       ClientListener clientListener, HostServices hostServices)
     {
-        animationList = Arrays.asList("None", "Bounce", "Bounce In/Out", "Fade In/Out", "Flash", "Flip", "Jack In The Box", "Jello", "Pulse", "Roll In/Out", "Rotate In/Out", "RubberBand", "Shake Left/Right", "Shake Up/Down","Swing", "Tada", "Wobble", "Zoom In/Out");
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
         this.clientListener = clientListener;
         this.hostServices = hostServices;
@@ -131,17 +126,6 @@ public class GeneralTab extends VBox
                 return object.getName();
             }
         });
-        animationComboBox = new StreamPiComboBox();
-        
-        animationComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<String>() 
-        {
-            @Override
-            public String getOptionDisplayText(String object) 
-            {
-                return object;
-            }
-        });
-        
 
         clientProfileComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<ClientProfile>(){
             @Override
@@ -258,11 +242,6 @@ public class GeneralTab extends VBox
                         new Label("Theme"),
                         SpaceFiller.horizontal(),
                         themeComboBox
-                ),
-                new HBox(
-                        new Label("Action Animation"),
-                        SpaceFiller.horizontal(),
-                        animationComboBox
                 ),
                 generateSubHeading("Others"),
                 themesPathInputBox,
@@ -474,7 +453,7 @@ public class GeneralTab extends VBox
         screenTimeoutTextField.setText(config.getScreenSaverTimeout()+"");
         screenSaverToggleSwitch.setSelected(config.isScreenSaverEnabled());
         screenMoverToggleSwitch.setSelected(config.isScreenMoverEnabled());
-        animationComboBox.setOptions(animationList);
+
         clientProfileComboBox.setOptions(clientListener.getClientProfiles().getClientProfiles());
 
         int ind = 0;
@@ -492,27 +471,16 @@ public class GeneralTab extends VBox
         themeComboBox.setOptions(clientListener.getThemes().getThemeList());
 
         int ind2 = 0;
-        for(int j = 0;j<themeComboBox.getOptions().size();j++)
+        for(int i = 0;i<themeComboBox.getOptions().size();i++)
         {
-            if(themeComboBox.getOptions().get(j).getFullName().equals(clientListener.getCurrentTheme().getFullName()))
+            if(themeComboBox.getOptions().get(i).getFullName().equals(clientListener.getCurrentTheme().getFullName()))
             {
-                ind2 = j;
-                break;
-            }
-        }
-        
-        int ind3 = 0;
-        for(int k = 0;k<animationComboBox.getOptions().size();k++)
-        {
-            if(animationComboBox.getOptions().get(k).equals(config.getCurrentAnimationName()))
-            {
-                ind3 = k;
+                ind2 = i;
                 break;
             }
         }
 
         themeComboBox.setCurrentSelectedItemIndex(ind2);
-        animationComboBox.setCurrentSelectedItemIndex(ind3);
 
         themesPathTextField.setText(config.getThemesPath());
         iconsPathTextField.setText(config.getIconsPath());
@@ -579,12 +547,6 @@ public class GeneralTab extends VBox
                 new StreamPiAlert("किसने बनाया ? / কে বানিয়েছে ?","ZGViYXlhbiAtIGluZGlh\n" +
                         "boka XD").show();
             }
-            
-            if(nickNameTextField.getText().equals("quimo is pog"))
-            {
-                new StreamPiAlert("wow! i am very cool! i found an easter egg made by quimo!\n" +
-                        "good job").show();
-            }
         }
 
 
@@ -622,13 +584,6 @@ public class GeneralTab extends VBox
                     exceptionAndAlertHandler.handleSevereException(e);
                 }
             }
-            
-            if (!config.getCurrentAnimationName().equals(animationComboBox.getCurrentSelectedItem())) 
-            {
-                syncWithServer = true;
-                
-                config.setCurrentAnimationName(animationComboBox.getCurrentSelectedItem());
-            } 
 
             if(!config.getClientNickName().equals(nickNameTextField.getText()))
             {

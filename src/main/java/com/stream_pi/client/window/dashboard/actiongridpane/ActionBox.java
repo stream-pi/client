@@ -273,52 +273,51 @@ public class ActionBox extends StackPane
         case "None":
             return;
         case "Flip":
-            new Flip(getChildren().get(1)).play();
-            break;
+            new Flip(getChildren().get(1).getParent()).play();
         case "Bounce":
-            new Bounce(getChildren().get(1)).play();
+            new Bounce(getChildren().get(1).getParent()).play();
             break;
         case "Bounce In/Out":
-            new BounceOut(getChildren().get(1)).playOnFinished(new BounceIn(getChildren().get(1))).play();
+            new BounceOut(getChildren().get(1).getParent()).playOnFinished(new BounceIn(getChildren().get(1).getParent())).play();
             break;
         case "Fade In/Out":
-            new FadeOut(getChildren().get(1)).playOnFinished(new FadeIn(getChildren().get(1))).play();
+            new FadeOut(getChildren().get(1).getParent()).playOnFinished(new FadeIn(getChildren().get(1).getParent())).play();
             break;
         case "Roll In/Out":
-            new RollOut(getChildren().get(1)).playOnFinished(new RollIn(getChildren().get(1))).play();
+            new RollOut(getChildren().get(1).getParent()).playOnFinished(new RollIn(getChildren().get(1).getParent())).play();
             break;
         case "Rotate In/Out":
-            new RotateOut(getChildren().get(1)).playOnFinished(new RotateIn(getChildren().get(1))).play();
+            new RotateOut(getChildren().get(1).getParent()).playOnFinished(new RotateIn(getChildren().get(1).getParent())).play();
             break;
         case "Zoom In/Out":
-            new ZoomOut(getChildren().get(1)).playOnFinished(new ZoomIn(getChildren().get(1))).play();
+            new ZoomOut(getChildren().get(1).getParent()).playOnFinished(new ZoomIn(getChildren().get(1).getParent())).play();
             break;
         case "Jack In The Box":
-            new JackInTheBox(getChildren().get(1)).play();
+            new JackInTheBox(getChildren().get(1).getParent()).play();
             break;
         case "Swing":
-            new Swing(getChildren().get(1)).play();
+            new Swing(getChildren().get(1).getParent()).play();
             break;
         case "Jello":
-            new Jello(getChildren().get(1)).play();
+            new Jello(getChildren().get(1).getParent()).play();
             break;
         case "Pulse":
-            new Pulse(getChildren().get(1)).play();
+            new Pulse(getChildren().get(1).getParent()).play();
             break;
         case "RubberBand":
-            new RubberBand(getChildren().get(1)).play();
+            new RubberBand(getChildren().get(1).getParent()).play();
             break;
         case "Shake Left/Right":
-            new Shake(getChildren().get(1)).play();
+            new Shake(getChildren().get(1).getParent()).play();
             break;
         case "Shake Up/Down":
-            new ShakeUpDown(getChildren().get(1)).play();
+            new ShakeUpDown(getChildren().get(1).getParent()).play();
             break;
         case "Tada":
-            new Tada(getChildren().get(1)).play();
+            new Tada(getChildren().get(1).getParent()).play();
             break;
         case "Wobble":
-            new Wobble(getChildren().get(1)).play();
+            new Wobble(getChildren().get(1).getParent()).play();
             break;
         default:
             Logger.getLogger("").warning("Invalid Option/n Please contact quimodotcom to solve this error!");

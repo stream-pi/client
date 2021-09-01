@@ -15,7 +15,7 @@ module com.stream_pi.client {
     requires java.management;
 
     requires java.xml;
-    
+
     opens com.stream_pi.client.window.settings.About to javafx.base;
 
     requires com.stream_pi.util;
