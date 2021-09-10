@@ -3,7 +3,7 @@ name: Init
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   init:
