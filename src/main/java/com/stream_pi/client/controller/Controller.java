@@ -550,12 +550,13 @@ public class Controller extends Base
     @Override
     public void onActionClicked(String profileID, String actionID, boolean toggleState)
     {
-        try {
-
+        try
+        {
             vibratePhone();
-
             client.onActionClicked(profileID, actionID, toggleState);
-        } catch (SevereException e) {
+        }
+        catch (SevereException e)
+        {
             e.printStackTrace();
             handleSevereException(e);
         }

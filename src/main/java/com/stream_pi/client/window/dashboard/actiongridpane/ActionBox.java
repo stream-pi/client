@@ -13,6 +13,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
@@ -29,6 +30,7 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.ByteArrayInputStream;
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 public class ActionBox extends StackPane
@@ -163,9 +165,54 @@ public class ActionBox extends StackPane
                     }
                 }
 
-                if(action.getActionType() == ActionType.COMBINE || action.getActionType() == ActionType.NORMAL)
+                if(action.getActionType() == ActionType.NORMAL)
                 {
-                    getActionGridPaneListener().normalOrCombineActionClicked(action.getID());
+                    getActionGridPaneListener().normalActionClicked(action.getID());
+                }
+                else if(action.getActionType() == ActionType.COMBINE)
+                {
+
+                    System.out.println("TOTAL CHILDREN : "+action.getClientProperties().getSize());
+
+                    new Thread(new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception
+                        {
+                            for(int i = 0;i<action.getClientProperties().getSize(); i++)
+                            {
+                                try
+                                {
+                                    Action childAction = clientListener.getCurrentProfile().getActionFromID(
+                                            action.getClientProperties().getSingleProperty(i+"").getRawValue()
+                                    );
+
+                                    System.out.println("TYPE : "+childAction.getActionType());
+
+                                    Thread.sleep(childAction.getDelayBeforeExecuting());
+
+                                    if (childAction.getActionType() == ActionType.NORMAL)
+                                    {
+                                        getActionGridPaneListener().normalActionClicked(childAction.getID());
+                                    }
+                                    else if (childAction.getActionType() == ActionType.TOGGLE)
+                                    {
+                                        clientListener.getCurrentProfile().getActionFromID(childAction.getID()).setCurrentToggleStatus(
+                                                !clientListener.getCurrentProfile().getActionFromID(childAction.getID()).getCurrentToggleStatus()
+                                        );
+
+                                        getActionGridPaneListener().toggleActionClicked(childAction.getID(), childAction.getCurrentToggleStatus());
+                                    }
+                                }
+                                catch (MinorException e)
+                                {
+                                    exceptionAndAlertHandler.handleMinorException(e);
+                                }
+                            }
+
+                            return null;
+                        }
+                    }).start();
+
                 }
                 else if(action.getActionType() == ActionType.TOGGLE)
                 {

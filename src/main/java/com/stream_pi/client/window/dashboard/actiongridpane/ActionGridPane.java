@@ -416,7 +416,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     }
 
     @Override
-    public void normalOrCombineActionClicked(String ID)
+    public void normalActionClicked(String ID)
     {
         clientListener.onActionClicked(getClientProfile().getID(), ID, false);
     }

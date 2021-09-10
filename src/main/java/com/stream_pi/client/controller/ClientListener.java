@@ -18,6 +18,7 @@ public interface ClientListener
 {
     void onActionFailed(String profileID, String actionID);
     void onActionClicked(String profileID, String actionID, boolean toggleState);
+
     ClientProfiles getClientProfiles();
 
     Themes getThemes();
