@@ -1,76 +1,48 @@
 package com.stream_pi.client.window.settings.About;
 
-import javafx.scene.CacheHint;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.util.links.Links;
+import javafx.application.HostServices;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
-public class ContributorsTab extends VBox
+public class ContributorsTab extends ScrollPane
 {
-    TableView<Contributor> tableView;
-
-    public ContributorsTab()
+    private final ClientListener clientListener;
+    public ContributorsTab(ClientListener clientListener)
     {
-        getStyleClass().add("about_license_contributors_vbox");
+        this.clientListener = clientListener;
 
-        tableView = new TableView<>();
-        tableView.getStyleClass().add("about_license_contributors_table_view");
+        getStyleClass().add("about_contributors_tab_scroll_pane");
 
-        TableColumn<Contributor, String> descriptionColumn = new TableColumn<>("Description");
-        descriptionColumn.setReorderable(false);
-        descriptionColumn.setPrefWidth(250);
-        descriptionColumn.setResizable(false);
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        Hyperlink team = new Hyperlink("Team");
+        team.setOnAction(event -> openWebpage(Links.getWebsiteAbout()));
 
-        TableColumn<Contributor, String> nameColumn = new TableColumn<>("Name (GitHub)");
-        nameColumn.setReorderable(false);
-        nameColumn.setPrefWidth(220);
-        nameColumn.setResizable(false);
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        Hyperlink server = new Hyperlink("Server");
+        server.setOnAction(event -> openWebpage(Links.getServerContributors()));
 
-        TableColumn<Contributor, String> emailColumn = new TableColumn<>("Email");
-        emailColumn.setReorderable(false);
-        emailColumn.setPrefWidth(200);
-        emailColumn.setResizable(false);
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        Hyperlink client = new Hyperlink("Client");
+        client.setOnAction(event -> openWebpage(Links.getClientContributors()));
 
-        TableColumn<Contributor, String> locationColumn = new TableColumn<>("Location");
-        locationColumn.setReorderable(false);
-        locationColumn.setPrefWidth(100);
-        locationColumn.setResizable(false);
-        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        Hyperlink action_api = new Hyperlink("Action API");
+        action_api.setOnAction(event -> openWebpage(Links.getActionAPIContributors()));
 
+        Hyperlink theme_api = new Hyperlink("Theme API");
+        theme_api.setOnAction(event -> openWebpage(Links.getThemeAPIContributors()));
 
-        tableView.getColumns().addAll(descriptionColumn, nameColumn, emailColumn, locationColumn);
+        Hyperlink util = new Hyperlink("Util");
+        util.setOnAction(event -> openWebpage(Links.getUtilContributors()));
 
-        tableView.setPrefWidth(descriptionColumn.getPrefWidth() + nameColumn.getPrefWidth() + emailColumn.getPrefWidth());
+        VBox vBox = new VBox(team, server, client, action_api, theme_api, util);
+        vBox.setSpacing(10.0);
 
-        tableView.getItems().addAll(
-                new Contributor("Debayan Sutradhar (rnayabed)",
-                        "debayansutradhar3@gmail.com",
-                        "Founder, Author, Maintainer",
-                        "India"),
-                new Contributor("Samuel Quiñones (SamuelQuinones)",
-                        "sdquinones1@gmail.com",
-                        "Founder",
-                        "United States"),
-                new Contributor("Abhinay Agarwal (abhinayagarwal)",
-                        "abhinay_agarwal@live.com",
-                        "Refactoring, Fixes",
-                        "India")
-        );
-
-        getChildren().addAll(tableView);
-
-
-        setCache(true);
-        setCacheHint(CacheHint.SPEED);
+        setContent(vBox);
     }
 
-    public TableView<Contributor> getTableView()
+
+    public void openWebpage(String url)
     {
-        return tableView;
+        clientListener.openURL(url);
     }
 }

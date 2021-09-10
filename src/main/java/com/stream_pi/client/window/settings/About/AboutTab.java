@@ -56,7 +56,7 @@ public class AboutTab extends ScrollPane
 
 
         Tab contributorsT = new Tab("Contributors");
-        contributorsTab = new ContributorsTab();
+        contributorsTab = new ContributorsTab(clientListener);
         contributorsT.setContent(contributorsTab);
 
 
