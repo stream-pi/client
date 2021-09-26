@@ -5,6 +5,7 @@ import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.action_api.action.Location;
 import com.stream_pi.action_api.actionproperty.ClientProperties;
+import com.stream_pi.action_api.actionproperty.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.property.Property;
 import com.stream_pi.action_api.actionproperty.property.Type;
 import com.stream_pi.client.controller.ClientListener;
@@ -14,11 +15,11 @@ import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
 import com.stream_pi.theme_api.Theme;
-import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.comms.Message;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.version.Version;
+import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Orientation;
@@ -210,6 +211,12 @@ public class Client extends Thread
                         case "set_toggle_status":       onSetToggleStatus(message);
                             break;
 
+                        case "set_action_gauge_properties": onSetActionGaugeProperties(message);
+                            break;
+
+                        case "set_action_gauge_value": onSetActionGaugeValue(message);
+                            break;
+
                         default:                        logger.warning("Command '"+header+"' does not match records. Make sure client and server versions are equal.");
 
                     }
@@ -272,6 +279,41 @@ public class Client extends Thread
         {
             actionBox.setCurrentToggleStatus(newStatus);
             Platform.runLater(()-> actionBox.toggle(newStatus));
+        }
+    }
+
+    private void onSetActionGaugeProperties(Message message)
+    {
+        String[] arr = message.getStringArrValue();
+
+        String profileID = arr[0];
+        String actionID = arr[1];
+
+        ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
+
+        if(actionBox!=null)
+        {
+            Platform.runLater(()->
+            {
+                actionBox.updateGauge((GaugeProperties) message.getObject());
+            });
+        }
+    }
+
+    private void onSetActionGaugeValue(Message message)
+    {
+        String[] arr = message.getStringArrValue();
+
+        String profileID = arr[0];
+        String actionID = arr[1];
+
+        ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
+
+        if(actionBox!=null)
+        {
+            Platform.runLater(()->{
+                actionBox.updateGaugeValue(message.getDoubleValue());
+            });
         }
     }
 
@@ -552,7 +594,8 @@ public class Client extends Thread
         a.add(action.getActionType()+"");
 
         if(action.getActionType() == ActionType.NORMAL ||
-                action.getActionType() == ActionType.TOGGLE) {
+                action.getActionType() == ActionType.TOGGLE || action.getActionType() == ActionType.GAUGE)
+        {
             a.add(action.getVersion().getText());
         }
         else
@@ -561,7 +604,7 @@ public class Client extends Thread
         }
 
         if(action.getActionType() ==ActionType.NORMAL ||
-                action.getActionType() == ActionType.TOGGLE)
+                action.getActionType() == ActionType.TOGGLE || action.getActionType() == ActionType.GAUGE)
         {
             a.add(action.getModuleName());
         }
@@ -613,6 +656,8 @@ public class Client extends Thread
 
         //client properties
 
+        a.add(action.isGaugeAnimated()+"");
+
         ClientProperties clientProperties = action.getClientProperties();
 
         a.add(clientProperties.getSize()+"");
@@ -629,6 +674,7 @@ public class Client extends Thread
 
         String[] x = new String[a.size()];
         x = a.toArray(x);
+
 
         message.setStringArrValue(x);
         sendMessage(message);
@@ -668,7 +714,7 @@ public class Client extends Thread
 
         Action action = new Action(actionID, actionType);
 
-        if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE)
+        if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE || actionType == ActionType.GAUGE)
         {
             try
             {
@@ -702,14 +748,21 @@ public class Client extends Thread
 
         action.setDelayBeforeExecuting(Integer.parseInt(r[16]));
 
-        int clientPropertiesSize = Integer.parseInt(r[17]);
+        boolean isAnimatedGauge = r[17].equals("true");
+
+        if (action.getActionType() == ActionType.GAUGE)
+        {
+            action.setGaugeAnimated(isAnimatedGauge);
+        }
+
+        int clientPropertiesSize = Integer.parseInt(r[18]);
 
         ClientProperties clientProperties = new ClientProperties();
 
         if(actionType == ActionType.FOLDER)
             clientProperties.setDuplicatePropertyAllowed(true);
 
-        for(int i = 18;i<((clientPropertiesSize*2) + 18); i+=2)
+        for(int i = 19;i<((clientPropertiesSize*2) + 19); i+=2)
         {
             Property property = new Property(r[i], Type.STRING);
             property.setRawValue(r[i+1]);

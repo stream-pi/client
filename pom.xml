@@ -13,7 +13,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <javafx.version>18-ea+2</javafx.version>
+        <javafx.version>17.0.0.1</javafx.version>
+        <medusa.version>11.7</medusa.version>
 
         <gluonfx.plugin.version>1.0.2</gluonfx.plugin.version>
         <ikonli.version>11.5.0</ikonli.version>
@@ -119,6 +120,30 @@
             <artifactId>controlsfx</artifactId>
             <version>${controlsfx.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>eu.hansolo</groupId>
+            <artifactId>Medusa</artifactId>
+            <version>${medusa.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-controls</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-base</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-swing</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -173,7 +198,6 @@
                 <configuration>
                     <commandlineArgs>Stream-Pi.defaultFullScreenMode=false Stream-Pi.enableScreenSaverFeature=false</commandlineArgs>
                     <options>
-                        <option>-XX:+UnlockExperimentalVMOptions -XX:+UseZGC</option>
                         <option>-Dprism.verbose=true</option>
                         <option>-Djavafx.verbose=true</option>
                         <option>-Dprism.forceGPU=true</option>

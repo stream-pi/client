@@ -7,13 +7,11 @@ import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.Location;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
-import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
-import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -289,25 +287,31 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         return actionBox;
     }
 
-    public void toggleOffAllToggleActions()
+    public ActionBox[][] getActionBoxes()
     {
-        for(Node each : actionsGridPane.getChildren())
-        {
-            if(each instanceof ActionBox)
-            {
-                ActionBox eachActionBox = (ActionBox) each;
+        return actionBoxes;
+    }
 
-                if(eachActionBox.getAction() != null)
+    public void toggleOffAllToggleActionsAndHideAllGaugeActions()
+    {
+        for (ActionBox[] actionBox : actionBoxes)
+        {
+            for (ActionBox eachActionBox : actionBox)
+            {
+                if (eachActionBox.getAction() != null)
                 {
-                    if(eachActionBox.getAction().getActionType() == ActionType.TOGGLE)
+                    if (eachActionBox.getAction().getActionType() == ActionType.TOGGLE)
                     {
-                        if(eachActionBox.getCurrentToggleStatus()) // ON
+                        if (eachActionBox.getCurrentToggleStatus()) // ON
                         {
                             eachActionBox.toggle();
                         }
                     }
+                    else if (eachActionBox.getAction().getActionType() == ActionType.GAUGE)
+                    {
+                        eachActionBox.setGaugeVisible(false);
+                    }
                 }
-
             }
         }
     }
@@ -362,8 +366,15 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         actionBox.setCurrentToggleStatus(oldToggleStatus);
 
 
+
         actionBox.setStreamPiParent(currentParent);
         actionBox.init();
+
+        if (clientListener.isConnected() && actionBox.getAction().getActionType() == ActionType.GAUGE)
+        {
+            actionBox.setGaugeVisible(false);
+        }
+
 
         /*ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this, location.getRow(), location.getCol());
 

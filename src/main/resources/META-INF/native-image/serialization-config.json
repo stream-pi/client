@@ -1,5 +1,9 @@
 [
-  {"name":"com.stream_pi.util.comms.Message"},
+  {"name": "com.stream_pi.util.comms.Message"},
+  {"name": "com.stream_pi.action_api.actionproperty.GaugeProperties"},
+  {"name": "com.stream_pi.action_api.actionproperty.GaugeSection"},
+  {"name": "eu.hansolo.medusa.Gauge$SkinType"},
+  {"name": "java.util.ArrayList"},
   {"name": "java.lang.String"},
   {"name": "java.lang.String[]"},
   {"name": "byte"},

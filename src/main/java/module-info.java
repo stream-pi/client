@@ -12,6 +12,8 @@ module com.stream_pi.client {
     requires com.gluonhq.attach.vibration;
     requires com.gluonhq.attach.orientation;
 
+    requires eu.hansolo.medusa;
+
     requires java.management;
 
     requires java.xml;

@@ -3,12 +3,16 @@ package com.stream_pi.client.window.dashboard.actiongridpane;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
+import com.stream_pi.action_api.actionproperty.GaugeProperties;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
+import com.stream_pi.client.window.dashboard.actiongridpane.ActionGridPaneListener;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
+import eu.hansolo.medusa.Clock;
+import eu.hansolo.medusa.Gauge;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -16,6 +20,9 @@ import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -24,6 +31,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -38,6 +47,8 @@ public class ActionBox extends StackPane
 
     private Label displayTextLabel;
 
+    private Gauge gauge;
+
     private int row;
     private int col;
 
@@ -51,7 +62,6 @@ public class ActionBox extends StackPane
     
     private Logger logger;
 
-    
 
     public void clear()
     {
@@ -62,41 +72,14 @@ public class ActionBox extends StackPane
         setBackground(Background.EMPTY);
         removeFontIcon();
         getChildren().clear();
+        gauge = null;
         baseInit();
     }
 
     private FontIcon statusIcon;
-    
-    public void baseInit()
+
+    public void initMouseAndTouchListeners()
     {
-        displayTextLabel = new Label();
-        displayTextLabel.setWrapText(true);
-        displayTextLabel.setTextAlignment(TextAlignment.CENTER);
-        displayTextLabel.getStyleClass().add("action_box_display_text_label");
-
-        displayTextLabel.prefHeightProperty().bind(heightProperty());
-        displayTextLabel.prefWidthProperty().bind(widthProperty());
-
-
-        statusIcon = new FontIcon("fas-exclamation-triangle");
-        statusIcon.getStyleClass().add("action_box_error_icon");
-        statusIcon.setOpacity(0);
-        statusIcon.setCache(true);
-        statusIcon.setCacheHint(CacheHint.SPEED);
-        statusIcon.setIconSize(size - 30);
-
-    
-        getChildren().addAll(statusIcon, displayTextLabel);
-
-        setMinSize(size, size);
-        setMaxSize(size, size);
-
-        getStyleClass().clear();
-        getStyleClass().add("action_box");
-        getStyleClass().add("action_box_"+row+"_"+col);
-
-        setIcon(null);
-
         setOnMouseClicked(touchEvent -> actionClicked());
 
         setOnMousePressed(TouchEvent -> {
@@ -111,6 +94,33 @@ public class ActionBox extends StackPane
                 getStyleClass().remove("action_box_onclick");
             }
         });
+    }
+
+    public void baseInit()
+    {
+        setMinSize(size, size);
+        setMaxSize(size, size);
+
+        getStyleClass().clear();
+        getStyleClass().add("action_box");
+        getStyleClass().add("action_box_"+row+"_"+col);
+
+        setIcon(null);
+
+        displayTextLabel = new Label();
+        displayTextLabel.setWrapText(true);
+        displayTextLabel.setTextAlignment(TextAlignment.CENTER);
+        displayTextLabel.getStyleClass().add("action_box_display_text_label");
+
+        displayTextLabel.prefHeightProperty().bind(heightProperty());
+        displayTextLabel.prefWidthProperty().bind(widthProperty());
+
+        statusIcon = new FontIcon("fas-exclamation-triangle");
+        statusIcon.getStyleClass().add("action_box_error_icon");
+        statusIcon.setOpacity(0);
+        statusIcon.setCache(true);
+        statusIcon.setCacheHint(CacheHint.SPEED);
+        statusIcon.setIconSize(size - 30);
 
         statusIconAnimation = new Timeline(
                 new KeyFrame(
@@ -126,6 +136,10 @@ public class ActionBox extends StackPane
                         Duration.millis(700.0D),
                         new KeyValue(statusIcon.opacityProperty(), 0.0D, Interpolator.EASE_OUT))
         );
+
+
+
+        getChildren().addAll(statusIcon, displayTextLabel);
 
         statusIconAnimation.setOnFinished(event -> {
             statusIcon.toBack();
@@ -249,6 +263,7 @@ public class ActionBox extends StackPane
         this.logger = Logger.getLogger("");
 
         baseInit();
+        initMouseAndTouchListeners();
     }
 
     public Logger getLogger() 
@@ -311,33 +326,62 @@ public class ActionBox extends StackPane
     {
         setBackground(null);
         setStyle(null);
+
+
         displayTextLabel.setStyle(null);
-
-
-        if(getAction().isShowDisplayText())
-        {
-            setDisplayTextAlignment(action.getDisplayTextAlignment());
-            setDisplayTextFontColourAndSize(action.getDisplayTextFontColourHex());
-            setDisplayTextLabel(getAction().getDisplayText());
-        }
-        else
-            setDisplayTextLabel("");
-
-        setBackgroundColour(action.getBgColourHex());
 
         try
         {
-            if(action.getActionType() == ActionType.TOGGLE)
+            if (getAction().getActionType() == ActionType.GAUGE)
+            {
+                if (gauge == null)
+                {
+                    gauge = new Gauge();
+                    gauge.setOnMouseClicked(getOnMouseClicked());
+                    gauge.setAnimated(getAction().isGaugeAnimated());
+
+
+                    getChildren().add(gauge);
+                }
+
+
+                setDisplayTextAlignment(getAction().getDisplayTextAlignment());
+                setDisplayTextFontColourAndSize(getAction().getDisplayTextFontColourHex());
+                setDisplayTextLabel(getAction().getDisplayText());
+
+
+                setGaugeTitle(getAction().getDisplayText());
+
+
+                setGaugeVisible(clientListener.isConnected());
+            }
+            else
+            {
+
+
+                if(getAction().isShowDisplayText())
+                {
+                    setDisplayTextAlignment(getAction().getDisplayTextAlignment());
+                    setDisplayTextFontColourAndSize(getAction().getDisplayTextFontColourHex());
+                    setDisplayTextLabel(getAction().getDisplayText());
+                }
+                else
+                {
+                    setDisplayTextLabel("");
+                }
+            }
+
+            if(getAction().getActionType() == ActionType.TOGGLE)
             {
                 toggle(getCurrentToggleStatus());
             }
             else
             {
-                if(action.isHasIcon())
+                if(getAction().isHasIcon())
                 {
-                    if(!action.getCurrentIconState().isBlank())
+                    if(!getAction().getCurrentIconState().isBlank())
                     {
-                        setIcon(action.getCurrentIcon());
+                        setIcon(getAction().getCurrentIcon());
                     }
                 }
                 else
@@ -345,12 +389,57 @@ public class ActionBox extends StackPane
                     setIcon(null);
                 }
             }
+
+            setBackgroundColour(getAction().getBgColourHex());
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
     }
+
+    public void setGaugeTextColour(String colorStr)
+    {
+        Color color = Color.valueOf("#242424");
+        if (!colorStr.isEmpty())
+        {
+            color = Color.valueOf(colorStr);
+        }
+
+        gauge.setTitleColor(color);
+        gauge.setSubTitleColor(color);
+        gauge.setUnitColor(color);
+        gauge.setValueColor(color);
+    }
+
+    public void updateGauge(GaugeProperties gaugeProperties)
+    {
+        gauge.setSkinType(gaugeProperties.getSkinType());
+        gauge.setMinValue(gaugeProperties.getMinValue());
+        gauge.setMaxValue(gaugeProperties.getMaxValue());
+        gauge.setSections(gaugeProperties.getSections());
+        gauge.setUnit(gaugeProperties.getUnit());
+        gauge.setSubTitle(gaugeProperties.getSubTitle());
+        gauge.setDecimals(gaugeProperties.getDecimals());
+
+        setGaugeTextColour(getAction().getDisplayTextFontColourHex());
+
+        updateGaugeValue(gaugeProperties.getValue());
+
+        setGaugeVisible(true);
+    }
+
+    public void updateGaugeValue(double value)
+    {
+        gauge.setValue(value);
+    }
+
+    public void setGaugeVisible(boolean visible)
+    {
+        gauge.setVisible(visible);
+        displayTextLabel.setVisible(!visible);
+    }
+
 
 
     public void setCurrentToggleStatus(boolean currentToggleStatus)
@@ -493,6 +582,12 @@ public class ActionBox extends StackPane
         displayTextLabel.setText(text);
     }
 
+    public void setGaugeTitle(String text)
+    {
+        gauge.setTitle(text);
+    }
+
+
     public void setDisplayTextAlignment(DisplayTextAlignment displayTextAlignment)
     {
         if(displayTextAlignment == DisplayTextAlignment.CENTER)
@@ -529,3 +624,5 @@ public class ActionBox extends StackPane
             setStyle("-fx-background-color : "+colour);
     }
 }
+
+

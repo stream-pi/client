@@ -145,13 +145,18 @@ public class ClientProfile implements Cloneable{
                     properties.setDuplicatePropertyAllowed(true);
 
 
-                if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE)
+                if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE || actionType == ActionType.GAUGE)
                 {
                     action.setVersion(new Version(XMLConfigHelper.getStringProperty(eachActionElement, "version")));
                     action.setModuleName(XMLConfigHelper.getStringProperty(eachActionElement, "module-name"));
                     action.setDelayBeforeExecuting(Integer.parseInt(
                             XMLConfigHelper.getStringProperty(eachActionElement, "delay-before-running")
                     ));
+
+                    if (actionType == ActionType.GAUGE)
+                    {
+                        action.setGaugeAnimated(XMLConfigHelper.getBooleanProperty(eachActionElement, "is-animated"));
+                    }
                 }
 
                 Node propertiesNode = eachActionElement.getElementsByTagName("properties").item(0);
@@ -392,7 +397,7 @@ public class ClientProfile implements Cloneable{
         actionTypeElement.setTextContent(action.getActionType()+"");
         newActionElement.appendChild(actionTypeElement);
 
-        if(action.getActionType() == ActionType.NORMAL || action.getActionType() == ActionType.TOGGLE)
+        if(action.getActionType() == ActionType.NORMAL || action.getActionType() == ActionType.TOGGLE || action.getActionType() == ActionType.GAUGE)
         {
             Element versionElement = document.createElement("version");
             versionElement.setTextContent(action.getVersion().getText());
@@ -407,6 +412,13 @@ public class ClientProfile implements Cloneable{
             Element delayBeforeRunningElement = document.createElement("delay-before-running");
             delayBeforeRunningElement.setTextContent(action.getDelayBeforeExecuting()+"");
             newActionElement.appendChild(delayBeforeRunningElement);
+
+            if (action.getActionType() == ActionType.GAUGE)
+            {
+                Element isAnimatedElement = document.createElement("is-animated");
+                isAnimatedElement.setTextContent(action.isGaugeAnimated()+"");
+                newActionElement.appendChild(isAnimatedElement);
+            }
         }
 
         Element displayElement = document.createElement("display");
@@ -538,7 +550,7 @@ public class ClientProfile implements Cloneable{
         return -1;
     }
     
-    public void saveActionIcon(String actionID, byte[] array, String state) throws MinorException
+    public void saveActionIcon(String actionID, byte[] array, String state)
     {
         int index = getActionIndexInConfig(actionID);
 
@@ -637,7 +649,8 @@ public class ClientProfile implements Cloneable{
 
 
 
-    public void removeAction(String ID) throws Exception {
+    public void removeAction(String ID)
+    {
         int index = getActionIndexInConfig(ID);
 
         if(index>-1)

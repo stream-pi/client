@@ -13,7 +13,6 @@ import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.Base;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
-import com.stream_pi.client.window.dashboard.actiongridpane.ActionGridPaneListener;
 import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertListener;
 import com.stream_pi.util.alert.StreamPiAlertType;
@@ -30,20 +29,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Screen;
 import javafx.util.Duration;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
 
@@ -397,7 +387,7 @@ public class Controller extends Base
 
     @Override
     public void onDisconnect() {
-        Platform.runLater(()->getDashboardPane().getActionGridPane().toggleOffAllToggleActions());
+        Platform.runLater(()->getDashboardPane().getActionGridPane().toggleOffAllToggleActionsAndHideAllGaugeActions());
     }
 
     @Override
