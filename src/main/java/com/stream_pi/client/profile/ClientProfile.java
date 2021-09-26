@@ -199,7 +199,7 @@ public class ClientProfile implements Cloneable{
 
                 //display
 
-                //location
+                //location & span
 
                 try
                 {
@@ -207,6 +207,13 @@ public class ClientProfile implements Cloneable{
                     int row = XMLConfigHelper.getIntProperty(locationElement, "row");
                     int col = XMLConfigHelper.getIntProperty(locationElement, "col");
                     action.setLocation(new Location(row, col));
+
+                    Element spanElement = (Element) displayElement.getElementsByTagName("span").item(0);
+                    int rowSpan = XMLConfigHelper.getIntProperty(spanElement, "row");
+                    int colSpan = XMLConfigHelper.getIntProperty(spanElement, "col");
+
+                    action.setRowSpan(rowSpan);
+                    action.setColSpan(colSpan);
                 }
                 catch (Exception e)
                 {
@@ -490,6 +497,17 @@ public class ClientProfile implements Cloneable{
         Element rowElement = document.createElement("row");
         rowElement.setTextContent(action.getLocation().getRow()+"");
         locationElement.appendChild(rowElement);
+
+        Element spanElement = document.createElement("span");
+        displayElement.appendChild(spanElement);
+
+        Element colSpanElement = document.createElement("col");
+        colSpanElement.setTextContent(action.getColSpan()+"");
+        spanElement.appendChild(colSpanElement);
+
+        Element rowSpanElement = document.createElement("row");
+        rowSpanElement.setTextContent(action.getRowSpan()+"");
+        spanElement.appendChild(rowSpanElement);
 
 
         Element propertiesElement = document.createElement("properties");

@@ -200,6 +200,8 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
                         actionBoxes[col][row].clear();
                     }
                 }
+
+                actionBoxes[col][row].setVisible(true);
             }
         }
 
@@ -244,8 +246,10 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     private Logger logger;
 
 
-    public void clearActionBox(int col, int row)
+    public void clearActionBox(int col, int row, int colSpan, int rowSpan)
     {
+        showNonUsedBoxes(col, row, colSpan, rowSpan);
+
         actionBoxes[col][row].clear();
     }
 
@@ -342,6 +346,8 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         if( getClientProfile().getCols() < location.getCol() || getClientProfile().getRows() < location.getRow())
             return;
 
+        boolean makeNonUsedBoxesVisible = false;
+
         ActionBox actionBox = actionBoxes[location.getCol()][location.getRow()];
 
         if(actionBox.getAction()!=null)
@@ -350,12 +356,18 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
             {
                 actionBox.clear();
             }
+
+            makeNonUsedBoxesVisible = (GridPane.getColumnSpan(actionBox) != action.getColSpan()) || (GridPane.getRowSpan(actionBox) != action.getRowSpan());
         }
         else
         {
             actionBox.clear();
         }
 
+        if (makeNonUsedBoxesVisible)
+        {
+            showNonUsedBoxes(action.getLocation().getCol(), action.getLocation().getRow(), GridPane.getColumnSpan(actionBox),  GridPane.getRowSpan(actionBox));
+        }
 
         boolean oldToggleStatus = action.getCurrentToggleStatus();
 
@@ -369,6 +381,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         actionBox.setStreamPiParent(currentParent);
         actionBox.init();
+        actionBox.setVisible(true);
 
         if (clientListener.isConnected() && actionBox.getAction().getActionType() == ActionType.GAUGE)
         {
@@ -387,6 +400,25 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         actionBoxes[location.getCol()][location.getRow()] = actionBox;*/
     }
+
+    @Override
+    public void showNonUsedBoxes(int col, int row, int colSpan, int rowSpan)
+    {
+        for (int i = row; i< (row+rowSpan); i++)
+        {
+            actionBoxes[col][i].setVisible(true);
+            GridPane.setColumnSpan(actionBoxes[col][i], 1);
+            GridPane.setRowSpan(actionBoxes[col][i], 1);
+        }
+
+        for (int j = col; j< (col+colSpan); j++)
+        {
+            actionBoxes[j][row].setVisible(true);
+            GridPane.setColumnSpan(actionBoxes[j][row], 1);
+            GridPane.setRowSpan(actionBoxes[j][row], 1);
+        }
+    }
+
 
     public void setRows(int rows)
     {
@@ -437,13 +469,6 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     {
         clientListener.onActionClicked(getClientProfile().getID(), ID, toggleState);
     }
-
-    @Override
-    public ActionBox getActionBoxByLocation(Location location)
-    {
-        return getActionBox(location.getCol(), location.getRow());
-    }
-
 
     @Override
     public boolean isConnected()

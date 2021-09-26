@@ -10,7 +10,9 @@ public interface ActionGridPaneListener
 
     void toggleActionClicked(String ID, boolean toggleState);
 
-    ActionBox getActionBoxByLocation(Location location);
-
     boolean isConnected();
+
+    ActionBox getActionBox(int col, int row);
+
+    void showNonUsedBoxes(int col, int row, int colSpan, int rowSpan);
 }

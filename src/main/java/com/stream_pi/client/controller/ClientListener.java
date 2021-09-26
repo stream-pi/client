@@ -31,7 +31,7 @@ public interface ClientListener
 
     void renderProfile(ClientProfile clientProfile, boolean freshRender);
 
-    void clearActionBox(int col, int row);
+    void clearActionBox(int col, int row, int colSpan, int rowSpan);
     void addBlankActionBox(int col, int row);
     void renderAction(String currentProfileID, Action action);
     void refreshGridIfCurrentProfile(String currentProfileID);

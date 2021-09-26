@@ -650,6 +650,9 @@ public class Client extends Thread
             a.add(action.getLocation().getCol()+"");
         }
 
+        a.add(action.getRowSpan()+"");
+        a.add(action.getColSpan()+"");
+
         a.add(action.getParent());
 
         a.add(action.getDelayBeforeExecuting()+"");
@@ -714,6 +717,12 @@ public class Client extends Thread
 
         Action action = new Action(actionID, actionType);
 
+        String rowSpan = r[15];
+        String colSpan = r[16];
+
+        action.setRowSpan(Integer.parseInt(rowSpan));
+        action.setColSpan(Integer.parseInt(colSpan));
+
         if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE || actionType == ActionType.GAUGE)
         {
             try
@@ -741,28 +750,28 @@ public class Client extends Thread
         action.setLocation(location);
 
 
-        String parent = r[15];
+        String parent = r[17];
         action.setParent(parent);
 
         //client properties
 
-        action.setDelayBeforeExecuting(Integer.parseInt(r[16]));
+        action.setDelayBeforeExecuting(Integer.parseInt(r[18]));
 
-        boolean isAnimatedGauge = r[17].equals("true");
+        boolean isAnimatedGauge = r[19].equals("true");
 
         if (action.getActionType() == ActionType.GAUGE)
         {
             action.setGaugeAnimated(isAnimatedGauge);
         }
 
-        int clientPropertiesSize = Integer.parseInt(r[18]);
+        int clientPropertiesSize = Integer.parseInt(r[20]);
 
         ClientProperties clientProperties = new ClientProperties();
 
         if(actionType == ActionType.FOLDER)
             clientProperties.setDuplicatePropertyAllowed(true);
 
-        for(int i = 19;i<((clientPropertiesSize*2) + 19); i+=2)
+        for(int i = 21;i<((clientPropertiesSize*2) + 21); i+=2)
         {
             Property property = new Property(r[i], Type.STRING);
             property.setRawValue(r[i+1]);
@@ -775,7 +784,10 @@ public class Client extends Thread
         try
         {
             Action old = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID());
-            
+
+
+            boolean refreshGrid = false;
+
             if(old != null)
             {
                 for(String oldState : old.getIcons().keySet())
@@ -888,16 +900,16 @@ public class Client extends Thread
 
             if(acc.getLocation().getCol()!=-1)
             {
-                Platform.runLater(()-> {
-                    if (clientListener.getCurrentProfile().getID().equals(profileID)
+                if (clientListener.getCurrentProfile().getID().equals(profileID)
                         && clientListener.getCurrentParent().equals(acc.getParent()))
-                    {
-                        clientListener.clearActionBox(
-                                acc.getLocation().getCol(),
-                                acc.getLocation().getRow()
-                        );
-                    }
-                });
+                {
+                    clientListener.clearActionBox(
+                            acc.getLocation().getCol(),
+                            acc.getLocation().getRow(),
+                            acc.getColSpan(),
+                            acc.getRowSpan()
+                    );
+                }
             }
 
 

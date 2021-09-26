@@ -63,11 +63,6 @@ public class DashboardBase extends VBox
         actionGridPane.addBlankActionBox(col, row);
     }
 
-    public void clearActionBox(int col, int row)
-    {
-        actionGridPane.clearActionBox(col, row);
-    }
-
     public ActionGridPane getActionGridPane() {
         return actionGridPane;
     }

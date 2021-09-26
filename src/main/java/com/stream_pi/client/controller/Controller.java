@@ -584,9 +584,9 @@ public class Controller extends Base
     }
 
     @Override
-    public void clearActionBox(int col, int row)
+    public void clearActionBox(int col, int row, int colSpan, int rowSpan)
     {
-        Platform.runLater(()->getDashboardPane().getActionGridPane().clearActionBox(col, row));
+        Platform.runLater(()-> getDashboardPane().getActionGridPane().clearActionBox(col, row, colSpan, rowSpan));
     }
 
     @Override
@@ -644,7 +644,13 @@ public class Controller extends Base
         if(!getCurrentProfile().getID().equals(profileID) && !getCurrentParent().equals(action.getParent()))
             return null;
 
-        return getDashboardPane().getActionGridPane().getActionBoxByLocation(action.getLocation());
+        if (action == null)
+        {
+            getLogger().warning("Action is null. Probably because deleted.");
+            return null;
+        }
+
+        return getDashboardPane().getActionGridPane().getActionBox(action.getLocation().getCol(), action.getLocation().getRow());
     }
 
     @Override

@@ -25,17 +25,13 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import org.controlsfx.control.spreadsheet.Grid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.ByteArrayInputStream;
@@ -98,6 +94,7 @@ public class ActionBox extends StackPane
 
     public void baseInit()
     {
+        // setPrefSize(size, size);
         setMinSize(size, size);
         setMaxSize(size, size);
 
@@ -262,6 +259,8 @@ public class ActionBox extends StackPane
         this.clientListener = clientListener;
         this.logger = Logger.getLogger("");
 
+        this.managedProperty().bind(visibleProperty());
+
         baseInit();
         initMouseAndTouchListeners();
     }
@@ -322,10 +321,40 @@ public class ActionBox extends StackPane
         this.action = action;
     }
 
+    public void configureSize()
+    {
+        int rowSpan = getAction().getRowSpan(), colSpan = getAction().getColSpan();
+
+        GridPane.setRowSpan(this, rowSpan);
+        GridPane.setColumnSpan(this, colSpan);
+
+        int actionWidth = (size*colSpan) + (clientListener.getCurrentProfile().getActionGap()*(colSpan-1));
+        int actionHeight = (size*rowSpan) + (clientListener.getCurrentProfile().getActionGap()*(rowSpan-1));
+
+        setMinSize(actionWidth, actionHeight);
+        setMaxSize(actionWidth, actionHeight);
+
+        for (int i = getCol(); i< getCol()+colSpan; i++)
+        {
+            for (int j = getRow(); j<getRow()+rowSpan; j++)
+            {
+                if (i == getAction().getLocation().getCol() && j == getAction().getLocation().getRow())
+                {
+                    continue;
+                }
+
+                actionGridPaneListener.getActionBox(i, j).setVisible(false);
+            }
+        }
+
+    }
+
     public void init()
     {
         setBackground(null);
         setStyle(null);
+
+        configureSize();
 
 
         displayTextLabel.setStyle(null);
@@ -357,8 +386,6 @@ public class ActionBox extends StackPane
             }
             else
             {
-
-
                 if(getAction().isShowDisplayText())
                 {
                     setDisplayTextAlignment(getAction().getDisplayTextAlignment());
