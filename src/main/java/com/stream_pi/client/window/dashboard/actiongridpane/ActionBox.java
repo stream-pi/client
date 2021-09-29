@@ -4,6 +4,7 @@ import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
+import com.stream_pi.action_api.actionproperty.gaugeproperties.SerializableColor;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
@@ -295,7 +296,7 @@ public class ActionBox extends StackPane
                                     new ByteArrayInputStream(iconByteArray), size, size, false, true
                             ), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 
-                                    new BackgroundSize(100, 100, true, true, true, false))
+                                    new BackgroundSize(100, 100, true, true, true, true))
                     )
             );
         }
@@ -443,27 +444,19 @@ public class ActionBox extends StackPane
     }
 
 
-    public void setGaugeBarColor(Color newCol)
+    public void setGaugeBarColor(SerializableColor newCol)
     {
-        if (newCol == null)
+        if (newCol != null)
         {
-            gauge.setForegroundBaseColor(Color.valueOf("#242424"));
-        }
-        else
-        {
-            gauge.setBarColor(newCol);
+            gauge.setBarColor(newCol.getColor());
         }
     }
 
-    public void setGaugeForegroundBaseColor(Color newCol)
+    public void setGaugeForegroundBaseColor(SerializableColor newCol)
     {
-        if (newCol == null)
+        if (newCol != null)
         {
-            gauge.setForegroundBaseColor(Color.valueOf("#242424"));
-        }
-        else
-        {
-            gauge.setForegroundBaseColor(newCol);
+            gauge.setForegroundBaseColor(newCol.getColor());
         }
     }
 
@@ -481,6 +474,7 @@ public class ActionBox extends StackPane
         gauge.setSectionsVisible(gaugeProperties.isSectionsVisible());
 
         setGaugeForegroundBaseColor(gaugeProperties.getForegroundBaseColor());
+
         setGaugeBarColor(gaugeProperties.getBarColor());
 
         setGaugeTextColour(getAction().getDisplayTextFontColourHex());
