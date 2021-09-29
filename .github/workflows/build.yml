@@ -22,8 +22,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17-ea+14_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
@@ -130,8 +130,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17-ea+14_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
@@ -211,8 +211,8 @@ jobs:
           architecture: x64
       - name: Setup JavaFX
         run: |
-          wget -P /tmp https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_osx-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17-ea+14_osx-x64_bin-jmods.zip -d /tmp
+          wget -P /tmp https://download2.gluonhq.com/openjfx/17/openjfx-17_osx-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17_osx-x64_bin-jmods.zip -d /tmp
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -279,8 +279,8 @@ jobs:
           name: version
       - name: Setup JavaFX
         run: |
-          curl.exe -o D:\openjfx-17-ea+14_windows-x64_bin-jmods.zip https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_windows-x64_bin-jmods.zip
-          Expand-Archive -Force D:\openjfx-17-ea+14_windows-x64_bin-jmods.zip D:\
+          curl.exe -o D:\openjfx-17_windows-x64_bin-jmods.zip https://download2.gluonhq.com/openjfx/17/openjfx-17_windows-x64_bin-jmods.zip
+          Expand-Archive -Force D:\openjfx-17_windows-x64_bin-jmods.zip D:\
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -336,8 +336,8 @@ jobs:
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-arm32_bin-sdk.zip
-            unzip openjfx-17-ea+14_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+            axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17_linux-arm32_bin-sdk.zip
+            unzip openjfx-17_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-17/legal javafx-sdk-arm32/javafx-sdk-17/javafx-legal
 
             # Use Debug libgluon
@@ -386,8 +386,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17-ea+14_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
@@ -487,8 +487,8 @@ jobs:
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -k -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17-ea+14_monocle-linux-aarch64_bin-sdk.zip
-            unzip openjfx-17-ea+14_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
+            axel -k -n 8 https://download2.gluonhq.com/openjfx/17/openjfx-17_monocle-linux-aarch64_bin-sdk.zip
+            unzip openjfx-17_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
             mv javafx-sdk-aarch64/javafx-sdk-17/legal javafx-sdk-aarch64/javafx-sdk-17/javafx-legal
 
             # Use Debug libgluon
