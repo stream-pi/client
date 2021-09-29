@@ -5,7 +5,7 @@ import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.action_api.action.Location;
 import com.stream_pi.action_api.actionproperty.ClientProperties;
-import com.stream_pi.action_api.actionproperty.GaugeProperties;
+import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.property.Property;
 import com.stream_pi.action_api.actionproperty.property.Type;
 import com.stream_pi.client.controller.ClientListener;
