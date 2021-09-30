@@ -2,6 +2,7 @@
   {"name": "com.stream_pi.util.comms.Message"},
   {"name": "com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties"},
   {"name": "com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeSection"},
+  {"name": "com.stream_pi.action_api.actionproperty.gaugeproperties.SerializableColor"},
   {"name": "eu.hansolo.medusa.Gauge$SkinType"},
   {"name": "java.util.ArrayList"},
   {"name": "java.lang.String"},
