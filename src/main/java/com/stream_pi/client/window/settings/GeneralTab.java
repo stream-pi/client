@@ -668,6 +668,11 @@ public class GeneralTab extends VBox
 
             config.setProfilesPath(profilesPathTextField.getText());
 
+            if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()))
+                toBeReloaded = true;
+
+            config.setScreenSaverTimeout(screenTimeoutTextField.getText());
+
             if(config.isScreenSaverEnabled() != screenSaverToggleSwitch.isSelected())
                 toBeReloaded = true;
 
@@ -677,14 +682,6 @@ public class GeneralTab extends VBox
                 toBeReloaded = true;
 
             config.setScreenMoverEnabled(screenMoverToggleSwitch.isSelected());
-
-            if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()) && config.isScreenSaverEnabled())
-            {
-                config.setScreenSaverTimeout(screenTimeoutTextField.getText());
-
-                clientListener.getScreenSaver().setTimeout(config.getScreenSaverTimeout());
-                clientListener.getScreenSaver().restartTimer();
-            }
 
 
             config.setConnectOnStartup(connectOnStartupToggleSwitch.isSelected());
