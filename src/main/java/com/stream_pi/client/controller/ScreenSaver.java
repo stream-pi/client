@@ -1,6 +1,7 @@
 package com.stream_pi.client.controller;
 
 import com.stream_pi.client.window.Base;
+import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.exception.SevereException;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -9,8 +10,14 @@ import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ScreenSaver extends StackPane
 {
@@ -18,10 +25,14 @@ public class ScreenSaver extends StackPane
 
     private Timeline showScreenSaverTimeline;
     private long timeout;
+    private Logger logger;
+    private final String rpiOfficialScreenBacklightPowerLocation = "/sys/class/backlight/rpi_backlight/bl_power";
+    private boolean isChangeRpiScreenBacklightPower = false;
 
-    public ScreenSaver(Base base, int timeout)
+    public ScreenSaver(Base base, int timeout, Logger logger)
     {
         this.timeout = timeout* 1000L;
+        this.logger = logger;
 
         setOpacity(0);
         getStyleClass().add("screensaver");
@@ -29,6 +40,7 @@ public class ScreenSaver extends StackPane
 
         showScreenSaverTimeline = new Timeline();
         showScreenSaverTimeline.setCycleCount(1);
+        showScreenSaverTimeline.setOnFinished(actionEvent -> setRaspberryPiBacklightState(false));
 
 
         showScreenSaverTimeline.getKeyFrames().addAll(
@@ -39,6 +51,10 @@ public class ScreenSaver extends StackPane
                         new KeyValue(opacityProperty(),
                                 1.0D, Interpolator.LINEAR))
         );
+
+        isChangeRpiScreenBacklightPower = new File(rpiOfficialScreenBacklightPowerLocation).exists();
+
+        logger.info("Is Rpi Screen detected ? "+isChangeRpiScreenBacklightPower);
 
         startTimer();
 
@@ -81,7 +97,7 @@ public class ScreenSaver extends StackPane
                 showScreenSaverTimeline.stop();
             }
 
-
+            setRaspberryPiBacklightState(true);
             setOpacity(0.0);
             toBack();
         });
@@ -120,5 +136,37 @@ public class ScreenSaver extends StackPane
                 show();
             }
         },timeout);
+    }
+
+    private void setRaspberryPiBacklightState(boolean state)
+    {
+        if (!isChangeRpiScreenBacklightPower)
+            return;
+
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(rpiOfficialScreenBacklightPowerLocation));
+
+            if(state) // ON
+            {
+                writer.write("0");
+            }
+            else // OFF
+            {
+                writer.write("1");
+            }
+
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+
+            logger.warning("Unable to change backlight power ...");
+            logger.log(Level.WARNING, e.getMessage(), e);
+
+            logger.warning("Disable backlight changer ...");
+            isChangeRpiScreenBacklightPower = false;
+        }
     }
 }

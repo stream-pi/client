@@ -70,7 +70,7 @@ public class Controller extends Base
             {
                 if(screenSaver == null)
                 {
-                    screenSaver = new ScreenSaver(this, getConfig().getScreenSaverTimeout());
+                    screenSaver = new ScreenSaver(this, getConfig().getScreenSaverTimeout(), getLogger());
                     getChildren().add(screenSaver);
                     screenSaver.toBack();
                 }
