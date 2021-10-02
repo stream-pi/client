@@ -28,10 +28,7 @@ jobs:
         with:
           timezoneLinux: "Asia/Kolkata"
       - name: Build Jars
-        run: |
-          echo $(date +'%d-%m-%Y %H:%M:%S %Z') > src/main/resources/com/stream_pi/client/build-date
-          echo Build Date/Time: cat src/main/resources/com/stream_pi/client/build-date
-          mvn -X package
+        run: mvn -X package
       - name: Save built jars
         uses: actions/upload-artifact@v2
         with:

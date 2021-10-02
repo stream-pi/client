@@ -25,6 +25,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class AboutTab extends ScrollPane
@@ -139,19 +140,20 @@ public class AboutTab extends ScrollPane
 
         setContent(mainVBox);
 
-        InputStream inputStream = Main.class.getResourceAsStream("build-date");
+        InputStream inputStream = Main.class.getResourceAsStream("build.properties");
         if(inputStream != null)
         {
             try
             {
-                Logger.getLogger(getClass().getName()).info("build-date present");
-                Label buildDateLabel = new Label("Build date/time: " +  new String(inputStream.readAllBytes()));
-                buildDateLabel.getStyleClass().add("build-date-label");
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                Label buildDateLabel = new Label("Build date/time: " +  properties.getProperty("build.date"));
+                buildDateLabel.getStyleClass().add("about_build_date_label");
                 mainVBox.getChildren().add(buildDateLabel);
             }
             catch (IOException e)
             {
-                Logger.getLogger(getClass().getName()).info("build-date not present");
+                Logger.getLogger(getClass().getName()).warning("build.properties not present");
             }
         }
 
