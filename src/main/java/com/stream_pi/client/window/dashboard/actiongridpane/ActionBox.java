@@ -373,7 +373,6 @@ public class ActionBox extends StackPane
                     gauge.setOnMouseClicked(getOnMouseClicked());
                     gauge.setAnimated(getAction().isGaugeAnimated());
 
-
                     getChildren().add(gauge);
                 }
 
@@ -385,8 +384,10 @@ public class ActionBox extends StackPane
 
                 setGaugeTitle(getAction().getDisplayText());
 
+                updateGauge();
 
                 setGaugeVisible(clientListener.isConnected());
+
             }
             else
             {
@@ -461,8 +462,9 @@ public class ActionBox extends StackPane
     }
 
 
-    public void updateGauge(GaugeProperties gaugeProperties)
+    public void updateGauge()
     {
+        GaugeProperties gaugeProperties = getAction().getGaugeProperties();
         gauge.setSkinType(gaugeProperties.getSkinType());
         gauge.setMinValue(gaugeProperties.getMinValue());
         gauge.setMaxValue(gaugeProperties.getMaxValue());

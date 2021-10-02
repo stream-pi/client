@@ -383,10 +383,11 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         actionBox.init();
         actionBox.setVisible(true);
 
-        if (clientListener.isConnected() && actionBox.getAction().getActionType() == ActionType.GAUGE)
+        /*if (clientListener.isConnected() && actionBox.getAction().getActionType() == ActionType.GAUGE)
         {
+            System.out.println("GO AWYAYYYYY");
             actionBox.setGaugeVisible(false);
-        }
+        }*/
 
 
         /*ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this, location.getRow(), location.getCol());

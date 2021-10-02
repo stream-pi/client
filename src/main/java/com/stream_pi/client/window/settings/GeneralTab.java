@@ -520,7 +520,7 @@ public class GeneralTab extends VBox
         int screenSaverTimeout = -1;
         try
         {
-            screenSaverTimeout = Integer.parseInt(serverPortTextField.getText());
+            screenSaverTimeout = Integer.parseInt(screenTimeoutTextField.getText());
 
             if(screenSaverTimeout < 15)
                 errors.append("* Screen Timeout cannot be below 15 seconds.\n");
@@ -647,39 +647,53 @@ public class GeneralTab extends VBox
             config.setStartOnBoot(startOnBoot);
 
             if(!config.isShowCursor() ==showCursorToggleSwitch.isSelected())
+            {
                 toBeReloaded = true;
+            }
 
             config.setShowCursor(showCursorToggleSwitch.isSelected());
 
 
             if(!config.getThemesPath().equals(themesPathTextField.getText()))
+            {
                 toBeReloaded = true;
+            }
 
             config.setThemesPath(themesPathTextField.getText());
 
 
             if(!config.getIconsPath().equals(iconsPathTextField.getText()))
+            {
                 toBeReloaded = true;
+            }
 
             config.setIconsPath(iconsPathTextField.getText());
 
             if(!config.getProfilesPath().equals(profilesPathTextField.getText()))
+            {
                 toBeReloaded = true;
+            }
 
             config.setProfilesPath(profilesPathTextField.getText());
 
             if(!(screenSaverTimeout+"").equals(screenTimeoutTextField.getText()))
+            {
                 toBeReloaded = true;
+            }
 
             config.setScreenSaverTimeout(screenTimeoutTextField.getText());
 
             if(config.isScreenSaverEnabled() != screenSaverToggleSwitch.isSelected())
+            {
                 toBeReloaded = true;
+            }
 
             config.setScreenSaverEnabled(screenSaverToggleSwitch.isSelected());
 
             if(config.isScreenMoverEnabled() != screenMoverToggleSwitch.isSelected())
+            {
                 toBeReloaded = true;
+            }
 
             config.setScreenMoverEnabled(screenMoverToggleSwitch.isSelected());
 
@@ -722,6 +736,7 @@ public class GeneralTab extends VBox
                 }
 
                 clientListener.init();
+                clientListener.getClient().refreshAllGauges();
                 clientListener.renderRootDefaultProfile();
             }
         }

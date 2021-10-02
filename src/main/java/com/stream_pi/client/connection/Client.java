@@ -291,12 +291,12 @@ public class Client extends Thread
 
         ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
 
+        clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID)
+                .setGaugeProperties((GaugeProperties) message.getObject());
+
         if(actionBox!=null)
         {
-            Platform.runLater(()->
-            {
-                actionBox.updateGauge((GaugeProperties) message.getObject());
-            });
+            Platform.runLater(actionBox::updateGauge);
         }
     }
 
@@ -1024,5 +1024,11 @@ public class Client extends Thread
         String profileID = r[0];
         String actionID = r[1];
         clientListener.onActionFailed(profileID, actionID);
+    }
+
+    public void refreshAllGauges() throws SevereException
+    {
+        Message m = new Message("refresh_all_gauges");
+        sendMessage(m);
     }
 }
