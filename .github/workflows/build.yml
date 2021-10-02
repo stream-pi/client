@@ -57,12 +57,6 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Download build-date
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: init.yml
-          name: build-date
-          path: src/main/resources/com/stream_pi/client/
       - name: Create Linux x64 DEB, Linux x64 APP IMAGE, Linux x64 RPM
         run: |
           # Create DEB
@@ -167,12 +161,6 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Download build-date
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: init.yml
-          name: build-date
-          path: src/main/resources/com/stream_pi/client/
       - name: Create Android aarch64 APK
         run: |
           export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
@@ -425,12 +413,6 @@ jobs:
       - name: Add REQ_MODULES to environment
         run: |
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
-      - name: Download build-date
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: init.yml
-          name: build-date
-          path: src/main/resources/com/stream_pi/client/
       - name: Create Linux aarch64
         run: |
           export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.1.0/
