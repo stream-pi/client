@@ -45,7 +45,7 @@ public class FinalConfigPane extends VBox
 
         getStyleClass().add("first_time_use_pane_final_config");
 
-        Label label = new Label("That's it. Now just a little bit and then you're set!");
+        Label label = new Label("We're almost finished setting things up. All that's needed now is for you to enter in the following details and you'll be good to go!");
         label.setWrapText(true);
         VBox.setVgrow(label, Priority.ALWAYS);
         label.getStyleClass().add("first_time_use_pane_final_config_label");

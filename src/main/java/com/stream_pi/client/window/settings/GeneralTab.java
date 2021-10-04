@@ -188,15 +188,15 @@ public class GeneralTab extends VBox
 
         int prefWidth = 200;
 
-        HBoxInputBox themesPathInputBox = new HBoxInputBox("Themes Path", themesPathTextField, prefWidth);
+        HBoxInputBox themesPathInputBox = new HBoxInputBox("Themes", themesPathTextField, prefWidth);
         themesPathInputBox.managedProperty().bind(themesPathInputBox.visibleProperty());
 
 
-        HBoxInputBox iconsPathInputBox = new HBoxInputBox("Icons Path", iconsPathTextField, prefWidth);
+        HBoxInputBox iconsPathInputBox = new HBoxInputBox("Icons", iconsPathTextField, prefWidth);
         iconsPathInputBox.managedProperty().bind(iconsPathInputBox.visibleProperty());
 
 
-        HBoxInputBox profilesPathInputBox = new HBoxInputBox("Profiles Path", profilesPathTextField, prefWidth);
+        HBoxInputBox profilesPathInputBox = new HBoxInputBox("Profiles", profilesPathTextField, prefWidth);
         profilesPathInputBox.managedProperty().bind(profilesPathInputBox.visibleProperty());
 
         checkForUpdatesButton = new Button("Check for updates");
@@ -243,10 +243,11 @@ public class GeneralTab extends VBox
                         SpaceFiller.horizontal(),
                         themeComboBox
                 ),
-                generateSubHeading("Others"),
+                generateSubHeading("Locations"),
                 themesPathInputBox,
                 iconsPathInputBox,
                 profilesPathInputBox,
+                generateSubHeading("Others"),
                 screenTimeoutSecondsHBoxInputBox,
                 invertRowsColsHBox,
                 screenSaverHBox,
