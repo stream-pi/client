@@ -233,16 +233,8 @@ public class GeneralTab extends VBox
                 new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
                 new HBoxInputBox("Port", serverPortTextField, prefWidth),
                 generateSubHeading("Client"),
-                new HBox(
-                        new Label("Current profile"),
-                        SpaceFiller.horizontal(),
-                        clientProfileComboBox
-                ),
-                new HBox(
-                        new Label("Theme"),
-                        SpaceFiller.horizontal(),
-                        themeComboBox
-                ),
+                new HBoxWithSpaceBetween("Current Profile", clientProfileComboBox),
+                new HBoxWithSpaceBetween("Theme", themeComboBox),
                 generateSubHeading("Locations"),
                 themesPathInputBox,
                 iconsPathInputBox,
