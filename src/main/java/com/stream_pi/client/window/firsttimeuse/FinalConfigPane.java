@@ -16,6 +16,7 @@ import com.stream_pi.util.uihelper.HBoxInputBox;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -54,11 +55,21 @@ public class FinalConfigPane extends VBox
         serverIPHostNameTextField = new TextField();
         serverPortTextField = new TextField();
 
+        Label warningLabel = new Label(
+                "Stream-Pi is not encrypted yet. Use this only in absolutely private networks. Do not use this in a public network (Railway Station, Park).\n" +
+                        "Stream-Pi project is not responsible if your computer is compromised because of connecting Stream-Pi to a malicious network."
+        );
+        warningLabel.setWrapText(true);
+        warningLabel.getStyleClass().add("first_time_use_pane_final_config_warning_label");
+
+
+
         HBoxInputBox clientNickNameInputBox = new HBoxInputBox("Nickname", clientNicknameTextField, 150);
         HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox("Server IP", serverIPHostNameTextField, 150);
         HBoxInputBox serverIPPortInputBox = new HBoxInputBox("Server Port", serverPortTextField, 150);
 
-        getChildren().addAll(label, clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox);
+        setAlignment(Pos.TOP_CENTER);
+        getChildren().addAll(label, clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, warningLabel);
 
         setSpacing(10.0);
 

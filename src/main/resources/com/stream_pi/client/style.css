@@ -218,3 +218,10 @@
     -fx-font-size: 18;
     -fx-padding: 10 0 5 0;
 }
+
+.first_time_use_pane_final_config_warning_label
+{
+    -fx-padding: 30 20 0 20;
+    -fx-font-family : 'Roboto Bold';
+    -fx-text-alignment: center;
+}

@@ -50,11 +50,11 @@ public class AboutTab extends ScrollPane
 
         mainVBox.setAlignment(Pos.TOP_CENTER);
 
-        Image appIcon = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("app_icon.png")));
+        Image appIcon = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/256x256.png")));
         ImageView appIconImageView = new ImageView(appIcon);
-        appIconImageView.setFitHeight(146);
-        appIconImageView.setFitWidth(132);
-
+        VBox.setMargin(appIconImageView, new Insets(10, 0, 10, 0));
+        appIconImageView.setFitHeight(128);
+        appIconImageView.setFitWidth(128);
 
         Tab contributorsT = new Tab("Contributors");
         contributorsTab = new ContributorsTab(clientListener);

@@ -144,11 +144,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         stage = (Stage) getScene().getWindow();
 
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon256x256.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon48x48.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon32x32.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon24x24.png"))));
-        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icon16x16.png"))));
+        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/256x256.png"))));
+        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/48x48.png"))));
+        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/32x32.png"))));
+        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/24x24.png"))));
+        getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/16x16.png"))));
 
         clientInfo = ClientInfo.getInstance();
         dashboardBase = new DashboardBase(this, this);
@@ -384,9 +384,15 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     public void applyDefaultStylesheet()
     {
         if(clientInfo.getPlatform() != Platform.IOS)
-            Font.loadFont(Main.class.getResourceAsStream("Roboto.ttf"), 13);
+            loadFonts();
 
         getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+    }
+
+    private void loadFonts()
+    {
+        Font.loadFont(Main.class.getResourceAsStream("fonts/Roboto.ttf"), 13);
+        Font.loadFont(Main.class.getResourceAsStream("fonts/Roboto-Bold.ttf"), 13);
     }
 
     public void applyDefaultIconsStylesheet()
