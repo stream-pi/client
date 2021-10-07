@@ -375,7 +375,43 @@ public class ClientProfile implements Cloneable{
 
     public void deleteProfile()
     {
+        for (int i = 0;i < getActions().size(); i++)
+        {
+            deleteActionIconByConfigIndex(i);
+        }
+
         file.delete();
+    }
+
+
+    private void deleteActionIconByConfigIndex(int index)
+    {
+        Element actionElement = (Element) getActionsElement().getElementsByTagName("action").item(index);
+
+        Element displayElement = (Element) actionElement.getElementsByTagName("display").item(0);
+        Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
+        Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
+
+        Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
+
+        NodeList statesNodeList = statesElements.getChildNodes();
+
+        for (int i = 0;i<statesNodeList.getLength();i++)
+        {
+            Node eachStateNode = statesNodeList.item(i);
+
+            if(eachStateNode.getNodeType() != Node.ELEMENT_NODE)
+                continue;
+
+            Element eachIconStateElement = (Element) eachStateNode;
+
+            if(!eachIconStateElement.getNodeName().equals("state"))
+                continue;
+
+            String state = eachIconStateElement.getTextContent();
+
+            new File(iconsPath+"/"+ID+"___"+state).delete();
+        }
     }
 
 
@@ -572,8 +608,6 @@ public class ClientProfile implements Cloneable{
     {
         int index = getActionIndexInConfig(actionID);
 
-        logger.info("INDEXXXX : "+index);
-
         getActionFromID(actionID).addIcon(state, array);
 
 
@@ -659,8 +693,6 @@ public class ClientProfile implements Cloneable{
         save();
         for(Action action : getActions())
         {
-            logger.info("ACTION ID :"+action.getID());
-            logger.info("Action ICON : "+action.isHasIcon());
             saveAction(action);
         }
     }
@@ -673,36 +705,7 @@ public class ClientProfile implements Cloneable{
 
         if(index>-1)
         {
-
-            Element actionElement = (Element) getActionsElement().getElementsByTagName("action").item(index);
-
-            Element displayElement = (Element) actionElement.getElementsByTagName("display").item(0);
-            Element backgroundElement = (Element) displayElement.getElementsByTagName("background").item(0);
-            Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
-
-            Element statesElements = (Element) iconElement.getElementsByTagName("states").item(0);
-
-            NodeList statesNodeList = statesElements.getChildNodes();
-
-            for (int i = 0;i<statesNodeList.getLength();i++)
-            {
-                Node eachStateNode = statesNodeList.item(i);
-
-                if(eachStateNode.getNodeType() != Node.ELEMENT_NODE)
-                    continue;
-
-                Element eachIconStateElement = (Element) eachStateNode;
-
-                if(!eachIconStateElement.getNodeName().equals("state"))
-                    continue;
-
-                String state = eachIconStateElement.getTextContent();
-
-                new File(iconsPath+"/"+ID+"___"+state).delete();
-            }
-
-
-
+            deleteActionIconByConfigIndex(index);
             actions.remove(ID);
         }
 

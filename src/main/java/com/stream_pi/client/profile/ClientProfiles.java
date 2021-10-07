@@ -35,9 +35,8 @@ public class ClientProfiles {
 
     public void deleteProfile(ClientProfile clientProfile)
     {
-        clientProfiles.remove(clientProfile.getID());
-
         clientProfile.deleteProfile();
+        clientProfiles.remove(clientProfile.getID());
     }
 
     private ArrayList<MinorException> loadingErrors;
