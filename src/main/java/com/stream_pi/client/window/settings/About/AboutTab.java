@@ -1,6 +1,7 @@
 package com.stream_pi.client.window.settings.About;
 
 import com.stream_pi.action_api.ActionAPI;
+import com.stream_pi.util.Util;
 import com.stream_pi.client.Main;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
@@ -102,10 +103,20 @@ public class AboutTab extends ScrollPane
         Label currentActionAPILabel = new Label("ActionAPI "+ ActionAPI.API_VERSION.getText());
         currentActionAPILabel.getStyleClass().add("about_current_action_api_label");
 
-        HBox hBox1 = new HBox(versionText);
+        Label currentUtilLabel = new Label("Util "+Util.VERSION.getText());
+        currentUtilLabel.getStyleClass().add("about_current_util_label");
 
-        hBox1.setAlignment(Pos.CENTER);
-        hBox1.setSpacing(10);
+        VBox vBox1 = new VBox(
+                versionText, getSep(),
+                commStandardLabel, getSep(),
+                minThemeAPILabel, getSep(),
+                minActionAPILabel, getSep(),
+                currentActionAPILabel, getSep(),
+                currentUtilLabel
+        );
+
+        vBox1.setAlignment(Pos.CENTER);
+        vBox1.setSpacing(10);
 
         Label javaVersionLabel = new Label("Java "+System.getProperty("java.version"));
         javaVersionLabel.getStyleClass().add("about_java_version");
@@ -116,11 +127,11 @@ public class AboutTab extends ScrollPane
         Label javaGCLabel = new Label("GC: "+ ManagementFactory.getGarbageCollectorMXBeans().get(0).getName());
         javaGCLabel.getStyleClass().add("about_java_gc");
 
-        HBox hBox2 = new HBox(javaVersionLabel, getSep(),
+        HBox hBox1 = new HBox(javaVersionLabel, getSep(),
                 javafxVersionLabel);
 
-        hBox2.setAlignment(Pos.CENTER);
-        hBox2.setSpacing(10);
+        hBox1.setAlignment(Pos.CENTER);
+        hBox1.setSpacing(10);
 
 
         Label disclaimerLabel = new Label("This contributor list shows only those who have contributed " +
@@ -135,7 +146,7 @@ public class AboutTab extends ScrollPane
 
 
         mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
-                donateButton, hBox1, hBox2,javaGCLabel);
+                donateButton, vBox1, hBox1,javaGCLabel);
         mainVBox.prefWidthProperty().bind(widthProperty().subtract(30));
 
         setContent(mainVBox);

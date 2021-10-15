@@ -36,7 +36,6 @@ import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -383,16 +382,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     public void applyDefaultStylesheet()
     {
-        if(clientInfo.getPlatform() != Platform.IOS)
-            loadFonts();
-
         getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
-    }
-
-    private void loadFonts()
-    {
-        Font.loadFont(Main.class.getResourceAsStream("fonts/Roboto.ttf"), 13);
-        Font.loadFont(Main.class.getResourceAsStream("fonts/Roboto-Bold.ttf"), 13);
     }
 
     public void applyDefaultIconsStylesheet()
@@ -424,13 +414,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         logger.info("Applying theme '"+t.getFullName()+"' ...");
 
-        if(t.getFonts() != null)
-        {
-            for(String fontFile : t.getFonts())
-            {
-                Font.loadFont(fontFile.replace("%20",""), 13);
-            }
-        }
         currentTheme = t;
         getStylesheets().addAll(t.getStylesheets());
       
