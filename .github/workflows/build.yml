@@ -24,8 +24,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17.0.1/openjfx-17.0.1_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17.0.1_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17.0.0.1_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
@@ -92,7 +92,7 @@ jobs:
           rm -r stream-pi-client
         env:
           MAIN_CLASS: com.stream_pi.client.Main
-          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.1/
+          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.0.1/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/install
       - name: Saving Linux x64 DEB
@@ -128,8 +128,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17.0.1/openjfx-17.0.1_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17.0.1_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17.0.0.1_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
@@ -182,7 +182,7 @@ jobs:
           mv target/gluonfx/aarch64-android/gvm/android_project/app/build/outputs/apk/debug/app-debug.apk ${{ env.INSTALL_DIR }}/stream-pi-client-android-aarch64-${{ env.VERSION }}.apk
         env:
           MAIN_CLASS: com.stream_pi.client.Main
-          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.1/
+          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.0.1/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/
       - name: Saving Android aarch64 APK
@@ -203,8 +203,8 @@ jobs:
           architecture: x64
       - name: Setup JavaFX
         run: |
-          wget -P /tmp https://download2.gluonhq.com/openjfx/17.0.1/openjfx-17.0.1_osx-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17.0.1_osx-x64_bin-jmods.zip -d /tmp
+          wget -P /tmp https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_osx-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17.0.0.1_osx-x64_bin-jmods.zip -d /tmp
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -240,7 +240,7 @@ jobs:
           mv *.pkg stream-pi-client-macos-x64-${{ env.VERSION }}.pkg
         env:
           MAIN_CLASS: com.stream_pi.client.Main
-          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.1/
+          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.0.1/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/install
       - name: Saving MacOS x64 PKG
@@ -271,8 +271,8 @@ jobs:
           name: version
       - name: Setup JavaFX
         run: |
-          curl.exe -o D:\openjfx-17.0.1_windows-x64_bin-jmods.zip https://download2.gluonhq.com/openjfx/17.0.1/openjfx-17.0.1_windows-x64_bin-jmods.zip
-          Expand-Archive -Force D:\openjfx-17.0.1_windows-x64_bin-jmods.zip D:\
+          curl.exe -o D:\openjfx-17.0.0.1_windows-x64_bin-jmods.zip https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_windows-x64_bin-jmods.zip
+          Expand-Archive -Force D:\openjfx-17.0.0.1_windows-x64_bin-jmods.zip D:\
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -286,7 +286,7 @@ jobs:
           call .github\scripts\jpackage.bat
         env:
           MAIN_CLASS: com.stream_pi.client.Main
-          JAVAFX_JMODS: D:\javafx-jmods-17.0.1\
+          JAVAFX_JMODS: D:\javafx-jmods-17.0.0.1\
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/install
           ARCH: x64
@@ -328,19 +328,19 @@ jobs:
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -n 8 https://download2.gluonhq.com/openjfx/17.0.1/openjfx-17.0.1_linux-arm32_bin-sdk.zip
-            unzip openjfx-17.0.1_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
-            mv javafx-sdk-arm32/javafx-sdk-17.0.1/legal javafx-sdk-arm32/javafx-sdk-17.0.1/javafx-legal
+            axel -n 8 https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-arm32_bin-sdk.zip
+            unzip openjfx-17.0.0.1_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+            mv javafx-sdk-arm32/javafx-sdk-17.0.0.1/legal javafx-sdk-arm32/javafx-sdk-17.0.0.1/javafx-legal
 
             # Use Debug libgluon
-            mv javafx-sdk-arm32/javafx-sdk-17.0.1/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-arm32/javafx-sdk-17.0.1/lib/libgluon_drm.so
-            rm -rf javafx-sdk-arm32/javafx-sdk-17.0.1/lib/libgluon_drm-1.1.6.so
+            mv javafx-sdk-arm32/javafx-sdk-17.0.0.1/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-arm32/javafx-sdk-17.0.0.1/lib/libgluon_drm.so
+            rm -rf javafx-sdk-arm32/javafx-sdk-17.0.0.1/lib/libgluon_drm-1.1.6.so
 
             # Use Non Debug libgluon
-            # mv javafx-sdk-arm32/javafx-sdk-17.0.1/lib/libgluon_drm-1.1.6.so javafx-sdk-arm32/javafx-sdk-17.0.1/lib/libgluon_drm.so
-            # rm -rf javafx-sdk-arm32/javafx-sdk-17.0.1/lib/libgluon_drm_debug-1.1.6.so
+            # mv javafx-sdk-arm32/javafx-sdk-17.0.0.1/lib/libgluon_drm-1.1.6.so javafx-sdk-arm32/javafx-sdk-17.0.0.1/lib/libgluon_drm.so
+            # rm -rf javafx-sdk-arm32/javafx-sdk-17.0.0.1/lib/libgluon_drm_debug-1.1.6.so
 
-            mv javafx-sdk-arm32/javafx-sdk-17.0.1/lib/* $INSTALL_DIR/
+            mv javafx-sdk-arm32/javafx-sdk-17.0.0.1/lib/* $INSTALL_DIR/
             cp assets/launchers/arm32-jvm/run_console $INSTALL_DIR/run_console
             cp assets/launchers/arm32-jvm/run_desktop $INSTALL_DIR/run_desktop
             cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
@@ -380,8 +380,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17.0.1/openjfx-17.0.1_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17.0.1_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-17.0.0.1_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.1.0
         run: |
           cd /tmp
@@ -434,7 +434,7 @@ jobs:
           zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip *
         env:
           MAIN_CLASS: com.stream_pi.client.Main
-          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.1/
+          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.0.1/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/stream-pi-client
       - name: Saving Linux aarch64 ZIP
@@ -475,19 +475,19 @@ jobs:
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -k -n 8 https://download2.gluonhq.com/openjfx/17.0.1/openjfx-17.0.1_monocle-linux-aarch64_bin-sdk.zip
-            unzip openjfx-17.0.1_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
-            mv javafx-sdk-aarch64/javafx-sdk-17.0.1/legal javafx-sdk-aarch64/javafx-sdk-17.0.1/javafx-legal
+            axel -k -n 8 https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_monocle-linux-aarch64_bin-sdk.zip
+            unzip openjfx-17.0.0.1_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
+            mv javafx-sdk-aarch64/javafx-sdk-17.0.0.1/legal javafx-sdk-aarch64/javafx-sdk-17.0.0.1/javafx-legal
 
             # Use Debug libgluon
-            mv javafx-sdk-aarch64/javafx-sdk-17.0.1/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-aarch64/javafx-sdk-17.0.1/lib/libgluon_drm.so
-            rm -rf javafx-sdk-aarch64/javafx-sdk-17.0.1/lib/libgluon_drm-1.1.6.so
+            mv javafx-sdk-aarch64/javafx-sdk-17.0.0.1/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-aarch64/javafx-sdk-17.0.0.1/lib/libgluon_drm.so
+            rm -rf javafx-sdk-aarch64/javafx-sdk-17.0.0.1/lib/libgluon_drm-1.1.6.so
 
             # Use Non Debug libgluon
-            # mv javafx-sdk-aarch64/javafx-sdk-17.0.1/lib/libgluon_drm-1.1.6.so javafx-sdk-aarch64/javafx-sdk-17.0.1/lib/libgluon_drm.so
-            # rm -rf javafx-sdk-aarch64/javafx-sdk-17.0.1/lib/libgluon_drm_debug-1.1.6.so
+            # mv javafx-sdk-aarch64/javafx-sdk-17.0.0.1/lib/libgluon_drm-1.1.6.so javafx-sdk-aarch64/javafx-sdk-17.0.0.1/lib/libgluon_drm.so
+            # rm -rf javafx-sdk-aarch64/javafx-sdk-17.0.0.1/lib/libgluon_drm_debug-1.1.6.so
 
-            mv javafx-sdk-aarch64/javafx-sdk-17.0.1/lib/* $INSTALL_DIR/
+            mv javafx-sdk-aarch64/javafx-sdk-17.0.0.1/lib/* $INSTALL_DIR/
             cp assets/launchers/aarch64-jvm/run_console $INSTALL_DIR/run_console
             cp assets/launchers/aarch64-jvm/run_desktop $INSTALL_DIR/run_desktop
             cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
