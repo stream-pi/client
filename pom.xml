@@ -25,7 +25,7 @@
 
         <controlsfx.version>11.1.0</controlsfx.version>
 
-        <attach.version>4.0.11</attach.version>
+        <attach.version>4.0.13</attach.version>
 
         <main.class.name>com.stream_pi.client.Main</main.class.name>
 
@@ -103,6 +103,11 @@
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>storage</artifactId>
+            <version>${attach.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gluonhq.attach</groupId>
+            <artifactId>device</artifactId>
             <version>${attach.version}</version>
         </dependency>
         <dependency>
@@ -297,6 +302,7 @@
                             <attachList>
                                 <list>lifecycle</list>
                                 <list>storage</list>
+                                <list>device</list>
                                 <list>browser</list>
                                 <list>vibration</list>
                                 <list>orientation</list>

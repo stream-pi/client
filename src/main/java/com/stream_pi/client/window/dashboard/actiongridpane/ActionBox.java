@@ -327,7 +327,7 @@ public class ActionBox extends StackPane
 
     public void configureSize()
     {
-        int rowSpan = getAction().getRowSpan(), colSpan = getAction().getColSpan();
+        int rowSpan = getAction().getLocation().getRowSpan(), colSpan = getAction().getLocation().getColSpan();
 
         GridPane.setRowSpan(this, rowSpan);
         GridPane.setColumnSpan(this, colSpan);
@@ -663,9 +663,9 @@ public class ActionBox extends StackPane
             totalStyle+="-fx-text-fill : "+colour+";";
         }
 
-        if(getAction().getNameFontSize() > -1)
+        if(getAction().getDisplayTextFontSize() > -1)
         {
-            totalStyle+="-fx-font-size: "+getAction().getNameFontSize()+";";
+            totalStyle+="-fx-font-size: "+getAction().getDisplayTextFontSize()+";";
         }
 
         if(!totalStyle.isBlank())

@@ -435,7 +435,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         logger.info("Loading themes ...");
 
-        themes = new Themes(getConfig().getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName(), clientInfo.getMinThemeSupportVersion());
+        themes = new Themes(getConfig().getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName());
         
         if(!themes.getErrors().isEmpty())
         {
@@ -508,12 +508,4 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
 
     }
-
-    @Override
-    public String getDefaultThemeFullName()
-    {
-        return config.getCurrentThemeFullName();
-    }
-
-
 }

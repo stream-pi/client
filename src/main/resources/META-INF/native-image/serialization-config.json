@@ -12,5 +12,12 @@
   {"name": "int"},
   {"name": "int[]"},
   {"name": "double"},
-  {"name": "double[]"}
+  {"name": "double[]"},
+  {"name": "java.util.HashMap"},
+  {"name": "com.stream_pi.util.version.Version"},
+  {"name": "com.stream_pi.action_api.action.Action"},
+  {"name": "boolean"},
+  {"name": "com.stream_pi.action_api.actionproperty.property.Type"},
+  {"name": "com.stream_pi.util.platform.ReleaseStatus"},
+  {"name": "com.stream_pi.util.platform.Platform"}
 ]

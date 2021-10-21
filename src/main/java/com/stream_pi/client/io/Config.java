@@ -100,7 +100,7 @@ public class Config
     //Client Element
     
     //Default Values
-    public String getDefaultClientNickName()
+    public String getDefaultClientName()
     {
         return "Stream-Pi Client";
     }
@@ -132,9 +132,9 @@ public class Config
 
     //Getters
 
-    public String getClientNickName()
+    public String getClientName()
     {
-        return XMLConfigHelper.getStringProperty(document, "nickname", getDefaultClientNickName(), false, true, document, configFile);
+        return XMLConfigHelper.getStringProperty(document, "name", getDefaultClientName(), false, true, document, configFile);
     }
 
     public String getStartupProfileID()
@@ -181,9 +181,9 @@ public class Config
 
     //Setters
 
-    public void setNickName(String nickName)
+    public void setName(String name)
     {
-        document.getElementsByTagName("nickname").item(0).setTextContent(nickName);
+        document.getElementsByTagName("name").item(0).setTextContent(name);
     }
 
     public void setStartupProfileID(String id)

@@ -14,8 +14,10 @@ import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.Base;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
 import com.stream_pi.util.alert.StreamPiAlert;
+import com.stream_pi.util.alert.StreamPiAlertButton;
 import com.stream_pi.util.alert.StreamPiAlertListener;
 import com.stream_pi.util.alert.StreamPiAlertType;
+import com.stream_pi.util.comms.DisconnectReason;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import com.gluonhq.attach.lifecycle.LifecycleService;
@@ -23,7 +25,7 @@ import com.gluonhq.attach.util.Services;
 
 import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.platform.PlatformType;
-import com.stream_pi.util.startatboot.StartAtBoot;
+import com.stream_pi.util.startonboot.StartOnBoot;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -97,7 +99,7 @@ public class Controller extends Base
                 {
                     if(StartupFlags.IS_X_MODE != getConfig().isStartupXMode())
                     {
-                        StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
+                        StartOnBoot startAtBoot = new StartOnBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
                                 Main.class.getProtectionDomain().getCodeSource().getLocation(),
                                 StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
 
@@ -302,8 +304,16 @@ public class Controller extends Base
     }
 
     @Override
-    public void disconnect(String message) throws SevereException {
-        client.disconnect(message);
+    public void disconnect()
+    {
+        try
+        {
+            client.disconnect();
+        }
+        catch (SevereException e)
+        {
+            handleSevereException(e);
+        }
     }
 
 
@@ -509,7 +519,7 @@ public class Controller extends Base
             alert.setOnClicked(new StreamPiAlertListener()
             {
                 @Override
-                public void onClick(String txt)
+                public void onClick(StreamPiAlertButton s)
                 {
                     onCloseRequest();
                     exitApp();

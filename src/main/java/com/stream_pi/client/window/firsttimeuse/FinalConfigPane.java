@@ -29,7 +29,7 @@ import java.io.File;
 
 public class FinalConfigPane extends VBox
 {
-    private TextField clientNicknameTextField;
+    private TextField clientNameTextField;
     private TextField serverIPHostNameTextField;
     private TextField serverPortTextField;
     private Button nextButton;
@@ -51,7 +51,7 @@ public class FinalConfigPane extends VBox
         VBox.setVgrow(label, Priority.ALWAYS);
         label.getStyleClass().add("first_time_use_pane_final_config_label");
 
-        clientNicknameTextField = new TextField();
+        clientNameTextField = new TextField();
         serverIPHostNameTextField = new TextField();
         serverPortTextField = new TextField();
 
@@ -64,7 +64,7 @@ public class FinalConfigPane extends VBox
 
 
 
-        HBoxInputBox clientNickNameInputBox = new HBoxInputBox("Nickname", clientNicknameTextField, 150);
+        HBoxInputBox clientNickNameInputBox = new HBoxInputBox("Name", clientNameTextField, 150);
         HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox("Server IP", serverIPHostNameTextField, 150);
         HBoxInputBox serverIPPortInputBox = new HBoxInputBox("Server Port", serverPortTextField, 150);
 
@@ -95,9 +95,9 @@ public class FinalConfigPane extends VBox
 
         StringBuilder errors = new StringBuilder();
 
-        if(clientNicknameTextField.getText().isBlank())
+        if(clientNameTextField.getText().isBlank())
         {
-            errors.append("* Nick name cannot be blank.\n");
+            errors.append("* Name cannot be blank.\n");
         }
 
         if(serverIPHostNameTextField.getText().isBlank())
@@ -124,7 +124,7 @@ public class FinalConfigPane extends VBox
         {
             try
             {
-                Config.getInstance().setNickName(clientNicknameTextField.getText());
+                Config.getInstance().setName(clientNameTextField.getText());
                 Config.getInstance().setServerHostNameOrIP(serverIPHostNameTextField.getText());
                 Config.getInstance().setServerPort(port);
                 Config.getInstance().setFirstTimeUse(false);

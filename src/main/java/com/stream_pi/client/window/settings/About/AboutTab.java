@@ -1,6 +1,7 @@
 package com.stream_pi.client.window.settings.About;
 
 import com.stream_pi.action_api.ActionAPI;
+import com.stream_pi.theme_api.ThemeAPI;
 import com.stream_pi.util.Util;
 import com.stream_pi.client.Main;
 import com.stream_pi.client.controller.ClientListener;
@@ -94,13 +95,13 @@ public class AboutTab extends ScrollPane
         Label commStandardLabel = new Label("Comm Standard "+clientInfo.getCommStandardVersion().getText());
         commStandardLabel.getStyleClass().add("about_comm_standard_label");
 
-        Label minThemeAPILabel = new Label("Min ThemeAPI "+clientInfo.getMinThemeSupportVersion().getText());
+        Label minThemeAPILabel = new Label("Min ThemeAPI "+ ThemeAPI.MIN_VERSION_SUPPORTED.getText());
         minThemeAPILabel.getStyleClass().add("about_min_theme_api_label");
 
         Label minActionAPILabel = new Label("Min ActionAPI "+clientInfo.getMinPluginSupportVersion().getText());
         minActionAPILabel.getStyleClass().add("about_min_action_api_label");
 
-        Label currentActionAPILabel = new Label("ActionAPI "+ ActionAPI.API_VERSION.getText());
+        Label currentActionAPILabel = new Label("ActionAPI "+ ActionAPI.VERSION.getText());
         currentActionAPILabel.getStyleClass().add("about_current_action_api_label");
 
         Label currentUtilLabel = new Label("Util "+Util.VERSION.getText());

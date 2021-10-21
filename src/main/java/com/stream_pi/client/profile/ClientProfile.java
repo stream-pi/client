@@ -206,14 +206,12 @@ public class ClientProfile implements Cloneable{
                     Element locationElement = (Element) displayElement.getElementsByTagName("location").item(0);
                     int row = XMLConfigHelper.getIntProperty(locationElement, "row");
                     int col = XMLConfigHelper.getIntProperty(locationElement, "col");
-                    action.setLocation(new Location(row, col));
 
                     Element spanElement = (Element) displayElement.getElementsByTagName("span").item(0);
                     int rowSpan = XMLConfigHelper.getIntProperty(spanElement, "row");
                     int colSpan = XMLConfigHelper.getIntProperty(spanElement, "col");
 
-                    action.setRowSpan(rowSpan);
-                    action.setColSpan(colSpan);
+                    action.setLocation(new Location(row, col, rowSpan, colSpan));
                 }
                 catch (Exception e)
                 {
@@ -268,7 +266,7 @@ public class ClientProfile implements Cloneable{
 
 
 
-                Element textElement = (Element) displayElement.getElementsByTagName("text").item(0);
+                Element textElement = (Element) displayElement.getElementsByTagName("display-text").item(0);
             
                 boolean showText = XMLConfigHelper.getBooleanProperty(textElement, "show");
                 String displayTextFontColour = XMLConfigHelper.getStringProperty(textElement, "colour-hex");
@@ -281,13 +279,13 @@ public class ClientProfile implements Cloneable{
                 action.setDisplayTextFontColourHex(displayTextFontColour);
 
 
-                String displayText = XMLConfigHelper.getStringProperty(textElement, "display-text");
+                String displayText = XMLConfigHelper.getStringProperty(textElement, "text");
 
                 action.setDisplayText(displayText);
 
                 double fontSize = XMLConfigHelper.getDoubleProperty(textElement, "font-size");
 
-                action.setNameFontSize(fontSize);
+                action.setDisplayTextFontSize(fontSize);
 
                 action.setCurrentToggleStatus(false); // Always fault at default
 
@@ -499,7 +497,7 @@ public class ClientProfile implements Cloneable{
 
         backgroundElement.appendChild(iconElement);
 
-        Element textElement = document.createElement("text");
+        Element textElement = document.createElement("display-text");
         displayElement.appendChild(textElement);
 
         Element textTolourHexElement = document.createElement("colour-hex");
@@ -510,12 +508,12 @@ public class ClientProfile implements Cloneable{
         textShowElement.setTextContent(action.isShowDisplayText()+"");
         textElement.appendChild(textShowElement);
 
-        Element textDisplayTextElement = document.createElement("display-text");
+        Element textDisplayTextElement = document.createElement("text");
         textDisplayTextElement.setTextContent(action.getDisplayText());
         textElement.appendChild(textDisplayTextElement);
 
         Element textDisplayTextFontSizeElement = document.createElement("font-size");
-        textDisplayTextFontSizeElement.setTextContent(action.getNameFontSize()+"");
+        textDisplayTextFontSizeElement.setTextContent(action.getDisplayTextFontSize()+"");
         textElement.appendChild(textDisplayTextFontSizeElement);
 
         Element textAlignmentElement = document.createElement("alignment");
@@ -538,11 +536,11 @@ public class ClientProfile implements Cloneable{
         displayElement.appendChild(spanElement);
 
         Element colSpanElement = document.createElement("col");
-        colSpanElement.setTextContent(action.getColSpan()+"");
+        colSpanElement.setTextContent(action.getLocation().getColSpan()+"");
         spanElement.appendChild(colSpanElement);
 
         Element rowSpanElement = document.createElement("row");
-        rowSpanElement.setTextContent(action.getRowSpan()+"");
+        rowSpanElement.setTextContent(action.getLocation().getRowSpan()+"");
         spanElement.appendChild(rowSpanElement);
 
 

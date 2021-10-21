@@ -8,6 +8,7 @@ Contributors: Debayan Sutradhar (@dubbadhar)
 
 package com.stream_pi.client.info;
 
+import com.gluonhq.attach.device.DeviceService;
 import com.gluonhq.attach.storage.StorageService;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.platform.Platform;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 public class ClientInfo {
     private Version version;
@@ -26,7 +28,6 @@ public class ClientInfo {
 
     private String prePath;
 
-    private Version minThemeSupportVersion;
     private Version minPluginSupportVersion;
     private Version commStandardVersion;
 
@@ -35,7 +36,6 @@ public class ClientInfo {
     private ClientInfo()
     {
         version = new Version(1,0,0);
-        minThemeSupportVersion = new Version(1,0,0);
         minPluginSupportVersion = new Version(1,0,0);
         commStandardVersion = new Version(1,0,0);
 
@@ -57,6 +57,12 @@ public class ClientInfo {
         {
             StorageService.create().ifPresent(s-> s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
                     ()-> prePath = null));
+
+            DeviceService.create().ifPresent(s->{
+                Logger.getLogger(getClass().getName()).info("DEVICE VERSION: "+s.getVersion());
+                Logger.getLogger(getClass().getName()).info("DEVICE MODEL: "+s.getModel());
+                Logger.getLogger(getClass().getName()).info("DEVICE PLATFORM: "+s.getPlatform());
+            });
 
             platform = Platform.valueOf(osName.toUpperCase());
         }
@@ -96,11 +102,6 @@ public class ClientInfo {
     public ReleaseStatus getReleaseStatus()
     {
         return releaseStatus;
-    }
-
-    public Version getMinThemeSupportVersion()
-    {
-        return minThemeSupportVersion;
     }
 
     public Version getMinPluginSupportVersion()

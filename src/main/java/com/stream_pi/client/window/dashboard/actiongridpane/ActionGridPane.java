@@ -357,7 +357,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
                 actionBox.clear();
             }
 
-            makeNonUsedBoxesVisible = (GridPane.getColumnSpan(actionBox) != action.getColSpan()) || (GridPane.getRowSpan(actionBox) != action.getRowSpan());
+            makeNonUsedBoxesVisible = (GridPane.getColumnSpan(actionBox) != action.getLocation().getColSpan()) || (GridPane.getRowSpan(actionBox) != action.getLocation().getRowSpan());
         }
         else
         {

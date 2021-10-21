@@ -10,6 +10,7 @@ import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.theme_api.Theme;
 import com.stream_pi.util.alert.StreamPiAlert;
+import com.stream_pi.util.alert.StreamPiAlertButton;
 import com.stream_pi.util.alert.StreamPiAlertListener;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.checkforupdates.CheckForUpdates;
@@ -21,7 +22,7 @@ import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.PlatformType;
-import com.stream_pi.util.startatboot.StartAtBoot;
+import com.stream_pi.util.startonboot.StartOnBoot;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 import com.stream_pi.util.uihelper.HBoxWithSpaceBetween;
 import com.stream_pi.util.uihelper.SpaceFiller;
@@ -54,7 +55,7 @@ public class GeneralTab extends VBox
     private StreamPiComboBox<ClientProfile> clientProfileComboBox;
     private StreamPiComboBox<Theme> themeComboBox;
 
-    private TextField nickNameTextField;
+    private TextField nameTextField;
 
     private Button saveButton;
     private Button connectDisconnectButton;
@@ -114,7 +115,7 @@ public class GeneralTab extends VBox
 
 
         serverHostNameOrIPTextField = new TextField();
-        nickNameTextField = new TextField();
+        nameTextField = new TextField();
 
         clientProfileComboBox = new StreamPiComboBox<>();
 
@@ -229,7 +230,7 @@ public class GeneralTab extends VBox
 
         VBox vBox = new VBox(
                 generateSubHeading("Connection"),
-                new HBoxInputBox("Device Name", nickNameTextField, prefWidth),
+                new HBoxInputBox("Name", nameTextField, prefWidth),
                 new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
                 new HBoxInputBox("Port", serverPortTextField, prefWidth),
                 generateSubHeading("Client"),
@@ -352,18 +353,15 @@ public class GeneralTab extends VBox
 
     private void onFactoryResetButtonClicked()
     {
-        StreamPiAlert confirmation = new StreamPiAlert("Warning","Are you sure?\n" +
-                "This will erase everything.",StreamPiAlertType.WARNING);
+        StreamPiAlert confirmation = new StreamPiAlert("Are you sure?\n" +
+                "This will erase everything.",StreamPiAlertType.WARNING, StreamPiAlertButton.YES, StreamPiAlertButton.NO);
 
-        String yesButton = "Yes";
-        String noButton = "No";
-
-        confirmation.setButtons(yesButton, noButton);
 
         confirmation.setOnClicked(new StreamPiAlertListener() {
             @Override
-            public void onClick(String s) {
-                if(s.equals(yesButton))
+            public void onClick(StreamPiAlertButton s)
+            {
+                if(s.equals(StreamPiAlertButton.YES))
                 {
                     clientListener.factoryReset();
                 }
@@ -407,17 +405,13 @@ public class GeneralTab extends VBox
 
     public void onConnectDisconnectButtonClicked()
     {
-        try
+        if(clientListener.isConnected())
         {
-            if(clientListener.isConnected())
-                clientListener.disconnect("Client disconnected from settings");
-            else
-                clientListener.setupClientConnection();
+            clientListener.disconnect();
         }
-        catch (SevereException e)
+        else
         {
-            e.printStackTrace();
-            exceptionAndAlertHandler.handleSevereException(e);
+            clientListener.setupClientConnection();
         }
     }
 
@@ -438,7 +432,7 @@ public class GeneralTab extends VBox
     {
         Config config = Config.getInstance();
 
-        nickNameTextField.setText(config.getClientNickName());
+        nameTextField.setText(config.getClientName());
 
         serverHostNameOrIPTextField.setText(config.getSavedServerHostNameOrIP());
         serverPortTextField.setText(config.getSavedServerPort()+"");
@@ -529,17 +523,9 @@ public class GeneralTab extends VBox
             errors.append("* Server IP cannot be empty.\n");
         }
 
-        if(nickNameTextField.getText().isBlank())
+        if(nameTextField.getText().isBlank())
         {
             errors.append("* Nick name cannot be blank.\n");
-        }
-        else
-        {
-            if(nickNameTextField.getText().equals("about maker"))
-            {
-                new StreamPiAlert("किसने बनाया ? / কে বানিয়েছে ?","ZGViYXlhbiAtIGluZGlh\n" +
-                        "boka XD").show();
-            }
         }
 
 
@@ -578,12 +564,12 @@ public class GeneralTab extends VBox
                 }
             }
 
-            if(!config.getClientNickName().equals(nickNameTextField.getText()))
+            if(!config.getClientName().equals(nameTextField.getText()))
             {
                 syncWithServer = true;
             }
 
-            config.setNickName(nickNameTextField.getText());
+            config.setName(nameTextField.getText());
 
             if(port != config.getSavedServerPort() || !serverHostNameOrIPTextField.getText().equals(config.getSavedServerHostNameOrIP()))
             {
@@ -612,7 +598,7 @@ public class GeneralTab extends VBox
 
             if(config.isStartOnBoot() != startOnBoot)
             {
-                StartAtBoot startAtBoot = new StartAtBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
+                StartOnBoot startAtBoot = new StartOnBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
                         Main.class.getProtectionDomain().getCodeSource().getLocation(),
                         StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
 

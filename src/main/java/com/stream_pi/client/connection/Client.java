@@ -7,14 +7,20 @@ import com.stream_pi.action_api.action.Location;
 import com.stream_pi.action_api.actionproperty.ClientProperties;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.property.Property;
+import com.stream_pi.action_api.actionproperty.property.StringProperty;
 import com.stream_pi.action_api.actionproperty.property.Type;
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
 import com.stream_pi.theme_api.Theme;
+import com.stream_pi.theme_api.ThemeAPI;
+import com.stream_pi.util.alert.StreamPiAlert;
+import com.stream_pi.util.alert.StreamPiAlertType;
+import com.stream_pi.util.comms.DisconnectReason;
 import com.stream_pi.util.comms.Message;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
@@ -48,6 +54,8 @@ public class Client extends Thread
 
     private String serverIP;
     private int serverPort;
+    private String serverName;
+
     private Logger logger;
 
     private Runnable onConnectAndSetupToBeRun;
@@ -178,6 +186,9 @@ public class Client extends Thread
                         case "get_client_details" :     sendClientDetails();
                             break;
 
+                        case "server_details" :         registerServerDetails(message);
+                            break;
+
                         case "get_client_screen_details" : sendClientScreenDetails();
                             break;
 
@@ -258,13 +269,16 @@ public class Client extends Thread
         }
     }
 
+    private void registerServerDetails(Message message)
+    {
+        serverName = (String) message.getValue("name");
+    }
+
     private void onSetToggleStatus(Message message)
     {
-        String[] arr = message.getStringArrValue();
-
-        String profileID = arr[0];
-        String actionID = arr[1];
-        boolean newStatus = arr[2].equals("true");
+        String profileID = (String) message.getValue("profile_ID");
+        String actionID = (String) message.getValue("ID");
+        boolean newStatus = (boolean) message.getValue("toggle_status");
 
         boolean currentStatus = clientListener.getToggleStatus(profileID,actionID);
 
@@ -284,15 +298,13 @@ public class Client extends Thread
 
     private void onSetActionGaugeProperties(Message message)
     {
-        String[] arr = message.getStringArrValue();
-
-        String profileID = arr[0];
-        String actionID = arr[1];
+        String profileID = (String) message.getValue("profile_ID");
+        String actionID = (String) message.getValue("ID");
 
         ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
 
         clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID)
-                .setGaugeProperties((GaugeProperties) message.getObject());
+                .setGaugeProperties((GaugeProperties) message.getValue("gauge_properties"));
 
         if(actionBox!=null)
         {
@@ -302,30 +314,26 @@ public class Client extends Thread
 
     private void onSetActionGaugeValue(Message message)
     {
-        String[] arr = message.getStringArrValue();
-
-        String profileID = arr[0];
-        String actionID = arr[1];
+        String profileID = (String) message.getValue("profile_ID");
+        String actionID = (String) message.getValue("ID");
 
         ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
 
         if(actionBox!=null)
         {
-            Platform.runLater(()->{
-                actionBox.updateGaugeValue(message.getDoubleValue());
-            });
+            Platform.runLater(()-> actionBox.updateGaugeValue((double) message.getValue("gauge_value")));
         }
     }
 
     private void onActionIconReceived(Message message) throws MinorException
     {
-        String profileID = message.getStringArrValue()[0];
-        String actionID = message.getStringArrValue()[1];
-        String state = message.getStringArrValue()[2];
+        String profileID = (String) message.getValue("profile_ID");
+        String actionID = (String) message.getValue("ID");
+        String state = (String) message.getValue("icon_state");
 
         clientListener.getClientProfiles().getProfileFromID(profileID).saveActionIcon(
                 actionID,
-                message.getByteArrValue(),
+                (byte[]) message.getValue("icon"),
                 state
         );
 
@@ -334,32 +342,12 @@ public class Client extends Thread
     }
 
 
-
-    //commands
-
-    public synchronized void sendIcon(String profileID, String actionID, String state, byte[] icon) throws SevereException
-    {
-        try
-        {
-            Thread.sleep(50);
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        Message message = new Message("action_icon");
-        message.setStringArrValue(profileID, actionID, state);
-        message.setByteArrValue(icon);
-        sendMessage(message);
-    }
-
     public void disconnect() throws SevereException
     {
-        disconnect("");
+        disconnect(null);
     }
 
-    public void disconnect(String message) throws SevereException
+    public void disconnect(DisconnectReason disconnectReason) throws SevereException
     {
         if(stop.get())
             return;
@@ -369,7 +357,7 @@ public class Client extends Thread
         logger.info("Sending server disconnect message ...");
 
         Message m = new Message("disconnect");
-        m.setStringValue(message);
+        m.setValue("reason", disconnectReason);
         sendMessage(m);
 
         try
@@ -400,52 +388,45 @@ public class Client extends Thread
     {
         Message message = new Message("themes");
 
-        String[] arr = new String[clientListener.getThemes().getThemeList().size()*4];
+        message.setValue("size", clientListener.getThemes().getThemeList().size());
 
-        int x = 0;
         for(int i = 0;i<clientListener.getThemes().getThemeList().size();i++)
         {
             Theme theme = clientListener.getThemes().getThemeList().get(i);
 
-            arr[x] = theme.getFullName();
-            arr[x+1] = theme.getShortName();
-            arr[x+2] = theme.getAuthor();
-            arr[x+3] = theme.getVersion().getText();
+            message.setValue("theme_"+i+"_full_name", theme.getFullName());
+            message.setValue("theme_"+i+"_short_name", theme.getShortName());
+            message.setValue("theme_"+i+"_author", theme.getAuthor());
+            message.setValue("theme_"+i+"_version", theme.getVersion());
 
-            x+=4;
         }
-
-        message.setStringArrValue(arr);
         sendMessage(message);
     }
 
 
-    public void sendActionIcon(String clientProfileID, String actionID, String state) throws SevereException
-    {
-        sendIcon(clientProfileID,
-                actionID,
-                state,
-                clientListener.getClientProfiles()
-                        .getProfileFromID(clientProfileID)
-                        .getActionFromID(actionID).getIcon(state));
-    }
-
     public void serverDisconnected(Message message)
     {
         stop.set(true);
-        String txt = "Disconnected!";
 
-        String m = message.getStringValue();
 
-        if(!m.isBlank())
-            txt = "Message : "+m;
+        if (message.getValue("reason") == null)
+        {
+            new StreamPiAlert(I18N.getString("connection.ClientConnection.disconnectedFromClient", serverName), StreamPiAlertType.WARNING).show();
+        }
+        else
+        {
+            new StreamPiAlert(I18N.getString("connection.ClientConnection.disconnectedFromClient", serverName), ((DisconnectReason) message.getValue("reason")).getMessage(), StreamPiAlertType.WARNING).show();;
+        }
 
-        exceptionAndAlertHandler.handleMinorException(new MinorException("Disconnected from Server",txt));
 
-        if(!socket.isClosed()) {
-            try {
+        if(!socket.isClosed())
+        {
+            try
+            {
                 socket.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
@@ -457,14 +438,12 @@ public class Client extends Thread
 
     public void sendClientScreenDetails() throws SevereException
     {
-        Message toBeSent = new Message("client_screen_details");
+        Message message = new Message("client_screen_details");
 
-        toBeSent.setDoubleArrValue(
-                clientListener.getStageWidth(),
-                clientListener.getStageHeight()
-        );
+        message.setValue("display_width", clientListener.getStageWidth());
+        message.setValue("display_height", clientListener.getStageHeight());
 
-        sendMessage(toBeSent);
+        sendMessage(message);
     }
 
     public void sendClientDetails() throws SevereException
@@ -480,42 +459,21 @@ public class Client extends Thread
 
     public void sendClientDetails(String header) throws SevereException
     {
-        String clientVersion = clientInfo.getVersion().getText();
-        String releaseStatus = clientInfo.getReleaseStatus().toString();
-        String clientCommStandard = clientInfo.getCommStandardVersion().getText();
-        String clientMinThemeStandard = clientInfo.getMinThemeSupportVersion().getText();
-        String clientNickname = Config.getInstance().getClientNickName();
-        String screenWidth = clientListener.getStageWidth()+"";
-        String screenHeight = clientListener.getStageHeight()+"";
-        String OS = clientInfo.getPlatform()+"";
-        String defaultProfileID = Config.getInstance().getStartupProfileID();
+        Message message = new Message(header);
 
+        message.setValue("version", clientInfo.getVersion());
+        message.setValue("release_status", clientInfo.getReleaseStatus());
+        message.setValue("comms_standard", clientInfo.getCommStandardVersion());
+        message.setValue("min_theme_standard", ThemeAPI.MIN_VERSION_SUPPORTED);
+        message.setValue("orientation", clientListener.getCurrentOrientation());
+        message.setValue("name", Config.getInstance().getClientName());
+        message.setValue("platform",clientInfo.getPlatform());
+        message.setValue("display_width", clientListener.getStageWidth());
+        message.setValue("display_height", clientListener.getStageHeight());
+        message.setValue("default_profile_ID", Config.getInstance().getStartupProfileID());
+        message.setValue("default_theme_full_name", Config.getInstance().getDefaultCurrentThemeFullName());
 
-        Message toBeSent = new Message(header);
-
-        String tbs = null;
-
-        Orientation orientation = clientListener.getCurrentOrientation();
-        if(orientation!=null)
-        {
-            tbs = orientation.toString();
-        }
-
-        toBeSent.setStringArrValue(
-                clientVersion,
-                releaseStatus,
-                clientCommStandard,
-                clientMinThemeStandard,
-                clientNickname,
-                screenWidth,
-                screenHeight,
-                OS,
-                defaultProfileID,
-                clientListener.getDefaultThemeFullName(),
-                tbs
-        );
-
-        sendMessage(toBeSent);
+        sendMessage(message);
     }
 
 
@@ -523,40 +481,33 @@ public class Client extends Thread
     {
         Message message = new Message("profiles");
 
-        String[] profilesArray = new String[clientListener.getClientProfiles().getClientProfiles().size()];
-        int[] profilesActionsArray = new int[profilesArray.length];
+        message.setValue("size", clientListener.getClientProfiles().getClientProfiles().size());
 
-        for(int i = 0;i<profilesArray.length;i++)
+        for(int i = 0;i<clientListener.getClientProfiles().getClientProfiles().size();i++)
         {
             ClientProfile clientProfile = clientListener.getClientProfiles().getClientProfiles().get(i);
-            profilesArray[i] = clientProfile.getID();
-            profilesActionsArray[i] = clientProfile.getActions().size();
+            message.setValue("profile_"+i+"_ID", clientProfile.getID());
+            message.setValue("profile_"+i+"_actions_size", clientProfile.getActions().size());
         }
 
-        message.setStringArrValue(profilesArray);
-        message.setIntArrValue(profilesActionsArray);
         sendMessage(message);
     }
 
 
     public void sendProfileDetailsToServer(Message message) throws SevereException
     {
-        String ID = message.getStringValue();
+        String ID = (String) message.getValue("ID");
 
         Message tbs1 = new Message("profile_details");
 
         ClientProfile clientProfile = clientListener.getClientProfiles().getProfileFromID(ID);
 
-        String[] arr = new String[]{
-                ID,
-                clientProfile.getName(),
-                clientProfile.getRows()+"",
-                clientProfile.getCols()+"",
-                clientProfile.getActionSize()+"",
-                clientProfile.getActionGap()+""
-        };
-
-        tbs1.setStringArrValue(arr);
+        tbs1.setValue("ID", ID);
+        tbs1.setValue("name", clientProfile.getName());
+        tbs1.setValue("rows", clientProfile.getRows());
+        tbs1.setValue("cols", clientProfile.getCols());
+        tbs1.setValue("action_size", clientProfile.getActionSize());
+        tbs1.setValue("action_gap", clientProfile.getActionGap());
 
         sendMessage(tbs1);
 
@@ -564,171 +515,121 @@ public class Client extends Thread
         {
             sendActionDetails(clientProfile.getID(), action);
         }
-
-        for(Action action : clientProfile.getActions())
-        {
-            if(action.isHasIcon())
-            {
-                for(String key : action.getIcons().keySet())
-                {
-                    sendActionIcon(clientProfile.getID(), action.getID(), key);
-                }
-            }
-        }
-
     }
-    
+
     public void sendActionDetails(String profileID, Action action) throws SevereException
     {
-        
+
         if(action == null)
         {
             logger.info("NO SUCH ACTION");
             return;
         }
 
-        ArrayList<String> a = new ArrayList<>();
+        Message message = new Message("action_details");
 
-        a.add(profileID);
-        a.add(action.getID());
-        a.add(action.getActionType()+"");
+        message.setValue("profile_ID", profileID);
+        message.setValue("ID", action.getID());
+        message.setValue("type", action.getActionType());
 
         if(action.getActionType() == ActionType.NORMAL ||
                 action.getActionType() == ActionType.TOGGLE || action.getActionType() == ActionType.GAUGE)
         {
-            a.add(action.getVersion().getText());
-        }
-        else
-        {
-            a.add("no");
+            message.setValue("module_name", action.getModuleName());
+            message.setValue("version", action.getVersion());
         }
 
-        if(action.getActionType() ==ActionType.NORMAL ||
-                action.getActionType() == ActionType.TOGGLE || action.getActionType() == ActionType.GAUGE)
-        {
-            a.add(action.getModuleName());
-        }
-        else
-        {
-            a.add("nut");
-        }
-
-        //display
-
-        a.add(action.getBgColourHex());
-
-        //icon
+        message.setValue("bg_colour_hex", action.getBgColourHex());
 
 
-        StringBuilder allIconStatesNames = new StringBuilder();
+        message.setValue("icon_state_names_size", action.getIcons().size());
+
+        int i = 0;
         for(String eachState : action.getIcons().keySet())
         {
-            allIconStatesNames.append(eachState).append("::");
+            message.setValue("icon_state_"+i, eachState);
+            message.setValue("icon_"+i, action.getIcon(eachState));
+            i+=1;
         }
-        a.add(allIconStatesNames.toString());
 
-
-        a.add(action.getCurrentIconState()+"");
+        message.setValue("current_icon_state", action.getCurrentIconState());
 
         //text
-        a.add(action.isShowDisplayText()+"");
-        a.add(action.getDisplayTextFontColourHex());
-        a.add(action.getDisplayText());
-        a.add(action.getNameFontSize()+"");
-        a.add(action.getDisplayTextAlignment()+"");
+        message.setValue("is_show_display_text", action.isShowDisplayText());
+        message.setValue("display_text_font_colour_hex", action.getDisplayTextFontColourHex());
+        message.setValue("display_text", action.getDisplayText());
+        message.setValue("display_text_font_size", action.getDisplayTextFontSize());
+        message.setValue("display_text_alignment", action.getDisplayTextAlignment());
 
         //location
+        message.setValue("location", action.getLocation());
 
-        if(action.getLocation() == null)
-        {
-            a.add("-1");
-            a.add("-1");
-        }
-        else
-        {
-            a.add(action.getLocation().getRow()+"");
-            a.add(action.getLocation().getCol()+"");
-        }
+        message.setValue("parent", action.getParent());
 
-        a.add(action.getRowSpan()+"");
-        a.add(action.getColSpan()+"");
+        message.setValue("delay_before_executing", action.getDelayBeforeExecuting());
 
-        a.add(action.getParent());
-
-        a.add(action.getDelayBeforeExecuting()+"");
 
         //client properties
 
-        a.add(action.isGaugeAnimated()+"");
+        message.setValue("is_gauge_animated", action.isGaugeAnimated());
+
 
         ClientProperties clientProperties = action.getClientProperties();
 
-        a.add(clientProperties.getSize()+"");
+        message.setValue("client_properties_size", clientProperties.getSize());
 
-        for(Property property : clientProperties.get())
+        for (int x = 0;x< clientProperties.getSize(); x++)
         {
-            a.add(property.getName());
-            a.add(property.getRawValue());
+            message.setValue("client_property_"+x+"_name", clientProperties.get().get(x).getName());
+            message.setValue("client_property_"+x+"_raw_value", clientProperties.get().get(x).getRawValue());
         }
 
-
-
-        Message message = new Message("action_details");
-
-        String[] x = new String[a.size()];
-        x = a.toArray(x);
-
-
-        message.setStringArrValue(x);
         sendMessage(message);
-
     }
 
     public void saveActionDetails(Message message)
     {
-        String[] r = message.getStringArrValue();
+        String profileID = (String) message.getValue("profile_ID");
 
-        String profileID = r[0];
-
-        String actionID = r[1];
-        ActionType actionType = ActionType.valueOf(r[2]);
-
-        //3 - Version
-        //4 - ModuleName
+        String ID = (String) message.getValue("ID");
+        ActionType actionType = (ActionType) message.getValue("type");
 
         //display
-        String bgColorHex = r[5];
+        String bgColourHex = (String) message.getValue("bg_colour_hex");
 
-        String[] iconStates = r[6].split("::");
-        String currentIconState = r[7];
+        int allIconStateNamesSize = (int) message.getValue("icon_state_names_size");
+
+        String[] iconStates = new String[allIconStateNamesSize];
+
+        for(int i = 0;i<iconStates.length; i++)
+        {
+            iconStates[i] = (String) message.getValue("icon_state_"+i);
+        }
+
+        String currentIconState = (String) message.getValue("current_icon_state");
 
         //text
-        boolean isShowDisplayText = r[8].equals("true");
-        String displayFontColor = r[9];
-        String displayText = r[10];
-        double displayLabelFontSize = Double.parseDouble(r[11]);
-        DisplayTextAlignment displayTextAlignment = DisplayTextAlignment.valueOf(r[12]);
+        boolean isShowDisplayText = (boolean) message.getValue("is_show_display_text");
+        String displayTextFontColourHex = (String) message.getValue("display_text_font_colour_hex");
+        String displayText = (String) message.getValue("display_text");
+        double displayTextFontSize = (Double) message.getValue("display_text_font_size");
+        DisplayTextAlignment displayTextAlignment = (DisplayTextAlignment) message.getValue("display_text_alignment");
 
-        //location
-        String row = r[13];
-        String col = r[14];
 
-        Location location = new Location(Integer.parseInt(row), Integer.parseInt(col));
+        Location location = (Location) message.getValue("location");
 
-        Action action = new Action(actionID, actionType);
+        String parent = (String) message.getValue("parent");
 
-        String rowSpan = r[15];
-        String colSpan = r[16];
+        int delayBeforeExecuting = (int) message.getValue("delay_before_executing");
 
-        action.setRowSpan(Integer.parseInt(rowSpan));
-        action.setColSpan(Integer.parseInt(colSpan));
+        Action action = new Action(ID, actionType);
 
         if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE || actionType == ActionType.GAUGE)
         {
             try
             {
-                action.setVersion(new Version(r[3]));
-                action.setModuleName(r[4]);
+                action.setVersion((Version) message.getValue("version"));
+                action.setModuleName((String) message.getValue("module_name"));
             }
             catch (Exception e)
             {
@@ -738,55 +639,46 @@ public class Client extends Thread
         }
 
 
-        action.setBgColourHex(bgColorHex);
+        action.setBgColourHex(bgColourHex);
 
         action.setShowDisplayText(isShowDisplayText);
-        action.setDisplayTextFontColourHex(displayFontColor);
+        action.setDisplayTextFontColourHex(displayTextFontColourHex);
         action.setDisplayText(displayText);
         action.setDisplayTextAlignment(displayTextAlignment);
-        action.setNameFontSize(displayLabelFontSize);
+        action.setDisplayTextFontSize(displayTextFontSize);
         action.setCurrentIconState(currentIconState);
 
         action.setLocation(location);
 
-
-        String parent = r[17];
         action.setParent(parent);
 
         //client properties
 
-        action.setDelayBeforeExecuting(Integer.parseInt(r[18]));
+        action.setDelayBeforeExecuting(delayBeforeExecuting);
 
-        boolean isAnimatedGauge = r[19].equals("true");
+        boolean isAnimatedGauge = (boolean) message.getValue("is_gauge_animated");
 
-        if (action.getActionType() == ActionType.GAUGE)
-        {
-            action.setGaugeAnimated(isAnimatedGauge);
-        }
-
-        int clientPropertiesSize = Integer.parseInt(r[20]);
+        int clientPropertiesSize = (int) message.getValue("client_properties_size");
 
         ClientProperties clientProperties = new ClientProperties();
 
         if(actionType == ActionType.FOLDER)
             clientProperties.setDuplicatePropertyAllowed(true);
 
-        for(int i = 21;i<((clientPropertiesSize*2) + 21); i+=2)
+        for(int i = 0;i<clientPropertiesSize; i++)
         {
-            Property property = new Property(r[i], Type.STRING);
-            property.setRawValue(r[i+1]);
+            StringProperty property = new StringProperty((String) message.getValue("client_property_"+i+"_name"));
+            property.setRawValue((String) message.getValue("client_property_"+i+"_raw_value"));
 
             clientProperties.addProperty(property);
         }
-
         action.setClientProperties(clientProperties);
+
 
         try
         {
             Action old = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID());
 
-
-            boolean refreshGrid = false;
 
             if(old != null)
             {
@@ -807,7 +699,7 @@ public class Client extends Thread
                     {
                         // State no longer exists. Delete.
 
-                        new File(Config.getInstance().getIconsPath()+"/"+actionID+"___"+oldState).delete();
+                        new File(Config.getInstance().getIconsPath()+"/"+ID+"___"+oldState).delete();
                     }
                 }
             }
@@ -834,9 +726,8 @@ public class Client extends Thread
     {
         try
         {
-            String[] arr = message.getStringArrValue();
-            String profileID = arr[0];
-            String actionID = arr[1];
+            String profileID = (String) message.getValue("profile_ID");
+            String actionID = (String) message.getValue("ID");
 
             Action acc =  clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
 
@@ -906,8 +797,8 @@ public class Client extends Thread
                     clientListener.clearActionBox(
                             acc.getLocation().getCol(),
                             acc.getLocation().getRow(),
-                            acc.getColSpan(),
-                            acc.getRowSpan()
+                            acc.getLocation().getColSpan(),
+                            acc.getLocation().getRowSpan()
                     );
                 }
             }
@@ -925,19 +816,15 @@ public class Client extends Thread
     {
         try
         {
-            boolean reInit = false;
-
-            String[] sep = message.getStringArrValue();
-
-            Config.getInstance().setNickName(sep[0]);
+            Config.getInstance().setName((String) message.getValue("name"));
 
 
-            Config.getInstance().setStartupProfileID(sep[1]);
+            Config.getInstance().setStartupProfileID((String) message.getValue("default_profile_ID"));
 
             String oldThemeFullName = Config.getInstance().getCurrentThemeFullName();
-            String newThemeFullName = sep[2];
+            String newThemeFullName = (String) message.getValue("default_theme_full_name");
 
-            Config.getInstance().setCurrentThemeFullName(sep[2]);
+            Config.getInstance().setCurrentThemeFullName(newThemeFullName);
             Config.getInstance().save();
 
             if(!oldThemeFullName.equals(newThemeFullName))
@@ -962,27 +849,26 @@ public class Client extends Thread
 
     public void saveProfileDetails(Message message) throws SevereException, MinorException
     {
-        String[] sep = message.getStringArrValue();
-
-        ClientProfile clientProfile = clientListener.getClientProfiles().getProfileFromID(sep[0]);
+        String ID = (String) message.getValue("ID");
+        ClientProfile clientProfile = clientListener.getClientProfiles().getProfileFromID(ID);
 
         if(clientProfile == null)
         {
-            clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+sep[0]+".xml"),
+            clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+ID+".xml"),
                     Config.getInstance().getIconsPath());
         }
 
-        clientProfile.setName(sep[1]);
-        clientProfile.setRows(Integer.parseInt(sep[2]));
-        clientProfile.setCols(Integer.parseInt(sep[3]));
-        clientProfile.setActionSize(Integer.parseInt(sep[4]));
-        clientProfile.setActionGap(Integer.parseInt(sep[5]));
+        clientProfile.setName((String) message.getValue("name"));
+        clientProfile.setRows((int) message.getValue("rows"));
+        clientProfile.setCols((int) message.getValue("cols"));
+        clientProfile.setActionSize((int) message.getValue("action_size"));
+        clientProfile.setActionGap((int) message.getValue("action_gap"));
 
         try
         {
             clientListener.getClientProfiles().addProfile(clientProfile);
             clientProfile.saveProfileDetails();
-            clientListener.refreshGridIfCurrentProfile(sep[0]);
+            clientListener.refreshGridIfCurrentProfile(ID);
             Platform.runLater(clientListener::loadSettings);
         }
         catch (Exception e)
@@ -994,11 +880,12 @@ public class Client extends Thread
 
     public void deleteProfile(Message message)
     {
+        String ID = (String) message.getValue("ID");
         clientListener.getClientProfiles().deleteProfile(clientListener.getClientProfiles().getProfileFromID(
-                message.getStringValue()
+                ID
         ));
-        
-        if(clientListener.getCurrentProfile().getID().equals(message.getStringValue()))
+
+        if(clientListener.getCurrentProfile().getID().equals(ID))
         {
             Platform.runLater(clientListener::renderRootDefaultProfile);
         }
@@ -1006,23 +893,25 @@ public class Client extends Thread
 
     public void onActionClicked(String profileID, String actionID, boolean toggleState) throws SevereException
     {
-        Message m = new Message("action_clicked");
-        m.setStringArrValue(profileID, actionID, toggleState+"");
-        sendMessage(m);
+        Message message = new Message("action_clicked");
+
+        message.setValue("profile_ID", profileID);
+        message.setValue("ID", actionID);
+        message.setValue("toggle_state", toggleState);
+        sendMessage(message);
     }
 
     public void updateOrientationOnClient(Orientation orientation) throws SevereException
     {
         Message m = new Message("client_orientation");
-        m.setStringValue(orientation.toString());
+        m.setValue("orientation", orientation);
         sendMessage(m);
     }
 
     public void actionFailed(Message message)
     {
-        String[] r = message.getStringArrValue();
-        String profileID = r[0];
-        String actionID = r[1];
+        String profileID = (String) message.getValue("profile_ID");
+        String actionID = (String) message.getValue("ID");
         clientListener.onActionFailed(profileID, actionID);
     }
 

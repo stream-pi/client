@@ -7,6 +7,7 @@ import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
 import com.stream_pi.theme_api.Theme;
 import com.stream_pi.theme_api.Themes;
+import com.stream_pi.util.comms.DisconnectReason;
 import com.stream_pi.util.exception.SevereException;
 import javafx.geometry.Orientation;
 
@@ -20,7 +21,6 @@ public interface ClientListener
     ClientProfiles getClientProfiles();
 
     Themes getThemes();
-    String getDefaultThemeFullName();
 
     Client getClient();
 
@@ -47,7 +47,7 @@ public interface ClientListener
     void initLogger() throws SevereException;
     void init();
 
-    void disconnect(String message) throws SevereException;
+    void disconnect();
 
     void setupClientConnection();
 
