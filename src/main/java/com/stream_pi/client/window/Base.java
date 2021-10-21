@@ -66,11 +66,10 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         return logger;
     }
 
-    private DashboardBase dashboardBase;
-    private SettingsBase settingsBase;
+    public DashboardBase dashboardBase;
+    public SettingsBase settingsBase;
 
-    private FirstTimeUse firstTimeUse;
-
+    public FirstTimeUse firstTimeUse;
 
     private StackPane alertStackPane;
 
@@ -202,28 +201,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
 
         initThemes();
-
-        if(config.isFirstTimeUse())
-        {
-
-            firstTimeUse = new FirstTimeUse(this, this);
-
-            getChildren().add(firstTimeUse);
-
-            if(getClientInfo().isPhone())
-            {
-                firstTimeUse.setPadding(new Insets(10));
-            }
-
-            firstTimeUse.toFront();
-
-            //resolution check
-            resizeAccordingToResolution();
-        }
-        else
-        {
-            dashboardBase.toFront();
-        }
     }
 
     private void initI18n() throws SevereException
@@ -265,7 +242,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         applyGlobalDefaultStylesheet();
     }
 
-    private void resizeAccordingToResolution()
+    protected void resizeAccordingToResolution()
     {
         if(!getClientInfo().isPhone())
         {

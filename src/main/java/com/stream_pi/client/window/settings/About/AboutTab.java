@@ -108,11 +108,11 @@ public class AboutTab extends ScrollPane
         currentUtilLabel.getStyleClass().add("about_current_util_label");
 
         VBox vBox1 = new VBox(
-                versionText, getSep(),
-                commStandardLabel, getSep(),
-                minThemeAPILabel, getSep(),
-                minActionAPILabel, getSep(),
-                currentActionAPILabel, getSep(),
+                versionText,
+                commStandardLabel,
+                minThemeAPILabel,
+                minActionAPILabel,
+                currentActionAPILabel,
                 currentUtilLabel
         );
 
