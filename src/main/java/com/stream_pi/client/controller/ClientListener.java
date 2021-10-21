@@ -46,6 +46,7 @@ public interface ClientListener
 
     void initLogger() throws SevereException;
     void init();
+    void initBase() throws SevereException;
 
     void disconnect();
 

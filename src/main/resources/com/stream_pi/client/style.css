@@ -84,6 +84,7 @@
     -fx-border-width : 1;
     -fx-border-color : grey;
     -fx-border-radius : 5;
+    -fx-background-radius: 5;
 }
 
 .combo_box_popup

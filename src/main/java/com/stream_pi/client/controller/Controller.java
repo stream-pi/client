@@ -65,7 +65,9 @@ public class Controller extends Base
         try 
         {
             if(firstRun)
+            {
                 initBase();
+            }
 
 
             if(getConfig().isScreenSaverEnabled())
@@ -93,7 +95,7 @@ public class Controller extends Base
             }
 
 
-            if(getClientInfo().getPlatform() != com.stream_pi.util.platform.Platform.ANDROID)
+            if(!getClientInfo().isPhone())
             {
                 if(getConfig().isStartOnBoot())
                 {
@@ -130,8 +132,11 @@ public class Controller extends Base
 
                 if(!getConfig().getIsFullScreenMode())
                 {
-                    getStage().setWidth(getConfig().getStartupWindowWidth());
-                    getStage().setHeight(getConfig().getStartupWindowHeight());
+                    if (firstRun)
+                    {
+                        getStage().setWidth(getConfig().getStartupWindowWidth());
+                        getStage().setHeight(getConfig().getStartupWindowHeight());
+                    }
                 }
             }
 
@@ -166,7 +171,10 @@ public class Controller extends Base
 
 
             if(Config.getInstance().isFirstTimeUse())
+            {
+                firstRun = false;
                 return;
+            }
             
             setupSettingsWindowsAnimations();
 
@@ -238,7 +246,6 @@ public class Controller extends Base
                 {
                     setupClientConnection();
                 }
-                firstRun = false;
             }
 
             if(!getClientInfo().isPhone())
@@ -246,6 +253,10 @@ public class Controller extends Base
                 getStage().widthProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
                 getStage().heightProperty().addListener((observableValue, orientation, t1) -> syncClientSizeDetailsWithServer());
             }
+
+
+
+            firstRun = false;
         }
         catch (SevereException e)
         {

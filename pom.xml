@@ -212,6 +212,7 @@
                     <options>
                         <option>-Dprism.verbose=true</option>
                         <option>-Djavafx.verbose=true</option>
+                        <option>-Dprism.lcdtext=false</option>
                         <option>-Dprism.forceGPU=true</option>
                     </options>
                     <stripDebug>true</stripDebug>

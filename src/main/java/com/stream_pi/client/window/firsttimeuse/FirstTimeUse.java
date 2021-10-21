@@ -42,7 +42,7 @@ public class FirstTimeUse extends VBox{
         buttonBar.getStyleClass().add("first_time_use_pane_button_bar");
         buttonBar.setSpacing(10.0);
 
-        welcomePane = new WelcomePane();
+        welcomePane = new WelcomePane(exceptionAndAlertHandler, clientListener);
         licensePane = new LicensePane();
         finalConfigPane = new FinalConfigPane(exceptionAndAlertHandler, clientListener, nextButton);
 

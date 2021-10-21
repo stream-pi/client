@@ -1,13 +1,16 @@
 package com.stream_pi.client.window;
 
+import com.stream_pi.action_api.ActionAPI;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.controller.ScreenSaver;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,7 +23,9 @@ import com.stream_pi.client.window.dashboard.DashboardBase;
 import com.stream_pi.client.window.firsttimeuse.FirstTimeUse;
 import com.stream_pi.client.window.settings.SettingsBase;
 import com.stream_pi.theme_api.Theme;
+import com.stream_pi.theme_api.ThemeAPI;
 import com.stream_pi.theme_api.Themes;
+import com.stream_pi.util.Util;
 import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.exception.MinorException;
@@ -141,6 +146,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     public void initBase() throws SevereException
     {
+        I18N.initAvailableLanguages();
+
         stage = (Stage) getScene().getWindow();
 
         getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/256x256.png"))));
@@ -150,16 +157,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         getStage().getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/16x16.png"))));
 
         clientInfo = ClientInfo.getInstance();
-        dashboardBase = new DashboardBase(this, this);
-        dashboardBase.prefWidthProperty().bind(widthProperty());
-        dashboardBase.prefHeightProperty().bind(heightProperty());
 
-        settingsBase = new SettingsBase(getHostServices(), this, this);
 
         alertStackPane = new StackPane();
         alertStackPane.setCache(true);
         alertStackPane.setCacheHint(CacheHint.SPEED);
-        alertStackPane.setPadding(new Insets(10));
         alertStackPane.setOpacity(0);
 
         StreamPiAlert.setParent(alertStackPane);
@@ -182,11 +184,22 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         checkPrePathDirectory();
 
 
-        getChildren().addAll(settingsBase, dashboardBase);
-
         setStyle(null);
 
         config = Config.getInstance();
+
+
+        initI18n();
+
+        dashboardBase = new DashboardBase(this, this);
+        dashboardBase.prefWidthProperty().bind(widthProperty());
+        dashboardBase.prefHeightProperty().bind(heightProperty());
+
+        settingsBase = new SettingsBase(getHostServices(), this, this);
+
+
+        getChildren().addAll(settingsBase, dashboardBase);
+
 
         initThemes();
 
@@ -210,6 +223,34 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         else
         {
             dashboardBase.toFront();
+        }
+    }
+
+    private void initI18n() throws SevereException
+    {
+        if (I18N.isLanguageAvailable(config.getCurrentLanguageLocale()))
+        {
+            Locale defaultLocale = Locale.getDefault();
+            Locale.setDefault(new Locale("this locale does not exist"));
+            // This sets the local to a non-existing locale to prevent the system from selecting default system locale.
+            // This is done because the proper way of removing fallback locales is not available on Java 9+
+            // As ResourceBundle.Control is not supported on modular projects.
+
+
+            Util.initI18n(config.getCurrentLanguageLocale());
+            ActionAPI.initI18n(config.getCurrentLanguageLocale());
+            ThemeAPI.initI18n(config.getCurrentLanguageLocale());
+            I18N.init(config.getCurrentLanguageLocale());
+
+            Locale.setDefault(defaultLocale); // Reset locale back to defaults ...
+        }
+        else
+        {
+            getLogger().warning("No translation available for locale : "+config.getCurrentLanguageLocale());
+            getLogger().warning("Setting it to en_UK ...");
+            getConfig().setCurrentLanguageLocale(new Locale("en", "UK"));
+            getConfig().save();
+            initI18n();
         }
     }
 
@@ -382,12 +423,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     public void applyDefaultStylesheet()
     {
-        getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        getStylesheets().add(Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm());
     }
 
     public void applyDefaultIconsStylesheet()
     {
-        getStylesheets().add(Main.class.getResource("default_icons.css").toExternalForm());
+        getStylesheets().add(Objects.requireNonNull(Main.class.getResource("default_icons.css")).toExternalForm());
     }
 
 
@@ -494,7 +535,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         else
         {
             logger.info("Theme not found. reverting to light theme ...");
-            try {
+            try
+            {
                 Config.getInstance().setCurrentThemeFullName("com.stream_pi.defaultlight");
                 Config.getInstance().save();
 
@@ -505,7 +547,5 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 handleSevereException(e);
             }
         }
-
-
     }
 }

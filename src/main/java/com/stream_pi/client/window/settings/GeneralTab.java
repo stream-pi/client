@@ -2,7 +2,9 @@ package com.stream_pi.client.window.settings;
 
 import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.client.Main;
+import com.stream_pi.client.combobox.LanguageChooserComboBox;
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
@@ -92,6 +94,8 @@ public class GeneralTab extends VBox
     private TextField iconsPathTextField;
     private TextField profilesPathTextField;
 
+    private final LanguageChooserComboBox languageChooserComboBox;
+
     private final Button factoryResetButton;
 
     private Logger logger;
@@ -119,7 +123,7 @@ public class GeneralTab extends VBox
 
         clientProfileComboBox = new StreamPiComboBox<>();
 
-        clientProfileComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<ClientProfile>()
+        clientProfileComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<>()
         {
             @Override
             public String getOptionDisplayText(ClientProfile object)
@@ -128,14 +132,19 @@ public class GeneralTab extends VBox
             }
         });
 
-        clientProfileComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<ClientProfile>(){
+        clientProfileComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<>(){
             @Override
-            public void onNewItemSelected(ClientProfile selectedItem)
+            public void onNewItemSelected(ClientProfile oldProfile, ClientProfile newProfile)
             {
-                clientListener.renderProfile(selectedItem, true);
+                if(oldProfile != newProfile)
+                {
+                    clientListener.renderProfile(newProfile, true);
+                }
             }
         });
 
+
+        languageChooserComboBox = new LanguageChooserComboBox();
 
         themeComboBox = new StreamPiComboBox<>();
         themeComboBox.setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<Theme>()
@@ -241,6 +250,7 @@ public class GeneralTab extends VBox
                 iconsPathInputBox,
                 profilesPathInputBox,
                 generateSubHeading("Others"),
+                new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralSettings.language"), languageChooserComboBox),
                 screenTimeoutSecondsHBoxInputBox,
                 invertRowsColsHBox,
                 screenSaverHBox,
@@ -482,6 +492,8 @@ public class GeneralTab extends VBox
         vibrateOnActionPressToggleSwitch.setSelected(config.isVibrateOnActionClicked());
         tryConnectingToServerIfActionClickedToggleSwitch.setSelected(config.isTryConnectingWhenActionClicked());
         invertRowsColsToggleSwitch.setSelected(config.isInvertRowsColsOnDeviceRotate());
+
+        languageChooserComboBox.setCurrentSelectedItem(I18N.getLanguage(config.getCurrentLanguageLocale()));
     }
 
     public void onSaveButtonClicked()
@@ -543,6 +555,7 @@ public class GeneralTab extends VBox
         try
         {
             boolean toBeReloaded = false;
+            boolean baseToBeReloaded = false;
 
             boolean syncWithServer = false;
 
@@ -587,6 +600,15 @@ public class GeneralTab extends VBox
             }
 
             config.setIsFullScreenMode(isFullScreen);
+
+
+            if (!languageChooserComboBox.getSelectedLocale().equals(config.getCurrentLanguageLocale()))
+            {
+                config.setCurrentLanguageLocale(languageChooserComboBox.getSelectedLocale());
+
+                toBeReloaded = true;
+                baseToBeReloaded = true;
+            }
 
 
 
@@ -714,8 +736,18 @@ public class GeneralTab extends VBox
                     config.save();
                 }
 
+                if(baseToBeReloaded)
+                {
+                    clientListener.initBase();
+                }
+
                 clientListener.init();
-                clientListener.getClient().refreshAllGauges();
+
+                if (clientListener.isConnected())
+                {
+                    clientListener.getClient().refreshAllGauges();
+                }
+
                 clientListener.renderRootDefaultProfile();
             }
         }

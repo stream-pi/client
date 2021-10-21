@@ -9,6 +9,7 @@ handler for config.xml
 package com.stream_pi.client.io;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -74,6 +75,7 @@ public class Config
         Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
         Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
         Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
+        Config.getInstance().setCurrentLanguageLocale(Config.getInstance().getDefaultLanguageLocale());
 
         Config.getInstance().setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
 
@@ -177,7 +179,24 @@ public class Config
         return XMLConfigHelper.getStringProperty(document, "icons-path", getDefaultIconsPath(), false, true, document, configFile);
     }
 
-    
+
+
+    public void setCurrentLanguageLocale(Locale locale)
+    {
+        getOthersElement().getElementsByTagName("language-locale").item(0).setTextContent(locale.toLanguageTag());
+    }
+
+    public Locale getCurrentLanguageLocale()
+    {
+        return Locale.forLanguageTag(XMLConfigHelper.getStringProperty(getOthersElement(), "language-locale",
+                getDefaultLanguageLocale().toLanguageTag(), false, true, document, configFile));
+    }
+
+    public Locale getDefaultLanguageLocale()
+    {
+        return Locale.getDefault();
+    }
+
 
     //Setters
 
