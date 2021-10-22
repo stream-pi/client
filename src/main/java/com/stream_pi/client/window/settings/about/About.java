@@ -131,18 +131,7 @@ public class About extends ScrollPane
         hBox1.setSpacing(10);
 
 
-        Label disclaimerLabel = new Label("This contributor list shows only those who have contributed " +
-                "to the Client Source code.\nTo know about the contributors of Action API, Theme API, Util, " +
-                "visit the respective repositories. If you want to know about the Core Team instead, please visit the website.");
-
-        disclaimerLabel.getStyleClass().add("about_license_contributors_disclaimer_label");
-
-        disclaimerLabel.prefWidthProperty().bind(tabPane.widthProperty());
-
-        disclaimerLabel.setWrapText(true);
-
-
-        mainVBox.getChildren().addAll(appIconImageView, tabPane, disclaimerLabel,
+        mainVBox.getChildren().addAll(appIconImageView, tabPane,
                 donateButton, vBox1, hBox1,javaGCLabel);
         mainVBox.prefWidthProperty().bind(widthProperty().subtract(30));
 

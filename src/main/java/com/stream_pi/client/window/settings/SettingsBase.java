@@ -41,7 +41,7 @@ public class SettingsBase extends VBox
         generalTab = new GeneralTab(exceptionAndAlertHandler, clientListener, hostServices);
         generalSettingsTab.setContent(generalTab);
 
-        Tab aboutTab = new Tab("about");
+        Tab aboutTab = new Tab(I18N.getString("window.settings.SettingsBase.about"));
         aboutTab.setContent(new About(clientListener));
 
         tabPane.getTabs().addAll(generalSettingsTab, aboutTab);
