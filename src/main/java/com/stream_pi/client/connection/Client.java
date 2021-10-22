@@ -896,7 +896,7 @@ public class Client extends Thread
 
         message.setValue("profile_ID", profileID);
         message.setValue("ID", actionID);
-        message.setValue("toggle_state", toggleState);
+        message.setValue("toggle_status", toggleState);
         sendMessage(message);
     }
 
