@@ -81,10 +81,10 @@
     -fx-alignment:CENTER_LEFT;
     -fx-pref-width:200;
     -fx-padding: 5;
-    -fx-border-width : 1;
+    -fx-border-width : 0 0 1 0;
     -fx-border-color : grey;
-    -fx-border-radius : 5;
-    -fx-background-radius: 5;
+    -fx-border-radius : 3 3 0 0;
+    -fx-background-radius: 3 3 0 0;
 }
 
 .combo_box_popup
@@ -152,6 +152,7 @@
 .first_time_use_welcome_pane_next_to_continue_label
 {
     -fx-font-size: 15;
+    -fx-padding: 0 0 15 0;
 }
 
 .scroll-pane

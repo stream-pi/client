@@ -277,10 +277,10 @@ public class GeneralTab extends VBox
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
         scrollPane.getStyleClass().add("settings_base_scroll_pane");
         scrollPane.setContent(vBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
 
         vBox.setMinWidth(300);
-
-        vBox.prefWidthProperty().bind(scrollPane.widthProperty().subtract(30));
 
 
         buttonBar.getStyleClass().add("settings_button_bar");

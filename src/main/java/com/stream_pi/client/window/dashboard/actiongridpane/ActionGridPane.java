@@ -48,13 +48,12 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         actionsGridPane = new GridPane();
         actionsGridPane.setPadding(new Insets(5.0));
         actionsGridPane.getStyleClass().add("action_grid_pane");
-        actionsGridPane.prefWidthProperty().bind(widthProperty().subtract(20));
-        actionsGridPane.prefHeightProperty().bind(heightProperty().subtract(20));
 
         setContent(actionsGridPane);
 
+        setFitToWidth(true);
+        setFitToHeight(true);
         actionsGridPane.setAlignment(Pos.CENTER);
-
 
         VBox.setVgrow(this, Priority.ALWAYS);
 
