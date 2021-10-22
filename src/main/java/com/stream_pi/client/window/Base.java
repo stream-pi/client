@@ -172,11 +172,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         getChildren().addAll(alertStackPane);
 
-        if(getClientInfo().isPhone())
-        {
-            dashboardBase.setPadding(new Insets(10));
-            settingsBase.setPadding(new Insets(10));
-        }
 
         initLogger();
 
@@ -201,6 +196,14 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
 
         initThemes();
+
+
+        if(getClientInfo().isPhone())
+        {
+            dashboardBase.setPadding(new Insets(10));
+            settingsBase.setPadding(new Insets(10));
+        }
+
     }
 
     private void initI18n() throws SevereException

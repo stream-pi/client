@@ -1,7 +1,14 @@
 {
+  "bundles": [
+    {"name":"com.stream_pi.client.i18n.lang"},
+    {"name":"com.stream_pi.util.i18n.lang"},
+    {"name":"com.stream_pi.theme_api.i18n.lang"},
+    {"name":"com.stream_pi.action_api.i18n.lang"}
+  ],
   "resources": [
+    {"pattern": ".*/i18n.properties$"},
     {"pattern": ".*/Default.zip$"},
-    {"pattern": ".*/build-date$"},
+    {"pattern": ".*/build.properties$"},
     {"pattern": ".*/(EmailBoard|NumericBoard|TextBoard|UriBoard).txt$"}
   ]
 }

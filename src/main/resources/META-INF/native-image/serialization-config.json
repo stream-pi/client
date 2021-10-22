@@ -19,5 +19,12 @@
   {"name": "boolean"},
   {"name": "com.stream_pi.action_api.actionproperty.property.Type"},
   {"name": "com.stream_pi.util.platform.ReleaseStatus"},
-  {"name": "com.stream_pi.util.platform.Platform"}
+  {"name": "com.stream_pi.util.platform.Platform"},
+  {"name": "java.lang.Number"},
+  {"name": "java.lang.Double"},
+  {"name": "java.lang.Boolean"},
+  {"name": "java.lang.Integer"},
+  {"name": "com.stream_pi.action_api.action.ActionType"},
+  {"name": "com.stream_pi.action_api.action.DisplayTextAlignment"},
+  {"name": "com.stream_pi.action_api.action.Location"}
 ]
