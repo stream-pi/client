@@ -207,10 +207,8 @@ public class ClientProfile implements Cloneable{
                     Element locationElement = (Element) displayElement.getElementsByTagName("location").item(0);
                     int row = XMLConfigHelper.getIntProperty(locationElement, "row");
                     int col = XMLConfigHelper.getIntProperty(locationElement, "col");
-
-                    Element spanElement = (Element) displayElement.getElementsByTagName("span").item(0);
-                    int rowSpan = XMLConfigHelper.getIntProperty(spanElement, "row");
-                    int colSpan = XMLConfigHelper.getIntProperty(spanElement, "col");
+                    int rowSpan = XMLConfigHelper.getIntProperty(locationElement, "row-span");
+                    int colSpan = XMLConfigHelper.getIntProperty(locationElement, "col-span");
 
                     action.setLocation(new Location(row, col, rowSpan, colSpan));
                 }
@@ -521,29 +519,27 @@ public class ClientProfile implements Cloneable{
         textAlignmentElement.setTextContent(action.getDisplayTextAlignment()+"");
         textElement.appendChild(textAlignmentElement);
 
+        if (action.getLocation() != null)
+        {
+            Element locationElement = document.createElement("location");
+            displayElement.appendChild(locationElement);
 
-        Element locationElement = document.createElement("location");
-        displayElement.appendChild(locationElement);
+            Element colElement = document.createElement("col");
+            colElement.setTextContent(action.getLocation().getCol()+"");
+            locationElement.appendChild(colElement);
 
-        Element colElement = document.createElement("col");
-        colElement.setTextContent(action.getLocation().getCol()+"");
-        locationElement.appendChild(colElement);
+            Element rowElement = document.createElement("row");
+            rowElement.setTextContent(action.getLocation().getRow()+"");
+            locationElement.appendChild(rowElement);
 
-        Element rowElement = document.createElement("row");
-        rowElement.setTextContent(action.getLocation().getRow()+"");
-        locationElement.appendChild(rowElement);
+            Element colSpanElement = document.createElement("col-span");
+            colSpanElement.setTextContent(action.getLocation().getColSpan()+"");
+            locationElement.appendChild(colSpanElement);
 
-        Element spanElement = document.createElement("span");
-        displayElement.appendChild(spanElement);
-
-        Element colSpanElement = document.createElement("col");
-        colSpanElement.setTextContent(action.getLocation().getColSpan()+"");
-        spanElement.appendChild(colSpanElement);
-
-        Element rowSpanElement = document.createElement("row");
-        rowSpanElement.setTextContent(action.getLocation().getRowSpan()+"");
-        spanElement.appendChild(rowSpanElement);
-
+            Element rowSpanElement = document.createElement("row-span");
+            rowSpanElement.setTextContent(action.getLocation().getRowSpan()+"");
+            locationElement.appendChild(rowSpanElement);
+        }
 
         Element propertiesElement = document.createElement("properties");
         newActionElement.appendChild(propertiesElement);

@@ -414,7 +414,7 @@ public class Client extends Thread
         }
         else
         {
-            new StreamPiAlert(I18N.getString("connection.ClientConnection.disconnectedFromClient", serverName), ((DisconnectReason) message.getValue("reason")).getMessage(), StreamPiAlertType.WARNING).show();;
+            new StreamPiAlert(I18N.getString("connection.ClientConnection.disconnectedFromClient", serverName), ((DisconnectReason) message.getValue("reason")).getMessage(), StreamPiAlertType.WARNING).show();
         }
 
 
@@ -788,7 +788,7 @@ public class Client extends Thread
 
             clientListener.getClientProfiles().getProfileFromID(profileID).saveActions();
 
-            if(acc.getLocation().getCol()!=-1)
+            if(acc.getLocation() != null)
             {
                 if (clientListener.getCurrentProfile().getID().equals(profileID)
                         && clientListener.getCurrentParent().equals(acc.getParent()))

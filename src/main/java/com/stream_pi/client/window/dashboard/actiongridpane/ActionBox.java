@@ -143,9 +143,7 @@ public class ActionBox extends StackPane
 
         getChildren().addAll(statusIcon, displayTextLabel);
 
-        statusIconAnimation.setOnFinished(event -> {
-            statusIcon.toBack();
-        });
+        statusIconAnimation.setOnFinished(event -> statusIcon.toBack());
 
         setCache(true);
         setCacheHint(CacheHint.QUALITY);
@@ -198,8 +196,6 @@ public class ActionBox extends StackPane
                                 Action childAction = clientListener.getCurrentProfile().getActionFromID(
                                         action.getClientProperties().getSingleProperty(i+"").getRawValue()
                                 );
-
-                                System.out.println("TYPE : "+childAction.getActionType());
 
                                 Thread.sleep(childAction.getDelayBeforeExecuting());
 
