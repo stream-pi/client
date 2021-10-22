@@ -6,6 +6,7 @@ import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.Main;
 import com.stream_pi.client.connection.Client;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
@@ -357,7 +358,7 @@ public class Controller extends Base
 
     public void setupDashWindow()
     {
-        getStage().setTitle("Stream-Pi Client");
+        getStage().setTitle(I18N.getString("windowTitle"));
         getStage().setOnCloseRequest(e->{
             onCloseRequest();
             exitApp();
