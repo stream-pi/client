@@ -37,6 +37,9 @@
 
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <jar.plugin>2.3.1</jar.plugin>
+
+
+        <build.helper.plugin.version>1.10</build.helper.plugin.version>
     </properties>
 
     <dependencies>
@@ -246,7 +249,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.10</version>
+                <version>${build.helper.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>timestamp-property</id>
@@ -255,7 +258,7 @@
                         </goals>
                         <configuration>
                             <name>build.date</name>
-                            <pattern>dd/MM/yyyy hh:mm aa z</pattern>
+                            <pattern>dd/MM/yyyy HH:mm z</pattern>
                             <locale>en_IN</locale>
                             <timeZone>Asia/Kolkata</timeZone>
                         </configuration>
