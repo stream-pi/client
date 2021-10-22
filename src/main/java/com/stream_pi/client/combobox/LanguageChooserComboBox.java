@@ -1,14 +1,9 @@
 package com.stream_pi.client.combobox;
 
 import com.stream_pi.client.i18n.I18N;
-import com.stream_pi.client.i18n.Language;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
-import javafx.collections.FXCollections;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.util.Callback;
+import com.stream_pi.util.i18n.language.Language;
 
 import java.util.Locale;
 

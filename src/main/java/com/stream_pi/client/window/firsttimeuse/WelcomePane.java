@@ -4,10 +4,8 @@ import com.stream_pi.client.Main;
 import com.stream_pi.client.combobox.LanguageChooserComboBox;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.i18n.I18N;
-import com.stream_pi.client.i18n.Language;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
-import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.SevereException;
 import javafx.geometry.Insets;
@@ -15,8 +13,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import com.stream_pi.util.i18n.language.Language;
 
 import java.util.Objects;
 
