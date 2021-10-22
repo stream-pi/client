@@ -161,96 +161,96 @@ public class GeneralTab extends VBox
         profilesPathTextField = new TextField();
 
         startOnBootToggleSwitch = new ToggleSwitch();
-        startOnBootHBox = new HBoxWithSpaceBetween("Start On Boot", startOnBootToggleSwitch);
+        startOnBootHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.startOnBoot"), startOnBootToggleSwitch);
         startOnBootHBox.managedProperty().bind(startOnBootHBox.visibleProperty());
 
         screenSaverToggleSwitch = new ToggleSwitch();
-        screenSaverHBox = new HBoxWithSpaceBetween("Screen Saver", screenSaverToggleSwitch);
+        screenSaverHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.screenSaver"), screenSaverToggleSwitch);
         screenSaverHBox.managedProperty().bind(screenSaverHBox.visibleProperty());
 
         screenMoverToggleSwitch = new ToggleSwitch();
-        screenMoverHBox = new HBoxWithSpaceBetween("OLED Burn-In Protector", screenMoverToggleSwitch);
+        screenMoverHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.oledBurnInProtector"), screenMoverToggleSwitch);
         screenMoverHBox.managedProperty().bind(screenMoverHBox.visibleProperty());
 
         tryConnectingToServerIfActionClickedToggleSwitch  = new ToggleSwitch();
-        tryConnectingToServerIfActionClickedHBox = new HBoxWithSpaceBetween("Try connect to server on action click", tryConnectingToServerIfActionClickedToggleSwitch);
+        tryConnectingToServerIfActionClickedHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.tryConnectToServerOnActionClick"), tryConnectingToServerIfActionClickedToggleSwitch);
         tryConnectingToServerIfActionClickedHBox.managedProperty().bind(tryConnectingToServerIfActionClickedHBox.visibleProperty());
 
         fullScreenModeToggleSwitch = new ToggleSwitch();
-        fullScreenModeHBox = new HBoxWithSpaceBetween("Full Screen", fullScreenModeToggleSwitch);
+        fullScreenModeHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.fullScreen"), fullScreenModeToggleSwitch);
         fullScreenModeHBox.managedProperty().bind(fullScreenModeHBox.visibleProperty());
 
         vibrateOnActionPressToggleSwitch = new ToggleSwitch();
-        vibrateOnActionPressHBox = new HBoxWithSpaceBetween("Vibrate On Action Press", vibrateOnActionPressToggleSwitch);
+        vibrateOnActionPressHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.vibrateOnActionPress"), vibrateOnActionPressToggleSwitch);
         vibrateOnActionPressHBox.managedProperty().bind(vibrateOnActionPressHBox.visibleProperty());
 
         connectOnStartupToggleSwitch = new ToggleSwitch();
-        connectOnStartupHBox = new HBoxWithSpaceBetween("Connect On Startup", connectOnStartupToggleSwitch);
+        connectOnStartupHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.connectOnStartup"), connectOnStartupToggleSwitch);
         connectOnStartupHBox.managedProperty().bind(connectOnStartupHBox.visibleProperty());
 
         showCursorToggleSwitch = new ToggleSwitch();
-        showCursorHBox = new HBoxWithSpaceBetween("Show Cursor", showCursorToggleSwitch);
+        showCursorHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.showCursor"), showCursorToggleSwitch);
         showCursorHBox.managedProperty().bind(showCursorHBox.visibleProperty());
 
         invertRowsColsToggleSwitch = new ToggleSwitch();
-        invertRowsColsHBox = new HBoxWithSpaceBetween("Invert Grid on Rotate", invertRowsColsToggleSwitch);
+        invertRowsColsHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.invertGridOnRotate"), invertRowsColsToggleSwitch);
         invertRowsColsHBox.managedProperty().bind(invertRowsColsHBox.visibleProperty());
 
         int prefWidth = 200;
 
-        HBoxInputBox themesPathInputBox = new HBoxInputBox("Themes", themesPathTextField, prefWidth);
+        HBoxInputBox themesPathInputBox = new HBoxInputBox(I18N.getString("window.settings.GeneralTab.themes"), themesPathTextField, prefWidth);
         themesPathInputBox.managedProperty().bind(themesPathInputBox.visibleProperty());
 
 
-        HBoxInputBox iconsPathInputBox = new HBoxInputBox("Icons", iconsPathTextField, prefWidth);
+        HBoxInputBox iconsPathInputBox = new HBoxInputBox(I18N.getString("window.settings.GeneralTab.icons"), iconsPathTextField, prefWidth);
         iconsPathInputBox.managedProperty().bind(iconsPathInputBox.visibleProperty());
 
 
-        HBoxInputBox profilesPathInputBox = new HBoxInputBox("Profiles", profilesPathTextField, prefWidth);
+        HBoxInputBox profilesPathInputBox = new HBoxInputBox(I18N.getString("window.settings.GeneralTab.profiles"), profilesPathTextField, prefWidth);
         profilesPathInputBox.managedProperty().bind(profilesPathInputBox.visibleProperty());
 
-        checkForUpdatesButton = new Button("Check for updates");
+        checkForUpdatesButton = new Button(I18N.getString("window.settings.GeneralTab.checkForUpdates"));
         checkForUpdatesButton.setOnAction(event->checkForUpdates());
 
-        factoryResetButton = new Button("Factory Reset");
+        factoryResetButton = new Button(I18N.getString("window.settings.GeneralTab.factoryReset"));
         factoryResetButton.setOnAction(actionEvent -> onFactoryResetButtonClicked());
 
 
-        screenTimeoutSecondsHBoxInputBox = new HBoxInputBox("Screen Timeout (seconds)", screenTimeoutTextField, prefWidth);
+        screenTimeoutSecondsHBoxInputBox = new HBoxInputBox(I18N.getString("window.settings.GeneralTab.screenTimeoutInSeconds"), screenTimeoutTextField, prefWidth);
         screenTimeoutSecondsHBoxInputBox.managedProperty().bind(screenTimeoutSecondsHBoxInputBox.visibleProperty());
         screenTimeoutTextField.disableProperty().bind(screenSaverToggleSwitch.selectedProperty().not());
 
-        saveButton = new Button("Save");
+        saveButton = new Button(I18N.getString("window.settings.GeneralTab.save"));
         saveButton.setOnAction(event->onSaveButtonClicked());
 
-        connectDisconnectButton = new Button("Connect");
+        connectDisconnectButton = new Button(I18N.getString("window.settings.GeneralTab.connect"));
         connectDisconnectButton.setOnAction(event -> onConnectDisconnectButtonClicked());
 
 
-        Button exitButton = new Button("Exit");
+        Button exitButton = new Button(I18N.getString("window.settings.GeneralTab.exit"));
         exitButton.setOnAction(event -> onExitButtonClicked());
 
         HBox buttonBar = new HBox(connectDisconnectButton, saveButton);
 
-        shutdownButton = new Button("Shutdown");
+        shutdownButton = new Button(I18N.getString("window.settings.GeneralTab.shutdown"));
         shutdownButton.managedProperty().bind(shutdownButton.visibleProperty());
         shutdownButton.setOnAction(event -> onShutdownButtonClicked());
 
 
         VBox vBox = new VBox(
-                generateSubHeading("Connection"),
-                new HBoxInputBox("Name", nameTextField, prefWidth),
-                new HBoxInputBox("Host Name/IP", serverHostNameOrIPTextField, prefWidth),
-                new HBoxInputBox("Port", serverPortTextField, prefWidth),
-                generateSubHeading("Client"),
-                new HBoxWithSpaceBetween("Current Profile", clientProfileComboBox),
-                new HBoxWithSpaceBetween("Theme", themeComboBox),
-                generateSubHeading("Locations"),
+                generateSubHeading(I18N.getString("window.settings.GeneralTab.connection")),
+                new HBoxInputBox(I18N.getString("window.settings.GeneralTab.serverHostNameOrIP"), serverHostNameOrIPTextField, prefWidth),
+                new HBoxInputBox(I18N.getString("window.settings.GeneralTab.serverPort"), serverPortTextField, prefWidth),
+                generateSubHeading(I18N.getString("window.settings.GeneralTab.client")),
+                new HBoxInputBox(I18N.getString("window.settings.GeneralTab.name"), nameTextField, prefWidth),
+                new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.currentProfile"), clientProfileComboBox),
+                new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.theme"), themeComboBox),
+                generateSubHeading(I18N.getString("window.settings.GeneralTab.locations")),
                 themesPathInputBox,
                 iconsPathInputBox,
                 profilesPathInputBox,
-                generateSubHeading("Others"),
-                new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralSettings.language"), languageChooserComboBox),
+                generateSubHeading(I18N.getString("window.settings.GeneralTab.others")),
+                new HBoxWithSpaceBetween(I18N.getString(I18N.getString("window.settings.GeneralTab.language")), languageChooserComboBox),
                 screenTimeoutSecondsHBoxInputBox,
                 invertRowsColsHBox,
                 screenSaverHBox,
@@ -363,9 +363,7 @@ public class GeneralTab extends VBox
 
     private void onFactoryResetButtonClicked()
     {
-        StreamPiAlert confirmation = new StreamPiAlert("Are you sure?\n" +
-                "This will erase everything.",StreamPiAlertType.WARNING, StreamPiAlertButton.YES, StreamPiAlertButton.NO);
-
+        StreamPiAlert confirmation = new StreamPiAlert(I18N.getString("window.settings.GeneralTab.resetAreYouSure"),StreamPiAlertType.WARNING, StreamPiAlertButton.YES, StreamPiAlertButton.NO);
 
         confirmation.setOnClicked(new StreamPiAlertListener() {
             @Override
@@ -431,9 +429,13 @@ public class GeneralTab extends VBox
             setDisableStatus(false);
 
             if(clientListener.isConnected())
-                connectDisconnectButton.setText("Disconnect");
+            {
+                connectDisconnectButton.setText(I18N.getString("window.settings.GeneralTab.disconnect"));
+            }
             else
-                connectDisconnectButton.setText("Connect");
+            {
+                connectDisconnectButton.setText(I18N.getString("window.settings.GeneralTab.connect"));
+            }
         });
 
     }
@@ -506,13 +508,17 @@ public class GeneralTab extends VBox
             port = Integer.parseInt(serverPortTextField.getText());
 
             if(port < 1024)
-                errors.append("* Server Port should be above 1024.\n");
+            {
+                errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverPortMustBeGreaterThan1024")).append("\n");
+            }
             else if(port > 65535)
-                errors.append("* Server Port must be lesser than 65535\n");
+            {
+                errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverPortMustBeLesserThan65535")).append("\n");
+            }
         }
         catch (NumberFormatException exception)
         {
-            errors.append("* Server Port should be a number.\n");
+            errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverPortMustBeInteger")).append("\n");
         }
 
 
@@ -522,31 +528,30 @@ public class GeneralTab extends VBox
             screenSaverTimeout = Integer.parseInt(screenTimeoutTextField.getText());
 
             if(screenSaverTimeout < 15)
-                errors.append("* Screen Timeout cannot be below 15 seconds.\n");
+            {
+                errors.append("* ").append(I18N.getString("window.settings.GeneralTab.screenTimeoutCannotBeBelow15Seconds")).append("\n");
+            }
         }
         catch (NumberFormatException exception)
         {
-            errors.append("* Screen Timeout should be a number.\n");
+            errors.append("* ").append(I18N.getString("window.settings.GeneralTab.screenTimeoutMustBeInteger")).append("\n");
         }
 
 
         if(serverHostNameOrIPTextField.getText().isBlank())
         {
-            errors.append("* Server IP cannot be empty.\n");
+            errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverHostNameOrIPCannotBeBlank")).append("\n");
         }
 
         if(nameTextField.getText().isBlank())
         {
-            errors.append("* Nick name cannot be blank.\n");
+            errors.append("* ").append(I18N.getString("window.settings.GeneralTab.nameCannotBeBlank")).append("\n");
         }
 
 
         if(!errors.toString().isEmpty())
         {
-            exceptionAndAlertHandler.handleMinorException(new MinorException(
-                    "You made mistakes",
-                    "Please fix the errors and try again :\n"+errors.toString()
-            ));
+            exceptionAndAlertHandler.handleMinorException(new MinorException(I18N.getString("validationError", errors)));
             return;
         }
 
@@ -641,7 +646,7 @@ public class GeneralTab extends VBox
                 {
                     boolean result = startAtBoot.delete();
                     if(!result)
-                        new StreamPiAlert("Uh Oh!", "Unable to delete starter file", StreamPiAlertType.ERROR).show();
+                        new StreamPiAlert(I18N.getString("window.settings.GeneralTab.unableToDeleteStarterFile"), StreamPiAlertType.ERROR).show();
                 }
             }
 
@@ -708,7 +713,7 @@ public class GeneralTab extends VBox
                 if(VibrationService.create().isEmpty())
                 {
                     isVibrateOnActionClicked = false;
-                    new StreamPiAlert("Uh Oh!", "Vibration not supported", StreamPiAlertType.ERROR).show();
+                    new StreamPiAlert(I18N.getString("window.settings.GeneralTab.vibrationNotSupported"), StreamPiAlertType.ERROR).show();
                 }
             }
 

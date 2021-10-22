@@ -1,5 +1,6 @@
 package com.stream_pi.client.profile;
 
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
@@ -54,14 +55,14 @@ public class ClientProfiles {
 
         if(!profilesFolder.isDirectory())
         {
-            throw new SevereException("Profiles","Profile folder doesn't exist! Cant continue.");
+            throw new SevereException(I18N.getString("profile.ClientProfiles.profileFolderNotADirectoryOrDoesNotExist", profilesFolder.getAbsolutePath()));
         }
 
 
         File[] profilesFiles = profilesFolder.listFiles();
         if(profilesFiles == null)
         {
-            throw new SevereException("Profiles","profilesFiles returned null. Cant continue!");
+            throw new SevereException(I18N.getString("profile.ClientProfiles.profileFoldersIsNull", profilesFolder.getAbsolutePath()));
         }
 
         for(File eachProfileFile : profilesFiles)
@@ -83,7 +84,7 @@ public class ClientProfiles {
             {
                 if(eachProfileFile.getName().replace(".xml","").equals(defaultProfileID))
                 {
-                    throw new SevereException("Profiles", "Default profile bad. Can't continue");
+                    throw new SevereException(I18N.getString("profile.ClientProfiles.defaultProfileBad", defaultProfileID, e.getMessage()));
                 }
 
                 loadingErrors.add(new MinorException(e.getMessage()+" ("+eachProfileFile.getName().replace(".xml", "")));

@@ -37,6 +37,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.ByteArrayInputStream;
 import java.util.LinkedList;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class ActionBox extends StackPane
@@ -189,44 +190,42 @@ public class ActionBox extends StackPane
 
                     System.out.println("TOTAL CHILDREN : "+action.getClientProperties().getSize());
 
-                    new Thread(new Task<Void>() {
-                        @Override
-                        protected Void call() throws Exception
+                    clientListener.getExecutor().submit(()->{
+                        for(int i = 0;i<action.getClientProperties().getSize(); i++)
                         {
-                            for(int i = 0;i<action.getClientProperties().getSize(); i++)
+                            try
                             {
-                                try
+                                Action childAction = clientListener.getCurrentProfile().getActionFromID(
+                                        action.getClientProperties().getSingleProperty(i+"").getRawValue()
+                                );
+
+                                System.out.println("TYPE : "+childAction.getActionType());
+
+                                Thread.sleep(childAction.getDelayBeforeExecuting());
+
+                                if (childAction.getActionType() == ActionType.NORMAL)
                                 {
-                                    Action childAction = clientListener.getCurrentProfile().getActionFromID(
-                                            action.getClientProperties().getSingleProperty(i+"").getRawValue()
+                                    getActionGridPaneListener().normalActionClicked(childAction.getID());
+                                }
+                                else if (childAction.getActionType() == ActionType.TOGGLE)
+                                {
+                                    clientListener.getCurrentProfile().getActionFromID(childAction.getID()).setCurrentToggleStatus(
+                                            !clientListener.getCurrentProfile().getActionFromID(childAction.getID()).getCurrentToggleStatus()
                                     );
 
-                                    System.out.println("TYPE : "+childAction.getActionType());
-
-                                    Thread.sleep(childAction.getDelayBeforeExecuting());
-
-                                    if (childAction.getActionType() == ActionType.NORMAL)
-                                    {
-                                        getActionGridPaneListener().normalActionClicked(childAction.getID());
-                                    }
-                                    else if (childAction.getActionType() == ActionType.TOGGLE)
-                                    {
-                                        clientListener.getCurrentProfile().getActionFromID(childAction.getID()).setCurrentToggleStatus(
-                                                !clientListener.getCurrentProfile().getActionFromID(childAction.getID()).getCurrentToggleStatus()
-                                        );
-
-                                        getActionGridPaneListener().toggleActionClicked(childAction.getID(), childAction.getCurrentToggleStatus());
-                                    }
-                                }
-                                catch (MinorException e)
-                                {
-                                    exceptionAndAlertHandler.handleMinorException(e);
+                                    getActionGridPaneListener().toggleActionClicked(childAction.getID(), childAction.getCurrentToggleStatus());
                                 }
                             }
-
-                            return null;
+                            catch (MinorException e)
+                            {
+                                exceptionAndAlertHandler.handleMinorException(e);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
-                    }).start();
+                    });
 
                 }
                 else if(action.getActionType() == ActionType.TOGGLE)

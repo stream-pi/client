@@ -208,7 +208,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         if (I18N.isLanguageAvailable(config.getCurrentLanguageLocale()))
         {
             Locale defaultLocale = Locale.getDefault();
-            Locale.setDefault(new Locale("this locale does not exist"));
+            Locale.setDefault(I18N.BASE_LOCALE);
             // This sets the local to a non-existing locale to prevent the system from selecting default system locale.
             // This is done because the proper way of removing fallback locales is not available on Java 9+
             // As ResourceBundle.Control is not supported on modular projects.
@@ -224,8 +224,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         else
         {
             getLogger().warning("No translation available for locale : "+config.getCurrentLanguageLocale());
-            getLogger().warning("Setting it to en_UK ...");
-            getConfig().setCurrentLanguageLocale(new Locale("en", "UK"));
+            getLogger().warning("Setting it to base ...");
+            getConfig().setCurrentLanguageLocale(I18N.BASE_LOCALE);
             getConfig().save();
             initI18n();
         }
@@ -307,7 +307,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
             if(path == null)
             {
-                throwStoragePermErrorAlert("Unable to access file system!");
+                throwStoragePermErrorAlert(I18N.getString("window.Base.failedToAccessFileSystem"));
                 return;
             }
 
@@ -325,7 +325,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 }
                 else
                 {
-                    throwStoragePermErrorAlert("No storage permission. Give it!");
+                    throwStoragePermErrorAlert(I18N.getString("window.Base.noStoragePermission"));
                 }
             }
         }
@@ -468,17 +468,16 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             {
                 if(getConfig().getCurrentThemeFullName().equals(getConfig().getDefaultCurrentThemeFullName()))
                 {
-                    throw new SevereException("Unable to get default theme ("+getConfig().getDefaultCurrentThemeFullName()+")\n" +
-                            "Please restore the theme or reinstall.");
+                    throw new SevereException(I18N.getString("window.Base.unableToGetDefaultTheme", getConfig().getDefaultCurrentThemeFullName()));
                 }
 
-                themeErrors.append("\n\nReverted to default theme! (").append(getConfig().getDefaultCurrentThemeFullName()).append(")");
+                themeErrors.append("\n\n").append(I18N.getString("window.Base.revertedToDefaultTheme" , getConfig().getDefaultCurrentThemeFullName()));
 
                 getConfig().setCurrentThemeFullName(getConfig().getDefaultCurrentThemeFullName());
                 getConfig().save();
             }
 
-            handleMinorException(new MinorException("Theme Loading issues", themeErrors.toString()));
+            handleMinorException(new MinorException(I18N.getString("window.Base.themeLoadingIssues", themeErrors.toString())));
         }
         logger.info("...Themes loaded successfully !");
     }

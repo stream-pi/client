@@ -2,6 +2,7 @@ package com.stream_pi.client.window.firsttimeuse;
 
 import com.stream_pi.client.Main;
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.uihelper.SpaceFiller;
 
@@ -14,9 +15,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class FirstTimeUse extends VBox{
-
-    
+public class FirstTimeUse extends VBox
+{
     public FirstTimeUse(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener)
     {
         getStyleClass().add("first_time_use_pane");
@@ -32,10 +32,10 @@ public class FirstTimeUse extends VBox{
 
         VBox.setVgrow(stackPane, Priority.ALWAYS);
 
-        nextButton = new Button("Next");
+        nextButton = new Button(I18N.getString("firsttimeuse.FirstTimeUse.next"));
         nextButton.setOnAction(event-> onNextButtonClicked());
 
-        previousButton = new Button("Previous");
+        previousButton = new Button(I18N.getString("firsttimeuse.FirstTimeUse.previous"));
         previousButton.setOnAction(event-> onPreviousButtonClicked());
 
         HBox buttonBar = new HBox(previousButton, SpaceFiller.horizontal(), nextButton);
@@ -104,7 +104,7 @@ public class FirstTimeUse extends VBox{
 
             headingLabel.setText("");
 
-            nextButton.setText("Next");
+            nextButton.setText(I18N.getString("firsttimeuse.FirstTimeUse.next"));
             nextButton.setOnAction(event-> onNextButtonClicked());
             previousButton.setVisible(false);
         }
@@ -116,9 +116,9 @@ public class FirstTimeUse extends VBox{
             licensePane.setVisible(true);
             finalConfigPane.setVisible(false);
 
-            headingLabel.setText("License Agreement");
+            headingLabel.setText(I18N.getString("firsttimeuse.FirstTimeUse.licenseAgreement"));
 
-            nextButton.setText("Agree and Continue");
+            nextButton.setText(I18N.getString("firsttimeuse.FirstTimeUse.agreeAndContinue"));
             nextButton.setOnAction(event-> onNextButtonClicked());
             previousButton.setVisible(true);
         }
@@ -130,7 +130,7 @@ public class FirstTimeUse extends VBox{
             licensePane.setVisible(false);
             finalConfigPane.setVisible(true);
 
-            headingLabel.setText("Finishing up ...");
+            headingLabel.setText(I18N.getString("firsttimeuse.FirstTimeUse.finishingUp"));
 
             finalConfigPane.makeChangesToNextButton();
             previousButton.setVisible(true);

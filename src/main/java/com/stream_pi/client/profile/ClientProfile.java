@@ -22,6 +22,7 @@ import com.stream_pi.action_api.action.Location;
 import com.stream_pi.action_api.actionproperty.ClientProperties;
 import com.stream_pi.action_api.actionproperty.property.Property;
 import com.stream_pi.action_api.actionproperty.property.Type;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.version.Version;
@@ -67,7 +68,7 @@ public class ClientProfile implements Cloneable{
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new MinorException("profile", "Unable to read profile config file.");
+            throw new MinorException(I18N.getString("profile.ClientProfile.profileParseFailed", file.getAbsolutePath(), e.getLocalizedMessage()));
         }
 
 
@@ -301,7 +302,7 @@ public class ClientProfile implements Cloneable{
         {
             e.printStackTrace();
 
-            throw new MinorException("profile", "profile is corrupt.");
+            throw new MinorException(I18N.getString("profile.ClientProfile.profileParseFailed", file.getAbsolutePath(), e.getLocalizedMessage()));
         }
 
     }

@@ -6,6 +6,7 @@ import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.Location;
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.profile.ClientProfile;
@@ -234,7 +235,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         if(!errors.toString().isEmpty())
         {
-            exceptionAndAlertHandler.handleMinorException(new MinorException("Error while rendering following actions", errors.toString()));
+            exceptionAndAlertHandler.handleMinorException(new MinorException(I18N.getString("actiongridpane.ActionGridPane.renderActionsFailed", errors)));
         }
     }
 
@@ -336,8 +337,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         if(action.getLocation().getRow() >= rows || action.getLocation().getCol() >= cols)
         {
-            throw new MinorException("Action "+action.getDisplayText()+" ("+action.getID()+") falls outside bounds.\n" +
-                    "   Consider increasing rows/cols from client settings and relocating/deleting it.");
+            throw new MinorException(I18N.getString("actiongridpane.ActionGridPane.actionFallsOutsideBounds", action.getDisplayText(), action.getID()));
         }
 
 
@@ -382,24 +382,6 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         actionBox.setStreamPiParent(currentParent);
         actionBox.init();
         actionBox.setVisible(true);
-
-        /*if (clientListener.isConnected() && actionBox.getAction().getActionType() == ActionType.GAUGE)
-        {
-            System.out.println("GO AWYAYYYYY");
-            actionBox.setGaugeVisible(false);
-        }*/
-
-
-        /*ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), action, exceptionAndAlertHandler, this, location.getRow(), location.getCol());
-
-        actionBox.setStreamPiParent(currentParent);
-
-        clearActionBox(location.getCol(), location.getRow());
-
-        System.out.println(location.getCol()+","+location.getRow());
-        add(actionBox, location.getRow(), location.getCol());
-
-        actionBoxes[location.getCol()][location.getRow()] = actionBox;*/
     }
 
     @Override
@@ -484,7 +466,6 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         if(!getPreviousParent().equals("root"))
         {
-            System.out.println("parent : "+getPreviousParent());
             setPreviousParent(getClientProfile().getActionFromID(
                     getPreviousParent()
             ).getParent());

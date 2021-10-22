@@ -715,12 +715,12 @@ public class Controller extends Base
                 catch (Exception e )
                 {
                     handleMinorException(
-                            new MinorException("Cant start browser! You can go to Server Settings > About > Contact " +
+                            new MinorException("Cant start browser! You can go to Server Settings > about > Contact " +
                                     "and open the links from there.")
                     );
                 }
             },()-> handleMinorException(
-                    new MinorException("Sorry!","No browser detected. You can go to Server Settings > About > Contact " +
+                    new MinorException("Sorry!","No browser detected. You can go to Server Settings > about > Contact " +
                             "and open the links from there.")
             ));
         }
@@ -730,7 +730,7 @@ public class Controller extends Base
                 !StartupFlags.IS_X_MODE)
             {
                handleMinorException(new MinorException("Sorry!","Your system is running directly on framebuffer and " +
-                       "does not support opening a browser. You can go to Server Settings > About > Contact " +
+                       "does not support opening a browser. You can go to Server Settings > about > Contact " +
                        "and open the links from there."));
             }
             else

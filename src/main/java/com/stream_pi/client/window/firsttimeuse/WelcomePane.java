@@ -31,12 +31,12 @@ public class WelcomePane extends VBox
         appIconImageView.setFitWidth(128);
 
 
-        Label welcomeLabel = new Label("Welcome!");
+        Label welcomeLabel = new Label(I18N.getString("firsttimeuse.WelcomePane.welcome"));
         welcomeLabel.setWrapText(true);
         welcomeLabel.setAlignment(Pos.CENTER);
         welcomeLabel.getStyleClass().add("first_time_use_welcome_pane_welcome_label");
 
-        Label nextToContinue = new Label("Please click \"Next\" to start the Setup process");
+        Label nextToContinue = new Label(I18N.getString("firsttimeuse.WelcomePane.nextToContinue"));
         nextToContinue.setWrapText(true);
         nextToContinue.setAlignment(Pos.CENTER);
         nextToContinue.getStyleClass().add("first_time_use_welcome_pane_next_to_continue_label");

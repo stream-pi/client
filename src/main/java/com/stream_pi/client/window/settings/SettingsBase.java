@@ -1,8 +1,9 @@
 package com.stream_pi.client.window.settings;
 
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
-import com.stream_pi.client.window.settings.About.AboutTab;
+import com.stream_pi.client.window.settings.about.About;
 
 import javafx.application.HostServices;
 import javafx.event.Event;
@@ -36,18 +37,18 @@ public class SettingsBase extends VBox
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         VBox.setVgrow(tabPane, Priority.ALWAYS);
 
-        Tab generalSettingsTab = new Tab("Settings");
+        Tab generalSettingsTab = new Tab(I18N.getString("window.settings.SettingsBase.settings"));
         generalTab = new GeneralTab(exceptionAndAlertHandler, clientListener, hostServices);
         generalSettingsTab.setContent(generalTab);
 
-        Tab aboutTab = new Tab("About");
-        aboutTab.setContent(new AboutTab(clientListener));
+        Tab aboutTab = new Tab("about");
+        aboutTab.setContent(new About(clientListener));
 
         tabPane.getTabs().addAll(generalSettingsTab, aboutTab);
 
         setAlignment(Pos.TOP_RIGHT);
 
-        closeButton = new Button("Close");
+        closeButton = new Button(I18N.getString("window.settings.SettingsBase.close"));
         VBox.setMargin(closeButton, new Insets(5.0));
 
         getChildren().addAll(tabPane, closeButton);

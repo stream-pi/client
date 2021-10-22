@@ -10,7 +10,8 @@ import com.stream_pi.util.i18n.language.Language;
 
 public class I18N
 {
-    public static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(I18N.class.getPackageName()+".lang");
+    private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(I18N.class.getPackageName()+".lang");
+    public static Locale BASE_LOCALE = new Locale("base");
 
     public static void init(Locale locale)
     {

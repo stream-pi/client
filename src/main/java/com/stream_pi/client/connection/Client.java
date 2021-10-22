@@ -92,7 +92,7 @@ public class Client extends Thread
                     {
                         e.printStackTrace();
                         clientListener.setConnected(false);
-                        throw new MinorException("Connection Error", "Unable to connect to server. Please check settings and connection and try again.");
+                        throw new MinorException(I18N.getString("connection.Client.failedToConnectToServer"));
                     }
                     finally
                     {
@@ -108,7 +108,7 @@ public class Client extends Thread
                     {
                         logger.severe(e.getMessage());
                         e.printStackTrace();
-                        throw new MinorException("Unable to set up io Streams to server. Check connection and try again.");
+                        throw new MinorException(I18N.getString("connection.Client.failedToSetUpIOStreamsToServer", e.getLocalizedMessage()));
                     }
 
                     start();
@@ -154,7 +154,7 @@ public class Client extends Thread
         catch (IOException e)
         {
             e.printStackTrace();
-            throw new SevereException("Unable to write to io Stream!");
+            throw new SevereException(I18N.getString("connection.Client.failedToWriteToIOStream", e.getLocalizedMessage()));
         }
     }
 
@@ -243,8 +243,7 @@ public class Client extends Thread
 
                     if(!stop.get())
                     {
-                        //isDisconnect.set(true); //Prevent running disconnect
-                        throw new MinorException("Accidentally disconnected from Server! (Failed at readUTF)");
+                        throw new MinorException(I18N.getString("connection.Client.accidentallyDisconnectedFromServer"));
                     }
 
                     exit();

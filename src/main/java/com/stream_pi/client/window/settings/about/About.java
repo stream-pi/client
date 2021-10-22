@@ -1,14 +1,13 @@
-package com.stream_pi.client.window.settings.About;
+package com.stream_pi.client.window.settings.about;
 
 import com.stream_pi.action_api.ActionAPI;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.theme_api.ThemeAPI;
 import com.stream_pi.util.Util;
 import com.stream_pi.client.Main;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.info.ClientInfo;
-import javafx.application.HostServices;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
@@ -23,21 +22,18 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class AboutTab extends ScrollPane
+public class About extends ScrollPane
 {
     private ClientListener clientListener;
 
     private ContributorsTab contributorsTab;
     private VBox mainVBox;
 
-    public AboutTab(ClientListener clientListener)
+    public About(ClientListener clientListener)
     {
         this.clientListener = clientListener;
 
@@ -58,7 +54,7 @@ public class AboutTab extends ScrollPane
         appIconImageView.setFitHeight(128);
         appIconImageView.setFitWidth(128);
 
-        Tab contributorsT = new Tab("Contributors");
+        Tab contributorsT = new Tab(I18N.getString("window.settings.about.About.contributorsTabHeading"));
         contributorsTab = new ContributorsTab(clientListener);
         contributorsT.setContent(contributorsTab);
 
@@ -71,18 +67,18 @@ public class AboutTab extends ScrollPane
         tabPane.setMaxWidth(600);
         VBox.setVgrow(tabPane, Priority.ALWAYS);
 
-        Tab licenseTab = new Tab("License");
+        Tab licenseTab = new Tab(I18N.getString("window.settings.about.About.licenseTabHeading"));
         licenseTab.setContent(new LicenseTab());
 
 
 
-        Tab contactTab = new Tab("Contact");
+        Tab contactTab = new Tab(I18N.getString("window.settings.about.About.contactTabHeading"));
         contactTab.setContent(new ContactTab(clientListener));
 
         tabPane.getTabs().addAll(licenseTab, contributorsT, contactTab);
 
 
-        Hyperlink donateButton = new Hyperlink("DONATE");
+        Hyperlink donateButton = new Hyperlink(I18N.getString("window.settings.about.About.donate"));
         donateButton.setOnAction(event -> openWebpage("https://www.patreon.com/streampi"));
         donateButton.getStyleClass().add("about_donate_hyperlink");
 
@@ -92,19 +88,19 @@ public class AboutTab extends ScrollPane
         Label versionText = new Label(clientInfo.getVersion().getText() + " - "+ clientInfo.getPlatform().getUIName() + " - "+ clientInfo.getReleaseStatus().getUIName());
         versionText.getStyleClass().add("about_version_label");
 
-        Label commStandardLabel = new Label("Comm Standard "+clientInfo.getCommStandardVersion().getText());
+        Label commStandardLabel = new Label(I18N.getString("window.settings.about.About.commStandard", clientInfo.getCommStandardVersion().getText()));
         commStandardLabel.getStyleClass().add("about_comm_standard_label");
 
-        Label minThemeAPILabel = new Label("Min ThemeAPI "+ ThemeAPI.MIN_VERSION_SUPPORTED.getText());
+        Label minThemeAPILabel = new Label(I18N.getString("window.settings.about.About.minThemeAPI", ThemeAPI.MIN_VERSION_SUPPORTED.getText()));
         minThemeAPILabel.getStyleClass().add("about_min_theme_api_label");
 
-        Label minActionAPILabel = new Label("Min ActionAPI "+clientInfo.getMinPluginSupportVersion().getText());
+        Label minActionAPILabel = new Label(I18N.getString("window.settings.about.About.minActionAPI", clientInfo.getMinPluginSupportVersion().getText()));
         minActionAPILabel.getStyleClass().add("about_min_action_api_label");
 
-        Label currentActionAPILabel = new Label("ActionAPI "+ ActionAPI.VERSION.getText());
+        Label currentActionAPILabel = new Label(I18N.getString("window.settings.about.About.currentActionAPI", ActionAPI.VERSION.getText()));
         currentActionAPILabel.getStyleClass().add("about_current_action_api_label");
 
-        Label currentUtilLabel = new Label("Util "+Util.VERSION.getText());
+        Label currentUtilLabel = new Label(I18N.getString("window.settings.about.About.currentUtil", Util.VERSION.getText()));
         currentUtilLabel.getStyleClass().add("about_current_util_label");
 
         VBox vBox1 = new VBox(
@@ -119,13 +115,13 @@ public class AboutTab extends ScrollPane
         vBox1.setAlignment(Pos.CENTER);
         vBox1.setSpacing(10);
 
-        Label javaVersionLabel = new Label("Java "+System.getProperty("java.version"));
+        Label javaVersionLabel = new Label(I18N.getString("window.settings.about.About.java", System.getProperty("java.version")));
         javaVersionLabel.getStyleClass().add("about_java_version");
 
-        Label javafxVersionLabel = new Label("JavaFX "+System.getProperty("javafx.version"));
+        Label javafxVersionLabel = new Label(I18N.getString("window.settings.about.About.javafx", System.getProperty("javafx.version")));
         javafxVersionLabel.getStyleClass().add("about_javafx_version");
 
-        Label javaGCLabel = new Label("GC: "+ ManagementFactory.getGarbageCollectorMXBeans().get(0).getName());
+        Label javaGCLabel = new Label(I18N.getString("window.settings.about.About.gc", ManagementFactory.getGarbageCollectorMXBeans().get(0).getName()));
         javaGCLabel.getStyleClass().add("about_java_gc");
 
         HBox hBox1 = new HBox(javaVersionLabel, getSep(),
@@ -159,7 +155,7 @@ public class AboutTab extends ScrollPane
             {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                Label buildDateLabel = new Label("Build date/time: " +  properties.getProperty("build.date"));
+                Label buildDateLabel = new Label(I18N.getString("window.settings.about.About.buildDate", properties.getProperty("build.date")));
                 buildDateLabel.getStyleClass().add("about_build_date_label");
                 mainVBox.getChildren().add(buildDateLabel);
             }

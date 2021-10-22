@@ -1,4 +1,4 @@
-package com.stream_pi.client.window.settings.About;
+package com.stream_pi.client.window.settings.about;
 
 
 import com.stream_pi.client.info.License;

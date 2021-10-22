@@ -1,4 +1,4 @@
-package com.stream_pi.client.window.settings.About;
+package com.stream_pi.client.window.settings.about;
 
 public class Contributor
 {

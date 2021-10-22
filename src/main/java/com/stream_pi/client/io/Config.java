@@ -22,6 +22,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import com.stream_pi.client.Main;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.util.exception.SevereException;
@@ -52,7 +53,7 @@ public class Config
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new SevereException("Config", "unable to read config.xml\n"+e.getMessage());
+            throw new SevereException(I18N.getString("io.config.unableToReadConfig", e.getLocalizedMessage()));
         }
     }
 
@@ -94,7 +95,7 @@ public class Config
         }
         catch (Exception e)
         {
-            throw new SevereException("Config", "unable to save config.xml");
+            throw new SevereException(I18N.getString("io.config.unableToSaveConfig", e.getLocalizedMessage()));
         }
     }
 

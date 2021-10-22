@@ -310,7 +310,7 @@
                             </attachList>
                             <reflectionList>
                                 <list>java.util.logging.FileHandler</list>
-                                <list>com.stream_pi.client.window.settings.About.Contributor</list>
+                                <list>com.stream_pi.client.window.settings.about.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
                         </configuration>
@@ -348,7 +348,7 @@
                             </attachList>
                             <reflectionList>
                                 <list>java.util.logging.FileHandler</list>
-                                <list>com.stream_pi.client.window.settings.About.Contributor</list>
+                                <list>com.stream_pi.client.window.settings.about.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
                         </configuration>
@@ -384,7 +384,7 @@
                             </attachList>
                             <reflectionList>
                                 <list>java.util.logging.FileHandler</list>
-                                <list>com.stream_pi.client.window.settings.About.Contributor</list>
+                                <list>com.stream_pi.client.window.settings.about.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
                         </configuration>

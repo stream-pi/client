@@ -2,6 +2,7 @@ package com.stream_pi.client.window.firsttimeuse;
 
 import com.gluonhq.attach.orientation.OrientationService;
 import com.stream_pi.client.controller.ClientListener;
+import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
@@ -46,7 +47,7 @@ public class FinalConfigPane extends VBox
 
         getStyleClass().add("first_time_use_pane_final_config");
 
-        Label label = new Label("We're almost finished setting things up. All that's needed now is for you to enter in the following details and you'll be good to go!");
+        Label label = new Label(I18N.getString("firsttimeuse.FinalConfigPane.subHeading"));
         label.setWrapText(true);
         VBox.setVgrow(label, Priority.ALWAYS);
         label.getStyleClass().add("first_time_use_pane_final_config_label");
@@ -55,21 +56,18 @@ public class FinalConfigPane extends VBox
         serverIPHostNameTextField = new TextField();
         serverPortTextField = new TextField();
 
-        Label warningLabel = new Label(
-                "Stream-Pi is not encrypted yet. Use this only in absolutely private networks. Do not use this in a public network (Railway Station, Park).\n" +
-                        "Stream-Pi project is not responsible if your computer is compromised because of connecting Stream-Pi to a malicious network."
-        );
+        Label warningLabel = new Label(I18N.getString("firsttimeuse.FinalConfigPane.securityWarning"));
         warningLabel.setWrapText(true);
         warningLabel.getStyleClass().add("first_time_use_pane_final_config_warning_label");
 
 
 
-        HBoxInputBox clientNickNameInputBox = new HBoxInputBox("Name", clientNameTextField, 150);
-        HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox("Server IP", serverIPHostNameTextField, 150);
-        HBoxInputBox serverIPPortInputBox = new HBoxInputBox("Server Port", serverPortTextField, 150);
+        HBoxInputBox clientNameInputBox = new HBoxInputBox(I18N.getString("firsttimeuse.FinalConfigPane.name"), clientNameTextField, 150);
+        HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox(I18N.getString("firsttimeuse.FinalConfigPane.serverHostNameOrIP"), serverIPHostNameTextField, 150);
+        HBoxInputBox serverIPPortInputBox = new HBoxInputBox(I18N.getString("firsttimeuse.FinalConfigPane.serverPort"), serverPortTextField, 150);
 
         setAlignment(Pos.TOP_CENTER);
-        getChildren().addAll(label, clientNickNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, warningLabel);
+        getChildren().addAll(label, clientNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, warningLabel);
 
         setSpacing(10.0);
 
@@ -78,7 +76,7 @@ public class FinalConfigPane extends VBox
 
     public void makeChangesToNextButton()
     {
-        nextButton.setText("Confirm");
+        nextButton.setText(I18N.getString("firsttimeuse.FinalConfigPane.confirm"));
         nextButton.setOnAction(actionEvent -> new Thread(new Task<Void>() {
             @Override
             protected Void call()
@@ -97,12 +95,12 @@ public class FinalConfigPane extends VBox
 
         if(clientNameTextField.getText().isBlank())
         {
-            errors.append("* Name cannot be blank.\n");
+            errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.nameCannotBeBlank")).append("\n");
         }
 
         if(serverIPHostNameTextField.getText().isBlank())
         {
-            errors.append("* Server IP cannot be empty.\n");
+            errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverHostNameOrIPCannotBeBlank")).append("\n");
         }
 
         int port = -1;
@@ -111,13 +109,17 @@ public class FinalConfigPane extends VBox
             port = Integer.parseInt(serverPortTextField.getText());
 
             if(port < 1024)
-                errors.append("* Server Port should be above 1024.\n");
+            {
+                errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverPortMustBeGreaterThan1024")).append("\n");
+            }
             else if(port > 65535)
-                errors.append("* Server Port must be lesser than 65535\n");
+            {
+                errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverPortMustBeLesserThan65535")).append("\n");
+            }
         }
         catch (NumberFormatException exception)
         {
-            errors.append("* Server Port should be a number.\n");
+            errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverPortMustBeInteger")).append("\n");
         }
 
         if(errors.toString().isEmpty())
@@ -177,7 +179,7 @@ public class FinalConfigPane extends VBox
         else
         {
             Platform.runLater(()->nextButton.setDisable(false));
-            new StreamPiAlert("Uh Oh", "Please rectify the following errors and try again:\n"+errors, StreamPiAlertType.ERROR).show();
+            new StreamPiAlert(I18N.getString("validationError", errors), StreamPiAlertType.ERROR).show();
         }
     }
 
