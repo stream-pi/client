@@ -17,7 +17,7 @@
         <medusa.version>11.7</medusa.version>
 
         <gluonfx.plugin.version>1.0.2</gluonfx.plugin.version>
-        <ikonli.version>11.5.0</ikonli.version>
+        <ikonli.version>12.2.0</ikonli.version>
 
         <action.api.version>1.0.0-SNAPSHOT</action.api.version>
         <util.version>1.0.0-SNAPSHOT</util.version>

@@ -1,8 +1,8 @@
-module com.stream_pi.client {
+module com.stream_pi.client
+{
     requires javafx.base;
     requires javafx.graphics;
     requires javafx.controls;
-    requires org.kordamp.iconli.core;
     requires org.kordamp.ikonli.javafx;
 
     requires com.gluonhq.attach.lifecycle;
