@@ -410,11 +410,11 @@ public class Client extends Thread
 
         if (message.getValue("reason") == null)
         {
-            new StreamPiAlert(I18N.getString("connection.ClientConnection.disconnectedFromClient", serverName), StreamPiAlertType.WARNING).show();
+            new StreamPiAlert(I18N.getString("connection.Client.disconnectedFromServer", serverName), StreamPiAlertType.WARNING).show();
         }
         else
         {
-            new StreamPiAlert(I18N.getString("connection.ClientConnection.disconnectedFromClient", serverName), ((DisconnectReason) message.getValue("reason")).getMessage(), StreamPiAlertType.WARNING).show();
+            new StreamPiAlert(I18N.getString("connection.Client.disconnectedFromServer", serverName), ((DisconnectReason) message.getValue("reason")).getMessage(), StreamPiAlertType.WARNING).show();
         }
 
 
