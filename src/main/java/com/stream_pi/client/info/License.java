@@ -39,6 +39,6 @@ public class License {
             "4. Ikonli - Apache License\nhttps://github.com/kordamp/ikonli/blob/master/LICENSE\n\n"+
             "5. Roboto Font - Apache License 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0\n\n"+
             "6. ControlsFX - BSD 3-Clause License\nhttps://github.com/controlsfx/controlsfx/blob/jfx-13/license.txt\n\n" +
-            "7. Medusa - Apache License 2.0 https://github.com/HanSolo/medusa/blob/master/LICENSE";
+            "7. Medusa - Apache License 2.0\nhttps://github.com/HanSolo/medusa/blob/master/LICENSE";
     }
 }
