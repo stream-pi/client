@@ -855,8 +855,8 @@ public class Client extends Thread
         String name = (String) message.getValue("name");
         int rows = (int) message.getValue("rows");
         int cols = (int) message.getValue("cols");
-        int actionSize = (int) message.getValue("action_size");
-        int actionGap = (int) message.getValue("action_gap");
+        double actionSize = (double) message.getValue("action_size");
+        double actionGap = (double) message.getValue("action_gap");
         double actionDefaultDisplayTextFontSize = (double) message.getValue("action_default_display_text_font_size");
 
         try

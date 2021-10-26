@@ -38,9 +38,9 @@ public class ClientProfile implements Cloneable
 {
     private String name, ID;
 
-    private int rows, cols, actionSize, actionGap;
+    private int rows, cols;
 
-    private double actionDefaultDisplayTextFontSize;
+    private double actionDefaultDisplayTextFontSize, actionSize, actionGap;
     
     private HashMap<String, Action> actions;
     private String iconsPath;
@@ -50,7 +50,7 @@ public class ClientProfile implements Cloneable
     private Logger logger;
     private Document document;
 
-    public ClientProfile(File file, String iconsPath, String name, int rows, int cols, int actionSize, int actionGap, double actionDefaultDisplayTextFontSize) throws MinorException
+    public ClientProfile(File file, String iconsPath, String name, int rows, int cols, double actionSize, double actionGap, double actionDefaultDisplayTextFontSize) throws MinorException
     {
         this.file = file;
         this.iconsPath = iconsPath;
@@ -128,8 +128,8 @@ public class ClientProfile implements Cloneable
             setName(XMLConfigHelper.getStringProperty(getProfileElement(), "name"));
             setRows(XMLConfigHelper.getIntProperty(getProfileElement(), "rows"));
             setCols(XMLConfigHelper.getIntProperty(getProfileElement(), "cols"));
-            setActionSize(XMLConfigHelper.getIntProperty(getProfileElement(), "action-size"));
-            setActionGap(XMLConfigHelper.getIntProperty(getProfileElement(), "action-gap"));
+            setActionSize(XMLConfigHelper.getDoubleProperty(getProfileElement(), "action-size"));
+            setActionGap(XMLConfigHelper.getDoubleProperty(getProfileElement(), "action-gap"));
             setActionDefaultDisplayTextFontSize(XMLConfigHelper.getDoubleProperty(getProfileElement(), "action-default-display-text-font-size"));
 
             //Load Actions
@@ -660,8 +660,8 @@ public class ClientProfile implements Cloneable
                                             String name,
                                             int rows,
                                             int cols,
-                                            int actionSize,
-                                            int actionGap,
+                                            double actionSize,
+                                            double actionGap,
                                             double actionDefaultDisplayTextFontSize)
     {
         Element nameElement = document.createElement("name");
@@ -741,7 +741,7 @@ public class ClientProfile implements Cloneable
         return cols;
     }
 
-    public int getActionSize()
+    public double getActionSize()
     {
         return actionSize;
     }
@@ -751,7 +751,7 @@ public class ClientProfile implements Cloneable
         return actions.getOrDefault(ID, null);
     }
 
-    public int getActionGap()
+    public double getActionGap()
     {
         return actionGap;
     }
@@ -771,12 +771,12 @@ public class ClientProfile implements Cloneable
         this.ID = ID;
     }
 
-    public void setActionSize(int actionSize)
+    public void setActionSize(double actionSize)
     {
         this.actionSize = actionSize;
     }
 
-    public void setActionGap(int actionGap)
+    public void setActionGap(double actionGap)
     {
         this.actionGap = actionGap;
     }

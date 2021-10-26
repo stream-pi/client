@@ -141,7 +141,7 @@ public class FinalConfigPane extends VBox
                 ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+
                         Config.getInstance().getStartupProfileID()+".xml"), Config.getInstance().getIconsPath());
 
-                int pre = clientProfile.getActionSize()+(clientProfile.getActionGap()*4);
+                double pre = clientProfile.getActionSize()+(clientProfile.getActionGap()*4);
 
 
                 rowsToSet = (int) (clientListener.getStageHeight()/pre);

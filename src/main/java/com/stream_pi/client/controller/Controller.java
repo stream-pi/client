@@ -338,7 +338,8 @@ public class Controller extends Base
     }
 
     @Override
-    public void updateSettingsConnectDisconnectButton() {
+    public void updateSettingsConnectDisconnectButton()
+    {
         getSettingsPane().getGeneralTab().setConnectDisconnectButtonStatus();
     }
 

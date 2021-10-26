@@ -122,7 +122,7 @@ public class ActionBox extends StackPane
         statusIcon.setOpacity(0);
         statusIcon.setCache(true);
         statusIcon.setCacheHint(CacheHint.SPEED);
-        statusIcon.setIconSize(size - 30);
+        statusIcon.setIconSize((int) (size - 30));
 
         statusIconAnimation = new Timeline(
                 new KeyFrame(
@@ -243,12 +243,14 @@ public class ActionBox extends StackPane
         return actionGridPaneListener;
     }
 
-    private int size;
+    private double size;
     private ActionGridPaneListener actionGridPaneListener;
     private ClientListener clientListener;
 
-    public ActionBox(int size, ExceptionAndAlertHandler exceptionAndAlertHandler,
-                     ClientListener clientListener, ActionGridPaneListener actionGridPaneListener, int row, int col)
+    private double profileDisplayTextFontSize;
+
+    public ActionBox(double size, ExceptionAndAlertHandler exceptionAndAlertHandler,
+                     ClientListener clientListener, ActionGridPaneListener actionGridPaneListener, int row, int col, double profileDisplayTextFontSize)
     {
         this.actionGridPaneListener = actionGridPaneListener;
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
@@ -257,6 +259,7 @@ public class ActionBox extends StackPane
         this.col = col;
         this.clientListener = clientListener;
         this.logger = Logger.getLogger("");
+        this.profileDisplayTextFontSize = profileDisplayTextFontSize;
 
         this.managedProperty().bind(visibleProperty());
 
@@ -327,8 +330,8 @@ public class ActionBox extends StackPane
         GridPane.setRowSpan(this, rowSpan);
         GridPane.setColumnSpan(this, colSpan);
 
-        int actionWidth = (size*colSpan) + (clientListener.getCurrentProfile().getActionGap()*(colSpan-1));
-        int actionHeight = (size*rowSpan) + (clientListener.getCurrentProfile().getActionGap()*(rowSpan-1));
+        double actionWidth = (size*colSpan) + (clientListener.getCurrentProfile().getActionGap()*(colSpan-1));
+        double actionHeight = (size*rowSpan) + (clientListener.getCurrentProfile().getActionGap()*(rowSpan-1));
 
         setMinSize(actionWidth, actionHeight);
         setMaxSize(actionWidth, actionHeight);
@@ -661,6 +664,10 @@ public class ActionBox extends StackPane
         if(getAction().getDisplayTextFontSize() > -1)
         {
             totalStyle+="-fx-font-size: "+getAction().getDisplayTextFontSize()+";";
+        }
+        else
+        {
+            totalStyle+="-fx-font-size: "+profileDisplayTextFontSize+";";
         }
 
         if(!totalStyle.isBlank())
