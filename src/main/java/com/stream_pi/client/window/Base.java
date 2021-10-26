@@ -471,7 +471,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             {
                 if(getConfig().getCurrentThemeFullName().equals(getConfig().getDefaultCurrentThemeFullName()))
                 {
-                    throw new SevereException(I18N.getString("window.Base.unableToGetDefaultTheme", getConfig().getDefaultCurrentThemeFullName()));
+                    throw new SevereException(I18N.getString("window.Base.defaultThemeCorrupt", getConfig().getDefaultCurrentThemeFullName()));
                 }
 
                 themeErrors.append("\n\n").append(I18N.getString("window.Base.revertedToDefaultTheme" , getConfig().getDefaultCurrentThemeFullName()));
@@ -480,7 +480,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
                 getConfig().save();
             }
 
-            handleMinorException(new MinorException(I18N.getString("window.Base.themeLoadingIssues", themeErrors.toString())));
+            handleMinorException(new MinorException(I18N.getString("window.Base.failedToLoadThemes", themeErrors.toString())));
         }
         logger.info("...Themes loaded successfully !");
     }

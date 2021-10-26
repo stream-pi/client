@@ -62,9 +62,9 @@ public class FinalConfigPane extends VBox
 
 
 
-        HBoxInputBox clientNameInputBox = new HBoxInputBox(I18N.getString("firsttimeuse.FinalConfigPane.name"), clientNameTextField, 150);
-        HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox(I18N.getString("firsttimeuse.FinalConfigPane.serverHostNameOrIP"), serverIPHostNameTextField, 150);
-        HBoxInputBox serverIPPortInputBox = new HBoxInputBox(I18N.getString("firsttimeuse.FinalConfigPane.serverPort"), serverPortTextField, 150);
+        HBoxInputBox clientNameInputBox = new HBoxInputBox(I18N.getString("name"), clientNameTextField, 150);
+        HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox(I18N.getString("serverHostNameOrIP"), serverIPHostNameTextField, 150);
+        HBoxInputBox serverIPPortInputBox = new HBoxInputBox(I18N.getString("serverPort"), serverPortTextField, 150);
 
         setAlignment(Pos.TOP_CENTER);
         getChildren().addAll(label, clientNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, warningLabel);

@@ -181,7 +181,7 @@ public class GeneralTab extends VBox
         fullScreenModeHBox.managedProperty().bind(fullScreenModeHBox.visibleProperty());
 
         vibrateOnActionPressToggleSwitch = new ToggleSwitch();
-        vibrateOnActionPressHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.vibrateOnActionPress"), vibrateOnActionPressToggleSwitch);
+        vibrateOnActionPressHBox = new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.vibrateOnActionClick"), vibrateOnActionPressToggleSwitch);
         vibrateOnActionPressHBox.managedProperty().bind(vibrateOnActionPressHBox.visibleProperty());
 
         connectOnStartupToggleSwitch = new ToggleSwitch();
@@ -239,10 +239,10 @@ public class GeneralTab extends VBox
 
         VBox vBox = new VBox(
                 generateSubHeading(I18N.getString("window.settings.GeneralTab.connection")),
-                new HBoxInputBox(I18N.getString("window.settings.GeneralTab.serverHostNameOrIP"), serverHostNameOrIPTextField, prefWidth),
-                new HBoxInputBox(I18N.getString("window.settings.GeneralTab.serverPort"), serverPortTextField, prefWidth),
+                new HBoxInputBox(I18N.getString("serverHostNameOrIP"), serverHostNameOrIPTextField, prefWidth),
+                new HBoxInputBox(I18N.getString("serverPort"), serverPortTextField, prefWidth),
                 generateSubHeading(I18N.getString("window.settings.GeneralTab.client")),
-                new HBoxInputBox(I18N.getString("window.settings.GeneralTab.name"), nameTextField, prefWidth),
+                new HBoxInputBox(I18N.getString("name"), nameTextField, prefWidth),
                 new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.currentProfile"), clientProfileComboBox),
                 new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.theme"), themeComboBox),
                 generateSubHeading(I18N.getString("window.settings.GeneralTab.locations")),
