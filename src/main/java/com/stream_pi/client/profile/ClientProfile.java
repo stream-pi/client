@@ -2,6 +2,7 @@ package com.stream_pi.client.profile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -33,11 +34,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ClientProfile implements Cloneable{
+public class ClientProfile implements Cloneable
+{
     private String name, ID;
 
     private int rows, cols, actionSize, actionGap;
 
+    private double actionDefaultDisplayTextFontSize;
     
     private HashMap<String, Action> actions;
     private String iconsPath;
@@ -47,18 +50,47 @@ public class ClientProfile implements Cloneable{
     private Logger logger;
     private Document document;
 
+    public ClientProfile(File file, String iconsPath, String name, int rows, int cols, int actionSize, int actionGap, double actionDefaultDisplayTextFontSize) throws MinorException
+    {
+        this.file = file;
+        this.iconsPath = iconsPath;
+        actions = new HashMap<>();
+        logger = Logger.getLogger(ClientProfile.class.getName());
+
+        setName(name);
+        setRows(rows);
+        setCols(cols);
+        setActionSize(actionSize);
+        setActionGap(actionGap);
+        setActionDefaultDisplayTextFontSize(actionDefaultDisplayTextFontSize);
+
+        if(file.isFile())
+        {
+            throw new MinorException(I18N.getString("Unable to create profile file!")+"\n"+I18N.getString("profile.ClientProfile.duplicateProfileFileExists", file.getAbsolutePath()));
+        }
+        else
+        {
+            createNewProfileFile(file);
+        }
+
+        initDocument();
+        setID(file.getName().replace(".xml", ""));
+    }
+
     public ClientProfile(File file, String iconsPath) throws MinorException
     {
         this.file = file;
         this.iconsPath = iconsPath;
-
         actions = new HashMap<>();
-
         logger = Logger.getLogger(ClientProfile.class.getName());
 
-        if(!file.exists() && !file.isFile())
-            createConfigFile(file);
 
+        initDocument();
+        load();
+    }
+
+    private void initDocument() throws MinorException
+    {
         try
         {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -71,9 +103,7 @@ public class ClientProfile implements Cloneable{
             throw new MinorException(I18N.getString("profile.ClientProfile.profileParseFailed", file.getAbsolutePath(), e.getLocalizedMessage()));
         }
 
-
         setID(file.getName().replace(".xml", ""));
-        load();
     }
 
 
@@ -95,18 +125,12 @@ public class ClientProfile implements Cloneable{
 
             logger.info("Loading profile "+getID()+" ...");
 
-            String name = XMLConfigHelper.getStringProperty(getProfileElement(), "name");
-            int rows = XMLConfigHelper.getIntProperty(getProfileElement(), "rows");
-            int cols = XMLConfigHelper.getIntProperty(getProfileElement(), "cols");
-            int actionSize = XMLConfigHelper.getIntProperty(getProfileElement(), "action-size");
-            int actionGap = XMLConfigHelper.getIntProperty(getProfileElement(), "action-gap");
-
-            setName(name);
-            setRows(rows);
-            setCols(cols);
-            setActionSize(actionSize);
-            setActionGap(actionGap);
-
+            setName(XMLConfigHelper.getStringProperty(getProfileElement(), "name"));
+            setRows(XMLConfigHelper.getIntProperty(getProfileElement(), "rows"));
+            setCols(XMLConfigHelper.getIntProperty(getProfileElement(), "cols"));
+            setActionSize(XMLConfigHelper.getIntProperty(getProfileElement(), "action-size"));
+            setActionGap(XMLConfigHelper.getIntProperty(getProfileElement(), "action-gap"));
+            setActionDefaultDisplayTextFontSize(XMLConfigHelper.getDoubleProperty(getProfileElement(), "action-default-display-text-font-size"));
 
             //Load Actions
 
@@ -305,67 +329,9 @@ public class ClientProfile implements Cloneable{
 
     }
 
-    public void addAction(Action action) throws CloneNotSupportedException {
-        actions.put(action.getID(), (Action) action.clone());
-    }
-
-
-
-
-    private void createConfigFile(File file) throws MinorException
+    public void addAction(Action action) throws CloneNotSupportedException
     {
-        try
-        {
-            file.createNewFile();
-
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document newDocument = dBuilder.newDocument();
-
-
-            Element rootElement = newDocument.createElement("config");
-            newDocument.appendChild(rootElement);
-
-            Element profileElement = newDocument.createElement("profile");
-            rootElement.appendChild(profileElement);
-
-            Element actionsElement = newDocument.createElement("actions");
-            rootElement.appendChild(actionsElement);
-
-            Element nameElement = newDocument.createElement("name");
-            nameElement.setTextContent("Untitled profile");
-            profileElement.appendChild(nameElement);
-
-            Element rowsElement = newDocument.createElement("rows");
-            rowsElement.setTextContent("3");
-            profileElement.appendChild(rowsElement);
-
-            Element colsElement = newDocument.createElement("cols");
-            colsElement.setTextContent("3");
-            profileElement.appendChild(colsElement);
-
-            Element actionSizeElement = newDocument.createElement("action-size");
-            actionSizeElement.setTextContent("100");
-            profileElement.appendChild(actionSizeElement);
-
-            Element actionGapElement = newDocument.createElement("action-gap");
-            actionGapElement.setTextContent("5");
-            profileElement.appendChild(actionGapElement);
-
-
-
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(newDocument);
-            StreamResult result = new StreamResult(file);
-            transformer.transform(source, result);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            throw new MinorException(e.getMessage());
-        }
+        actions.put(action.getID(), action.clone());
     }
 
 
@@ -655,31 +621,72 @@ public class ClientProfile implements Cloneable{
         transformer.transform(input, output);
     }
 
+
+    private void createNewProfileFile(File file) throws MinorException
+    {
+        try
+        {
+            file.createNewFile();
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document newDocument = dBuilder.newDocument();
+
+            addElementsToProfileElement(newDocument, newDocument.getDocumentElement(), getName(), getRows(), getCols(), getActionSize(), getActionGap(), getActionDefaultDisplayTextFontSize());
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(newDocument);
+            StreamResult result = new StreamResult(file);
+            transformer.transform(source, result);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new MinorException(I18N.getString("profile.ClientProfile.unableToCreateProfileFile")+"\n"+e.getLocalizedMessage());
+        }
+    }
+
     public void saveProfileDetails() throws TransformerException
     {
         XMLConfigHelper.removeChilds(getProfileElement());
 
+        addElementsToProfileElement(document, getProfileElement(), getName(), getRows(), getCols(), getActionSize(), getActionGap(), getActionDefaultDisplayTextFontSize());
+
+        save();
+    }
+
+    public void addElementsToProfileElement(Document document, Element element,
+                                            String name,
+                                            int rows,
+                                            int cols,
+                                            int actionSize,
+                                            int actionGap,
+                                            double actionDefaultDisplayTextFontSize)
+    {
         Element nameElement = document.createElement("name");
-        nameElement.setTextContent(getName());
-        getProfileElement().appendChild(nameElement);
+        nameElement.setTextContent(name);
+        element.appendChild(nameElement);
 
         Element rowsElement = document.createElement("rows");
-        rowsElement.setTextContent(getRows()+"");
-        getProfileElement().appendChild(rowsElement);
+        rowsElement.setTextContent(rows + "");
+        element.appendChild(rowsElement);
 
         Element colsElement = document.createElement("cols");
-        colsElement.setTextContent(getCols()+"");
-        getProfileElement().appendChild(colsElement);
+        colsElement.setTextContent(cols + "");
+        element.appendChild(colsElement);
 
         Element actionSizeElement = document.createElement("action-size");
-        actionSizeElement.setTextContent(getActionSize()+"");
-        getProfileElement().appendChild(actionSizeElement);
+        actionSizeElement.setTextContent(actionSize + "");
+        element.appendChild(actionSizeElement);
 
         Element actionGapElement = document.createElement("action-gap");
-        actionGapElement.setTextContent(getActionGap()+"");
-        getProfileElement().appendChild(actionGapElement);
-        
-        save();
+        actionGapElement.setTextContent(actionGap + "");
+        element.appendChild(actionGapElement);
+
+        Element actionDefaultDisplayTextFontSizeElement = document.createElement("action-default-display-text-font-size");
+        actionDefaultDisplayTextFontSizeElement.setTextContent(actionDefaultDisplayTextFontSize + "");
+        element.appendChild(actionDefaultDisplayTextFontSizeElement);
     }
 
     public void saveActions() throws Exception
@@ -778,7 +785,16 @@ public class ClientProfile implements Cloneable{
     {
         this.name = name;
     }
-    
+
+    public void setActionDefaultDisplayTextFontSize(double actionDefaultDisplayTextFontSize)
+    {
+        this.actionDefaultDisplayTextFontSize = actionDefaultDisplayTextFontSize;
+    }
+
+    public double getActionDefaultDisplayTextFontSize()
+    {
+        return actionDefaultDisplayTextFontSize;
+    }
 
     public Object clone() throws CloneNotSupportedException
     {

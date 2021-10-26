@@ -95,12 +95,12 @@ public class FinalConfigPane extends VBox
 
         if(clientNameTextField.getText().isBlank())
         {
-            errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.nameCannotBeBlank")).append("\n");
+            errors.append("* ").append(I18N.getString("nameCannotBeBlank")).append("\n");
         }
 
         if(serverIPHostNameTextField.getText().isBlank())
         {
-            errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverHostNameOrIPCannotBeBlank")).append("\n");
+            errors.append("* ").append(I18N.getString("serverHostNameOrIPCannotBeBlank")).append("\n");
         }
 
         int port = -1;
@@ -110,16 +110,16 @@ public class FinalConfigPane extends VBox
 
             if(port < 1024)
             {
-                errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverPortMustBeGreaterThan1024")).append("\n");
+                errors.append("* ").append(I18N.getString("serverPortMustBeGreaterThan1024")).append("\n");
             }
             else if(port > 65535)
             {
-                errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverPortMustBeLesserThan65535")).append("\n");
+                errors.append("* ").append(I18N.getString("serverPortMustBeLesserThan65535")).append("\n");
             }
         }
         catch (NumberFormatException exception)
         {
-            errors.append("* ").append(I18N.getString("firsttimeuse.FinalConfigPane.serverPortMustBeInteger")).append("\n");
+            errors.append("* ").append(I18N.getString("serverPortMustBeInteger")).append("\n");
         }
 
         if(errors.toString().isEmpty())

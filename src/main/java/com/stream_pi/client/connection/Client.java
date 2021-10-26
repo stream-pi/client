@@ -507,6 +507,7 @@ public class Client extends Thread
         tbs1.setValue("cols", clientProfile.getCols());
         tbs1.setValue("action_size", clientProfile.getActionSize());
         tbs1.setValue("action_gap", clientProfile.getActionGap());
+        tbs1.setValue("action_default_display_text_font_size", clientProfile.getActionDefaultDisplayTextFontSize());
 
         sendMessage(tbs1);
 
@@ -851,22 +852,33 @@ public class Client extends Thread
         String ID = (String) message.getValue("ID");
         ClientProfile clientProfile = clientListener.getClientProfiles().getProfileFromID(ID);
 
-        if(clientProfile == null)
-        {
-            clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+ID+".xml"),
-                    Config.getInstance().getIconsPath());
-        }
-
-        clientProfile.setName((String) message.getValue("name"));
-        clientProfile.setRows((int) message.getValue("rows"));
-        clientProfile.setCols((int) message.getValue("cols"));
-        clientProfile.setActionSize((int) message.getValue("action_size"));
-        clientProfile.setActionGap((int) message.getValue("action_gap"));
+        String name = (String) message.getValue("name");
+        int rows = (int) message.getValue("rows");
+        int cols = (int) message.getValue("cols");
+        int actionSize = (int) message.getValue("action_size");
+        int actionGap = (int) message.getValue("action_gap");
+        double actionDefaultDisplayTextFontSize = (double) message.getValue("action_default_display_text_font_size");
 
         try
         {
+            if(clientProfile == null)
+            {
+                clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+ID+".xml"),
+                        Config.getInstance().getIconsPath(), name, rows, cols, actionSize, actionGap, actionDefaultDisplayTextFontSize);
+
+            }
+            else
+            {
+                clientProfile.setName(name);
+                clientProfile.setRows(rows);
+                clientProfile.setCols(cols);
+                clientProfile.setActionSize(actionSize);
+                clientProfile.setActionGap(actionGap);
+                clientProfile.setActionDefaultDisplayTextFontSize(actionDefaultDisplayTextFontSize);
+                clientProfile.saveProfileDetails();
+            }
+
             clientListener.getClientProfiles().addProfile(clientProfile);
-            clientProfile.saveProfileDetails();
             clientListener.refreshGridIfCurrentProfile(ID);
             Platform.runLater(clientListener::loadSettings);
         }

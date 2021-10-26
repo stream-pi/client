@@ -2,6 +2,10 @@
 
 ![version](https://img.shields.io/badge/Version-1.0.0-green)
 
+Client Software for the Stream-Pi platform.
+
+[Help us Translate!](https://github.com/stream-pi/client/blob/master/i18n.md)
+
 ## Prerequisites
 
 - Java >= 11

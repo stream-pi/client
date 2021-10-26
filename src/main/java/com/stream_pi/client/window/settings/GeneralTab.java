@@ -509,16 +509,16 @@ public class GeneralTab extends VBox
 
             if(port < 1024)
             {
-                errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverPortMustBeGreaterThan1024")).append("\n");
+                errors.append("* ").append(I18N.getString("serverPortMustBeGreaterThan1024")).append("\n");
             }
             else if(port > 65535)
             {
-                errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverPortMustBeLesserThan65535")).append("\n");
+                errors.append("* ").append(I18N.getString("serverPortMustBeLesserThan65535")).append("\n");
             }
         }
         catch (NumberFormatException exception)
         {
-            errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverPortMustBeInteger")).append("\n");
+            errors.append("* ").append(I18N.getString("serverPortMustBeInteger")).append("\n");
         }
 
 
@@ -540,12 +540,12 @@ public class GeneralTab extends VBox
 
         if(serverHostNameOrIPTextField.getText().isBlank())
         {
-            errors.append("* ").append(I18N.getString("window.settings.GeneralTab.serverHostNameOrIPCannotBeBlank")).append("\n");
+            errors.append("* ").append(I18N.getString("serverHostNameOrIPCannotBeBlank")).append("\n");
         }
 
         if(nameTextField.getText().isBlank())
         {
-            errors.append("* ").append(I18N.getString("window.settings.GeneralTab.nameCannotBeBlank")).append("\n");
+            errors.append("* ").append(I18N.getString("nameCannotBeBlank")).append("\n");
         }
 
 
