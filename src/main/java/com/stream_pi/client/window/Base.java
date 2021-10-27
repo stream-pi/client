@@ -226,7 +226,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         }
         else
         {
-            getLogger().warning("No translation available for locale : "+config.getCurrentLanguageLocale());
+            getLogger().warning("No translation available for locale : "+config.getCurrentLanguageLocale().toString());
             getLogger().warning("Setting it to base ...");
             getConfig().setCurrentLanguageLocale(I18N.BASE_LOCALE);
             getConfig().save();
