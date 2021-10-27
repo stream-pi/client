@@ -336,7 +336,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         if(action.getLocation().getRow() >= rows || action.getLocation().getCol() >= cols)
         {
-            throw new MinorException(I18N.getString("actiongridpane.ActionGridPane.actionFallsOutsideBounds", action.getDisplayText(), action.getID()));
+            throw new MinorException(I18N.getString("actiongridpane.ActionGridPane.actionOutOfBounds", action.getDisplayText(), action.getID()));
         }
 
 
