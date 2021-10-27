@@ -714,16 +714,15 @@ public class Controller extends Base
                 {
                     s.launchExternalBrowser(url);
                 }
-                catch (Exception e )
+                catch (Exception e)
                 {
+                    e.printStackTrace();
                     handleMinorException(
-                            new MinorException("Cant start browser! You can go to Server Settings > about > Contact " +
-                                    "and open the links from there.")
+                            new MinorException(I18N.getString("controller.Controller.failedToStartBrowser", e.getLocalizedMessage()))
                     );
                 }
             },()-> handleMinorException(
-                    new MinorException("Sorry!","No browser detected. You can go to Server Settings > about > Contact " +
-                            "and open the links from there.")
+                    new MinorException(I18N.getString("controller.Controller.noBrowserDetected"))
             ));
         }
         else
