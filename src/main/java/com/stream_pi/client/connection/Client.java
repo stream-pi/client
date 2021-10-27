@@ -108,7 +108,7 @@ public class Client extends Thread
                     {
                         logger.severe(e.getMessage());
                         e.printStackTrace();
-                        throw new MinorException(I18N.getString("connection.Client.failedToSetUpIOStreamsToServer", e.getLocalizedMessage()));
+                        throw new MinorException(I18N.getString("connection.Client.failedToSetUpIOStreams", e.getLocalizedMessage()));
                     }
 
                     start();
