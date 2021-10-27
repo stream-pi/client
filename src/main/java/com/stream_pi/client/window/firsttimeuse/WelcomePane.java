@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import com.stream_pi.util.i18n.language.Language;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class WelcomePane extends VBox
@@ -55,12 +56,12 @@ public class WelcomePane extends VBox
 
         languageChooserComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<>() {
             @Override
-            public void onNewItemSelected(Language oldLanguage, Language newLanguage) {
+            public void onNewItemSelected(Locale oldLanguage, Locale newLanguage) {
                 try
                 {
                     if (oldLanguage != newLanguage)
                     {
-                        Config.getInstance().setCurrentLanguageLocale(newLanguage.getLocale());
+                        Config.getInstance().setCurrentLanguageLocale(newLanguage);
                         Config.getInstance().save();
 
                         clientListener.initBase();

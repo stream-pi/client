@@ -7,14 +7,14 @@ import com.stream_pi.util.i18n.language.Language;
 
 import java.util.Locale;
 
-public class LanguageChooserComboBox extends StreamPiComboBox<Language>
+public class LanguageChooserComboBox extends StreamPiComboBox<Locale>
 {
     public LanguageChooserComboBox()
     {
         setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<>() {
             @Override
-            public String getOptionDisplayText(Language language) {
-                return language.getFullName();
+            public String getOptionDisplayText(Locale locale) {
+                return locale.getDisplayName();
             }
         });
 
@@ -24,6 +24,6 @@ public class LanguageChooserComboBox extends StreamPiComboBox<Language>
 
     public Locale getSelectedLocale()
     {
-        return getCurrentSelectedItem().getLocale();
+        return getCurrentSelectedItem();
     }
 }

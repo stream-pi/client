@@ -2,16 +2,15 @@ package com.stream_pi.client.i18n;
 
 import com.stream_pi.util.exception.SevereException;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
-import com.stream_pi.util.i18n.language.Language;
 
 public class I18N
 {
-    public static Locale BASE_LOCALE = new Locale("base_locale");
+    public static Locale BASE_LOCALE = new Locale("en");
     private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(I18N.class.getPackageName()+".lang");
+
 
     public static void init(Locale locale)
     {
@@ -41,43 +40,43 @@ public class I18N
         }
     }
 
-    private static HashMap<Locale, Language> languages;
+    private static ArrayList<Locale> languages;
 
     public static void initAvailableLanguages() throws SevereException
     {
         try
         {
+            languages = new ArrayList<>();
 
-            languages = new HashMap<>();
-
-            InputStream inputStream = I18N.class.getResourceAsStream("i18n.properties");
-            if (inputStream != null)
-            {
-                Properties properties = new Properties();
-                properties.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-                inputStream.close();
-
-
-                for (String key : properties.stringPropertyNames())
-                {
-                    String fullName = properties.getProperty(key);
-
-                    if (!key.isBlank() && !fullName.isBlank())
+            Files.list(Path.of(Objects.requireNonNull(I18N.class.getResource("lang_en.properties")).toURI()).getParent())
+                    .filter(path -> (path.getFileName().toString().startsWith("lang") && path.getFileName().toString().endsWith(".properties")))
+                    .sorted().forEach(path ->
                     {
-                        Locale locale = Locale.forLanguageTag(key);
-                        languages.put(locale, new Language(fullName, locale));
-                    }
-                }
-            }
-            else
-            {
-                throw new SevereException("Unable to open i18n.properties file.");
-            }
+                        String fileName = path.getFileName().toString();
+                        String[] localeArr = fileName.substring(0, fileName.lastIndexOf(".")).split("_");
+
+                        Locale locale;
+
+                        if(localeArr.length == 2)
+                        {
+                            locale = new Locale(localeArr[1]);
+                        }
+                        else if(localeArr.length == 3)
+                        {
+                            locale = new Locale(localeArr[1], localeArr[2]);
+                        }
+                        else
+                        {
+                            locale = new Locale(localeArr[1], localeArr[2], localeArr[3]);
+                        }
+
+                        languages.add(locale);
+                    });
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new SevereException("Unable to open i18n.properties file.\n"+e.getMessage());
+            throw new SevereException("Unable to parse initialise i18n.\n"+e.getMessage());
         }
     }
 
@@ -86,13 +85,21 @@ public class I18N
         return getLanguage(locale) != null;
     }
 
-    public static Language getLanguage(Locale locale)
+    public static Locale getLanguage(Locale locale)
     {
-        return languages.getOrDefault(locale, null);
+        for (Locale eachLocale : languages)
+        {
+            if(eachLocale.equals(locale))
+            {
+                return eachLocale;
+            }
+        }
+
+        return null;
     }
 
-    public static List<Language> getLanguages()
+    public static List<Locale> getLanguages()
     {
-        return new ArrayList<>(languages.values());
+        return languages;
     }
 }

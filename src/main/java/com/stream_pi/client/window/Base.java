@@ -212,7 +212,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
         {
             Locale defaultLocale = Locale.getDefault();
             Locale.setDefault(I18N.BASE_LOCALE);
-            // This sets the local to a non-existing locale to prevent the system from selecting default system locale.
+            // This sets the local to Locale en (fallback locale)
             // This is done because the proper way of removing fallback locales is not available on Java 9+
             // As ResourceBundle.Control is not supported on modular projects.
 
