@@ -243,7 +243,7 @@ public class Client extends Thread
 
                     if(!stop.get())
                     {
-                        throw new MinorException(I18N.getString("connection.Client.accidentallyDisconnectedFromServer"));
+                        throw new MinorException(I18N.getString("connection.Client.accidentallyDisconnectedFromServer", serverName));
                     }
 
                     exit();
