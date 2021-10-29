@@ -224,6 +224,6 @@
 .first_time_use_pane_final_config_warning_label
 {
     -fx-padding: 30 20 0 20;
-    -fx-font-family : 'Roboto Bold';
+    -fx-font-weight: bold;
     -fx-text-alignment: center;
 }

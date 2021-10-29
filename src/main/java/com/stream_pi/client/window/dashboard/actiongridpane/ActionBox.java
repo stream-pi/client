@@ -460,6 +460,12 @@ public class ActionBox extends StackPane
     }
 
 
+    public void updateGauge(GaugeProperties gaugeProperties)
+    {
+        getAction().setGaugeProperties(gaugeProperties);
+        updateGauge();
+    }
+
     public void updateGauge()
     {
         GaugeProperties gaugeProperties = getAction().getGaugeProperties();

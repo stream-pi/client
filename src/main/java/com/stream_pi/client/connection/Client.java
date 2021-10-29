@@ -302,13 +302,13 @@ public class Client extends Thread
 
         ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
 
-        clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID)
-                .setGaugeProperties((GaugeProperties) message.getValue("gauge_properties"));
 
         if(actionBox!=null)
         {
-            Platform.runLater(actionBox::updateGauge);
+            Platform.runLater(()-> actionBox.updateGauge((GaugeProperties) message.getValue("gauge_properties")));
         }
+
+
     }
 
     private void onSetActionGaugeValue(Message message)
