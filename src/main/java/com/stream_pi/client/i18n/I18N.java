@@ -1,10 +1,18 @@
 package com.stream_pi.client.i18n;
 
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.i18n.Language;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class I18N
 {
@@ -40,38 +48,50 @@ public class I18N
         }
     }
 
-    private static ArrayList<Locale> languages;
+    private static List<Language> languages;
 
     public static void initAvailableLanguages() throws SevereException
     {
+
         try
         {
             languages = new ArrayList<>();
 
-            Files.list(Path.of(Objects.requireNonNull(I18N.class.getResource("lang_en.properties")).toURI()).getParent())
-                    .filter(path -> (path.getFileName().toString().startsWith("lang") && path.getFileName().toString().endsWith(".properties")))
-                    .sorted().forEach(path ->
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(I18N.class.getResourceAsStream("i18n.properties"))));
+
+            bufferedReader.lines().forEachOrdered(line->
+            {
+                if(!line.startsWith("#") && !line.startsWith("!") && line.contains("="))
+                {
+                    String[] lineParts = line.split("=");
+
+                    String localeStr = lineParts[0].strip();
+                    String displayName = lineParts[1].strip();
+
+                    String[] localeArr = localeStr.split("_");
+
+                    Locale locale;
+
+                    if(localeArr.length == 1)
                     {
-                        String fileName = path.getFileName().toString();
-                        String[] localeArr = fileName.substring(0, fileName.lastIndexOf(".")).split("_");
+                        locale = new Locale(localeArr[0]);
+                    }
+                    else if(localeArr.length == 2)
+                    {
+                        locale = new Locale(localeArr[0], localeArr[1]);
+                    }
+                    else
+                    {
+                        locale = new Locale(localeArr[0], localeArr[1], localeArr[2]);
+                    }
 
-                        Locale locale;
 
-                        if(localeArr.length == 2)
-                        {
-                            locale = new Locale(localeArr[1]);
-                        }
-                        else if(localeArr.length == 3)
-                        {
-                            locale = new Locale(localeArr[1], localeArr[2]);
-                        }
-                        else
-                        {
-                            locale = new Locale(localeArr[1], localeArr[2], localeArr[3]);
-                        }
+                    languages.add(new Language(locale, displayName));
+                }
 
-                        languages.add(locale);
-                    });
+
+            });
         }
         catch (Exception e)
         {
@@ -85,20 +105,20 @@ public class I18N
         return getLanguage(locale) != null;
     }
 
-    public static Locale getLanguage(Locale locale)
+    public static Language getLanguage(Locale locale)
     {
-        for (Locale eachLocale : languages)
+        for (Language eachLanguage : languages)
         {
-            if(eachLocale.equals(locale))
+            if(eachLanguage.getLocale().equals(locale))
             {
-                return eachLocale;
+                return eachLanguage;
             }
         }
 
         return null;
     }
 
-    public static List<Locale> getLanguages()
+    public static List<Language> getLanguages()
     {
         return languages;
     }

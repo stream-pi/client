@@ -8,13 +8,13 @@ import com.stream_pi.client.io.Config;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.i18n.Language;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import com.stream_pi.util.i18n.language.Language;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -56,12 +56,12 @@ public class WelcomePane extends VBox
 
         languageChooserComboBox.setStreamPiComboBoxListener(new StreamPiComboBoxListener<>() {
             @Override
-            public void onNewItemSelected(Locale oldLanguage, Locale newLanguage) {
+            public void onNewItemSelected(Language oldLanguage, Language newLanguage) {
                 try
                 {
                     if (oldLanguage != newLanguage)
                     {
-                        Config.getInstance().setCurrentLanguageLocale(newLanguage);
+                        Config.getInstance().setCurrentLanguageLocale(newLanguage.getLocale());
                         Config.getInstance().save();
 
                         clientListener.initBase();

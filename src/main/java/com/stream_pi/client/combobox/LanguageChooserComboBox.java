@@ -3,18 +3,18 @@ package com.stream_pi.client.combobox;
 import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
-import com.stream_pi.util.i18n.language.Language;
+import com.stream_pi.util.i18n.Language;
 
 import java.util.Locale;
 
-public class LanguageChooserComboBox extends StreamPiComboBox<Locale>
+public class LanguageChooserComboBox extends StreamPiComboBox<Language>
 {
     public LanguageChooserComboBox()
     {
         setStreamPiComboBoxFactory(new StreamPiComboBoxFactory<>() {
             @Override
-            public String getOptionDisplayText(Locale locale) {
-                return locale.getDisplayName();
+            public String getOptionDisplayText(Language language) {
+                return language.getDisplayName();
             }
         });
 
@@ -24,6 +24,6 @@ public class LanguageChooserComboBox extends StreamPiComboBox<Locale>
 
     public Locale getSelectedLocale()
     {
-        return getCurrentSelectedItem();
+        return getCurrentSelectedItem().getLocale();
     }
 }

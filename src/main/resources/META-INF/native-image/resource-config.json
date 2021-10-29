@@ -7,6 +7,7 @@
   ],
   "resources": [
     {"pattern": ".*/i18n.properties$"},
+    {"pattern": ".*/lang.*properties$"},
     {"pattern": ".*/Default.zip$"},
     {"pattern": ".*/build.properties$"},
     {"pattern": ".*/(EmailBoard|NumericBoard|TextBoard|UriBoard).txt$"}
