@@ -52,46 +52,51 @@ public class I18N
 
     public static void initAvailableLanguages() throws SevereException
     {
-
         try
         {
             languages = new ArrayList<>();
 
-
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(I18N.class.getResourceAsStream("i18n.properties"))));
 
-            bufferedReader.lines().forEachOrdered(line->
+            while(true)
             {
-                if(!line.startsWith("#") && !line.startsWith("!") && line.contains("="))
+                String line = bufferedReader.readLine();
+
+                if(line == null)
                 {
-                    String[] lineParts = line.split("=");
-
-                    String localeStr = lineParts[0].strip();
-                    String displayName = lineParts[1].strip();
-
-                    String[] localeArr = localeStr.split("_");
-
-                    Locale locale;
-
-                    if(localeArr.length == 1)
-                    {
-                        locale = new Locale(localeArr[0]);
-                    }
-                    else if(localeArr.length == 2)
-                    {
-                        locale = new Locale(localeArr[0], localeArr[1]);
-                    }
-                    else
-                    {
-                        locale = new Locale(localeArr[0], localeArr[1], localeArr[2]);
-                    }
-
-
-                    languages.add(new Language(locale, displayName));
+                    break;
+                }
+                else if (line.startsWith("#") || line.startsWith("!") || !line.contains("="))
+                {
+                    continue;
                 }
 
 
-            });
+                String[] lineParts = line.split("=");
+
+                String localeStr = lineParts[0].strip();
+                String displayName = lineParts[1].strip();
+
+                String[] localeArr = localeStr.split("_");
+
+                Locale locale;
+
+                if(localeArr.length == 1)
+                {
+                    locale = new Locale(localeArr[0]);
+                }
+                else if(localeArr.length == 2)
+                {
+                    locale = new Locale(localeArr[0], localeArr[1]);
+                }
+                else
+                {
+                    locale = new Locale(localeArr[0], localeArr[1], localeArr[2]);
+                }
+
+
+                languages.add(new Language(locale, displayName));
+            }
         }
         catch (Exception e)
         {
