@@ -88,7 +88,7 @@ public class About extends ScrollPane
         Label versionText = new Label(clientInfo.getVersion().getText() + " - "+ clientInfo.getPlatform().getUIName() + " - "+ clientInfo.getReleaseStatus().getUIName());
         versionText.getStyleClass().add("about_version_label");
 
-        Label commStandardLabel = new Label(I18N.getString("window.settings.about.About.commStandard", clientInfo.getCommStandardVersion().getText()));
+        Label commStandardLabel = new Label(I18N.getString("window.settings.about.About.serverCommunicationProtocolVersion", clientInfo.getCommunicationProtocolVersion().getText()));
         commStandardLabel.getStyleClass().add("about_comm_standard_label");
 
         Label minThemeAPILabel = new Label(I18N.getString("window.settings.about.About.minThemeAPI", ThemeAPI.MIN_VERSION_SUPPORTED.getText()));

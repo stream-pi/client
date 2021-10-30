@@ -250,7 +250,7 @@ public class GeneralTab extends VBox
                 iconsPathInputBox,
                 profilesPathInputBox,
                 generateSubHeading(I18N.getString("window.settings.GeneralTab.others")),
-                new HBoxWithSpaceBetween(I18N.getString(I18N.getString("window.settings.GeneralTab.language")), languageChooserComboBox),
+                new HBoxWithSpaceBetween(I18N.getString("window.settings.GeneralTab.language"), languageChooserComboBox),
                 screenTimeoutSecondsHBoxInputBox,
                 invertRowsColsHBox,
                 screenSaverHBox,

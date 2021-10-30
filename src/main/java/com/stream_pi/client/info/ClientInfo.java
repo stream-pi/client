@@ -3,7 +3,7 @@ ServerInfo.java
 
 Stores basic information about the server - name, platform type
 
-Contributors: Debayan Sutradhar (@dubbadhar)
+Contributors: Debayan Sutradhar (@rnayabed)
  */
 
 package com.stream_pi.client.info;
@@ -21,15 +21,16 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
-public class ClientInfo {
-    private Version version;
+public class ClientInfo
+{
+    private final Version version;
     private final ReleaseStatus releaseStatus;
-    private Platform platform;
+    private final Platform platform;
 
     private String prePath;
 
-    private Version minPluginSupportVersion;
-    private Version commStandardVersion;
+    private final Version minPluginSupportVersion;
+    private final Version communicationProtocolVersion;
 
     private static ClientInfo instance = null;
 
@@ -37,7 +38,7 @@ public class ClientInfo {
     {
         version = new Version(1,0,0);
         minPluginSupportVersion = new Version(1,0,0);
-        commStandardVersion = new Version(1,0,0);
+        communicationProtocolVersion = new Version(1,0,0);
 
         releaseStatus = ReleaseStatus.EA;
 
@@ -109,9 +110,9 @@ public class ClientInfo {
         return minPluginSupportVersion;
     }
 
-    public Version getCommStandardVersion()
+    public Version getCommunicationProtocolVersion()
     {
-        return commStandardVersion;
+        return communicationProtocolVersion;
     }
 
 
