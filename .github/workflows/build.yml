@@ -18,8 +18,8 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 16
-          distribution: adopt
+          java-version: 17
+          distribution: temurin
           architecture: x64
       - name: Setup JavaFX
         run: |
@@ -64,7 +64,6 @@ jobs:
           --icon assets/linux-icon.png \
           --app-version ${{ env.VERSION }} \
           --linux-menu-group "Stream-Pi" \
-          --license-file LICENSE.txt \
           --type deb
 
           # Create App Image
@@ -79,7 +78,6 @@ jobs:
           # Create RPM
           .github/scripts/jpackage.sh \
           --icon assets/linux-icon.png \
-          --license-file LICENSE.txt \
           --app-version $NEW_V \
           --type rpm
 
@@ -122,8 +120,8 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 16
-          distribution: adopt
+          java-version: 17
+          distribution: temurin
           architecture: x64
       - name: Setup JavaFX
         run: |
@@ -198,8 +196,8 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 16
-          distribution: adopt
+          java-version: 17
+          distribution: temurin
           architecture: x64
       - name: Setup JavaFX
         run: |
@@ -232,7 +230,6 @@ jobs:
           # Create PKG
           .github/scripts/jpackage.sh \
           --icon assets/macos-icon.icns \
-          --license-file LICENSE.txt \
           --mac-package-identifier stream-pi-client \
           --type pkg
 
@@ -256,8 +253,8 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 16
-          distribution: adopt
+          java-version: 17
+          distribution: temurin
           architecture: x64
       - name: Download REQ_MODULES
         uses: dawidd6/action-download-artifact@v2
@@ -348,11 +345,11 @@ jobs:
             chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
-            axel -n 8 https://cdn.azul.com/zulu-embedded/bin/zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
-            tar -xvzf zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
+            axel -n 8 https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17%2B35/OpenJDK17-jdk_arm_linux_hotspot_17_35.tar.gz
+            tar -xvzf OpenJDK17-jdk_arm_linux_hotspot_17_35.tar.gz
 
             #Run jpackage
-            zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
+            jdk-17+35/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
             zip -r stream-pi-client-linux-arm32-$VERSION-executable.zip *
@@ -374,8 +371,8 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 16
-          distribution: adopt
+          java-version: 17
+          distribution: temurin
           architecture: x64
       - name: Setup JavaFX
         run: |
@@ -495,11 +492,11 @@ jobs:
             chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
-            axel -k -n 8 https://cdn.azul.com/zulu/bin/zulu16.30.15-ca-jdk16.0.1-linux_aarch64.tar.gz
-            tar -xvzf zulu16.30.15-ca-jdk16.0.1-linux_aarch64.tar.gz
+            axel -k -n 8 https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.1_12.tar.gz
+            tar -xvzf OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.1_12.tar.gz
 
             #Run jpackage
-            zulu16.30.15-ca-jdk16.0.1-linux_aarch64/bin/jlink  --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
+            jdk-17.0.1+12/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
             zip -r stream-pi-client-linux-aarch64-$VERSION-jvm-executable.zip *
