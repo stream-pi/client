@@ -124,11 +124,6 @@
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
-            <artifactId>device</artifactId>
-            <version>${attach.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.gluonhq.attach</groupId>
             <artifactId>browser</artifactId>
             <version>${attach.version}</version>
         </dependency>
@@ -320,7 +315,6 @@
                             <attachList>
                                 <list>lifecycle</list>
                                 <list>storage</list>
-                                <list>device</list>
                                 <list>browser</list>
                                 <list>vibration</list>
                                 <list>orientation</list>

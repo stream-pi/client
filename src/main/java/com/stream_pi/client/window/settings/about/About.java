@@ -140,7 +140,14 @@ public class About extends ScrollPane
         );
 
         vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(10);
+        vBox.setSpacing(5);
+
+        if(clientInfo.getBuildDate() != null)
+        {
+            Label buildDateLabel = new Label(I18N.getString("window.settings.about.About.buildDate", clientInfo.getBuildDate()));
+            buildDateLabel.getStyleClass().add("about_build_date_label");
+            vBox.getChildren().addAll(buildDateLabel);
+        }
 
 
         mainVBox.getChildren().addAll(appIconImageView, tabPane,
@@ -149,22 +156,6 @@ public class About extends ScrollPane
 
         setContent(mainVBox);
 
-        InputStream inputStream = Main.class.getResourceAsStream("build.properties");
-        if(inputStream != null)
-        {
-            try
-            {
-                Properties properties = new Properties();
-                properties.load(inputStream);
-                Label buildDateLabel = new Label(I18N.getString("window.settings.about.About.buildDate", properties.getProperty("build.date")));
-                buildDateLabel.getStyleClass().add("about_build_date_label");
-                mainVBox.getChildren().add(buildDateLabel);
-            }
-            catch (IOException e)
-            {
-                Logger.getLogger(getClass().getName()).warning("build.properties not present");
-            }
-        }
 
         setCache(true);
         setCacheHint(CacheHint.SPEED);

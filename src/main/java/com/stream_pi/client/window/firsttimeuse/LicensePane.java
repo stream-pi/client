@@ -14,7 +14,7 @@
 
 package com.stream_pi.client.window.firsttimeuse;
 
-import com.stream_pi.client.info.License;
+import com.stream_pi.client.info.ClientInfo;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -26,7 +26,7 @@ public class LicensePane extends VBox {
     {
         getStyleClass().add("first_time_use_pane_license");
 
-        TextArea licenseTextArea = new TextArea(License.getLicense());
+        TextArea licenseTextArea = new TextArea(ClientInfo.getInstance().getLicense());
         licenseTextArea.setWrapText(false);
         licenseTextArea.setEditable(false);
 

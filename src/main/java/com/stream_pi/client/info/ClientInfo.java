@@ -22,17 +22,18 @@ Contributors: Debayan Sutradhar (@rnayabed)
 
 package com.stream_pi.client.info;
 
-import com.gluonhq.attach.device.DeviceService;
 import com.gluonhq.attach.storage.StorageService;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.ReleaseStatus;
 import com.stream_pi.util.version.Version;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ClientInfo
@@ -40,11 +41,11 @@ public class ClientInfo
     private final Version version;
     private final ReleaseStatus releaseStatus;
     private final Platform platform;
-
     private String prePath;
-
     private final Version minPluginSupportVersion;
     private final Version communicationProtocolVersion;
+    private String buildDate;
+    private String license;
 
     private static ClientInfo instance = null;
 
@@ -73,12 +74,6 @@ public class ClientInfo
             StorageService.create().ifPresent(s-> s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
                     ()-> prePath = null));
 
-            DeviceService.create().ifPresent(s->{
-                Logger.getLogger(getClass().getName()).info("DEVICE VERSION: "+s.getVersion());
-                Logger.getLogger(getClass().getName()).info("DEVICE MODEL: "+s.getModel());
-                Logger.getLogger(getClass().getName()).info("DEVICE PLATFORM: "+s.getPlatform());
-            });
-
             platform = Platform.valueOf(osName.toUpperCase());
         }
         else if (osName.contains("mac"))
@@ -89,6 +84,50 @@ public class ClientInfo
         {
             platform = Platform.UNKNOWN;
         }
+
+        try
+        {
+            InputStream inputStream = ClientInfo.class.getResourceAsStream("build.properties");
+            if (inputStream != null)
+            {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                inputStream.close();
+
+                buildDate = properties.getProperty("build.date");
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unable to fetch build.properties!", e);
+        }
+
+        try
+        {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(ClientInfo.class.getResourceAsStream("LICENSE"))));
+
+            StringBuilder licenseTxt = new StringBuilder();
+            while(true)
+            {
+                String line = bufferedReader.readLine();
+
+                if(line == null)
+                {
+                    break;
+                }
+
+                licenseTxt.append(line).append("\n");
+            }
+
+            license = licenseTxt.toString();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unable to fetch LICENSE!", e);
+        }
+
     }
 
     public static synchronized ClientInfo getInstance(){
@@ -129,9 +168,18 @@ public class ClientInfo
         return communicationProtocolVersion;
     }
 
-
     public boolean isPhone()
     {
         return getPlatform() == Platform.ANDROID || getPlatform() == Platform.IOS;
+    }
+
+    public String getBuildDate()
+    {
+        return buildDate;
+    }
+
+    public String getLicense()
+    {
+        return license;
     }
 }

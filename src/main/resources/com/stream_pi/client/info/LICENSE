@@ -1,0 +1,32 @@
+Stream-Pi - Free, Open-Source, Modular, Cross-Platform and Programmable Macro Pad
+Copyright (C) 2019-2021  Debayan Sutradhar (rnayabed),  Samuel Quiñones (SamuelQuinones)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+
+Opensource Libraries/Technology used:
+
+1. JavaFX - GNU General Public License with Classpath Exception
+http://openjdk.java.net/legal/gplv2+ce.html
+
+2. Gluon Attach - GPL License
+https://github.com/gluonhq/attach/blob/master/LICENSE
+
+3. Gluon Client Maven Plugin - BSD-3 License
+https://github.com/gluonhq/client-maven-plugin/blob/master/LICENSE
+
+3. Ikonli - Apache License
+https://github.com/kordamp/ikonli/blob/master/LICENSE
+
+5. ControlsFX - BSD 3-Clause License
+https://github.com/controlsfx/controlsfx/blob/jfx-13/license.txt
+
+6. Medusa - Apache License 2.0
+https://github.com/HanSolo/medusa/blob/master/LICENSE
