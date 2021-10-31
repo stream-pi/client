@@ -105,48 +105,46 @@ public class About extends ScrollPane
         Label commStandardLabel = new Label(I18N.getString("window.settings.about.About.serverCommunicationProtocolVersion", clientInfo.getCommunicationProtocolVersion().getText()));
         commStandardLabel.getStyleClass().add("about_comm_standard_label");
 
-        Label minThemeAPILabel = new Label(I18N.getString("window.settings.about.About.minThemeAPI", ThemeAPI.MIN_VERSION_SUPPORTED.getText()));
+        Label minThemeAPILabel = new Label("Min ThemeAPI " + ThemeAPI.MIN_VERSION_SUPPORTED.getText());
         minThemeAPILabel.getStyleClass().add("about_min_theme_api_label");
 
-        Label minActionAPILabel = new Label(I18N.getString("window.settings.about.About.minActionAPI", clientInfo.getMinPluginSupportVersion().getText()));
+        Label minActionAPILabel = new Label(I18N.getString("Min ActionAPI " + ActionAPI.MIN_VERSION_SUPPORTED.getText()));
         minActionAPILabel.getStyleClass().add("about_min_action_api_label");
 
-        Label currentActionAPILabel = new Label(I18N.getString("window.settings.about.About.currentActionAPI", ActionAPI.VERSION.getText()));
+        Label currentActionAPILabel = new Label("Action API " + ActionAPI.VERSION.getText());
         currentActionAPILabel.getStyleClass().add("about_current_action_api_label");
 
-        Label currentUtilLabel = new Label(I18N.getString("window.settings.about.About.currentUtil", Util.VERSION.getText()));
+        Label currentUtilLabel = new Label("Util " + Util.VERSION.getText());
         currentUtilLabel.getStyleClass().add("about_current_util_label");
 
-        VBox vBox1 = new VBox(
+
+        Label javaVersionLabel = new Label("Java " + System.getProperty("java.version") + "," + System.getProperty("java.runtime.name"));
+        javaVersionLabel.getStyleClass().add("about_java_version");
+
+        Label javafxVersionLabel = new Label("JavaFX " + System.getProperty("javafx.version"));
+        javafxVersionLabel.getStyleClass().add("about_javafx_version");
+
+        Label javaGCLabel = new Label("GC: " + ManagementFactory.getGarbageCollectorMXBeans().get(0).getName());
+        javaGCLabel.getStyleClass().add("about_java_gc");
+
+        VBox vBox = new VBox(
                 versionText,
                 commStandardLabel,
                 minThemeAPILabel,
                 minActionAPILabel,
                 currentActionAPILabel,
-                currentUtilLabel
+                currentUtilLabel,
+                javaVersionLabel,
+                javafxVersionLabel,
+                javaGCLabel
         );
 
-        vBox1.setAlignment(Pos.CENTER);
-        vBox1.setSpacing(10);
-
-        Label javaVersionLabel = new Label(I18N.getString("window.settings.about.About.java", System.getProperty("java.version")));
-        javaVersionLabel.getStyleClass().add("about_java_version");
-
-        Label javafxVersionLabel = new Label(I18N.getString("window.settings.about.About.javafx", System.getProperty("javafx.version")));
-        javafxVersionLabel.getStyleClass().add("about_javafx_version");
-
-        Label javaGCLabel = new Label(I18N.getString("window.settings.about.About.gc", ManagementFactory.getGarbageCollectorMXBeans().get(0).getName()));
-        javaGCLabel.getStyleClass().add("about_java_gc");
-
-        HBox hBox1 = new HBox(javaVersionLabel, getSep(),
-                javafxVersionLabel);
-
-        hBox1.setAlignment(Pos.CENTER);
-        hBox1.setSpacing(10);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
 
 
         mainVBox.getChildren().addAll(appIconImageView, tabPane,
-                donateButton, vBox1, hBox1,javaGCLabel);
+                donateButton, vBox);
         mainVBox.prefWidthProperty().bind(widthProperty().subtract(30));
 
         setContent(mainVBox);

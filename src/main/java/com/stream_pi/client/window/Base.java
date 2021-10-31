@@ -171,6 +171,12 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         clientInfo = ClientInfo.getInstance();
 
+        if (clientInfo.getPlatform() == Platform.WINDOWS || clientInfo.getPlatform() == Platform.MAC || (clientInfo.getPlatform() == Platform.LINUX && StartupFlags.IS_X_MODE))
+        {
+            getStage().setMinWidth(350);
+            getStage().setMinHeight(530);
+        }
+
 
         alertStackPane = new StackPane();
         alertStackPane.setCache(true);
