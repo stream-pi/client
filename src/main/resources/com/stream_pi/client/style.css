@@ -12,11 +12,6 @@
  * GNU General Public License for more details.
  */
 
-.root {
-  -fx-font-family : 'Roboto';
-}
-
-
 .action_box
 {
     -fx-border-width: 1px;
