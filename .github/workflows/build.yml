@@ -161,7 +161,7 @@ jobs:
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
       - name: Create Android aarch64 APK
         run: |
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.2.0/
+          export GRAALVM_HOME=/tmp/graalvm-ce-java11-21.3.0/
           export ANDROID_SDK_ROOT=$HOME/.gluon/substrate/Android/
 
           #Build aarch64 android native-image
