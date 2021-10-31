@@ -744,9 +744,7 @@ public class Controller extends Base
             if(getClientInfo().getPlatform() == com.stream_pi.util.platform.Platform.LINUX &&
                 !StartupFlags.IS_X_MODE)
             {
-               handleMinorException(new MinorException("Sorry!","Your system is running directly on framebuffer and " +
-                       "does not support opening a browser. You can go to Server Settings > about > Contact " +
-                       "and open the links from there."));
+               handleMinorException(new MinorException(I18N.getString("controller.Controller.browserNotSupportedInFBMode")));
             }
             else
             {
