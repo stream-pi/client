@@ -345,11 +345,11 @@ jobs:
             chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
-            axel -n 8 https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17%2B35/OpenJDK17-jdk_arm_linux_hotspot_17_35.tar.gz
-            tar -xvzf OpenJDK17-jdk_arm_linux_hotspot_17_35.tar.gz
+            axel -n 8 https://cdn.azul.com/zulu-embedded/bin/zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
+            tar -xvzf zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
 
             #Run jpackage
-            jdk-17+35/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
+            zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
             zip -r stream-pi-client-linux-arm32-$VERSION-executable.zip *
