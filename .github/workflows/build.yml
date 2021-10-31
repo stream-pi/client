@@ -120,7 +120,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 11
           distribution: temurin
           architecture: x64
       - name: Setup JavaFX
@@ -128,14 +128,14 @@ jobs:
           cd /tmp
           axel -n 8 https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-x64_bin-jmods.zip
           unzip /tmp/openjfx-17.0.0.1_linux-x64_bin-jmods.zip -d /tmp
-      - name: Download GraalVM 21.2.0
+      - name: Download GraalVM 21.3.0
         run: |
           cd /tmp
-          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.2.0/graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
+          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
           tar -xvzf *.gz
       - name: Install native-image
         run: |
-          cd /tmp/graalvm-ce-java11-21.2.0/bin
+          cd /tmp/graalvm-ce-java11-21.3.0/bin
           ./gu install native-image
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
