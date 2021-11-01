@@ -56,7 +56,7 @@ public class ClientProfile implements Cloneable
 
     private double actionDefaultDisplayTextFontSize, actionSize, actionGap;
     
-    private HashMap<String, Action> actions;
+    private HashMap<String, ClientAction> actions;
     private String iconsPath;
 
     private File file;
@@ -175,7 +175,7 @@ public class ClientProfile implements Cloneable
 
                 ActionType actionType = ActionType.valueOf(XMLConfigHelper.getStringProperty(eachActionElement, "action-type"));
 
-                Action action = new Action(id, actionType);
+                ClientAction action = new ClientAction(id, actionType);
                 action.setParent(parent);
 
                 ClientProperties properties = new ClientProperties();
@@ -187,7 +187,7 @@ public class ClientProfile implements Cloneable
                 if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE || actionType == ActionType.GAUGE)
                 {
                     action.setVersion(new Version(XMLConfigHelper.getStringProperty(eachActionElement, "version")));
-                    action.setModuleName(XMLConfigHelper.getStringProperty(eachActionElement, "module-name"));
+                    action.setUniqueID(XMLConfigHelper.getStringProperty(eachActionElement, "unique-ID"));
                     action.setDelayBeforeExecuting(Integer.parseInt(
                             XMLConfigHelper.getStringProperty(eachActionElement, "delay-before-running")
                     ));
@@ -343,9 +343,9 @@ public class ClientProfile implements Cloneable
 
     }
 
-    public void addAction(Action action) throws CloneNotSupportedException
+    public void addAction(ClientAction action) throws CloneNotSupportedException
     {
-        actions.put(action.getID(), action.clone());
+        actions.put(action.getID(), (ClientAction) action.clone());
     }
 
 
@@ -392,7 +392,7 @@ public class ClientProfile implements Cloneable
     }
 
 
-    public void saveAction(Action action) throws Exception
+    public void saveAction(ClientAction action) throws Exception
     {
 
         int ind = getActionIndexInConfig(action.getID());
@@ -423,11 +423,11 @@ public class ClientProfile implements Cloneable
             versionElement.setTextContent(action.getVersion().getText());
             newActionElement.appendChild(versionElement);
 
-            System.out.println(action.getModuleName());
+            System.out.println(action.getUniqueID());
 
-            Element moduleNameElement = document.createElement("module-name");
-            moduleNameElement.setTextContent(action.getModuleName());
-            newActionElement.appendChild(moduleNameElement);
+            Element uniqueIDElement = document.createElement("unique-ID");
+            uniqueIDElement.setTextContent(action.getUniqueID());
+            newActionElement.appendChild(uniqueIDElement);
 
             Element delayBeforeRunningElement = document.createElement("delay-before-running");
             delayBeforeRunningElement.setTextContent(action.getDelayBeforeExecuting()+"");
@@ -707,7 +707,7 @@ public class ClientProfile implements Cloneable
     {
         XMLConfigHelper.removeChilds(getActionsElement());
         save();
-        for(Action action : getActions())
+        for(ClientAction action : getActions())
         {
             saveAction(action);
         }
@@ -727,9 +727,9 @@ public class ClientProfile implements Cloneable
 
     }
 
-    public ArrayList<Action> getActions()
+    public ArrayList<ClientAction> getActions()
     {
-        ArrayList<Action> p = new ArrayList<>();
+        ArrayList<ClientAction> p = new ArrayList<>();
         for(String profile : actions.keySet())
             p.add(actions.get(profile));
         return p;
@@ -760,7 +760,7 @@ public class ClientProfile implements Cloneable
         return actionSize;
     }
 
-    public Action getActionFromID(String ID)
+    public ClientAction getActionFromID(String ID)
     {
         return actions.getOrDefault(ID, null);
     }

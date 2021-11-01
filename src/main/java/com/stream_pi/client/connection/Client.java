@@ -27,6 +27,7 @@ import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.profile.ClientAction;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
@@ -350,7 +351,7 @@ public class Client extends Thread
                 state
         );
 
-        Action a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
+        ClientAction a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
         clientListener.renderAction(profileID, a);
     }
 
@@ -525,13 +526,13 @@ public class Client extends Thread
 
         sendMessage(tbs1);
 
-        for(Action action : clientProfile.getActions())
+        for(ClientAction action : clientProfile.getActions())
         {
             sendActionDetails(clientProfile.getID(), action);
         }
     }
 
-    public void sendActionDetails(String profileID, Action action) throws SevereException
+    public void sendActionDetails(String profileID, ClientAction action) throws SevereException
     {
 
         if(action == null)
@@ -549,7 +550,7 @@ public class Client extends Thread
         if(action.getActionType() == ActionType.NORMAL ||
                 action.getActionType() == ActionType.TOGGLE || action.getActionType() == ActionType.GAUGE)
         {
-            message.setValue("module_name", action.getModuleName());
+            message.setValue("unique_ID", action.getUniqueID());
             message.setValue("version", action.getVersion());
         }
 
@@ -636,14 +637,14 @@ public class Client extends Thread
 
         int delayBeforeExecuting = (int) message.getValue("delay_before_executing");
 
-        Action action = new Action(ID, actionType);
+        ClientAction action = new ClientAction(ID, actionType);
 
         if(actionType == ActionType.NORMAL || actionType == ActionType.TOGGLE || actionType == ActionType.GAUGE)
         {
             try
             {
                 action.setVersion((Version) message.getValue("version"));
-                action.setModuleName((String) message.getValue("module_name"));
+                action.setUniqueID((String) message.getValue("unique_ID"));
             }
             catch (Exception e)
             {
@@ -691,7 +692,7 @@ public class Client extends Thread
 
         try
         {
-            Action old = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID());
+            ClientAction old = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID());
 
 
             if(old != null)
@@ -743,7 +744,7 @@ public class Client extends Thread
             String profileID = (String) message.getValue("profile_ID");
             String actionID = (String) message.getValue("ID");
 
-            Action acc =  clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
+            ClientAction acc =  clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
 
             if(acc == null)
             {
@@ -764,7 +765,7 @@ public class Client extends Thread
                 while(startOver)
                 {
                     startOver = false;
-                    for(Action action : clientListener.getClientProfiles().getProfileFromID(profileID).getActions())
+                    for(ClientAction action : clientListener.getClientProfiles().getProfileFromID(profileID).getActions())
                     {
                         if(folders.contains(action.getParent()))
                         {

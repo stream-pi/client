@@ -16,6 +16,7 @@ package com.stream_pi.client.controller;
 
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.client.connection.Client;
+import com.stream_pi.client.profile.ClientAction;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionBox;
@@ -47,7 +48,7 @@ public interface ClientListener
 
     void clearActionBox(int col, int row, int colSpan, int rowSpan);
     void addBlankActionBox(int col, int row);
-    void renderAction(String currentProfileID, Action action);
+    void renderAction(String currentProfileID, ClientAction action);
     void refreshGridIfCurrentProfile(String currentProfileID);
     
     ActionBox getActionBox(int col, int row);

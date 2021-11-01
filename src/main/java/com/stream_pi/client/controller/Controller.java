@@ -24,6 +24,7 @@ import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.StartupFlags;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.info.ClientInfo;
+import com.stream_pi.client.profile.ClientAction;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.profile.ClientProfiles;
 import com.stream_pi.client.window.Base;
@@ -672,7 +673,7 @@ public class Controller extends Base
     }
 
     @Override
-    public void renderAction(String currentProfileID, Action action)
+    public void renderAction(String currentProfileID, ClientAction action)
     {
         Platform.runLater(()->{
             try {

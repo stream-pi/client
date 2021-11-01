@@ -23,6 +23,7 @@ import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.io.Config;
+import com.stream_pi.client.profile.ClientAction;
 import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.exception.MinorException;
@@ -102,7 +103,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     {
         if(getClientProfile().getID().equals(profileID))
         {
-            Action action = getClientProfile().getActionFromID(actionID);
+            ClientAction action = getClientProfile().getActionFromID(actionID);
             if(action != null)
             {
                 if(currentParent.equals(action.getParent()))
@@ -120,7 +121,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         }
     }
 
-    public void failShow(Action action)
+    public void failShow(ClientAction action)
     {
         actionBoxes[action.getLocation().getCol()][action.getLocation().getRow()].animateStatus();
     }
@@ -229,7 +230,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     public void renderActions()
     {
         StringBuilder errors = new StringBuilder();
-        for(Action eachAction : getClientProfile().getActions())
+        for(ClientAction eachAction : getClientProfile().getActions())
         {
             logger.info("Action ID : "+eachAction.getID()+"\nInvalid : "+eachAction.isInvalid());
 
@@ -334,7 +335,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         }
     }
 
-    public void renderAction(Action action) throws SevereException, MinorException
+    public void renderAction(ClientAction action) throws SevereException, MinorException
     {
         if(!action.getParent().equals(currentParent))
         {
@@ -447,7 +448,8 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     }
 
     @Override
-    public void renderFolder(String actionID) {
+    public void renderFolder(String actionID)
+    {
         setCurrentParent(clientProfile.getActionFromID(actionID).getID());
         setPreviousParent(clientProfile.getActionFromID(actionID).getParent());
         renderGrid();

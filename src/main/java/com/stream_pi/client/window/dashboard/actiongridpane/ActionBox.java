@@ -21,6 +21,7 @@ import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.SerializableColor;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
+import com.stream_pi.client.profile.ClientAction;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionGridPaneListener;
 import com.stream_pi.util.alert.StreamPiAlertType;
@@ -207,7 +208,7 @@ public class ActionBox extends StackPane
                         {
                             try
                             {
-                                Action childAction = clientListener.getCurrentProfile().getActionFromID(
+                                ClientAction childAction = clientListener.getCurrentProfile().getActionFromID(
                                         action.getClientProperties().getSingleProperty(i+"").getRawValue()
                                 );
 
@@ -314,9 +315,10 @@ public class ActionBox extends StackPane
         }
     }
 
-    private Action action = null;
+    private ClientAction action = null;
     
-    public Action getAction() {
+    public ClientAction getAction()
+    {
         return action;
     }
 
@@ -332,7 +334,7 @@ public class ActionBox extends StackPane
         this.parent = parent;
     }
 
-    public void setAction(Action action)
+    public void setAction(ClientAction action)
     {
         this.action = action;
     }
