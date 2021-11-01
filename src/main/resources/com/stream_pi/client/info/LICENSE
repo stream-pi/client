@@ -16,17 +16,20 @@ Opensource Libraries/Technology used:
 1. JavaFX - GNU General Public License with Classpath Exception
 http://openjdk.java.net/legal/gplv2+ce.html
 
-2. Gluon Attach - GPL License
+2. JSON - The JSON License
+https://www.json.org/license.html
+
+3. Gluon Attach - GPL License
 https://github.com/gluonhq/attach/blob/master/LICENSE
 
-3. Gluon Client Maven Plugin - BSD-3 License
+4. Gluon Client Maven Plugin - BSD-3 License
 https://github.com/gluonhq/client-maven-plugin/blob/master/LICENSE
 
-3. Ikonli - Apache License
+5. Ikonli - Apache License
 https://github.com/kordamp/ikonli/blob/master/LICENSE
 
-5. ControlsFX - BSD 3-Clause License
+6. ControlsFX - BSD 3-Clause License
 https://github.com/controlsfx/controlsfx/blob/jfx-13/license.txt
 
-6. Medusa - Apache License 2.0
+7. Medusa - Apache License 2.0
 https://github.com/HanSolo/medusa/blob/master/LICENSE
