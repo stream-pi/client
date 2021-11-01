@@ -48,6 +48,7 @@ import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
 import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
 import com.stream_pi.util.platform.Platform;
 
+import com.stream_pi.util.rootchecker.RootChecker;
 import javafx.application.HostServices;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -224,6 +225,11 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             settingsBase.setPadding(new Insets(10));
         }
 
+
+        if (RootChecker.isRoot(getClientInfo().getPlatform()))
+        {
+            throw new SevereException("Stream-Pi cannot be run as root !");
+        }
     }
 
     private void initI18n() throws SevereException
