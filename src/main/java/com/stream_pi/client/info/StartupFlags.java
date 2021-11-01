@@ -23,4 +23,5 @@ public class StartupFlags
     public static boolean DEFAULT_FULLSCREEN_MODE=false;
     public static boolean SHOW_FULLSCREEN_TOGGLE_BUTTON=true;
     public static boolean APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = false;
+    public static boolean ALLOW_ROOT = false;
 }

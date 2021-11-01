@@ -68,6 +68,9 @@ public class Main extends Application
                 case "Stream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation":
                     StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = val.equals("true");
                     break;
+                case "Stream-Pi.allowRoot":
+                    StartupFlags.ALLOW_ROOT = val.equals("true");
+                    break;
             }
         }
 

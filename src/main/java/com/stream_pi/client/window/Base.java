@@ -48,7 +48,6 @@ import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
 import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
 import com.stream_pi.util.platform.Platform;
 
-import com.stream_pi.util.rootchecker.RootChecker;
 import javafx.application.HostServices;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;

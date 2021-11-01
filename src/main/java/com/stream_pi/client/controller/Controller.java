@@ -126,9 +126,7 @@ public class Controller extends Base
                         boolean result = startAtBoot.delete();
                         if(!result)
                         {
-                            new StreamPiAlert("Uh Oh!", "Unable to delete the previous starter file.\n" +
-                                    "This was probably because you ran Stream-Pi as root before. Restart stream pi as root, " +
-                                    "delete the old starter file, then exit and restart Stream-Pi as normal user.", StreamPiAlertType.ERROR).show();
+                            new StreamPiAlert(I18N.getString("controller.Controller.unableToDeleteStarterFile"), StreamPiAlertType.ERROR).show();
                         }
                         else
                         {
@@ -166,7 +164,14 @@ public class Controller extends Base
 
             if (RootChecker.isRoot(getClientInfo().getPlatform()))
             {
-                throw new SevereException("Stream-Pi cannot be run as root !");
+                if(StartupFlags.ALLOW_ROOT)
+                {
+                    getLogger().warning("Stream-Pi has been started as root due to allowRoot flag. This may be unsafe and is strictly not recommended!");
+                }
+                else
+                {
+                    throw new SevereException(RootChecker.getRootNotAllowedI18NString());
+                }
             }
 
 
