@@ -118,7 +118,7 @@ public class About extends ScrollPane
         currentUtilLabel.getStyleClass().add("about_current_util_label");
 
 
-        Label javaVersionLabel = new Label("Java " + System.getProperty("java.version") + "," + System.getProperty("java.runtime.name"));
+        Label javaVersionLabel = new Label("Java " + System.getProperty("java.version") + ", " + System.getProperty("java.vm.name"));
         javaVersionLabel.getStyleClass().add("about_java_version");
 
         Label javafxVersionLabel = new Label("JavaFX " + System.getProperty("javafx.version"));
