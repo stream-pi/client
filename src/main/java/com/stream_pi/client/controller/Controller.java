@@ -41,6 +41,7 @@ import com.gluonhq.attach.util.Services;
 
 import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.platform.PlatformType;
+import com.stream_pi.util.rootchecker.RootChecker;
 import com.stream_pi.util.startonboot.StartOnBoot;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -161,6 +162,12 @@ public class Controller extends Base
             setupDashWindow();
 
             getStage().show();
+
+
+            if (RootChecker.isRoot(getClientInfo().getPlatform()))
+            {
+                throw new SevereException("Stream-Pi cannot be run as root !");
+            }
 
 
             if(getConfig().isScreenMoverEnabled())

@@ -224,12 +224,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             dashboardBase.setPadding(new Insets(10));
             settingsBase.setPadding(new Insets(10));
         }
-
-
-        if (RootChecker.isRoot(getClientInfo().getPlatform()))
-        {
-            throw new SevereException("Stream-Pi cannot be run as root !");
-        }
     }
 
     private void initI18n() throws SevereException
