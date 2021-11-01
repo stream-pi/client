@@ -111,6 +111,7 @@ public class GeneralTab extends VBox
     private final LanguageChooserComboBox languageChooserComboBox;
 
     private final Button factoryResetButton;
+    private final Button restartButton;
 
     private Logger logger;
 
@@ -228,6 +229,13 @@ public class GeneralTab extends VBox
 
         factoryResetButton = new Button(I18N.getString("window.settings.GeneralTab.factoryReset"));
         factoryResetButton.setOnAction(actionEvent -> onFactoryResetButtonClicked());
+
+
+        restartButton = new Button(I18N.getString("window.settings.GeneralTab.restart"));
+        restartButton.setOnAction(event->{
+            clientListener.setFirstRun(true);
+            clientListener.init();
+        });
 
 
         screenTimeoutSecondsHBoxInputBox = new HBoxInputBox(I18N.getString("window.settings.GeneralTab.screenTimeoutInSeconds"), screenTimeoutTextField, prefWidth);
@@ -757,7 +765,7 @@ public class GeneralTab extends VBox
 
                 if(baseToBeReloaded)
                 {
-                    clientListener.initBase();
+                    clientListener.setFirstRun(true);
                 }
 
                 clientListener.init();
@@ -781,5 +789,6 @@ public class GeneralTab extends VBox
             exceptionAndAlertHandler.handleMinorException(e);
         }
     }
+
 
 }

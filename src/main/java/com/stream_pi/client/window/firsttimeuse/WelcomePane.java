@@ -78,7 +78,7 @@ public class WelcomePane extends VBox
                         Config.getInstance().setCurrentLanguageLocale(newLanguage.getLocale());
                         Config.getInstance().save();
 
-                        clientListener.initBase();
+                        clientListener.setFirstRun(true);
                         clientListener.init();
                     }
                 }
