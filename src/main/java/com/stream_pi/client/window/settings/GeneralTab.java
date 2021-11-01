@@ -285,7 +285,8 @@ public class GeneralTab extends VBox
                 showCursorHBox,
                 checkForUpdatesButton,
                 shutdownButton,
-                factoryResetButton
+                factoryResetButton,
+                restartButton
         );
 
 
