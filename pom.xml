@@ -166,7 +166,7 @@
     <repositories>
         <repository>
             <id>gluon-releases</id>
-            <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+            <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
         </repository>
         <repository>
             <id>sonatype-snapshot</id>
@@ -280,7 +280,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>gluon-releases</id>
-            <url>http://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+            <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
         </pluginRepository>
         <pluginRepository>
             <id>gluon-snapshots</id>
