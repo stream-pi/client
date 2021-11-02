@@ -27,6 +27,4 @@ public interface ActionGridPaneListener
     boolean isConnected();
 
     ActionBox getActionBox(int col, int row);
-
-    void showNonUsedBoxes(int col, int row, int colSpan, int rowSpan);
 }

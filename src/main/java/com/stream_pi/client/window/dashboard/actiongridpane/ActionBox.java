@@ -339,40 +339,10 @@ public class ActionBox extends StackPane
         this.action = action;
     }
 
-    public void configureSize()
-    {
-        int rowSpan = getAction().getLocation().getRowSpan(), colSpan = getAction().getLocation().getColSpan();
-
-        GridPane.setRowSpan(this, rowSpan);
-        GridPane.setColumnSpan(this, colSpan);
-
-        double actionWidth = (size*colSpan) + (clientListener.getCurrentProfile().getActionGap()*(colSpan-1));
-        double actionHeight = (size*rowSpan) + (clientListener.getCurrentProfile().getActionGap()*(rowSpan-1));
-
-        setMinSize(actionWidth, actionHeight);
-        setMaxSize(actionWidth, actionHeight);
-
-        for (int i = getCol(); i< getCol()+colSpan; i++)
-        {
-            for (int j = getRow(); j<getRow()+rowSpan; j++)
-            {
-                if (i == getAction().getLocation().getCol() && j == getAction().getLocation().getRow())
-                {
-                    continue;
-                }
-
-                actionGridPaneListener.getActionBox(i, j).setVisible(false);
-            }
-        }
-
-    }
-
     public void init()
     {
         setBackground(null);
         setStyle(null);
-
-        configureSize();
 
 
         displayTextLabel.setStyle(null);

@@ -232,9 +232,11 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         StringBuilder errors = new StringBuilder();
         for(ClientAction eachAction : getClientProfile().getActions())
         {
-            logger.info("Action ID : "+eachAction.getID()+"\nInvalid : "+eachAction.isInvalid());
+            logger.info("Action ID : "+eachAction.getID());
+            logger.info("Invalid : "+eachAction.isInvalid());
 
-            try {
+            try
+            {
                 renderAction(eachAction);
             }
             catch (SevereException e)
@@ -264,7 +266,6 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     public void clearActionBox(int col, int row, int colSpan, int rowSpan)
     {
         showNonUsedBoxes(col, row, colSpan, rowSpan);
-
         actionBoxes[col][row].clear();
     }
 
@@ -360,59 +361,70 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         if( getClientProfile().getCols() < location.getCol() || getClientProfile().getRows() < location.getRow())
             return;
 
-        boolean makeNonUsedBoxesVisible = false;
-
         ActionBox actionBox = actionBoxes[location.getCol()][location.getRow()];
 
-        if(actionBox.getAction()!=null)
-        {
-            if(!actionBox.getAction().getID().equals(action.getID()))
-            {
-                actionBox.clear();
-            }
-
-            makeNonUsedBoxesVisible = (GridPane.getColumnSpan(actionBox) != action.getLocation().getColSpan()) || (GridPane.getRowSpan(actionBox) != action.getLocation().getRowSpan());
-        }
-        else
+        if(actionBox.getAction() != null)
         {
             actionBox.clear();
-        }
-
-        if (makeNonUsedBoxesVisible)
-        {
-            showNonUsedBoxes(action.getLocation().getCol(), action.getLocation().getRow(), GridPane.getColumnSpan(actionBox),  GridPane.getRowSpan(actionBox));
+            if((GridPane.getColumnSpan(actionBox) != action.getLocation().getColSpan()) || (GridPane.getRowSpan(actionBox) != action.getLocation().getRowSpan()))
+            {
+                showNonUsedBoxes(action.getLocation().getCol(), action.getLocation().getRow(), GridPane.getColumnSpan(actionBox),  GridPane.getRowSpan(actionBox));
+            }
         }
 
         boolean oldToggleStatus = action.getCurrentToggleStatus();
 
 
         actionBox.setAction(action);
-
-
         actionBox.setCurrentToggleStatus(oldToggleStatus);
-
-
-
         actionBox.setStreamPiParent(currentParent);
         actionBox.init();
         actionBox.setVisible(true);
+
+
+        GridPane.setRowSpan(actionBox, location.getRowSpan());
+        GridPane.setColumnSpan(actionBox, location.getColSpan());
+
+        hideOverlappingBoxes(location.getCol(), location.getRow(), location.getColSpan(), location.getRowSpan());
+
+
+        double actionWidth = (getClientProfile().getActionSize() * location.getColSpan()) + (getClientProfile().getActionGap()*(location.getColSpan()-1));
+        double actionHeight = (getClientProfile().getActionSize() * location.getRowSpan()) + (getClientProfile().getActionGap()*(location.getRowSpan()-1));
+
+        actionBox.setMinSize(actionWidth, actionHeight);
+        actionBox.setMaxSize(actionWidth, actionHeight);
     }
 
-    @Override
-    public void showNonUsedBoxes(int col, int row, int colSpan, int rowSpan)
+    private void showNonUsedBoxes(int col, int row, int colSpan, int rowSpan)
+    {
+        showHideOverlappingBoxes(col, row, colSpan, rowSpan, true);
+    }
+
+    private void hideOverlappingBoxes(int col, int row, int colSpan, int rowSpan)
+    {
+        showHideOverlappingBoxes(col, row, colSpan, rowSpan, false);
+    }
+
+    private void showHideOverlappingBoxes(int col, int row, int colSpan, int rowSpan, boolean visibility)
     {
         for (int i = row; i< (row+rowSpan); i++)
         {
-            actionBoxes[col][i].setVisible(true);
-            GridPane.setColumnSpan(actionBoxes[col][i], 1);
-            GridPane.setRowSpan(actionBoxes[col][i], 1);
-        }
-
-        for (int j = col; j< (col+colSpan); j++)
-        {
-            actionBoxes[j][row].setVisible(true);
-            GridPane.setColumnSpan(actionBoxes[j][row], 1);
-            GridPane.setRowSpan(actionBoxes[j][row], 1);
+            for (int j = col; j < (col+colSpan);j++)
+            {
+                if (! (i==row && j==col))
+                {
+                    if (visibility)
+                    {
+                        actionBoxes[j][i].setVisible(true);
+                        GridPane.setColumnSpan(actionBoxes[j][i], 1);
+                        GridPane.setRowSpan(actionBoxes[j][i], 1);
+                    }
+                    else
+                    {
+                        actionBoxes[j][i].setVisible(false);
+                    }
+                }
+            }
         }
     }
 
