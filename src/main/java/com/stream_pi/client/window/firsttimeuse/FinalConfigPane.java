@@ -32,10 +32,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -70,9 +67,10 @@ public class FinalConfigPane extends VBox
         serverIPHostNameTextField = new TextField();
         serverPortTextField = new TextField();
 
-        Label warningLabel = new Label(I18N.getString("firsttimeuse.FinalConfigPane.securityWarning"));
-        warningLabel.setWrapText(true);
-        warningLabel.getStyleClass().add("first_time_use_pane_final_config_warning_label");
+        Label securityWarningLabel = new Label(I18N.getString("firsttimeuse.FinalConfigPane.securityWarning"));
+        securityWarningLabel.setWrapText(true);
+        securityWarningLabel.prefWidthProperty().bind(widthProperty());
+        securityWarningLabel.getStyleClass().add("first_time_use_pane_final_config_security_warning_label");
 
 
 
@@ -80,8 +78,7 @@ public class FinalConfigPane extends VBox
         HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox(I18N.getString("serverHostNameOrIP"), serverIPHostNameTextField, 150);
         HBoxInputBox serverIPPortInputBox = new HBoxInputBox(I18N.getString("serverPort"), serverPortTextField, 150);
 
-        setAlignment(Pos.TOP_CENTER);
-        getChildren().addAll(label, clientNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, warningLabel);
+        getChildren().addAll(label, clientNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, securityWarningLabel);
 
         setSpacing(10.0);
 
