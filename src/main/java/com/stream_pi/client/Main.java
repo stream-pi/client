@@ -27,6 +27,8 @@ public class Main extends Application
     @Override
     public void start(Stage stage)
     {
+        StartupFlags.init();
+
         Controller d = new Controller();
         Scene s = new Scene(d);
         stage.setScene(s);
@@ -37,7 +39,6 @@ public class Main extends Application
 
     public static void main(String[] args) 
     {
-        StartupFlags.init();
         launch(args);
     }
 }
