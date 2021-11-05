@@ -210,7 +210,7 @@ public class Controller extends Base
 
                 if(getClientInfo().isPhone())
                 {
-                    firstTimeUse.setPadding(new Insets(10));
+                    firstTimeUse.setPadding(new Insets(15));
                 }
 
                 firstTimeUse.toFront();

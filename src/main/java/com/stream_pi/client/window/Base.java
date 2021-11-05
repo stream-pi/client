@@ -220,8 +220,8 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         if(getClientInfo().isPhone())
         {
-            dashboardBase.setPadding(new Insets(10));
-            settingsBase.setPadding(new Insets(10));
+            dashboardBase.setPadding(new Insets(15));
+            settingsBase.setPadding(new Insets(15));
         }
     }
 

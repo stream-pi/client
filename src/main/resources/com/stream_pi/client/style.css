@@ -33,11 +33,6 @@
 
 }
 
-.settings_heading_label
-{
-    -fx-font-size: 20;
-}
-
 .alert_header
 {
     -fx-padding: 5;
@@ -69,7 +64,7 @@
 
 .alert_pane_header_text
 {
-    -fx-font-size: 18;
+    -fx-font-size: 1.5em;
 }
 
 .alert_button_bar
@@ -123,9 +118,25 @@
      -fx-background-color:transparent;
 }
 
+.first_time_use_pane
+{
+    -fx-padding : 10;
+}
+
+.dashboard_settings_button_parent
+{
+    -fx-padding: 0 10 10 0;
+}
+
+.settings_button_bar
+{
+    -fx-padding: 0 10 0 0;
+    -fx-spacing: 10;
+}
+
 .first_time_use_pane_heading_label
 {
-    -fx-font-size: 20;
+    -fx-font-size: 1.5em;
 }
 
 .first_time_use_pane_stackpane
@@ -155,12 +166,11 @@
 
 .first_time_use_welcome_pane_welcome_label
 {
-    -fx-font-size: 30;
+    -fx-font-size: 2em;
 }
 
 .first_time_use_welcome_pane_next_to_continue_label
 {
-    -fx-font-size: 15;
     -fx-padding: 0 0 15 0;
 }
 
@@ -204,7 +214,7 @@
 .about_donate_hyperlink
 {
     -fx-padding : 10 0 0 0;
-    -fx-font-size : 25;
+    -fx-font-size : 2em;
     -fx-border-color: transparent;
 }
 
@@ -226,7 +236,7 @@
 
 .general_settings_sub_heading
 {
-    -fx-font-size: 18;
+    -fx-font-size: 1.5em;
     -fx-padding: 10 0 5 0;
 }
 

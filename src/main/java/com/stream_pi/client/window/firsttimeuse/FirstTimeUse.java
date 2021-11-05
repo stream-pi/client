@@ -36,7 +36,6 @@ public class FirstTimeUse extends VBox
         getStyleClass().add("first_time_use_pane");
 
         setSpacing(10.0);
-        setPadding(new Insets(5));
 
         headingLabel = new Label();
         headingLabel.getStyleClass().add("first_time_use_pane_heading_label");

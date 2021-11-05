@@ -63,7 +63,7 @@ public class SettingsBase extends VBox
         setAlignment(Pos.TOP_RIGHT);
 
         closeButton = new Button(I18N.getString("window.settings.SettingsBase.close"));
-        VBox.setMargin(closeButton, new Insets(5.0));
+        VBox.setMargin(closeButton, new Insets(10.0));
 
         getChildren().addAll(tabPane, closeButton);
 

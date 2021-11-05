@@ -48,7 +48,6 @@ public class DashboardBase extends VBox
 
         HBox hBox = new HBox(settingsButton);
         hBox.getStyleClass().add("dashboard_settings_button_parent");
-        hBox.setPadding(new Insets(0,5,5,0));
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
 

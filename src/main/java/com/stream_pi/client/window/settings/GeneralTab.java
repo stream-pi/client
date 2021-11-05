@@ -307,9 +307,6 @@ public class GeneralTab extends VBox
 
 
         buttonBar.getStyleClass().add("settings_button_bar");
-
-
-        buttonBar.setPadding(new Insets(0,5,5,0));
         buttonBar.setSpacing(5.0);
         buttonBar.setAlignment(Pos.CENTER_RIGHT);
 
