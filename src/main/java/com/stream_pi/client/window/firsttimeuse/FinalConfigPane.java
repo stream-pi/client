@@ -45,9 +45,9 @@ public class FinalConfigPane extends VBox
     private TextField serverIPHostNameTextField;
     private TextField serverPortTextField;
     private Button nextButton;
-
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
     private ClientListener clientListener;
+    private int rowsToSet,colsToSet;
 
     public FinalConfigPane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener,
                            Button nextButton)
@@ -193,6 +193,4 @@ public class FinalConfigPane extends VBox
             new StreamPiAlert(I18N.getString("validationError", errors), StreamPiAlertType.ERROR).show();
         }
     }
-
-    private int rowsToSet,colsToSet;
 }
