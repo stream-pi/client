@@ -1,9 +1,10 @@
 {
   "bundles": [
-    {"name":"com.stream_pi.client.i18n.lang"},
-    {"name":"com.stream_pi.util.i18n.lang"},
-    {"name":"com.stream_pi.theme_api.i18n.lang"},
-    {"name":"com.stream_pi.action_api.i18n.lang"}
+    {"name": "com.stream_pi.client.i18n.lang"},
+    {"name": "com.stream_pi.util.i18n.lang"},
+    {"name": "com.stream_pi.theme_api.i18n.lang"},
+    {"name": "com.stream_pi.action_api.i18n.lang"},
+    {"name": "com.sun.org.apache.xerces.internal.impl.msg.XMLMessages"}
   ],
   "resources": [
     {"pattern": ".*/i18n.properties$"},

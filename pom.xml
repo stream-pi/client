@@ -310,9 +310,6 @@
                                 <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
                                 <list>-Dsvm.targetName=android</list>
                             </nativeImageArgs>
-                            <bundlesList>
-                                <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
-                            </bundlesList>
                             <attachList>
                                 <list>lifecycle</list>
                                 <list>storage</list>
@@ -322,7 +319,6 @@
                             </attachList>
                             <reflectionList>
                                 <list>java.util.logging.FileHandler</list>
-                                <list>com.stream_pi.client.window.settings.about.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
                         </configuration>
@@ -348,9 +344,6 @@
                                 <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
                                 <list>-Dsvm.targetName=iOS</list>
                             </nativeImageArgs>
-                            <bundlesList>
-                                <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
-                            </bundlesList>
                             <attachList>
                                 <list>lifecycle</list>
                                 <list>storage</list>
@@ -360,7 +353,6 @@
                             </attachList>
                             <reflectionList>
                                 <list>java.util.logging.FileHandler</list>
-                                <list>com.stream_pi.client.window.settings.about.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
                             </reflectionList>
                         </configuration>
@@ -384,9 +376,6 @@
                             <nativeImageArgs>
                                 <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
                             </nativeImageArgs>
-                            <bundlesList>
-                                <list>com.sun.org.apache.xerces.internal.impl.msg.XMLMessages</list>
-                            </bundlesList>
                             <attachList>
                                 <list>lifecycle</list>
                                 <list>storage</list>
@@ -396,8 +385,8 @@
                             </attachList>
                             <reflectionList>
                                 <list>java.util.logging.FileHandler</list>
-                                <list>com.stream_pi.client.window.settings.about.Contributor</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
+                                <list>com.sun.javafx.font.freetype.PangoGlyphString</list>
                             </reflectionList>
                         </configuration>
                     </plugin>
