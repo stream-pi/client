@@ -15,4 +15,4 @@
 
 cd "${0%/*}"
 
-DISPLAY=:0 ./client -Djavafx.platform=gtk -Djavafx.verbose=true -Dprism.lcdtext=false -Dprism.verbose=true -Dcom.sun.javafx.isEmbedded=true -Dcom.sun.javafx.virtualKeyboard=javafx Stream-Pi.showShutDownButton=true Stream-Pi.startupRunnerFileName=run_desktop Stream-Pi.isXMode=true Stream-Pi.defaultFullScreenMode=true
+DISPLAY=:0 ./client -Djavafx.platform=gtk -Djavafx.verbose=true -Dprism.lcdtext=false -Dprism.verbose=true -Dcom.sun.javafx.isEmbedded=true -Dcom.sun.javafx.virtualKeyboard=javafx -DStream-Pi.showShutDownButton=true -DStream-Pi.startupRunnerFileName=run_desktop -DStream-Pi.isXMode=true -DStream-Pi.defaultFullScreenMode=true
