@@ -386,7 +386,6 @@
                             <reflectionList>
                                 <list>java.util.logging.FileHandler</list>
                                 <list>javafx.scene.control.TableColumnBase</list>
-                                <list>com.sun.javafx.font.freetype.PangoGlyphString</list>
                             </reflectionList>
                         </configuration>
                     </plugin>
