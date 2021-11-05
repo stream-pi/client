@@ -485,7 +485,7 @@ public class Client extends Thread
         message.setValue("display_width", clientListener.getStageWidth());
         message.setValue("display_height", clientListener.getStageHeight());
         message.setValue("default_profile_ID", Config.getInstance().getStartupProfileID());
-        message.setValue("default_theme_full_name", Config.getInstance().getDefaultCurrentThemeFullName());
+        message.setValue("default_theme_full_name", Config.getInstance().getCurrentThemeFullName());
 
         sendMessage(message);
     }
