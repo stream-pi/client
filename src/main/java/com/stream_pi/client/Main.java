@@ -37,43 +37,7 @@ public class Main extends Application
 
     public static void main(String[] args) 
     {
-        for(String eachArg : args)
-        {
-            if(!eachArg.startsWith("Stream-Pi"))
-                continue;
-
-            String[] r = eachArg.split("=");
-            String arg = r[0];
-            String val = r[1];
-
-            switch (arg) {
-                case "Stream-Pi.startupRunnerFileName":
-                    StartupFlags.RUNNER_FILE_NAME = val;
-                    break;
-                case "Stream-Pi.showShutDownButton":
-                    StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON = val.equals("true");
-                    break;
-                case "Stream-Pi.isXMode":
-                    StartupFlags.IS_X_MODE = val.equals("true");
-                    break;
-                case "Stream-Pi.isShowFullScreenToggleButton":
-                    StartupFlags.SHOW_FULLSCREEN_TOGGLE_BUTTON = val.equals("true");
-                    break;
-                case "Stream-Pi.defaultFullScreenMode":
-                    StartupFlags.DEFAULT_FULLSCREEN_MODE = val.equals("true");
-                    break;
-                case "Stream-Pi.enableScreenSaverFeature":
-                    StartupFlags.SCREEN_SAVER_FEATURE = val.equals("true");
-                    break;
-                case "Stream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation":
-                    StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = val.equals("true");
-                    break;
-                case "Stream-Pi.allowRoot":
-                    StartupFlags.ALLOW_ROOT = val.equals("true");
-                    break;
-            }
-        }
-
+        StartupFlags.init();
         launch(args);
     }
 }

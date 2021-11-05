@@ -220,12 +220,13 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
                 <configuration>
-                    <commandlineArgs>Stream-Pi.defaultFullScreenMode=false Stream-Pi.enableScreenSaverFeature=false</commandlineArgs>
                     <options>
                         <option>-Dprism.verbose=true</option>
                         <option>-Djavafx.verbose=true</option>
                         <option>-Dprism.lcdtext=false</option>
                         <option>-Dprism.forceGPU=true</option>
+                        <option>-DStream-Pi.defaultFullScreenMode=false</option>
+                        <option>-DStream-Pi.enableScreenSaverFeature=false</option>
                     </options>
                     <stripDebug>true</stripDebug>
                     <compress>2</compress>

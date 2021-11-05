@@ -28,6 +28,6 @@ $JPACKAGE_HOME/bin/jpackage \
 --copyright "Copyright 2019-21 Debayan Sutradhar (rnayabed),  Samuel Quiñones (SamuelQuinones)" \
 --dest $INSTALL_DIR \
 --name 'Stream-Pi Client' \
---java-options '-XX:+UnlockExperimentalVMOptions -XX:+UseZGC -Dprism.lcdtext=false -Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false' \
+--java-options '-Dprism.lcdtext=false -Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false' \
 --arguments "Stream-Pi.startupRunnerFileName='Stream-Pi Client' Stream-Pi.isXMode=true Stream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation=true" \
 "$@"
