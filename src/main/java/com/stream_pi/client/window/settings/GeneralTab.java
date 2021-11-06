@@ -320,10 +320,6 @@ public class GeneralTab extends VBox
                 buttonBar
         );
 
-        //setCache(true);
-        //setCacheHint(CacheHint.SCALE);
-
-
         //Perform platform checks
 
         if(ClientInfo.getInstance().isPhone())
