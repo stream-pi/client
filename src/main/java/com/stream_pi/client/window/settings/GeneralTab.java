@@ -232,9 +232,12 @@ public class GeneralTab extends VBox
 
 
         restartButton = new Button(I18N.getString("window.settings.GeneralTab.restart"));
-        restartButton.setOnAction(event->{
+        restartButton.setOnAction(event->
+        {
+            restartButton.setDisable(true);
             clientListener.setFirstRun(true);
             clientListener.init();
+            restartButton.setDisable(false);
         });
 
 
@@ -420,6 +423,7 @@ public class GeneralTab extends VBox
     public void onShutdownButtonClicked()
     {
         clientListener.onCloseRequest();
+        shutdownButton.setDisable(true);
 
         try
         {
@@ -427,6 +431,8 @@ public class GeneralTab extends VBox
         }
         catch (Exception e)
         {
+            shutdownButton.setDisable(false);
+            exceptionAndAlertHandler.handleMinorException(new MinorException(I18N.getString("window.settings.GeneralTab.failedToShutdown", e.getLocalizedMessage())));
             e.printStackTrace();
         }
     }

@@ -251,7 +251,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         if(!errors.toString().isEmpty())
         {
-            exceptionAndAlertHandler.handleMinorException(new MinorException(I18N.getString("actiongridpane.ActionGridPane.renderActionsFailed", errors)));
+            exceptionAndAlertHandler.handleMinorException(new MinorException(I18N.getString("actiongridpane.ActionGridPane.failedToRenderActions", errors)));
         }
     }
 

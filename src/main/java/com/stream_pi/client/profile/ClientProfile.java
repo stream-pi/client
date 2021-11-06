@@ -114,7 +114,7 @@ public class ClientProfile implements Cloneable
         catch (Exception e)
         {
             e.printStackTrace();
-            throw new MinorException(I18N.getString("profile.ClientProfile.profileParseFailed", file.getAbsolutePath(), e.getLocalizedMessage()));
+            throw new MinorException(I18N.getString("profile.ClientProfile.failedToParseProfile", file.getAbsolutePath(), e.getLocalizedMessage()));
         }
 
         setID(file.getName().replace(".xml", ""));
@@ -338,7 +338,7 @@ public class ClientProfile implements Cloneable
         {
             e.printStackTrace();
 
-            throw new MinorException(I18N.getString("profile.ClientProfile.profileParseFailed", file.getAbsolutePath(), e.getLocalizedMessage()));
+            throw new MinorException(I18N.getString("profile.ClientProfile.failedToParseProfile", file.getAbsolutePath(), e.getLocalizedMessage()));
         }
 
     }
