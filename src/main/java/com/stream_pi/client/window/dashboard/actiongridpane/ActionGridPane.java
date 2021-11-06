@@ -378,8 +378,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         actionBox.setAction(action);
         actionBox.setCurrentToggleStatus(oldToggleStatus);
         actionBox.setStreamPiParent(currentParent);
-        actionBox.init();
-        actionBox.setVisible(true);
+
 
 
         GridPane.setRowSpan(actionBox, location.getRowSpan());
@@ -391,8 +390,9 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         double actionWidth = (getClientProfile().getActionSize() * location.getColSpan()) + (getClientProfile().getActionGap()*(location.getColSpan()-1));
         double actionHeight = (getClientProfile().getActionSize() * location.getRowSpan()) + (getClientProfile().getActionGap()*(location.getRowSpan()-1));
 
-        actionBox.setMinSize(actionWidth, actionHeight);
-        actionBox.setMaxSize(actionWidth, actionHeight);
+        actionBox.configureSize(actionWidth, actionHeight);
+        actionBox.init();
+        actionBox.setVisible(true);
     }
 
     private void showNonUsedBoxes(int col, int row, int colSpan, int rowSpan)
