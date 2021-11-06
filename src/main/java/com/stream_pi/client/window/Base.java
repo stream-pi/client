@@ -60,8 +60,6 @@ import javafx.stage.Stage;
 
 public abstract class Base extends StackPane implements ExceptionAndAlertHandler, ClientListener
 {
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-
     private Config config;
 
     private ClientProfiles clientProfiles;
@@ -277,12 +275,6 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
             if(width < 500)
                 setPrefWidth(240);
         }
-    }
-
-    @Override
-    public ExecutorService getExecutor()
-    {
-        return executor;
     }
 
     @Override

@@ -44,23 +44,25 @@ import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.rootchecker.RootChecker;
 import com.stream_pi.util.startonboot.StartOnBoot;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
 
 public class Controller extends Base
 {
     private Client client;
+
+    private final ExecutorService executor = Executors.newCachedThreadPool();
 
     public Controller()
     {
@@ -232,16 +234,8 @@ public class Controller extends Base
             }
             
             setupSettingsWindowsAnimations();
-
-
-
-            getDashboardPane().getSettingsButton().setOnAction(event -> {
-                openSettingsTimeLine.play();
-            });
-    
-            getSettingsPane().getCloseButton().setOnAction(event -> {
-                closeSettingsTimeLine.play();
-            });
+            getDashboardPane().getSettingsButton().setOnAction(event -> openSettingsAnimation.play());
+            getSettingsPane().getCloseButton().setOnAction(event -> closeSettingsAnimation.play());
 
             setClientProfiles(new ClientProfiles(new File(getConfig().getProfilesPath()), getConfig().getStartupProfileID()));
             
@@ -474,8 +468,8 @@ public class Controller extends Base
     }
 
 
-    private Timeline openSettingsTimeLine;
-    private Timeline closeSettingsTimeLine;
+    private Animation openSettingsAnimation;
+    private Animation closeSettingsAnimation;
 
 
     private void setupSettingsWindowsAnimations()
@@ -483,59 +477,8 @@ public class Controller extends Base
         Node settingsNode = getSettingsPane();
         Node dashboardNode = getDashboardPane();
 
-        openSettingsTimeLine = new Timeline();
-        openSettingsTimeLine.setCycleCount(1);
-
-
-        openSettingsTimeLine.getKeyFrames().addAll(
-                new KeyFrame(Duration.millis(0.0D),
-                        new KeyValue(settingsNode.opacityProperty(),
-                                0.0D, Interpolator.EASE_IN)),
-                new KeyFrame(Duration.millis(90.0D),
-                        new KeyValue(settingsNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR)),
-
-                new KeyFrame(Duration.millis(0.0D),
-                        new KeyValue(dashboardNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR)),
-                new KeyFrame(Duration.millis(90.0D),
-                        new KeyValue(dashboardNode.opacityProperty(),
-                                0.0D, Interpolator.LINEAR))
-        );
-
-        openSettingsTimeLine.setOnFinished(event1 -> settingsNode.toFront());
-
-
-        closeSettingsTimeLine = new Timeline();
-        closeSettingsTimeLine.setCycleCount(1);
-
-        closeSettingsTimeLine.getKeyFrames().addAll(
-                new KeyFrame(Duration.millis(0.0D),
-                        new KeyValue(settingsNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR)),
-                new KeyFrame(Duration.millis(90.0D),
-                        new KeyValue(settingsNode.opacityProperty(),
-                                0.0D, Interpolator.LINEAR)),
-                new KeyFrame(Duration.millis(0.0D),
-                        new KeyValue(dashboardNode.opacityProperty(),
-                                0.0D, Interpolator.LINEAR)),
-                new KeyFrame(Duration.millis(90.0D),
-                        new KeyValue(dashboardNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR))
-        );
-
-        closeSettingsTimeLine.setOnFinished(event1 -> {
-            dashboardNode.toFront();
-            Platform.runLater(()-> {
-                try {
-                    getSettingsPane().getGeneralTab().loadData();
-                } catch (SevereException e) {
-                    e.printStackTrace();
-
-                    handleSevereException(e);
-                }
-            });
-        });
+        openSettingsAnimation = createOpenSettingsAnimation(settingsNode, dashboardNode);
+        closeSettingsAnimation = createCloseSettingsAnimation(settingsNode, dashboardNode);
     }
 
 
@@ -790,5 +733,122 @@ public class Controller extends Base
     public void setFirstRun(boolean firstRun)
     {
         this.firstRun = firstRun;
+    }
+
+    private Animation createOpenSettingsAnimation(Node settingsNode, Node dashboardNode)
+    {
+        Timeline openSettingsTimeline = new Timeline();
+        openSettingsTimeline.setCycleCount(1);
+
+        openSettingsTimeline.getKeyFrames().addAll(
+                new KeyFrame(Duration.millis(0.0D),
+                        new KeyValue(settingsNode.opacityProperty(),
+                                0.0D, Interpolator.EASE_IN),
+                        new KeyValue(settingsNode.scaleXProperty(),
+                                1.1D, Interpolator.EASE_IN),
+                        new KeyValue(settingsNode.scaleYProperty(),
+                                1.1D, Interpolator.EASE_IN),
+                        new KeyValue(settingsNode.scaleZProperty(),
+                                1.1D, Interpolator.EASE_IN)),
+                new KeyFrame(Duration.millis(90.0D),
+                        new KeyValue(settingsNode.opacityProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleXProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleYProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleZProperty(),
+                                1.0D, Interpolator.LINEAR)),
+
+                new KeyFrame(Duration.millis(0.0D),
+                        new KeyValue(dashboardNode.opacityProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleXProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleYProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleZProperty(),
+                                1.0D, Interpolator.LINEAR)),
+                new KeyFrame(Duration.millis(90.0D),
+                        new KeyValue(dashboardNode.opacityProperty(),
+                                0.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleXProperty(),
+                                0.9D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleYProperty(),
+                                0.9D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleZProperty(),
+                                0.9D, Interpolator.LINEAR))
+        );
+
+        openSettingsTimeline.setOnFinished(e -> settingsNode.toFront());
+        return openSettingsTimeline;
+    }
+
+    private Animation createCloseSettingsAnimation(Node settingsNode, Node dashboardNode)
+    {
+        Timeline closeSettingsTimeline = new Timeline();
+        closeSettingsTimeline.setCycleCount(1);
+
+        closeSettingsTimeline.getKeyFrames().addAll(
+
+                new KeyFrame(Duration.millis(0.0D),
+                        new KeyValue(settingsNode.opacityProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleXProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleYProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleZProperty(),
+                                1.0D, Interpolator.LINEAR)),
+                new KeyFrame(Duration.millis(90.0D),
+                        new KeyValue(settingsNode.opacityProperty(),
+                                0.0D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleXProperty(),
+                                1.1D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleYProperty(),
+                                1.1D, Interpolator.LINEAR),
+                        new KeyValue(settingsNode.scaleZProperty(),
+                                1.1D, Interpolator.LINEAR)),
+
+                new KeyFrame(Duration.millis(0.0D),
+                        new KeyValue(dashboardNode.opacityProperty(),
+                                0.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleXProperty(),
+                                0.9D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleYProperty(),
+                                0.9D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleZProperty(),
+                                0.9D, Interpolator.LINEAR)),
+                new KeyFrame(Duration.millis(90.0D),
+                        new KeyValue(dashboardNode.opacityProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleXProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleYProperty(),
+                                1.0D, Interpolator.LINEAR),
+                        new KeyValue(dashboardNode.scaleZProperty(),
+                                1.0D, Interpolator.LINEAR))
+
+        );
+
+        closeSettingsTimeline.setOnFinished(event1 -> {
+            dashboardNode.toFront();
+            Platform.runLater(()-> {
+                try {
+                    getSettingsPane().getGeneralTab().loadData();
+                } catch (SevereException e) {
+                    e.printStackTrace();
+
+                    handleSevereException(e);
+                }
+            });
+        });
+        return closeSettingsTimeline;
+    }
+
+    @Override
+    public ExecutorService getExecutor()
+    {
+        return executor;
     }
 }

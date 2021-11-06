@@ -67,8 +67,10 @@ public class SettingsBase extends VBox
 
         getChildren().addAll(tabPane, closeButton);
 
+        getStyleClass().add("settings_base");
+
         setCache(true);
-        setCacheHint(CacheHint.SPEED);
+        setCacheHint(CacheHint.SCALE);
     }
 
     public void setDefaultTabToGeneral()
