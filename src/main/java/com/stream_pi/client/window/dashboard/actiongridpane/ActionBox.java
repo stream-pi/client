@@ -307,7 +307,7 @@ public class ActionBox extends StackPane
                     new Background(
                             new BackgroundImage(new Image(
                                     new ByteArrayInputStream(iconByteArray), size, size, false, true
-                            ), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)
+                            ), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)
                     )
             );
         }
