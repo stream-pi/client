@@ -36,25 +36,20 @@ import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
-import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.PlatformType;
 import com.stream_pi.util.startonboot.StartOnBoot;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 import com.stream_pi.util.uihelper.HBoxWithSpaceBetween;
-import com.stream_pi.util.uihelper.SpaceFiller;
 import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.ToggleSwitch;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 public class GeneralTab extends VBox

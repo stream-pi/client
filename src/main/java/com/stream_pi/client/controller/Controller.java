@@ -740,47 +740,25 @@ public class Controller extends Base
         Timeline openSettingsTimeline = new Timeline();
         openSettingsTimeline.setCycleCount(1);
 
+
         openSettingsTimeline.getKeyFrames().addAll(
                 new KeyFrame(Duration.millis(0.0D),
                         new KeyValue(settingsNode.opacityProperty(),
-                                0.0D, Interpolator.EASE_IN),
-                        new KeyValue(settingsNode.scaleXProperty(),
-                                1.1D, Interpolator.EASE_IN),
-                        new KeyValue(settingsNode.scaleYProperty(),
-                                1.1D, Interpolator.EASE_IN),
-                        new KeyValue(settingsNode.scaleZProperty(),
-                                1.1D, Interpolator.EASE_IN)),
+                                0.0D, Interpolator.EASE_IN)),
                 new KeyFrame(Duration.millis(90.0D),
                         new KeyValue(settingsNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleXProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleYProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleZProperty(),
                                 1.0D, Interpolator.LINEAR)),
 
                 new KeyFrame(Duration.millis(0.0D),
                         new KeyValue(dashboardNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleXProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleYProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleZProperty(),
                                 1.0D, Interpolator.LINEAR)),
                 new KeyFrame(Duration.millis(90.0D),
                         new KeyValue(dashboardNode.opacityProperty(),
-                                0.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleXProperty(),
-                                0.9D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleYProperty(),
-                                0.9D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleZProperty(),
-                                0.9D, Interpolator.LINEAR))
+                                0.0D, Interpolator.LINEAR))
         );
 
         openSettingsTimeline.setOnFinished(e -> settingsNode.toFront());
+
         return openSettingsTimeline;
     }
 
@@ -790,45 +768,18 @@ public class Controller extends Base
         closeSettingsTimeline.setCycleCount(1);
 
         closeSettingsTimeline.getKeyFrames().addAll(
-
                 new KeyFrame(Duration.millis(0.0D),
                         new KeyValue(settingsNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleXProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleYProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleZProperty(),
                                 1.0D, Interpolator.LINEAR)),
                 new KeyFrame(Duration.millis(90.0D),
                         new KeyValue(settingsNode.opacityProperty(),
-                                0.0D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleXProperty(),
-                                1.1D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleYProperty(),
-                                1.1D, Interpolator.LINEAR),
-                        new KeyValue(settingsNode.scaleZProperty(),
-                                1.1D, Interpolator.LINEAR)),
-
+                                0.0D, Interpolator.LINEAR)),
                 new KeyFrame(Duration.millis(0.0D),
                         new KeyValue(dashboardNode.opacityProperty(),
-                                0.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleXProperty(),
-                                0.9D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleYProperty(),
-                                0.9D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleZProperty(),
-                                0.9D, Interpolator.LINEAR)),
+                                0.0D, Interpolator.LINEAR)),
                 new KeyFrame(Duration.millis(90.0D),
                         new KeyValue(dashboardNode.opacityProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleXProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleYProperty(),
-                                1.0D, Interpolator.LINEAR),
-                        new KeyValue(dashboardNode.scaleZProperty(),
                                 1.0D, Interpolator.LINEAR))
-
         );
 
         closeSettingsTimeline.setOnFinished(event1 -> {
@@ -843,6 +794,7 @@ public class Controller extends Base
                 }
             });
         });
+
         return closeSettingsTimeline;
     }
 
