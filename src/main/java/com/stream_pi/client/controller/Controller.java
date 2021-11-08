@@ -610,12 +610,6 @@ public class Controller extends Base
     }
 
     @Override
-    public void addBlankActionBox(int col, int row)
-    {
-        Platform.runLater(()->getDashboardPane().getActionGridPane().addBlankActionBox(col, row));
-    }
-
-    @Override
     public void renderAction(String currentProfileID, ClientAction action)
     {
         Platform.runLater(()->{

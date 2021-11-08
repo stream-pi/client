@@ -14,6 +14,8 @@
 
 package com.stream_pi.client.window.dashboard.actiongridpane;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.stream_pi.action_api.action.Action;
@@ -156,15 +158,32 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
     private boolean isFreshRender = true;
     private Node folderBackButton = null;
+
+    private enum RenderSelector
+    {
+        ROW, COLUMN
+    }
+
     public void renderGrid()
     {
         actionsGridPane.setHgap(getClientProfile().getActionGap());
         actionsGridPane.setVgap(getClientProfile().getActionGap());
 
+        RenderSelector renderSelector = null;
+
         if(isFreshRender)
         {
             clear();
             actionBoxes = new ActionBox[cols][rows];
+
+            if (rows>cols)
+            {
+                renderSelector = RenderSelector.COLUMN;
+            }
+            else
+            {
+                renderSelector = RenderSelector.ROW;
+            }
         }
 
         boolean isFolder = false;
@@ -176,7 +195,8 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
                 actionsGridPane.getChildren().remove(folderBackButton);
                 folderBackButton = null;
 
-                actionBoxes[0][0] = addBlankActionBox(0,0);
+                actionBoxes[0][0] = generateBlankActionBox(0,0);
+                actionsGridPane.add(actionBoxes[0][0], 0, 0);
             }
         }
         else
@@ -197,6 +217,13 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
             actionsGridPane.add(folderBackButton, 0,0);
         }
 
+        ActionBox[][] actionBoxesToBeAdded = null;
+
+        if(isFreshRender)
+        {
+            actionBoxesToBeAdded = new ActionBox[(renderSelector == RenderSelector.ROW ? rows : cols)][(renderSelector != RenderSelector.ROW ? rows : cols)];
+        }
+
         for(int row = 0; row<rows; row++)
         {
             for(int col = 0; col<cols; col++)
@@ -206,7 +233,9 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
                 if(isFreshRender)
                 {
-                    actionBoxes[col][row] = addBlankActionBox(col, row);
+                    actionBoxes[col][row] = generateBlankActionBox(col, row);
+
+                    actionBoxesToBeAdded[renderSelector == RenderSelector.ROW ? row : col][renderSelector != RenderSelector.ROW ? row : col] = actionBoxes[col][row];
                 }
                 else
                 {
@@ -217,6 +246,39 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
                 }
 
                 actionBoxes[col][row].setVisible(true);
+            }
+        }
+
+        if (isFreshRender)
+        {
+            boolean finalSelector = (renderSelector == RenderSelector.ROW);
+
+            try
+            {
+                if(Config.getInstance().isInvertRowsColsOnDeviceRotate() && ClientInfo.getInstance().isPhone() && clientListener.getCurrentOrientation() == Orientation.VERTICAL)
+                {
+                    finalSelector = !finalSelector;
+                }
+            }
+            catch (SevereException e)
+            {
+                exceptionAndAlertHandler.handleSevereException(e);
+            }
+
+
+            if (finalSelector)
+            {
+                for(int i = 0; i<rows; i++)
+                {
+                    actionsGridPane.addRow(i, actionBoxesToBeAdded[i]);
+                }
+            }
+            else
+            {
+                for(int i = 0; i<cols; i++)
+                {
+                    actionsGridPane.addColumn(i, actionBoxesToBeAdded[i]);
+                }
             }
         }
 
@@ -274,42 +336,11 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         return actionBoxes[col][row];
     }
 
-    public ActionBox addBlankActionBox(int col, int row)
+    public ActionBox generateBlankActionBox(int col, int row)
     {
         ActionBox actionBox = new ActionBox(getClientProfile().getActionSize(), exceptionAndAlertHandler, clientListener, this, row, col, clientProfile.getActionDefaultDisplayTextFontSize());
-
         actionBox.setStreamPiParent(currentParent);
-
-        try
-        {
-            if(Config.getInstance().isInvertRowsColsOnDeviceRotate() && ClientInfo.getInstance().isPhone())
-            {
-                if(clientListener.getCurrentOrientation() == Orientation.HORIZONTAL)
-                {
-                    actionsGridPane.add(actionBox, col, row);
-                }
-                else
-                {
-                    actionsGridPane.add(actionBox, row, col);
-                }
-            }
-            else
-            {
-                actionsGridPane.add(actionBox, col, row);
-            }
-        }
-        catch (SevereException e)
-        {
-            exceptionAndAlertHandler.handleSevereException(e);
-        }
-
-
         return actionBox;
-    }
-
-    public ActionBox[][] getActionBoxes()
-    {
-        return actionBoxes;
     }
 
     public void toggleOffAllToggleActionsAndHideAllGaugeActions()

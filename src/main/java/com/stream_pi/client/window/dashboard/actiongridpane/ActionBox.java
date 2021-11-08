@@ -156,9 +156,6 @@ public class ActionBox extends StackPane
         getChildren().addAll(statusIcon, displayTextLabel);
 
         statusIconAnimation.setOnFinished(event -> statusIcon.toBack());
-
-        setCache(true);
-        setCacheHint(CacheHint.QUALITY);
     }
 
     public void actionClicked()
@@ -277,6 +274,9 @@ public class ActionBox extends StackPane
 
         this.managedProperty().bind(visibleProperty());
 
+        setCache(true);
+        setCacheHint(CacheHint.QUALITY);
+
         baseInit();
         initMouseAndTouchListeners();
     }
@@ -307,13 +307,11 @@ public class ActionBox extends StackPane
         if(iconByteArray == null)
         { 
             getStyleClass().remove("action_box_icon_present");
-            getStyleClass().add("action_box_icon_not_present");
             setBackground(null);
         }
         else
         {
             getStyleClass().add("action_box_icon_present");
-            getStyleClass().remove("action_box_icon_not_present");
 
 
             setBackground(
