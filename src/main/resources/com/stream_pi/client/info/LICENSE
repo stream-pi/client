@@ -11,13 +11,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 
-Opensource Libraries/Technology used:
+Opensource Libraries/Technology used in Stream-Pi Client:
 
 1. JavaFX - GNU General Public License with Classpath Exception
-http://openjdk.java.net/legal/gplv2+ce.html
+https://openjdk.java.net/legal/gplv2+ce.html
 
-2. JSON - The JSON License
-https://www.json.org/license.html
+2. GSON - Apache License 2.0
+https://github.com/google/gson/blob/master/LICENSE
 
 3. Gluon Attach - GPL License
 https://github.com/gluonhq/attach/blob/master/LICENSE
