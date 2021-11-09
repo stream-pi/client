@@ -19,14 +19,21 @@ import com.stream_pi.client.profile.ClientProfile;
 import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.client.window.dashboard.actiongridpane.ActionGridPane;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.Skin;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class DashboardBase extends VBox
+public class DashboardBase extends AnchorPane
 {
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
 
@@ -38,6 +45,10 @@ public class DashboardBase extends VBox
         this.exceptionAndAlertHandler = exceptionAndAlertHandler;
 
         actionGridPane = new ActionGridPane(exceptionAndAlertHandler, clientListener);
+        AnchorPane.setTopAnchor(actionGridPane, 0.0);
+        AnchorPane.setBottomAnchor(actionGridPane, 0.0);
+        AnchorPane.setLeftAnchor(actionGridPane, 0.0);
+        AnchorPane.setRightAnchor(actionGridPane, 0.0);
 
         FontIcon fontIcon = new FontIcon("fas-cog");
         fontIcon.getStyleClass().addAll("dashboard_settings_button_icon");
@@ -45,15 +56,74 @@ public class DashboardBase extends VBox
         settingsButton = new Button();
         settingsButton.getStyleClass().addAll("dashboard_settings_button");
         settingsButton.setGraphic(fontIcon);
+        AnchorPane.setBottomAnchor(settingsButton, 10.0);
+        AnchorPane.setRightAnchor(settingsButton, 10.0);
 
-        HBox hBox = new HBox(settingsButton);
-        hBox.getStyleClass().add("dashboard_settings_button_parent");
-        hBox.setAlignment(Pos.CENTER_RIGHT);
+        //HBox hBox = new HBox(settingsButton);
+        //hBox.getStyleClass().add("dashboard_settings_button_parent");
+        //hBox.setAlignment(Pos.CENTER_RIGHT);
 
+        // Prevent overlap of settings button when scrollbar is visible
 
-        getChildren().addAll(actionGridPane,hBox);
+        if (actionGridPane.getSkin() == null)
+        {
+            // Skin is not yet attached, wait until skin is attached to access the scroll bars
+            ChangeListener<Skin<?>> skinChangeListener = new ChangeListener<Skin<?>>() {
+                @Override
+                public void changed(ObservableValue<? extends Skin<?>> observable, Skin<?> oldValue, Skin<?> newValue) {
+                    actionGridPane.skinProperty().removeListener(this);
+                    modifySettingsButtonToPreventOverlappingScrollBars();
+                }
+            };
+            actionGridPane.skinProperty().addListener(skinChangeListener);
+        }
+        else
+        {
+            modifySettingsButtonToPreventOverlappingScrollBars();
+        }
+
+        getChildren().addAll(actionGridPane,settingsButton);
 
         getStyleClass().add("dashboard");
+    }
+
+    private void modifySettingsButtonToPreventOverlappingScrollBars()
+    {
+        for (Node n : actionGridPane.lookupAll(".scroll-bar"))
+        {
+            if (n instanceof ScrollBar)
+            {
+                ScrollBar bar = (ScrollBar) n;
+                if (bar.getOrientation().equals(Orientation.VERTICAL))
+                {
+                    bar.visibleProperty().addListener((observableValue, oldValue, newVal) ->
+                    {
+                        if (newVal)
+                        {
+                            AnchorPane.setRightAnchor(settingsButton, 20.0);
+                        }
+                        else
+                        {
+                            AnchorPane.setRightAnchor(settingsButton, 10.0);
+                        }
+                    });
+                }
+                else if (bar.getOrientation().equals(Orientation.HORIZONTAL))
+                {
+                    bar.visibleProperty().addListener((observableValue, oldValue, newVal) ->
+                    {
+                        if (newVal)
+                        {
+                            AnchorPane.setBottomAnchor(settingsButton, 20.0);
+                        }
+                        else
+                        {
+                            AnchorPane.setBottomAnchor(settingsButton, 10.0);
+                        }
+                    });
+                }
+            }
+        }
     }
 
     public void renderProfile(ClientProfile clientProfile, boolean freshRender)

@@ -115,17 +115,12 @@
 
 .action_grid_pane_parent
 {
-     -fx-background-color:transparent;
+    -fx-background-color: transparent;
 }
 
 .first_time_use_pane
 {
     -fx-padding : 10;
-}
-
-.dashboard_settings_button_parent
-{
-    -fx-padding: 0 10 10 0;
 }
 
 .settings_button_bar
