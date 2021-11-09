@@ -436,6 +436,7 @@ public class GeneralTab extends VBox
         }
         else
         {
+            onSaveButtonClicked();
             clientListener.setupClientConnection();
         }
     }
