@@ -59,16 +59,9 @@ public class DashboardBase extends AnchorPane
         AnchorPane.setBottomAnchor(settingsButton, 10.0);
         AnchorPane.setRightAnchor(settingsButton, 10.0);
 
-        //HBox hBox = new HBox(settingsButton);
-        //hBox.getStyleClass().add("dashboard_settings_button_parent");
-        //hBox.setAlignment(Pos.CENTER_RIGHT);
-
-        // Prevent overlap of settings button when scrollbar is visible
-
         if (actionGridPane.getSkin() == null)
         {
-            // Skin is not yet attached, wait until skin is attached to access the scroll bars
-            ChangeListener<Skin<?>> skinChangeListener = new ChangeListener<Skin<?>>() {
+            ChangeListener<Skin<?>> skinChangeListener = new ChangeListener<>() {
                 @Override
                 public void changed(ObservableValue<? extends Skin<?>> observable, Skin<?> oldValue, Skin<?> newValue) {
                     actionGridPane.skinProperty().removeListener(this);
