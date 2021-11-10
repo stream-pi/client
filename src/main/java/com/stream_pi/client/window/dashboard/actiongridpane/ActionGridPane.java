@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.Location;
+import com.stream_pi.client.connection.Client;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.ClientInfo;
@@ -255,7 +256,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
             try
             {
-                if(Config.getInstance().isInvertRowsColsOnDeviceRotate() && ClientInfo.getInstance().isPhone() && clientListener.getCurrentOrientation() == Orientation.VERTICAL)
+                if(Config.getInstance().isInvertRowsColsOnDeviceRotate() && ClientInfo.getInstance().isPhone() && ClientInfo.getInstance().getOrientation() == Orientation.VERTICAL)
                 {
                     finalSelector = !finalSelector;
                 }

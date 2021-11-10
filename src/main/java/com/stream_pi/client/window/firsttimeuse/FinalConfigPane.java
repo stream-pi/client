@@ -26,6 +26,7 @@ import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.uihelper.ActionGridRowsAndColsCalculator;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 
 import javafx.application.Platform;
@@ -47,7 +48,6 @@ public class FinalConfigPane extends VBox
     private Button nextButton;
     private ExceptionAndAlertHandler exceptionAndAlertHandler;
     private ClientListener clientListener;
-    private int rowsToSet,colsToSet;
 
     public FinalConfigPane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener,
                            Button nextButton)
@@ -152,27 +152,11 @@ public class FinalConfigPane extends VBox
                 ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+
                         Config.getInstance().getStartupProfileID()+".xml"), Config.getInstance().getIconsPath());
 
-                double pre = clientProfile.getActionSize()+(clientProfile.getActionGap()*4);
+                ActionGridRowsAndColsCalculator actionGridRowsAndColsCalculator = new ActionGridRowsAndColsCalculator(ClientInfo.getInstance().getOrientation(),
+                        clientProfile.getActionSize(), clientProfile.getActionGap(), clientListener.getStageWidth(), clientListener.getStageHeight());
 
-
-                rowsToSet = (int) (clientListener.getStageHeight()/pre);
-                colsToSet = (int) (clientListener.getStageWidth()/pre);
-
-                if(ClientInfo.getInstance().isPhone())
-                {
-                    OrientationService.create().ifPresent(orientationService -> {
-                        if(orientationService.getOrientation().isPresent() &&
-                                orientationService.getOrientation().get().equals(Orientation.VERTICAL))
-                        {
-                            int tmp = rowsToSet;
-                            rowsToSet = colsToSet;
-                            colsToSet = tmp;
-                        }
-                    });
-                }
-
-                clientProfile.setCols(colsToSet);
-                clientProfile.setRows(rowsToSet);
+                clientProfile.setCols(actionGridRowsAndColsCalculator.getCols());
+                clientProfile.setRows(actionGridRowsAndColsCalculator.getRows());
 
                 clientProfile.saveProfileDetails();
 

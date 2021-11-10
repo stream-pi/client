@@ -258,10 +258,8 @@ public class Controller extends Base
                 OrientationService.create().ifPresent(orientationService -> {
                     if(orientationService.getOrientation().isPresent())
                     {
-                        setCurrentOrientation(orientationService.getOrientation().get());
-                        orientationService.orientationProperty().addListener((observableValue, oldOrientation, newOrientation) -> {
-                            setCurrentOrientation(newOrientation);
-
+                        orientationService.orientationProperty().addListener((observableValue, oldOrientation, newOrientation) ->
+                        {
                             getDashboardPane().renderProfile(
                                     getCurrentProfile(),
                                     getCurrentParent(),
@@ -273,7 +271,7 @@ public class Controller extends Base
                                 {
                                     if(isConnected())
                                     {
-                                        getClient().updateOrientationOnClient(getCurrentOrientation());
+                                        getClient().updateOrientationOnClient(getClientInfo().getOrientation());
                                     }
                                 }
                                 catch (SevereException e)
@@ -304,7 +302,6 @@ public class Controller extends Base
             }
 
 
-
             firstRun = false;
         }
         catch (SevereException e)
@@ -315,19 +312,6 @@ public class Controller extends Base
         {
             handleMinorException(e);
         }
-    }
-
-    private Orientation currentOrientation = null;
-
-    @Override
-    public Orientation getCurrentOrientation()
-    {
-        return currentOrientation;
-    }
-
-    private void setCurrentOrientation(Orientation currentOrientation)
-    {
-        this.currentOrientation = currentOrientation;
     }
 
     public void syncClientSizeDetailsWithServer()

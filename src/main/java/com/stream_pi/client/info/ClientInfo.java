@@ -22,11 +22,14 @@ Contributors: Debayan Sutradhar (@rnayabed)
 
 package com.stream_pi.client.info;
 
+import com.gluonhq.attach.orientation.OrientationService;
 import com.gluonhq.attach.storage.StorageService;
 import com.stream_pi.util.exception.MinorException;
+import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.platform.Platform;
 import com.stream_pi.util.platform.ReleaseStatus;
 import com.stream_pi.util.version.Version;
+import javafx.geometry.Orientation;
 
 import java.io.*;
 import java.util.Objects;
@@ -46,6 +49,7 @@ public class ClientInfo
     private final Version communicationProtocolVersion;
     private String buildDate;
     private String license;
+    private Orientation orientation = null;
 
     private static ClientInfo instance = null;
 
@@ -84,6 +88,26 @@ public class ClientInfo
         {
             platform = Platform.UNKNOWN;
         }
+
+
+        if (isPhone())
+        {
+            OrientationService.create().ifPresent(orientationService ->
+            {
+                if(orientationService.getOrientation().isPresent())
+                {
+                    orientationService.orientationProperty().addListener((observableValue, oldOrientation, newOrientation) ->
+                    {
+                        if (oldOrientation != newOrientation)
+                        {
+                            orientation = newOrientation;
+                        }
+                    });
+                }
+            });
+        }
+
+
 
         try
         {
@@ -130,7 +154,8 @@ public class ClientInfo
 
     }
 
-    public static synchronized ClientInfo getInstance(){
+    public static synchronized ClientInfo getInstance()
+    {
         if(instance == null)
         {
             instance = new ClientInfo();
@@ -181,5 +206,10 @@ public class ClientInfo
     public String getLicense()
     {
         return license;
+    }
+
+    public Orientation getOrientation()
+    {
+        return orientation;
     }
 }

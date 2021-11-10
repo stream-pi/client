@@ -71,6 +71,7 @@ public class ClientProfile implements Cloneable
         actions = new HashMap<>();
         logger = Logger.getLogger(ClientProfile.class.getName());
 
+        setID(file.getName().replace(".xml", ""));
         setName(name);
         setRows(rows);
         setCols(cols);
@@ -86,9 +87,6 @@ public class ClientProfile implements Cloneable
         {
             createNewProfileFile(file);
         }
-
-        initDocument();
-        setID(file.getName().replace(".xml", ""));
     }
 
     public ClientProfile(File file, String iconsPath) throws MinorException
@@ -644,15 +642,22 @@ public class ClientProfile implements Cloneable
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document newDocument = dBuilder.newDocument();
+            document = dBuilder.newDocument();
 
-            addElementsToProfileElement(newDocument, newDocument.getDocumentElement(), getName(), getRows(), getCols(), getActionSize(), getActionGap(), getActionDefaultDisplayTextFontSize());
+            Element configElement = document.createElement("config");
 
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(newDocument);
-            StreamResult result = new StreamResult(file);
-            transformer.transform(source, result);
+            Element profileElement = document.createElement("profile");
+            addElementsToProfileElement(document, profileElement, getName(), getRows(), getCols(), getActionSize(), getActionGap(), getActionDefaultDisplayTextFontSize());
+
+            Element actionsElement = document.createElement("actions");
+
+            configElement.appendChild(profileElement);
+            configElement.appendChild(actionsElement);
+
+
+            document.appendChild(configElement);
+
+            save();
         }
         catch (Exception e)
         {
@@ -670,7 +675,7 @@ public class ClientProfile implements Cloneable
         save();
     }
 
-    public void addElementsToProfileElement(Document document, Element element,
+    public void addElementsToProfileElement(Document document, Element profileElement,
                                             String name,
                                             int rows,
                                             int cols,
@@ -680,27 +685,27 @@ public class ClientProfile implements Cloneable
     {
         Element nameElement = document.createElement("name");
         nameElement.setTextContent(name);
-        element.appendChild(nameElement);
+        profileElement.appendChild(nameElement);
 
         Element rowsElement = document.createElement("rows");
         rowsElement.setTextContent(rows + "");
-        element.appendChild(rowsElement);
+        profileElement.appendChild(rowsElement);
 
         Element colsElement = document.createElement("cols");
         colsElement.setTextContent(cols + "");
-        element.appendChild(colsElement);
+        profileElement.appendChild(colsElement);
 
         Element actionSizeElement = document.createElement("action-size");
         actionSizeElement.setTextContent(actionSize + "");
-        element.appendChild(actionSizeElement);
+        profileElement.appendChild(actionSizeElement);
 
         Element actionGapElement = document.createElement("action-gap");
         actionGapElement.setTextContent(actionGap + "");
-        element.appendChild(actionGapElement);
+        profileElement.appendChild(actionGapElement);
 
         Element actionDefaultDisplayTextFontSizeElement = document.createElement("action-default-display-text-font-size");
         actionDefaultDisplayTextFontSizeElement.setTextContent(actionDefaultDisplayTextFontSize + "");
-        element.appendChild(actionDefaultDisplayTextFontSizeElement);
+        profileElement.appendChild(actionDefaultDisplayTextFontSizeElement);
     }
 
     public void saveActions() throws Exception
