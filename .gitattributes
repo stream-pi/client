@@ -1,4 +1,6 @@
 * text=auto eol=lf
 
+*.bat text eol=crlf
+
 *.zip       -text
 *.png       -text
