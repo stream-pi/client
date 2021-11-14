@@ -377,8 +377,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-17.0.0.1_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+6_linux-aarch64_bin-jmods.zip
+          unzip /tmp/openjfx-18-ea+6_linux-aarch64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.3.0
         run: |
           cd /tmp
@@ -431,7 +431,7 @@ jobs:
           zip -r stream-pi-client-linux-aarch64-${{ env.VERSION }}-native-executable.zip *
         env:
           MAIN_CLASS: com.stream_pi.client.Main
-          JAVAFX_JMODS: /tmp/javafx-jmods-17.0.0.1/
+          JAVAFX_JMODS: /tmp/javafx-jmods-18/
           JPACKAGE_HOME: ${{ env.JAVA_HOME }}
           INSTALL_DIR: target/stream-pi-client
       - name: Saving Linux aarch64 ZIP
