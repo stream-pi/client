@@ -149,7 +149,7 @@ public class FinalConfigPane extends VBox
 
                 Config.getInstance().save();
 
-                ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+
+                ClientProfile clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+ File.separator +
                         Config.getInstance().getStartupProfileID()+".xml"), Config.getInstance().getIconsPath());
 
                 ActionGridRowsAndColsCalculator actionGridRowsAndColsCalculator = new ActionGridRowsAndColsCalculator(ClientInfo.getInstance().getOrientation(),

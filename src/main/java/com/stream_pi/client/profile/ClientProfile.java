@@ -286,7 +286,7 @@ public class ClientProfile implements Cloneable
 
                     String state = eachIconStateElement.getTextContent();
 
-                    File f = new File(iconsPath+"/"+id+"___"+state);
+                    File f = new File(iconsPath + File.separator + id + "___" + state);
 
                     try
                     {
@@ -385,7 +385,7 @@ public class ClientProfile implements Cloneable
 
             String state = eachIconStateElement.getTextContent();
 
-            new File(iconsPath+"/"+ID+"___"+state).delete();
+            new File(iconsPath+ File.separator + ID+"___"+state).delete();
         }
     }
 
@@ -584,7 +584,7 @@ public class ClientProfile implements Cloneable
         getActionFromID(actionID).addIcon(state, array);
 
 
-        File iconFile = new File(iconsPath+"/"+actionID+"___"+state);
+        File iconFile = new File(iconsPath + File.separator + actionID + "___" + state);
         if(iconFile.exists())
         {
             boolean result = iconFile.delete();

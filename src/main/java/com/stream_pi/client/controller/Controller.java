@@ -703,7 +703,7 @@ public class Controller extends Base
         }
         catch (SevereException e)
         {
-            handleSevereException("Unable to successfully factory reset. Delete directory \n'"+getClientInfo().getPrePath()+"/home/rnayabed/HDD_1/projects/stream-pi/server'\nMessage:\n"+e.getMessage(),e);
+            handleSevereException("Unable to successfully factory reset. Delete directory \n'"+getClientInfo().getPrePath()+"\nMessage:\n"+e.getMessage(),e);
         }
     }
 

@@ -714,7 +714,7 @@ public class Client extends Thread
                     {
                         // State no longer exists. Delete.
 
-                        new File(Config.getInstance().getIconsPath()+"/"+ID+"___"+oldState).delete();
+                        new File(Config.getInstance().getIconsPath()+ File.separator +ID+"___"+oldState).delete();
                     }
                 }
             }
@@ -878,7 +878,7 @@ public class Client extends Thread
         {
             if(clientProfile == null)
             {
-                clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+"/"+ID+".xml"),
+                clientProfile = new ClientProfile(new File(Config.getInstance().getProfilesPath()+File.separator+ID+".xml"),
                         Config.getInstance().getIconsPath(), name, rows, cols, actionSize, actionGap, actionDefaultDisplayTextFontSize);
 
             }

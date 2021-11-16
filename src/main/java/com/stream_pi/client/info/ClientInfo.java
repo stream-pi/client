@@ -63,7 +63,9 @@ public class ClientInfo
 
         String osName = System.getProperty("os.name").toLowerCase();
 
-        prePath = System.getProperty("user.home")+"/Stream-Pi/Client/";
+        String prePrePath = "Stream-Pi" + File.separator + "Client" + File.separator;
+
+        prePath = System.getProperty("user.home") + File.separator + prePrePath;
 
         if(osName.contains("windows"))
         {
@@ -75,7 +77,7 @@ public class ClientInfo
         }
         else if(osName.contains("android") || osName.contains("ios"))
         {
-            StorageService.create().ifPresent(s-> s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath()+"/Stream-Pi/Client/",
+            StorageService.create().ifPresent(s-> s.getPrivateStorage().ifPresentOrElse(sp-> prePath = sp.getAbsolutePath() + File.separator + prePrePath,
                     ()-> prePath = null));
 
             platform = Platform.valueOf(osName.toUpperCase());

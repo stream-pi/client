@@ -87,10 +87,10 @@ public class Config
     public static void unzipToDefaultPrePath() throws Exception
     {
         IOHelper.unzip(Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
-        Config.getInstance().setThemesPath(ClientInfo.getInstance().getPrePath()+"Themes/");
-        Config.getInstance().setIconsPath(ClientInfo.getInstance().getPrePath()+"Icons/");
-        Config.getInstance().setProfilesPath(ClientInfo.getInstance().getPrePath()+"Profiles/");
-        Config.getInstance().setCurrentLanguageLocale(Config.getInstance().getDefaultLanguageLocale());
+        Config.getInstance().setThemesPath(getDefaultThemesPath());
+        Config.getInstance().setIconsPath(getDefaultIconsPath());
+        Config.getInstance().setProfilesPath(getDefaultProfilesPath());
+        Config.getInstance().setCurrentLanguageLocale(getDefaultLanguageLocale());
 
         Config.getInstance().setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
 
@@ -132,19 +132,19 @@ public class Config
         return "com.stream_pi.defaultlight";
     }
 
-    public String getDefaultThemesPath()
+    public static String getDefaultThemesPath()
     {
-        return ClientInfo.getInstance().getPrePath()+"Themes/";
+        return ClientInfo.getInstance().getPrePath()+"Themes" + File.separator;
     }
 
-    public String getDefaultProfilesPath()
+    public static String getDefaultProfilesPath()
     {
-        return ClientInfo.getInstance().getPrePath()+"Profiles/";
+        return ClientInfo.getInstance().getPrePath()+"Profiles" + File.separator;
     }
 
-    public String getDefaultIconsPath()
+    public static String getDefaultIconsPath()
     {
-        return ClientInfo.getInstance().getPrePath()+"Icons/";
+        return ClientInfo.getInstance().getPrePath()+"Icons" + File.separator;
     }
 
     //Getters
@@ -169,7 +169,7 @@ public class Config
         Platform platform = ClientInfo.getInstance().getPlatform();
         if(platform != Platform.ANDROID &&
                 platform != Platform.IOS)
-            return ClientInfo.getInstance().getPrePath() + "Themes/";
+            return ClientInfo.getInstance().getPrePath() + "Themes" + File.separator;
 
         return XMLConfigHelper.getStringProperty(document, "themes-path", getDefaultThemesPath(), false, true, document, configFile);
     }
@@ -179,7 +179,7 @@ public class Config
         Platform platform = ClientInfo.getInstance().getPlatform();
         if(platform != Platform.ANDROID &&
                 platform != Platform.IOS)
-            return ClientInfo.getInstance().getPrePath() + "Profiles/";
+            return ClientInfo.getInstance().getPrePath() + "Profiles" + File.separator;
         
         return XMLConfigHelper.getStringProperty(document, "profiles-path", getDefaultProfilesPath(), false, true, document, configFile);
     }
@@ -189,7 +189,7 @@ public class Config
         Platform platform = ClientInfo.getInstance().getPlatform();
         if(platform != Platform.ANDROID &&
                 platform != Platform.IOS)
-            return ClientInfo.getInstance().getPrePath() + "Icons/";
+            return ClientInfo.getInstance().getPrePath() + "Icons" + File.separator;
         
         return XMLConfigHelper.getStringProperty(document, "icons-path", getDefaultIconsPath(), false, true, document, configFile);
     }
@@ -207,7 +207,7 @@ public class Config
                 getDefaultLanguageLocale().toLanguageTag(), false, true, document, configFile));
     }
 
-    public Locale getDefaultLanguageLocale()
+    public static Locale getDefaultLanguageLocale()
     {
         return Locale.getDefault();
     }
