@@ -147,6 +147,13 @@ public class About extends ScrollPane
             Label buildDateLabel = new Label(I18N.getString("window.settings.about.About.buildDate", clientInfo.getBuildDate()));
             buildDateLabel.getStyleClass().add("about_build_date_label");
             vBox.getChildren().addAll(buildDateLabel);
+
+            if(clientInfo.getBuildNumber() > -1)
+            {
+                Label buildNumberLabel = new Label(I18N.getString("window.settings.about.About.buildNumber", clientInfo.getBuildNumber()));
+                buildNumberLabel.getStyleClass().add("about_build_number_label");
+                vBox.getChildren().addAll(buildNumberLabel);
+            }
         }
 
 

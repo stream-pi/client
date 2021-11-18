@@ -48,6 +48,7 @@ public class ClientInfo
     private final Version minPluginSupportVersion;
     private final Version communicationProtocolVersion;
     private String buildDate;
+    private int buildNumber = -1;
     private String license;
     private Orientation orientation = null;
 
@@ -121,6 +122,7 @@ public class ClientInfo
                 inputStream.close();
 
                 buildDate = properties.getProperty("build.date");
+                buildNumber = Integer.parseInt(properties.getProperty("build.number"));
             }
         }
         catch (IOException e)
@@ -203,6 +205,11 @@ public class ClientInfo
     public String getBuildDate()
     {
         return buildDate;
+    }
+
+    public int getBuildNumber()
+    {
+        return buildNumber;
     }
 
     public String getLicense()
