@@ -42,7 +42,7 @@ jobs:
           JDEPS_MODULES=$(jdeps --module-path $JAVAFX_SDK/:target/lib/ --print-module-deps --ignore-missing-deps target/lib/client-$VERSION.jar)
           echo "REQ_MODULES=$JDEPS_MODULES" >> $GITHUB_ENV
         env:
-          JAVAFX_SDK: /tmp/javafx-sdk-17.0.0.1/lib/
+          JAVAFX_SDK: /tmp/javafx-sdk-18/lib/
       - name: Saving REQ_MODULES
         run: |
           echo $REQ_MODULES > req_modules.txt
