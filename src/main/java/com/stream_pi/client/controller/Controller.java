@@ -62,8 +62,6 @@ public class Controller extends Base
 {
     private Client client;
 
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-
     public Controller()
     {
         client = null;
@@ -266,7 +264,7 @@ public class Controller extends Base
                                     true
                             );
 
-                            getExecutor().submit(()->{
+                            ClientExecutorService.getExecutorService().submit(()->{
                                 try
                                 {
                                     if(isConnected())
@@ -414,7 +412,7 @@ public class Controller extends Base
     @Override
     public void exitApp()
     {
-        getExecutor().shutdown();
+        ClientExecutorService.getExecutorService().shutdown();
         if (ClientInfo.getInstance().getPlatform() == com.stream_pi.util.platform.Platform.ANDROID)
         {
             Services.get(LifecycleService.class).ifPresent(LifecycleService::shutdown);
@@ -775,11 +773,5 @@ public class Controller extends Base
         });
 
         return closeSettingsTimeline;
-    }
-
-    @Override
-    public ExecutorService getExecutor()
-    {
-        return executor;
     }
 }

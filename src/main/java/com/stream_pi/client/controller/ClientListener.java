@@ -87,8 +87,6 @@ public interface ClientListener
     void factoryReset();
     void exitApp();
 
-    ExecutorService getExecutor();
-
     void setFirstRun(boolean firstRun);
 
     ScreenSaver getScreenSaver();

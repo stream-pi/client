@@ -19,6 +19,7 @@ import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.SerializableColor;
+import com.stream_pi.client.controller.ClientExecutorService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
 import com.stream_pi.client.profile.ClientAction;
@@ -197,7 +198,7 @@ public class ActionBox extends StackPane
 
                     System.out.println("TOTAL CHILDREN : "+action.getClientProperties().getSize());
 
-                    clientListener.getExecutor().submit(()->{
+                    ClientExecutorService.getExecutorService().submit(()->{
                         for(int i = 0;i<action.getClientProperties().getSize(); i++)
                         {
                             try

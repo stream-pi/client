@@ -23,6 +23,7 @@ import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.property.Property;
 import com.stream_pi.action_api.actionproperty.property.StringProperty;
 import com.stream_pi.action_api.actionproperty.property.Type;
+import com.stream_pi.client.controller.ClientExecutorService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.io.Config;
@@ -89,7 +90,7 @@ public class Client extends Thread
 
         logger = Logger.getLogger(Client.class.getName());
 
-        clientListener.getExecutor().submit(new Task<Void>() {
+        ClientExecutorService.getExecutorService().submit(new Task<Void>() {
             @Override
             protected Void call()
             {
