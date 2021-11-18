@@ -344,7 +344,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
         return actionBox;
     }
 
-    public void toggleOffAllToggleActionsAndHideAllGaugeActions()
+    public void toggleOffAllToggleActionsAndHideAllGaugeActionsAndResetTheActionsDisplayText()
     {
         for (ActionBox[] actionBox : actionBoxes)
         {
@@ -363,6 +363,8 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
                     {
                         eachActionBox.setGaugeVisible(false);
                     }
+
+                    eachActionBox.updateTemporaryDisplayText(null);
                 }
             }
         }

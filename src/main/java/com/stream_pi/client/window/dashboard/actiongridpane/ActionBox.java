@@ -373,7 +373,7 @@ public class ActionBox extends StackPane
 
                 setDisplayTextAlignment(getAction().getDisplayTextAlignment());
                 setDisplayTextFontColourAndSize(getAction().getDisplayTextFontColourHex());
-                setDisplayTextLabel(getAction().getDisplayText());
+                updateDisplayTextLabel();
 
 
                 setGaugeTitle(getAction().getDisplayText());
@@ -389,11 +389,11 @@ public class ActionBox extends StackPane
                 {
                     setDisplayTextAlignment(getAction().getDisplayTextAlignment());
                     setDisplayTextFontColourAndSize(getAction().getDisplayTextFontColourHex());
-                    setDisplayTextLabel(getAction().getDisplayText());
+                    updateDisplayTextLabel();
                 }
                 else
                 {
-                    setDisplayTextLabel("");
+                    clearDisplayTextLabel();
                 }
             }
 
@@ -634,9 +634,14 @@ public class ActionBox extends StackPane
         statusIconAnimation.play();
     }
 
-    public void setDisplayTextLabel(String text)
+    public void updateDisplayTextLabel()
     {
-        displayTextLabel.setText(text);
+        displayTextLabel.setText((getAction().getTemporaryDisplayText() == null) ? getAction().getDisplayText() : getAction().getTemporaryDisplayText());
+    }
+
+    public void clearDisplayTextLabel()
+    {
+        displayTextLabel.setText("");
     }
 
     public void setGaugeTitle(String text)
@@ -683,6 +688,12 @@ public class ActionBox extends StackPane
     {
         if(!colour.isEmpty())
             setStyle("-fx-background-color : "+colour);
+    }
+
+    public void updateTemporaryDisplayText(String displayText)
+    {
+        getAction().setTemporaryDisplayText(displayText);
+        updateDisplayTextLabel();
     }
 }
 

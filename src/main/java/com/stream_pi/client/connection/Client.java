@@ -243,6 +243,8 @@ public class Client extends Thread
                         case "set_action_gauge_value": onSetActionGaugeValue(message);
                             break;
 
+                        case "update_action_temporary_display_text": updateActionTemporaryDisplayText(message);
+
                         default:                        logger.warning("Command '"+header+"' does not match records. Make sure client and server versions are equal.");
 
                     }
@@ -337,6 +339,15 @@ public class Client extends Thread
         {
             Platform.runLater(()-> actionBox.updateGaugeValue((double) message.getValue("gauge_value")));
         }
+    }
+
+    private void updateActionTemporaryDisplayText(Message message)
+    {
+        String profileID = (String) message.getValue("profile_ID");
+        String actionID = (String) message.getValue("ID");
+        String displayText = (String) message.getValue("display_text");
+
+        Platform.runLater(()-> clientListener.getActionBoxByProfileAndID(profileID, actionID).updateTemporaryDisplayText(displayText));
     }
 
     private void onActionIconReceived(Message message) throws MinorException

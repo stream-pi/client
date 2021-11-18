@@ -441,8 +441,9 @@ public class Controller extends Base
     }
 
     @Override
-    public void onDisconnect() {
-        Platform.runLater(()->getDashboardPane().getActionGridPane().toggleOffAllToggleActionsAndHideAllGaugeActions());
+    public void onDisconnect()
+    {
+        Platform.runLater(()-> getDashboardPane().getActionGridPane().toggleOffAllToggleActionsAndHideAllGaugeActionsAndResetTheActionsDisplayText());
     }
 
     @Override
