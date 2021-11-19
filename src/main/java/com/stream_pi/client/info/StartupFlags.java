@@ -53,6 +53,6 @@ public class StartupFlags
         ALLOW_ROOT = (allowRoot == null) ? ALLOW_ROOT : allowRoot.equals("true");
 
         String setFixedMinSize = System.getProperty("Stream-Pi.setFixedMinSize");
-        SET_FIXED_MIN_SIZE = (setFixedMinSize == null) ? ALLOW_ROOT : setFixedMinSize.equals("true");
+        SET_FIXED_MIN_SIZE = (setFixedMinSize == null) ? SET_FIXED_MIN_SIZE : setFixedMinSize.equals("true");
     }
 }
