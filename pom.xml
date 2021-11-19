@@ -52,8 +52,7 @@
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <jar.plugin>2.3.1</jar.plugin>
 
-
-        <build.helper.plugin.version>1.10</build.helper.plugin.version>
+        <buildnumber.plugin.version>1.4</buildnumber.plugin.version>
     </properties>
 
     <dependencies>
@@ -200,10 +199,11 @@
                 </executions>
             </plugin>
 
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>${buildnumber.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>buildnumber</id>
@@ -214,8 +214,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <format>{0,number}</format>
+                    <format>{1,number} ({0,date,dd/MM/yyyy HH:mm z})</format>
+                    <buildNumberPropertiesFileLocation>src/main/resources/com/stream_pi/client/info/build.properties</buildNumberPropertiesFileLocation>
                     <items>
+                        <item>timestamp</item>
                         <item>buildNumber</item>
                     </items>
                     <doCheck>false</doCheck>
@@ -278,26 +280,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${build.helper.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>timestamp-property</id>
-                        <goals>
-                            <goal>timestamp-property</goal>
-                        </goals>
-                        <configuration>
-                            <name>build.date</name>
-                            <pattern>dd/MM/yyyy HH:mm z</pattern>
-                            <locale>en_IN</locale>
-                            <timeZone>Asia/Kolkata</timeZone>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

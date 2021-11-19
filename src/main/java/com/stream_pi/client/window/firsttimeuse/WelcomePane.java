@@ -37,14 +37,13 @@ public class WelcomePane extends VBox
 {
     public WelcomePane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener)
     {
-        getStyleClass().add("first_time_use_pane_welcome");
+        getStyleClass().add("first_time_use_welcome_pane");
 
         Image appIcon = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/256x256.png")));
         ImageView appIconImageView = new ImageView(appIcon);
         VBox.setMargin(appIconImageView, new Insets(10, 0, 10, 0));
         appIconImageView.setFitHeight(128);
         appIconImageView.setFitWidth(128);
-
 
         Label welcomeLabel = new Label(I18N.getString("firsttimeuse.WelcomePane.welcome"));
         welcomeLabel.setWrapText(true);
@@ -92,7 +91,16 @@ public class WelcomePane extends VBox
 
         setAlignment(Pos.CENTER);
         setSpacing(5.0);
-        getChildren().addAll(appIconImageView, welcomeLabel, nextToContinue, languageChooserComboBox);
+
+
+        if (clientListener.getStageHeight() >= 530)
+        {
+            getChildren().add(appIconImageView);
+        }
+
+        getChildren().addAll(welcomeLabel, nextToContinue, languageChooserComboBox);
+
+
 
         setVisible(false);
     }

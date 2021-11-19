@@ -47,8 +47,7 @@ public class ClientInfo
     private String prePath;
     private final Version minPluginSupportVersion;
     private final Version communicationProtocolVersion;
-    private String buildDate;
-    private int buildNumber = -1;
+    private String buildNumber;
     private String license;
     private Orientation orientation = null;
 
@@ -121,8 +120,7 @@ public class ClientInfo
                 properties.load(inputStream);
                 inputStream.close();
 
-                buildDate = properties.getProperty("build.date");
-                buildNumber = Integer.parseInt(properties.getProperty("build.number"));
+                buildNumber = properties.getProperty("build.number");
             }
         }
         catch (IOException e)
@@ -202,12 +200,7 @@ public class ClientInfo
         return getPlatform() == Platform.ANDROID || getPlatform() == Platform.IOS;
     }
 
-    public String getBuildDate()
-    {
-        return buildDate;
-    }
-
-    public int getBuildNumber()
+    public String getBuildNumber()
     {
         return buildNumber;
     }

@@ -139,19 +139,19 @@
 
 }
 
-.first_time_use_pane_welcome
-{
-
-}
-
 .first_time_use_pane_license
 {
     -fx-spacing : 10;
 }
 
-.first_time_use_pane_final_config
+.first_time_use_pane_final_config, .first_time_use_pane_final_config > .viewport
 {
+    -fx-background-color:transparent;
+}
 
+.first_time_use_pane_final_config_vbox
+{
+    -fx-padding: 0 5 0 0;
 }
 
 .first_time_use_pane_final_config_label
@@ -166,7 +166,7 @@
 
 .first_time_use_welcome_pane_next_to_continue_label
 {
-    -fx-padding: 0 0 15 0;
+    -fx-padding: 0 0 0 0;
 }
 
 .scroll-pane

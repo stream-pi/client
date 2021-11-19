@@ -40,7 +40,7 @@ import javafx.scene.layout.VBox;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 
-public class FinalConfigPane extends VBox
+public class FinalConfigPane extends ScrollPane
 {
     private TextField clientNameTextField;
     private TextField serverIPHostNameTextField;
@@ -78,9 +78,12 @@ public class FinalConfigPane extends VBox
         HBoxInputBox serverIPHostNameInputBox = new HBoxInputBox(I18N.getString("serverHostNameOrIP"), serverIPHostNameTextField, 150);
         HBoxInputBox serverIPPortInputBox = new HBoxInputBox(I18N.getString("serverPort"), serverPortTextField, 150);
 
-        getChildren().addAll(label, clientNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, securityWarningLabel);
+        VBox vBox = new VBox(label, clientNameInputBox, serverIPHostNameInputBox, serverIPPortInputBox, securityWarningLabel);
+        vBox.getStyleClass().add("first_time_use_pane_final_config_vbox");
+        vBox.setSpacing(10.0);
 
-        setSpacing(10.0);
+        setContent(vBox);
+        setFitToWidth(true);
 
         setVisible(false);
     }
