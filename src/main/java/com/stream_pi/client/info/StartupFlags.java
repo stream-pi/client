@@ -24,6 +24,7 @@ public class StartupFlags
     public static boolean SHOW_FULLSCREEN_TOGGLE_BUTTON=true;
     public static boolean APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = false;
     public static boolean ALLOW_ROOT = false;
+    public static boolean SET_FIXED_MIN_SIZE = true;
 
     public static void init()
     {
@@ -50,5 +51,8 @@ public class StartupFlags
 
         String allowRoot = System.getProperty("Stream-Pi.allowRoot");
         ALLOW_ROOT = (allowRoot == null) ? ALLOW_ROOT : allowRoot.equals("true");
+
+        String setFixedMinSize = System.getProperty("Stream-Pi.setFixedMinSize");
+        SET_FIXED_MIN_SIZE = (setFixedMinSize == null) ? ALLOW_ROOT : setFixedMinSize.equals("true");
     }
 }
