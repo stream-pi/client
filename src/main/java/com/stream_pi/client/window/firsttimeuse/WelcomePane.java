@@ -88,7 +88,7 @@ public class WelcomePane extends VBox
             }
         });
 
-        heightProperty().addListener((observableValue, oldVal, newVal) -> appIconImageView.setVisible(newVal.intValue() >= 530));
+        heightProperty().addListener((observableValue, oldVal, newVal) -> appIconImageView.setVisible(clientListener.getStageHeight() >= 530));
 
         getChildren().addAll(appIconImageView, welcomeLabel, languageChooserComboBox);
 

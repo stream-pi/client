@@ -423,7 +423,8 @@ public class Controller extends Base
     }
 
     @Override
-    public void loadSettings() {
+    public void loadSettings()
+    {
         try {
             getSettingsPane().getGeneralTab().loadData();
         } catch (SevereException e) {
@@ -694,7 +695,7 @@ public class Controller extends Base
 
         try
         {
-            IOHelper.deleteFile(getClientInfo().getPrePath());
+            IOHelper.deleteFile(getClientInfo().getPrePath(), false);
 
             setFirstRun(true);
             init();

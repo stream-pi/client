@@ -160,6 +160,12 @@
     -fx-padding: 0 0 15 0;
 }
 
+.first_time_use_welcome_pane
+{
+    -fx-spacing: 10.0;
+    -fx-alignment: CENTER;
+}
+
 .first_time_use_welcome_pane_welcome_label
 {
     -fx-font-size: 2.5em;
@@ -235,10 +241,4 @@
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-font-weight: bold;
-}
-
-.first_time_use_welcome_pane
-{
-    -fx-spacing: 10.0;
-    -fx-alignment: CENTER;
 }
