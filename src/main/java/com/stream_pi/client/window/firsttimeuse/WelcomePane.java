@@ -89,10 +89,6 @@ public class WelcomePane extends VBox
             }
         });
 
-        setAlignment(Pos.CENTER);
-        setSpacing(5.0);
-
-
         if (clientListener.getStageHeight() >= 530)
         {
             getChildren().add(appIconImageView);
