@@ -35,7 +35,7 @@
 
 .alert_header
 {
-    -fx-padding: 5;
+    -fx-padding: 10;
 }
 
 .alert_pane
@@ -57,9 +57,10 @@
     -fx-padding: 5;
 }
 
-.alert_pane_parent, .combobox_pane_parent
+.alert_pane_popup_node_parent, .combobox_pane_popup_node_parent
 {
     -fx-background-color : rgba(0,0,0,0.5);
+    -fx-padding: 10;
 }
 
 .alert_pane_header_text
