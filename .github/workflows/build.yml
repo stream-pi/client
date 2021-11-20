@@ -344,8 +344,8 @@ jobs:
             # rm -rf javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm_debug-1.1.6.so
 
             mv javafx-sdk-arm32/javafx-sdk-18/lib/* $INSTALL_DIR/
-            cp assets/launchers/arm32-jvm/run_console $INSTALL_DIR/run_console
-            cp assets/launchers/arm32-jvm/run_desktop $INSTALL_DIR/run_desktop
+            cp assets/launchers/arm-jvm/run_console $INSTALL_DIR/run_console
+            cp assets/launchers/arm-jvm/run_desktop $INSTALL_DIR/run_desktop
             cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
             chmod +x $INSTALL_DIR/run_desktop
             chmod +x $INSTALL_DIR/run_console
@@ -495,8 +495,8 @@ jobs:
             # rm -rf javafx-sdk-aarch64/javafx-sdk-18/lib/libgluon_drm_debug-1.1.6.so
 
             mv javafx-sdk-aarch64/javafx-sdk-18/lib/* $INSTALL_DIR/
-            cp assets/launchers/aarch64-jvm/run_console $INSTALL_DIR/run_console
-            cp assets/launchers/aarch64-jvm/run_desktop $INSTALL_DIR/run_desktop
+            cp assets/launchers/arm-jvm/run_console $INSTALL_DIR/run_console
+            cp assets/launchers/arm-jvm/run_desktop $INSTALL_DIR/run_desktop
             cp assets/linux-icon.png $INSTALL_DIR/app-icon.png
             chmod +x $INSTALL_DIR/run_desktop
             chmod +x $INSTALL_DIR/run_console
