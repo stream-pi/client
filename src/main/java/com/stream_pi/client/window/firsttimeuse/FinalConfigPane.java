@@ -26,6 +26,7 @@ import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.alert.StreamPiAlertType;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.rootchecker.RootChecker;
 import com.stream_pi.util.uihelper.ActionGridRowsAndColsCalculator;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 
@@ -122,7 +123,7 @@ public class FinalConfigPane extends ScrollPane
         {
             port = Integer.parseInt(serverPortTextField.getText());
 
-            if(port < 1024)
+            if(port < 1024 && RootChecker.isRoot(ClientInfo.getInstance().getPlatform()))
             {
                 errors.append("* ").append(I18N.getString("serverPortMustBeGreaterThan1024")).append("\n");
             }

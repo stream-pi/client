@@ -37,6 +37,7 @@ import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.platform.PlatformType;
+import com.stream_pi.util.rootchecker.RootChecker;
 import com.stream_pi.util.startonboot.StartOnBoot;
 import com.stream_pi.util.uihelper.HBoxInputBox;
 import com.stream_pi.util.uihelper.HBoxWithSpaceBetween;
@@ -525,7 +526,7 @@ public class GeneralTab extends VBox
         {
             port = Integer.parseInt(serverPortTextField.getText());
 
-            if(port < 1024)
+            if(port < 1024 && RootChecker.isRoot(ClientInfo.getInstance().getPlatform()))
             {
                 errors.append("* ").append(I18N.getString("serverPortMustBeGreaterThan1024")).append("\n");
             }
