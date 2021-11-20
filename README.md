@@ -15,7 +15,7 @@ Client Software for the Stream-Pi Platform
 ![Total Downloads](https://img.shields.io/github/downloads/stream-pi/client/total?label=Total%20Downloads)
 
 ### [Website](https://stream-pi.com)
-#### [Download latest release](https://github.com/stream-pi/client/releases/tag/1.0.0-EA%2B3) | [Download latest snapshot](https://github.com/stream-pi/server/releases/tag/1.0.0-EA%2B4-SNAPSHOT)
+#### [Download latest release](https://github.com/stream-pi/client/releases/tag/1.0.0-EA%2B3) | [Download latest snapshot](https://github.com/stream-pi/client/releases/tag/1.0.0-EA%2B4-SNAPSHOT)
 #### [Help us Translate!](https://github.com/stream-pi/client/blob/master/i18n.md)
 </div>
 
