@@ -639,36 +639,36 @@ public class GeneralTab extends VBox
 
 
 
-            boolean startOnBoot = startOnBootToggleSwitch.isSelected();
+            boolean isStartOnBoot = startOnBootToggleSwitch.isSelected();
 
-            if(config.isStartOnBoot() != startOnBoot)
+            if(config.isStartOnBoot() != isStartOnBoot)
             {
-                StartOnBoot startAtBoot = new StartOnBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
+                StartOnBoot startOnBoot = new StartOnBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
                         Main.class.getProtectionDomain().getCodeSource().getLocation(),
                         StartupFlags.APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
 
-                if(startOnBoot)
+                if(isStartOnBoot)
                 {
                     try
                     {
-                        startAtBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
+                        startOnBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
                         config.setStartupIsXMode(StartupFlags.IS_X_MODE);
                     }
                     catch (MinorException e)
                     {
                         exceptionAndAlertHandler.handleMinorException(e);
-                        startOnBoot = false;
+                        isStartOnBoot = false;
                     }
                 }
                 else
                 {
-                    boolean result = startAtBoot.delete();
+                    boolean result = startOnBoot.delete();
                     if(!result)
                         new StreamPiAlert(I18N.getString("window.settings.GeneralTab.unableToDeleteStarterFile"), StreamPiAlertType.ERROR).show();
                 }
             }
 
-            config.setStartOnBoot(startOnBoot);
+            config.setStartOnBoot(isStartOnBoot);
 
             if(!config.isShowCursor() ==showCursorToggleSwitch.isSelected())
             {
