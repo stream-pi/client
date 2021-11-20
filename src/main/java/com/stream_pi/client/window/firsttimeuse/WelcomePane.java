@@ -23,6 +23,8 @@ import com.stream_pi.client.window.ExceptionAndAlertHandler;
 import com.stream_pi.util.combobox.StreamPiComboBoxListener;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.i18n.Language;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -35,12 +37,14 @@ import java.util.Objects;
 
 public class WelcomePane extends VBox
 {
+    private ImageView appIconImageView;
     public WelcomePane(ExceptionAndAlertHandler exceptionAndAlertHandler, ClientListener clientListener)
     {
         getStyleClass().add("first_time_use_welcome_pane");
 
         Image appIcon = new Image(Objects.requireNonNull(Main.class.getResourceAsStream("icons/256x256.png")));
-        ImageView appIconImageView = new ImageView(appIcon);
+        appIconImageView = new ImageView(appIcon);
+        appIconImageView.managedProperty().bind(appIconImageView.visibleProperty());
         VBox.setMargin(appIconImageView, new Insets(10, 0, 10, 0));
         appIconImageView.setFitHeight(128);
         appIconImageView.setFitWidth(128);
@@ -89,12 +93,9 @@ public class WelcomePane extends VBox
             }
         });
 
-        if (clientListener.getStageHeight() >= 530)
-        {
-            getChildren().add(appIconImageView);
-        }
+        widthProperty().addListener((observableValue, oldVal, newVal) -> appIconImageView.setVisible(newVal.intValue() >= 530));
 
-        getChildren().addAll(welcomeLabel, nextToContinue, languageChooserComboBox);
+        getChildren().addAll(appIconImageView, welcomeLabel, nextToContinue, languageChooserComboBox);
 
 
 

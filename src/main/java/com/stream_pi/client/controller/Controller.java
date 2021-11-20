@@ -204,20 +204,19 @@ public class Controller extends Base
             {
                 firstRun = false;
 
-                firstTimeUse = new FirstTimeUse(this, this);
+                resizeAccordingToResolution();
 
-                getChildren().add(firstTimeUse);
+                firstTimeUse = new FirstTimeUse(this, this);
 
                 if(getClientInfo().isPhone())
                 {
                     firstTimeUse.setPadding(new Insets(15));
                 }
 
+                getChildren().add(firstTimeUse);
                 firstTimeUse.toFront();
 
                 //resolution check
-                resizeAccordingToResolution();
-
                 return;
             }
             else
