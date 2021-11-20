@@ -123,7 +123,7 @@ public class FinalConfigPane extends ScrollPane
         {
             port = Integer.parseInt(serverPortTextField.getText());
 
-            if(port < 1024 && RootChecker.isRoot(ClientInfo.getInstance().getPlatform()))
+            if(port < 1024 && !RootChecker.isRoot(ClientInfo.getInstance().getPlatform()))
             {
                 errors.append("* ").append(I18N.getString("serverPortMustBeGreaterThan1024")).append("\n");
             }
