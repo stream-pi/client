@@ -54,11 +54,6 @@ public class WelcomePane extends VBox
         welcomeLabel.setAlignment(Pos.CENTER);
         welcomeLabel.getStyleClass().add("first_time_use_welcome_pane_welcome_label");
 
-        Label nextToContinue = new Label(I18N.getString("firsttimeuse.WelcomePane.nextToContinue"));
-        nextToContinue.setWrapText(true);
-        nextToContinue.setAlignment(Pos.CENTER);
-        nextToContinue.getStyleClass().add("first_time_use_welcome_pane_next_to_continue_label");
-
         LanguageChooserComboBox languageChooserComboBox = new LanguageChooserComboBox();
         languageChooserComboBox.getStyleClass().add("first_time_use_welcome_pane_language_chooser_combo_box");
 
@@ -93,9 +88,9 @@ public class WelcomePane extends VBox
             }
         });
 
-        widthProperty().addListener((observableValue, oldVal, newVal) -> appIconImageView.setVisible(newVal.intValue() >= 530));
+        heightProperty().addListener((observableValue, oldVal, newVal) -> appIconImageView.setVisible(newVal.intValue() >= 530));
 
-        getChildren().addAll(appIconImageView, welcomeLabel, nextToContinue, languageChooserComboBox);
+        getChildren().addAll(appIconImageView, welcomeLabel, languageChooserComboBox);
 
 
 
