@@ -389,11 +389,11 @@ jobs:
         name: Build & save Linux ARMv7 ZIP
         with:
           arch: armv7
-          distro: ubuntu18.04
+          distro: bullseye
 
           run: |
-            sudo apt update
-            sudo apt install axel unzip zip
+            apt update
+            apt install axel unzip zip
 
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
