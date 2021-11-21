@@ -321,7 +321,7 @@ jobs:
         name: Build & save Linux ARMv6 ZIP
         with:
           arch: armv6
-          distro: buster
+          distro: bullseye
 
           run: |
             sudo apt update
@@ -389,7 +389,7 @@ jobs:
         name: Build & save Linux ARMv7 ZIP
         with:
           arch: armv7
-          distro: buster
+          distro: bullseye
 
           run: |
             sudo apt update
@@ -540,7 +540,7 @@ jobs:
         name: Build & save Linux aarch64 ZIP
         with:
           arch: aarch64
-          distro: buster
+          distro: bullseye
 
           run: |
             apt -y update
