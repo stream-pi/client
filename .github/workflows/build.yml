@@ -392,8 +392,8 @@ jobs:
           distro: bullseye
 
           run: |
-            apt update
-            apt install wget unzip zip
+            apt-get -y update
+            apt-get -y install wget unzip zip
 
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
