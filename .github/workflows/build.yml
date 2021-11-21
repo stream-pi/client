@@ -389,7 +389,7 @@ jobs:
         name: Build & save Linux ARMv7 ZIP
         with:
           arch: armv7
-          distro: bullseye
+          distro: ubuntu18.04
 
           run: |
             sudo apt update
