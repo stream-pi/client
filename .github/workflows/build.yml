@@ -395,6 +395,7 @@ jobs:
             apt-get -y update
             apt-get -y install wget unzip zip
 
+
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
