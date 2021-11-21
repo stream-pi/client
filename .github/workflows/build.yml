@@ -325,13 +325,13 @@ jobs:
 
           run: |
             sudo apt update
-            sudo apt install axel unzip zip
+            sudo apt install wget unzip zip
 
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -k -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-arm32_bin-sdk.zip
+            wget https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-arm32_bin-sdk.zip
             unzip openjfx-18-ea+7_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
