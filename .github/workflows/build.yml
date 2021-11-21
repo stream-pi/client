@@ -325,13 +325,13 @@ jobs:
 
           run: |
             sudo apt update
-            sudo apt install wget unzip zip
+            sudo apt install axel unzip zip
 
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            wget https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-arm32_bin-sdk.zip
+            axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-arm32_bin-sdk.zip
             unzip openjfx-18-ea+7_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
@@ -393,13 +393,13 @@ jobs:
 
           run: |
             apt update
-            apt install axel unzip zip
+            apt install wget unzip zip
 
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-arm32_bin-sdk.zip
+            wget https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-arm32_bin-sdk.zip
             unzip openjfx-18-ea+7_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
@@ -419,7 +419,7 @@ jobs:
             chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
-            axel -n 8 https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jdk_arm_linux_hotspot_17.0.1_12.tar.gz
+            wget https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jdk_arm_linux_hotspot_17.0.1_12.tar.gz
             tar -xvzf OpenJDK17U-jdk_arm_linux_hotspot_17.0.1_12.tar.gz
 
             #Run jpackage
