@@ -299,7 +299,7 @@ jobs:
           name: windows-msi-x64
           path: target/install/*.msi
 
-  linux-armv6:
+  linux-arm32:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2.1.0
@@ -318,7 +318,7 @@ jobs:
           name: built-jars
           path: target/lib/
       - uses: uraimo/run-on-arch-action@v2.1.1
-        name: Build & save Linux ARMv6 ZIP
+        name: Build & save Linux ARM32 ZIP
         with:
           arch: armv6
           distro: bullseye
@@ -358,13 +358,13 @@ jobs:
             zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
-            zip -r stream-pi-client-linux-armv6-$VERSION-executable.zip *
+            zip -r stream-pi-client-linux-arm32-$VERSION-executable.zip *
 
-      - name: Saving Linux ARMv6 ZIP
+      - name: Saving Linux ARM32 ZIP
         uses: actions/upload-artifact@v2
         with:
-          name: linux-zip-armv6
-          path: target/install/stream-pi-client-linux-armv6-${{ env.VERSION }}-executable.zip
+          name: linux-zip-arm32
+          path: target/install/stream-pi-client-linux-arm32-${{ env.VERSION }}-executable.zip
 
   linux-aarch64-native:
     runs-on: ubuntu-20.04
