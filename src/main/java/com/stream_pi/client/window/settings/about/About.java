@@ -108,7 +108,7 @@ public class About extends ScrollPane
         Label minThemeAPILabel = new Label("Min ThemeAPI " + ThemeAPI.MIN_VERSION_SUPPORTED.getText());
         minThemeAPILabel.getStyleClass().add("about_min_theme_api_label");
 
-        Label minActionAPILabel = new Label(I18N.getString("Min ActionAPI " + ActionAPI.MIN_VERSION_SUPPORTED.getText()));
+        Label minActionAPILabel = new Label("Min ActionAPI " + ActionAPI.MIN_VERSION_SUPPORTED.getText());
         minActionAPILabel.getStyleClass().add("about_min_action_api_label");
 
         Label currentActionAPILabel = new Label("Action API " + ActionAPI.VERSION.getText());
