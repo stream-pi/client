@@ -391,6 +391,9 @@ jobs:
           arch: armv7
           distro: bullseye
 
+          dockerRunArgs: |
+            --platform linux/arm/v7
+
           run: |
             apt-get -y update
             apt-get -y install wget unzip zip
