@@ -60,12 +60,6 @@ jobs:
           workflow: build.yml
           name: linux-zip-armv6
           path: target/install
-      - name: Download Linux ARMv7 ZIP
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: build.yml
-          name: linux-zip-armv7
-          path: target/install
       - name: Download Linux native aarch64 ZIP
         uses: dawidd6/action-download-artifact@v2
         with:
