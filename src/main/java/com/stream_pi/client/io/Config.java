@@ -166,9 +166,7 @@ public class Config
 
     public String getThemesPath()
     {
-        Platform platform = ClientInfo.getInstance().getPlatform();
-        if(platform != Platform.ANDROID &&
-                platform != Platform.IOS)
+        if(ClientInfo.getInstance().isPhone())
             return ClientInfo.getInstance().getPrePath() + "Themes" + File.separator;
 
         return XMLConfigHelper.getStringProperty(document, "themes-path", getDefaultThemesPath(), false, true, document, configFile);
@@ -176,9 +174,7 @@ public class Config
 
     public String getProfilesPath()
     {
-        Platform platform = ClientInfo.getInstance().getPlatform();
-        if(platform != Platform.ANDROID &&
-                platform != Platform.IOS)
+        if(ClientInfo.getInstance().isPhone())
             return ClientInfo.getInstance().getPrePath() + "Profiles" + File.separator;
         
         return XMLConfigHelper.getStringProperty(document, "profiles-path", getDefaultProfilesPath(), false, true, document, configFile);
@@ -186,9 +182,7 @@ public class Config
 
     public String getIconsPath()
     {
-        Platform platform = ClientInfo.getInstance().getPlatform();
-        if(platform != Platform.ANDROID &&
-                platform != Platform.IOS)
+        if(ClientInfo.getInstance().isPhone())
             return ClientInfo.getInstance().getPrePath() + "Icons" + File.separator;
         
         return XMLConfigHelper.getStringProperty(document, "icons-path", getDefaultIconsPath(), false, true, document, configFile);

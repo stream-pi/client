@@ -682,6 +682,7 @@ public class GeneralTab extends VBox
             if(!config.getThemesPath().equals(themesPathTextField.getText()))
             {
                 toBeReloaded = true;
+                baseToBeReloaded = true;
             }
 
             config.setThemesPath(themesPathTextField.getText());
@@ -690,6 +691,7 @@ public class GeneralTab extends VBox
             if(!config.getIconsPath().equals(iconsPathTextField.getText()))
             {
                 toBeReloaded = true;
+                baseToBeReloaded = true;
             }
 
             config.setIconsPath(iconsPathTextField.getText());
@@ -697,6 +699,7 @@ public class GeneralTab extends VBox
             if(!config.getProfilesPath().equals(profilesPathTextField.getText()))
             {
                 toBeReloaded = true;
+                baseToBeReloaded = true;
             }
 
             config.setProfilesPath(profilesPathTextField.getText());

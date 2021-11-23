@@ -260,9 +260,6 @@ public class ClientProfile implements Cloneable
                 action.setBgColourHex(XMLConfigHelper.getStringProperty(backgroundElement, "colour-hex"));
 
                 Element iconElement = (Element) backgroundElement.getElementsByTagName("icon").item(0);
-                
-                //boolean showIcon = XMLConfigHelper.getBooleanProperty(iconElement, "show");
-                //boolean hasIcon = XMLConfigHelper.getBooleanProperty(iconElement, "has");
 
                 String currentIconState = XMLConfigHelper.getStringProperty(iconElement, "current-state");
 
@@ -290,11 +287,19 @@ public class ClientProfile implements Cloneable
 
                     try
                     {
-                        byte[] iconFileByteArray = Files.readAllBytes(f.toPath());
-                        action.addIcon(state, iconFileByteArray);
+                        if (f.exists())
+                        {
+                            byte[] iconFileByteArray = Files.readAllBytes(f.toPath());
+                            action.addIcon(state, iconFileByteArray);
+                        }
+                        else
+                        {
+                            logger.severe("Icon for "+id+"; state "+state+" not found! Possibly because of changed paths.");
+                        }
                     }
                     catch (Exception e)
                     {
+                        logger.severe("Icon for "+id+"; state "+state+" unable to load!");
                         e.printStackTrace();
                     }
                 }
@@ -587,8 +592,7 @@ public class ClientProfile implements Cloneable
         File iconFile = new File(iconsPath + File.separator + actionID + "___" + state);
         if(iconFile.exists())
         {
-            boolean result = iconFile.delete();
-            System.out.println("result : "+result);
+            iconFile.delete();
         }
 
         try
