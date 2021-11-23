@@ -693,16 +693,14 @@ public class Controller extends Base
 
         onCloseRequest();
 
-        try
+        if (IOHelper.deleteFile(getClientInfo().getPrePath(), false))
         {
-            IOHelper.deleteFile(getClientInfo().getPrePath(), false);
-
             setFirstRun(true);
             init();
         }
-        catch (SevereException e)
+        else
         {
-            handleSevereException("Unable to successfully factory reset. Delete directory \n'"+getClientInfo().getPrePath()+"\nMessage:\n"+e.getMessage(),e);
+            handleSevereException(new SevereException(I18N.getString("controller.Controller.factoryResetUnsuccessful", getClientInfo().getPrePath())));
         }
     }
 
