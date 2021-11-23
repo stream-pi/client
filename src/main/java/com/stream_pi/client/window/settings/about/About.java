@@ -98,7 +98,6 @@ public class About extends ScrollPane
 
 
         ClientInfo clientInfo = ClientInfo.getInstance();
-
         Label versionText = new Label(clientInfo.getVersion().getText() + " - "+ clientInfo.getPlatform().getUIName() + " - "+ clientInfo.getReleaseStatus().getUIName());
         versionText.getStyleClass().add("about_version_label");
 
