@@ -205,9 +205,6 @@ public class Client extends Thread
                         case "server_details" :         registerServerDetails(message);
                             break;
 
-                        case "get_client_screen_details" : sendClientScreenDetails();
-                            break;
-
                         case "get_profiles" :           sendProfileNamesToServer();
                             break;
 

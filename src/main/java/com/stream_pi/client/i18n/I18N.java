@@ -15,7 +15,7 @@
 package com.stream_pi.client.i18n;
 
 import com.stream_pi.util.exception.SevereException;
-import com.stream_pi.util.i18n.Language;
+import com.stream_pi.util.i18n.language.Language;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

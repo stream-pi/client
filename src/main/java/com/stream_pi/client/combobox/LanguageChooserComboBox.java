@@ -17,7 +17,7 @@ package com.stream_pi.client.combobox;
 import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.combobox.StreamPiComboBoxFactory;
-import com.stream_pi.util.i18n.Language;
+import com.stream_pi.util.i18n.language.Language;
 
 import java.util.Locale;
 
