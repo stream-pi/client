@@ -220,6 +220,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         ActionBox[][] actionBoxesToBeAdded = null;
 
+
         if(isFreshRender)
         {
             actionBoxesToBeAdded = new ActionBox[(renderSelector == RenderSelector.ROW ? rows : cols)][(renderSelector != RenderSelector.ROW ? rows : cols)];
@@ -252,13 +253,13 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         if (isFreshRender)
         {
-            boolean finalSelector = (renderSelector == RenderSelector.ROW);
+            boolean inverse = false;
 
             try
             {
                 if(Config.getInstance().isInvertRowsColsOnDeviceRotate() && ClientInfo.getInstance().isPhone() && ClientInfo.getInstance().getOrientation() == Orientation.VERTICAL)
                 {
-                    finalSelector = !finalSelector;
+                    inverse = true;
                 }
             }
             catch (SevereException e)
@@ -266,19 +267,32 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
                 exceptionAndAlertHandler.handleSevereException(e);
             }
 
-
-            if (finalSelector)
+            if (renderSelector == RenderSelector.ROW)
             {
                 for(int i = 0; i<rows; i++)
                 {
-                    actionsGridPane.addRow(i, actionBoxesToBeAdded[i]);
+                    if (inverse)
+                    {
+                        actionsGridPane.addColumn(i, actionBoxesToBeAdded[i]);
+                    }
+                    else
+                    {
+                        actionsGridPane.addRow(i, actionBoxesToBeAdded[i]);
+                    }
                 }
             }
             else
             {
                 for(int i = 0; i<cols; i++)
                 {
-                    actionsGridPane.addColumn(i, actionBoxesToBeAdded[i]);
+                    if (inverse)
+                    {
+                        actionsGridPane.addRow(i, actionBoxesToBeAdded[i]);
+                    }
+                    else
+                    {
+                        actionsGridPane.addColumn(i, actionBoxesToBeAdded[i]);
+                    }
                 }
             }
         }

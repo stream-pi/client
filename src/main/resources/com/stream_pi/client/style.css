@@ -124,7 +124,7 @@
     -fx-padding : 10;
 }
 
-.settings_button_bar
+.settings_general_tab_button_bar
 {
     -fx-padding: 0 10 0 0;
     -fx-spacing: 10;
@@ -241,4 +241,10 @@
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-font-weight: bold;
+}
+
+.settings_general_tab_vbox, .settings_about_tab_vbox
+{
+    -fx-spacing: 10;
+    -fx-padding: 5;
 }

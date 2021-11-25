@@ -289,10 +289,8 @@ public class GeneralTab extends VBox
         );
 
 
-        vBox.getStyleClass().add("settings_general_tab");
-
-        vBox.setSpacing(10.0);
-        vBox.setPadding(new Insets(5));
+        getStyleClass().add("settings_general_tab");
+        vBox.getStyleClass().add("settings_general_tab_vbox");
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -300,12 +298,11 @@ public class GeneralTab extends VBox
         scrollPane.getStyleClass().add("settings_general_tab_scroll_pane");
         scrollPane.setContent(vBox);
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
 
         vBox.setMinWidth(300);
 
 
-        buttonBar.getStyleClass().add("settings_button_bar");
+        buttonBar.getStyleClass().add("settings_general_tab_button_bar");
         buttonBar.setSpacing(5.0);
         buttonBar.setAlignment(Pos.CENTER_RIGHT);
 

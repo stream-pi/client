@@ -51,13 +51,11 @@ public class About extends ScrollPane
     {
         this.clientListener = clientListener;
 
-        getStyleClass().add("about_parent");
+        getStyleClass().add("settings_about_tab");
 
-        setPadding(new Insets(5));
 
         mainVBox = new VBox();
-        mainVBox.getStyleClass().add("about");
-        mainVBox.setSpacing(5.0);
+        mainVBox.getStyleClass().add("settings_about_tab_vbox");
 
 
         mainVBox.setAlignment(Pos.TOP_CENTER);
@@ -151,7 +149,8 @@ public class About extends ScrollPane
 
         mainVBox.getChildren().addAll(appIconImageView, tabPane,
                 donateButton, vBox);
-        mainVBox.prefWidthProperty().bind(widthProperty().subtract(30));
+
+        setFitToWidth(true);
 
         setContent(mainVBox);
 
