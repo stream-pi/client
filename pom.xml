@@ -280,6 +280,30 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
+
+            <plugin>
+                <groupId>com.gluonhq</groupId>
+                <artifactId>gluonfx-maven-plugin</artifactId>
+                <version>${gluonfx.plugin.version}</version>
+                <configuration>
+                    <mainClass>${main.class.name}</mainClass>
+                    <verbose>true</verbose>
+                    <nativeImageArgs>
+                        <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
+                    </nativeImageArgs>
+                    <attachList>
+                        <list>lifecycle</list>
+                        <list>storage</list>
+                        <list>browser</list>
+                        <list>vibration</list>
+                        <list>orientation</list>
+                    </attachList>
+                    <reflectionList>
+                        <list>java.util.logging.FileHandler</list>
+                        <list>javafx.scene.control.TableColumnBase</list>
+                    </reflectionList>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -309,23 +333,9 @@
                         <version>${gluonfx.plugin.version}</version>
                         <configuration>
                             <target>android</target>
-                            <mainClass>${main.class.name}</mainClass>
-                            <verbose>true</verbose>
                             <nativeImageArgs>
-                                <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
                                 <list>-Dsvm.targetName=android</list>
                             </nativeImageArgs>
-                            <attachList>
-                                <list>lifecycle</list>
-                                <list>storage</list>
-                                <list>browser</list>
-                                <list>vibration</list>
-                                <list>orientation</list>
-                            </attachList>
-                            <reflectionList>
-                                <list>java.util.logging.FileHandler</list>
-                                <list>javafx.scene.control.TableColumnBase</list>
-                            </reflectionList>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -343,23 +353,9 @@
                         <version>${gluonfx.plugin.version}</version>
                         <configuration>
                             <target>ios</target>
-                            <mainClass>${main.class.name}</mainClass>
-                            <verbose>true</verbose>
                             <nativeImageArgs>
-                                <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
                                 <list>-Dsvm.targetName=iOS</list>
                             </nativeImageArgs>
-                            <attachList>
-                                <list>lifecycle</list>
-                                <list>storage</list>
-                                <list>browser</list>
-                                <list>vibration</list>
-                                <list>orientation</list>
-                            </attachList>
-                            <reflectionList>
-                                <list>java.util.logging.FileHandler</list>
-                                <list>javafx.scene.control.TableColumnBase</list>
-                            </reflectionList>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -376,22 +372,6 @@
                         <version>${gluonfx.plugin.version}</version>
                         <configuration>
                             <target>linux-aarch64</target>
-                            <mainClass>${main.class.name}</mainClass>
-                            <verbose>true</verbose>
-                            <nativeImageArgs>
-                                <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
-                            </nativeImageArgs>
-                            <attachList>
-                                <list>lifecycle</list>
-                                <list>storage</list>
-                                <list>browser</list>
-                                <list>vibration</list>
-                                <list>orientation</list>
-                            </attachList>
-                            <reflectionList>
-                                <list>java.util.logging.FileHandler</list>
-                                <list>javafx.scene.control.TableColumnBase</list>
-                            </reflectionList>
                         </configuration>
                     </plugin>
                 </plugins>
