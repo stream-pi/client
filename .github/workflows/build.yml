@@ -95,9 +95,8 @@ jobs:
           --app-version $NEW_V \
           --type rpm
 
-          cd $INSTALL_DIR
-          mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}.deb
-          mv *.rpm stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
+          mv ${INSTALL_DIR}/*.deb stream-pi-client-linux-x64-${{ env.VERSION }}.deb
+          mv ${INSTALL_DIR}/*.rpm stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-18/
@@ -107,17 +106,17 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: linux-deb-x64
-          path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}.deb
+          path: stream-pi-client-linux-x64-${{ env.VERSION }}.deb
       - name: Saving Linux x64 RPM
         uses: actions/upload-artifact@v2
         with:
           name: linux-rpm-x64
-          path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
-      - name: Saving Linux x64 ZIP
+          path: stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
+      - name: Saving Linux x64 AppImage
         uses: actions/upload-artifact@v2
         with:
-          name: linux-zip-x64
-          path: target/install/stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip
+          name: linux-app-image-x64
+          path: stream-pi-client-linux-x64-${{ env.VERSION }}.AppImage
 
   android-aarch64:
     runs-on: ubuntu-20.04
