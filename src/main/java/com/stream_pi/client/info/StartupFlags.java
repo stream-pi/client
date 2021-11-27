@@ -45,18 +45,23 @@ public class StartupFlags
         {
             String[] arr = arg.split("=");
 
-            String val = arr[1].strip();
-            switch(arr[0])
+            System.out.println("ARG: "+arg);
+            if (arr.length == 2)
             {
-                case RUNNER_FILE_NAME_ARG: RUNNER_FILE_NAME = val; break;
-                case SHOW_SHUT_DOWN_BUTTON_ARG: SHOW_SHUT_DOWN_BUTTON = val.equals("true"); break;
-                case X_MODE_ARG: X_MODE = val.equals("true"); break;
-                case SHOW_FULLSCREEN_TOGGLE_BUTTON_ARG: SHOW_FULLSCREEN_TOGGLE_BUTTON = val.equals("true"); break;
-                case DEFAULT_FULLSCREEN_MODE_ARG: DEFAULT_FULLSCREEN_MODE = val.equals("true"); break;
-                case SCREEN_SAVER_FEATURE_ARG: SCREEN_SAVER_FEATURE = val.equals("true"); break;
-                case APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION_ARG: APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = val.equals("true"); break;
-                case ALLOW_ROOT_ARG: ALLOW_ROOT = val.equals("true"); break;
-                case SET_FIXED_MIN_SIZE_ARG: SET_FIXED_MIN_SIZE = val.equals("true"); break;
+                System.out.println("YES");
+                String val = arr[1].strip();
+                switch(arr[0])
+                {
+                    case RUNNER_FILE_NAME_ARG: RUNNER_FILE_NAME = val; break;
+                    case SHOW_SHUT_DOWN_BUTTON_ARG: SHOW_SHUT_DOWN_BUTTON = val.equals("true"); break;
+                    case X_MODE_ARG: X_MODE = val.equals("true"); break;
+                    case SHOW_FULLSCREEN_TOGGLE_BUTTON_ARG: SHOW_FULLSCREEN_TOGGLE_BUTTON = val.equals("true"); break;
+                    case DEFAULT_FULLSCREEN_MODE_ARG: DEFAULT_FULLSCREEN_MODE = val.equals("true"); break;
+                    case SCREEN_SAVER_FEATURE_ARG: SCREEN_SAVER_FEATURE = val.equals("true"); break;
+                    case APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION_ARG: APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = val.equals("true"); break;
+                    case ALLOW_ROOT_ARG: ALLOW_ROOT = val.equals("true"); break;
+                    case SET_FIXED_MIN_SIZE_ARG: SET_FIXED_MIN_SIZE = val.equals("true"); break;
+                }
             }
         }
     }
