@@ -45,7 +45,7 @@ public class StartupFlags
         {
             String[] arr = arg.split("=");
 
-            if (arr[0].startsWith("Stream-Pi"))
+            if (arr.length == 2)
             {
                 String val = arr[1].strip();
                 switch(arr[0])
