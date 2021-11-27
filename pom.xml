@@ -251,9 +251,8 @@
                         <option>-Djavafx.verbose=true</option>
                         <option>-Dprism.lcdtext=false</option>
                         <option>-Dprism.forceGPU=true</option>
-                        <option>-DStream-Pi.defaultFullScreenMode=false</option>
-                        <option>-DStream-Pi.enableScreenSaverFeature=false</option>
                     </options>
+                    <commandlineArgs>Stream-Pi.defaultFullScreenMode=false Stream-Pi.enableScreenSaverFeature=false</commandlineArgs>
                     <stripDebug>true</stripDebug>
                     <compress>2</compress>
                     <noHeaderFiles>true</noHeaderFiles>
