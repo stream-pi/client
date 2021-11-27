@@ -14,11 +14,14 @@
 
 package com.stream_pi.client.info;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StartupFlags
 {
     public static String RUNNER_FILE_NAME = null;
-    public static boolean IS_SHOW_SHUT_DOWN_BUTTON = false;
-    public static boolean IS_X_MODE = true;
+    public static boolean SHOW_SHUT_DOWN_BUTTON = false;
+    public static boolean X_MODE = true;
     public static boolean SCREEN_SAVER_FEATURE= false;
     public static boolean DEFAULT_FULLSCREEN_MODE=false;
     public static boolean SHOW_FULLSCREEN_TOGGLE_BUTTON=true;
@@ -26,33 +29,56 @@ public class StartupFlags
     public static boolean ALLOW_ROOT = false;
     public static boolean SET_FIXED_MIN_SIZE = true;
 
-    public static void init()
+    private static final String RUNNER_FILE_NAME_ARG = "Stream-Pi.startupRunnerFileName";
+    private static final String SHOW_SHUT_DOWN_BUTTON_ARG = "Stream-Pi.showShutDownButton";
+    private static final String X_MODE_ARG = "Stream-Pi.xMode";
+    private static final String SHOW_FULLSCREEN_TOGGLE_BUTTON_ARG = "Stream-Pi.showFullScreenToggleButton";
+    private static final String DEFAULT_FULLSCREEN_MODE_ARG = "Stream-Pi.defaultFullScreenMode";
+    private static final String SCREEN_SAVER_FEATURE_ARG = "Stream-Pi.screenSaverFeature";
+    private static final String APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION_ARG = "Stream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation";
+    private static final String ALLOW_ROOT_ARG = "Stream-Pi.allowRoot";
+    private static final String SET_FIXED_MIN_SIZE_ARG = "Stream-Pi.setFixedMinSize";
+
+    public static void init(String[] args)
     {
-        String startupRunnerFileName = System.getProperty("Stream-Pi.startupRunnerFileName");
-        RUNNER_FILE_NAME = (startupRunnerFileName == null) ? RUNNER_FILE_NAME : startupRunnerFileName;
+        for (String arg : args)
+        {
+            String[] arr = arg.split("=");
 
-        String showShutDownButton = System.getProperty("Stream-Pi.showShutDownButton");
-        IS_SHOW_SHUT_DOWN_BUTTON = (showShutDownButton == null) ? IS_SHOW_SHUT_DOWN_BUTTON : showShutDownButton.equals("true");
+            String val = arr[1].strip();
+            switch(arr[0])
+            {
+                case RUNNER_FILE_NAME_ARG: RUNNER_FILE_NAME = val; break;
+                case SHOW_SHUT_DOWN_BUTTON_ARG: SHOW_SHUT_DOWN_BUTTON = val.equals("true"); break;
+                case X_MODE_ARG: X_MODE = val.equals("true"); break;
+                case SHOW_FULLSCREEN_TOGGLE_BUTTON_ARG: SHOW_FULLSCREEN_TOGGLE_BUTTON = val.equals("true"); break;
+                case DEFAULT_FULLSCREEN_MODE_ARG: DEFAULT_FULLSCREEN_MODE = val.equals("true"); break;
+                case SCREEN_SAVER_FEATURE_ARG: SCREEN_SAVER_FEATURE = val.equals("true"); break;
+                case APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION_ARG: APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = val.equals("true"); break;
+                case ALLOW_ROOT_ARG: ALLOW_ROOT = val.equals("true"); break;
+                case SET_FIXED_MIN_SIZE_ARG: SET_FIXED_MIN_SIZE = val.equals("true"); break;
+            }
+        }
+    }
 
-        String isXMode = System.getProperty("Stream-Pi.isXMode");
-        IS_X_MODE = (isXMode == null) ? IS_X_MODE : isXMode.equals("true");
+    public static String[] generateRuntimeArgumentsForStartOnBoot()
+    {
+        List<String> arrayList = new ArrayList<>();
 
-        String isShowFullScreenToggleButton = System.getProperty("Stream-Pi.isShowFullScreenToggleButton");
-        SHOW_FULLSCREEN_TOGGLE_BUTTON = (isShowFullScreenToggleButton == null) ? SHOW_FULLSCREEN_TOGGLE_BUTTON : isShowFullScreenToggleButton.equals("true");
+        if (RUNNER_FILE_NAME!=null)
+        {
+            arrayList.add(RUNNER_FILE_NAME_ARG+"='"+RUNNER_FILE_NAME+"'");
+        }
 
-        String defaultFullScreenMode = System.getProperty("Stream-Pi.defaultFullScreenMode");
-        DEFAULT_FULLSCREEN_MODE = (defaultFullScreenMode == null) ? DEFAULT_FULLSCREEN_MODE : defaultFullScreenMode.equals("true");
+        arrayList.add(SHOW_SHUT_DOWN_BUTTON_ARG+"="+SHOW_SHUT_DOWN_BUTTON);
+        arrayList.add(X_MODE_ARG+"="+X_MODE);
+        arrayList.add(SHOW_FULLSCREEN_TOGGLE_BUTTON_ARG+"="+SHOW_FULLSCREEN_TOGGLE_BUTTON);
+        arrayList.add(DEFAULT_FULLSCREEN_MODE_ARG+"="+DEFAULT_FULLSCREEN_MODE);
+        arrayList.add(SCREEN_SAVER_FEATURE_ARG+"="+SCREEN_SAVER_FEATURE);
+        arrayList.add(APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION_ARG+"="+APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION);
+        arrayList.add(ALLOW_ROOT_ARG+"="+StartupFlags.ALLOW_ROOT);
+        arrayList.add(SET_FIXED_MIN_SIZE_ARG+"="+StartupFlags.SET_FIXED_MIN_SIZE);
 
-        String enableScreenSaverFeature = System.getProperty("Stream-Pi.enableScreenSaverFeature");
-        SCREEN_SAVER_FEATURE = (enableScreenSaverFeature == null) ? SCREEN_SAVER_FEATURE : enableScreenSaverFeature.equals("true");
-
-        String appendPathBeforeRunnerFileToOvercomeJPackageLimitation = System.getProperty("Stream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation");
-        APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION = (appendPathBeforeRunnerFileToOvercomeJPackageLimitation == null) ? APPEND_PATH_BEFORE_RUNNER_FILE_TO_OVERCOME_JPACKAGE_LIMITATION : appendPathBeforeRunnerFileToOvercomeJPackageLimitation.equals("true");
-
-        String allowRoot = System.getProperty("Stream-Pi.allowRoot");
-        ALLOW_ROOT = (allowRoot == null) ? ALLOW_ROOT : allowRoot.equals("true");
-
-        String setFixedMinSize = System.getProperty("Stream-Pi.setFixedMinSize");
-        SET_FIXED_MIN_SIZE = (setFixedMinSize == null) ? SET_FIXED_MIN_SIZE : setFixedMinSize.equals("true");
+        return arrayList.toArray(new String[0]);
     }
 }

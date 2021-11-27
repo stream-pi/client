@@ -28,5 +28,6 @@ $JPACKAGE_HOME/bin/jpackage \
 --copyright "Copyright 2019-21 Debayan Sutradhar (rnayabed),  Samuel Quiñones (SamuelQuinones)" \
 --dest $INSTALL_DIR \
 --name 'Stream-Pi Client' \
---java-options "-Dprism.lcdtext=false -Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false -DStream-Pi.startupRunnerFileName='Stream-Pi Client' -DStream-Pi.isXMode=true -DStream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation=true" \
+--java-options "-Dprism.lcdtext=false -Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false" \
+--arguments "Stream-Pi.startupRunnerFileName='Stream-Pi Client' Stream-Pi.xMode=true Stream-Pi.appendPathBeforeRunnerFileToOvercomeJPackageLimitation=true" \
 "$@"

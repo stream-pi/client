@@ -28,6 +28,11 @@ jobs:
           cd /tmp
           axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-x64_bin-jmods.zip
           unzip /tmp/openjfx-18-ea+7_linux-x64_bin-jmods.zip -d /tmp
+      - name: Setup AppImage
+        run: |
+          cd /tmp
+          axel -n 8 https://github.com/AppImage/AppImageKit/releases/download/13/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
       - name: Download GraalVM 21.3.0
         run: |
           cd /tmp
@@ -74,6 +79,13 @@ jobs:
           --app-version ${{ env.VERSION }} \
           --type app-image
 
+          cp assets/linux-icon.png "${INSTALL_DIR}/Stream-Pi Client/Stream-Pi Client.png"
+          cp assets/AppImage/x64/* "${INSTALL_DIR}/Stream-Pi Client/"
+
+          mv "${INSTALL_DIR}/Stream-Pi Client" "${INSTALL_DIR}/Stream-Pi Client.AppDir"
+          /tmp/appimagetool-x86_64.AppImage "${INSTALL_DIR}/Stream-Pi Client.AppDir" "stream-pi-client-linux-x64-${{ env.VERSION }}.AppImage"
+
+
           NEW_V=${{ env.VERSION }}
           NEW_V=${NEW_V//-/_}
 
@@ -86,10 +98,6 @@ jobs:
           cd $INSTALL_DIR
           mv *.deb stream-pi-client-linux-x64-${{ env.VERSION }}.deb
           mv *.rpm stream-pi-client-linux-x64-${{ env.VERSION }}.rpm
-
-          mv 'Stream-Pi Client' stream-pi-client
-          zip -r stream-pi-client-linux-x64-${{ env.VERSION }}-executable.zip stream-pi-client
-          rm -r stream-pi-client
         env:
           MAIN_CLASS: com.stream_pi.client.Main
           JAVAFX_JMODS: /tmp/javafx-jmods-18/

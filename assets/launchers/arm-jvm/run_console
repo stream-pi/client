@@ -17,7 +17,7 @@ cd "${0%/*}"
 export ENABLE_GLUON_COMMERCIAL_EXTENSIONS=true
 
 run() {
-	if ! jre/bin/java -Xmx700m -Dcom.sun.javafx.touch=true -Dcom.sun.javafx.isEmbedded=true -Djavafx.verbose=true -Dprism.lcdtext=false -Dprism.verbose=true -Dcom.sun.javafx.virtualKeyboard=javafx -Dembedded=monocle -Dglass.platform=Monocle -Dmonocle.platform=EGL -Djava.library.path=. -Dmonocle.egl.lib=./libgluon_drm.so -Degl.displayid=$DISPLAY_CARD -DStream-Pi.enableScreenSaverFeature=true -DStream-Pi.showShutDownButton=true -DStream-Pi.startupRunnerFileName=run_console -DStream-Pi.isXMode=false -DStream-Pi.isShowFullScreenToggleButton=false -DStream-Pi.defaultFullScreenMode=true --module-path . --add-modules ALL-MODULE-PATH com.stream_pi.client.Main ; then
+	if ! jre/bin/java -Xmx700m -Duse.egl=true -Dcom.sun.javafx.touch=true -Dcom.sun.javafx.isEmbedded=true -Djavafx.verbose=true -Dprism.lcdtext=false -Dprism.verbose=true -Dcom.sun.javafx.virtualKeyboard=javafx -Dembedded=monocle -Dglass.platform=Monocle -Dmonocle.platform=EGL -Djava.library.path=. -Dmonocle.egl.lib=./libgluon_drm.so -Degl.displayid=$DISPLAY_CARD --module-path . --add-modules ALL-MODULE-PATH com.stream_pi.client.Main Stream-Pi.screenSaverFeature=true Stream-Pi.showShutDownButton=true Stream-Pi.startupRunnerFileName=run_console Stream-Pi.xMode=false Stream-Pi.showFullScreenToggleButton=false Stream-Pi.defaultFullScreenMode=true ; then
         echo Keyboard Interrupt / Failed to launch using $DISPLAY_CARD!
     fi
 }

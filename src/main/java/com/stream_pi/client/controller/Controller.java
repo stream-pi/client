@@ -118,7 +118,7 @@ public class Controller extends Base
             {
                 if(getConfig().isStartOnBoot())
                 {
-                    if(StartupFlags.IS_X_MODE != getConfig().isStartupXMode())
+                    if(StartupFlags.X_MODE != getConfig().isStartupXMode())
                     {
                         StartOnBoot startAtBoot = new StartOnBoot(PlatformType.CLIENT, ClientInfo.getInstance().getPlatform(),
                                 Main.class.getProtectionDomain().getCodeSource().getLocation(),
@@ -133,8 +133,8 @@ public class Controller extends Base
                         {
                             try
                             {
-                                startAtBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
-                                getConfig().setStartupIsXMode(StartupFlags.IS_X_MODE);
+                                startAtBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.X_MODE, StartupFlags.generateRuntimeArgumentsForStartOnBoot());
+                                getConfig().setStartupIsXMode(StartupFlags.X_MODE);
                             }
                             catch (MinorException e)
                             {
@@ -675,7 +675,7 @@ public class Controller extends Base
         else
         {
             if(getClientInfo().getPlatform() == com.stream_pi.util.platform.Platform.LINUX &&
-                !StartupFlags.IS_X_MODE)
+                !StartupFlags.X_MODE)
             {
                handleMinorException(new MinorException(I18N.getString("controller.Controller.browserNotSupportedInFBMode")));
             }

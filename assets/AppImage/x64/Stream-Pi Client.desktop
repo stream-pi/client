@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Stream-Pi Client
+Exec="Stream-Pi\ Client %F"
+Icon=Stream-Pi Client
+Type=Application
+Categories=Utility;Audio;
+MimeType=inode/directory;audio/flac;
+Name[en]=Stream-Pi Server
+Terminal=false
+StartupNotify=true
+NoDisplay=false

@@ -335,7 +335,7 @@ public class GeneralTab extends VBox
 
             fullScreenModeHBox.setVisible(StartupFlags.SHOW_FULLSCREEN_TOGGLE_BUTTON);
 
-            shutdownButton.setVisible(StartupFlags.IS_SHOW_SHUT_DOWN_BUTTON);
+            shutdownButton.setVisible(StartupFlags.SHOW_SHUT_DOWN_BUTTON);
         }
 
 
@@ -649,8 +649,8 @@ public class GeneralTab extends VBox
                 {
                     try
                     {
-                        startOnBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.IS_X_MODE);
-                        config.setStartupIsXMode(StartupFlags.IS_X_MODE);
+                        startOnBoot.create(StartupFlags.RUNNER_FILE_NAME, StartupFlags.X_MODE, StartupFlags.generateRuntimeArgumentsForStartOnBoot());
+                        config.setStartupIsXMode(StartupFlags.X_MODE);
                     }
                     catch (MinorException e)
                     {
