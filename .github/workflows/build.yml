@@ -332,7 +332,7 @@ jobs:
 
           run: |
             sudo apt update
-            sudo apt install axel unzip zip
+            sudo apt install axel unzip zip git
 
             VERSION=$(<version.txt)
             INSTALL_DIR=target/install
