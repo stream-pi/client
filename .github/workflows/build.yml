@@ -354,7 +354,7 @@ jobs:
 
 
 
-            # mv javafx-sdk-arm32/javafx-sdk-17.0.1/lib/* $INSTALL_DIR/
+            mv javafx-sdk-arm32/javafx-sdk-18/lib/* $INSTALL_DIR/
 
 
             # Use latest JFX
