@@ -345,7 +345,7 @@ jobs:
             mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
             # Use Debug libgluon
-            mv javafx-sdk-arm32-only-libgluon/javafx-sdk-18/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm.so
+            mv javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm.so
             rm -rf javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm-1.1.6.so
 
             # Use Non Debug libgluon
