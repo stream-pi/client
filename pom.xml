@@ -289,7 +289,8 @@
                     <mainClass>${main.class.name}</mainClass>
                     <verbose>true</verbose>
                     <nativeImageArgs>
-                        <list>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</list>
+                        <arg>-H:IncludeLocales=de-DE,en,en-GB,en-IN,en-US,es-ES,fr,hi,mr</arg>
+                        <arg>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</arg>
                     </nativeImageArgs>
                     <attachList>
                         <list>lifecycle</list>
