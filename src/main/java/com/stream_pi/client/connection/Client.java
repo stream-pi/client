@@ -246,6 +246,7 @@ public class Client extends Thread
                             break;
 
                         case "update_action_temporary_display_text":    updateActionTemporaryDisplayText(message);
+                            break;
 
                         default:                        logger.warning("Command '"+header+"' does not match records. Make sure client and server versions are equal.");
 
