@@ -20,10 +20,7 @@ import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.SerializableColor;
-import com.stream_pi.action_api.externalplugin.inputevent.StreamPiInputEvent;
-import com.stream_pi.action_api.externalplugin.inputevent.StreamPiMouseEvent;
-import com.stream_pi.action_api.externalplugin.inputevent.StreamPiSwipeEvent;
-import com.stream_pi.action_api.externalplugin.inputevent.StreamPiTouchEvent;
+import com.stream_pi.action_api.externalplugin.inputevent.*;
 import com.stream_pi.client.controller.ClientExecutorService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
@@ -50,15 +47,13 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.SwipeEvent;
-import javafx.scene.input.TouchEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import org.controlsfx.control.spreadsheet.Grid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -109,7 +104,9 @@ public class ActionBox extends StackPane
     {
         addEventFilter(MouseEvent.ANY, this::handleInputEvent);
         addEventFilter(SwipeEvent.ANY, this::handleInputEvent);
+        addEventFilter(RotateEvent.ANY, this::handleInputEvent);
         addEventFilter(TouchEvent.ANY, this::handleInputEvent);
+        addEventFilter(ZoomEvent.ANY, this::handleInputEvent);
     }
 
     private boolean isClick(StreamPiInputEvent inputEvent)
@@ -146,10 +143,20 @@ public class ActionBox extends StackPane
             SwipeEvent swipeEvent = (SwipeEvent) rawInputEvent;
             inputEvent = new StreamPiSwipeEvent(swipeEvent.getEventType(), swipeEvent.getTouchCount());
         }
+        else if(rawInputEvent instanceof RotateEvent)
+        {
+            RotateEvent rotateEvent = (RotateEvent) rawInputEvent;
+            inputEvent = new StreamPiRotateEvent(rotateEvent.getEventType(), rotateEvent.getAngle(), rotateEvent.getTotalAngle());
+        }
         else if(rawInputEvent instanceof TouchEvent)
         {
             TouchEvent touchEvent = (TouchEvent) rawInputEvent;
             inputEvent = new StreamPiTouchEvent(touchEvent.getEventType(), touchEvent.getTouchCount(), touchEvent.getEventSetId());
+        }
+        else if(rawInputEvent instanceof ZoomEvent)
+        {
+            ZoomEvent zoomEvent = (ZoomEvent) rawInputEvent;
+            inputEvent = new StreamPiZoomEvent(zoomEvent.getEventType(), zoomEvent.getZoomFactor(), zoomEvent.getTotalZoomFactor());
         }
         else
         {
