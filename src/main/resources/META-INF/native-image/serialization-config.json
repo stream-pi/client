@@ -26,5 +26,9 @@
   {"name": "java.lang.Integer"},
   {"name": "com.stream_pi.action_api.action.ActionType"},
   {"name": "com.stream_pi.action_api.action.DisplayTextAlignment"},
-  {"name": "com.stream_pi.action_api.action.Location"}
+  {"name": "com.stream_pi.action_api.action.Location"},
+  {"name": "com.stream_pi.action_api.externalplugin.inputevent.StreamPiInputEvent"},
+  {"name": "com.stream_pi.action_api.externalplugin.inputevent.StreamPiMouseEvent"},
+  {"name": "com.stream_pi.action_api.externalplugin.inputevent.StreamPiSwipeEvent"},
+  {"name": "com.stream_pi.action_api.externalplugin.inputevent.StreamPiTouchEvent"}
 ]
