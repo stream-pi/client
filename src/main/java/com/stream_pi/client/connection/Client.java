@@ -23,6 +23,7 @@ import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.property.Property;
 import com.stream_pi.action_api.actionproperty.property.StringProperty;
 import com.stream_pi.action_api.actionproperty.property.Type;
+import com.stream_pi.action_api.externalplugin.inputevent.StreamPiInputEvent;
 import com.stream_pi.client.controller.ClientExecutorService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.i18n.I18N;
@@ -45,6 +46,7 @@ import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Orientation;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 
@@ -192,58 +194,58 @@ public class Client extends Thread
 
                     switch (header)
                     {
-                        case "ready" :                  onServerReady();
+                        case "ready" :                                  onServerReady();
                             break;
 
-                        case "action_icon" :            onActionIconReceived(message);
+                        case "action_icon" :                            onActionIconReceived(message);
                             break;
 
-                        case "disconnect" :             serverDisconnected(message);
+                        case "disconnect" :                             serverDisconnected(message);
                             break;
 
-                        case "get_client_details" :     sendClientDetails();
+                        case "get_client_details" :                     sendClientDetails();
                             break;
 
-                        case "server_details" :         registerServerDetails(message);
+                        case "server_details" :                         registerServerDetails(message);
                             break;
 
-                        case "get_profiles" :           sendProfileNamesToServer();
+                        case "get_profiles" :                           sendProfileNamesToServer();
                             break;
 
-                        case "get_profile_details":     sendProfileDetailsToServer(message);
+                        case "get_profile_details":                     sendProfileDetailsToServer(message);
                             break;
 
-                        case "save_action_details":     saveActionDetails(message);
+                        case "save_action_details":                     saveActionDetails(message);
                             break;
 
-                        case "delete_action":           deleteAction(message);
+                        case "delete_action":                           deleteAction(message);
                             break;
 
-                        case "get_themes":              sendThemesToServer();
+                        case "get_themes":                              sendThemesToServer();
                             break;
 
-                        case "save_client_details":     saveClientDetails(message);
+                        case "save_client_details":                     saveClientDetails(message);
                             break;
 
-                        case "save_client_profile":     saveProfileDetails(message);
+                        case "save_client_profile":                     saveProfileDetails(message);
                             break;
 
-                        case "delete_profile":          deleteProfile(message);
+                        case "delete_profile":                          deleteProfile(message);
                             break;
 
-                        case "action_failed":           actionFailed(message);
+                        case "action_failed":                           actionFailed(message);
                             break;
 
-                        case "set_toggle_status":       onSetToggleStatus(message);
+                        case "set_toggle_status":                       onSetToggleStatus(message);
                             break;
 
-                        case "set_action_gauge_properties": onSetActionGaugeProperties(message);
+                        case "set_action_gauge_properties":             onSetActionGaugeProperties(message);
                             break;
 
-                        case "set_action_gauge_value": onSetActionGaugeValue(message);
+                        case "set_action_gauge_value":                  onSetActionGaugeValue(message);
                             break;
 
-                        case "update_action_temporary_display_text": updateActionTemporaryDisplayText(message);
+                        case "update_action_temporary_display_text":    updateActionTemporaryDisplayText(message);
 
                         default:                        logger.warning("Command '"+header+"' does not match records. Make sure client and server versions are equal.");
 
@@ -319,13 +321,10 @@ public class Client extends Thread
 
         ActionBox actionBox = clientListener.getActionBoxByProfileAndID(profileID, actionID);
 
-
         if(actionBox!=null)
         {
             Platform.runLater(()-> actionBox.updateGauge((GaugeProperties) message.getValue("gauge_properties")));
         }
-
-
     }
 
     private void onSetActionGaugeValue(Message message)
@@ -958,18 +957,9 @@ public class Client extends Thread
         sendMessage(m);
     }
 
-    public void sendMouseEvent(String profileID, String actionID, MouseEvent event) throws SevereException
+    public void sendInputEvent(String profileID, String actionID, StreamPiInputEvent event) throws SevereException
     {
-        Message m = new Message("mouse_event_in_action");
-        m.setValue("profile_ID", profileID);
-        m.setValue("ID", actionID);
-        m.setValue("event", event);
-        sendMessage(m);
-    }
-
-    public void sendTouchEvent(String profileID, String actionID, TouchEvent event) throws SevereException
-    {
-        Message m = new Message("touch_event_in_action");
+        Message m = new Message("input_event_in_action");
         m.setValue("profile_ID", profileID);
         m.setValue("ID", actionID);
         m.setValue("event", event);

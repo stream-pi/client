@@ -14,11 +14,16 @@
 
 package com.stream_pi.client.window.dashboard.actiongridpane;
 
+import com.gluonhq.attach.vibration.VibrationService;
 import com.stream_pi.action_api.action.Action;
 import com.stream_pi.action_api.action.ActionType;
 import com.stream_pi.action_api.action.DisplayTextAlignment;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.GaugeProperties;
 import com.stream_pi.action_api.actionproperty.gaugeproperties.SerializableColor;
+import com.stream_pi.action_api.externalplugin.inputevent.StreamPiInputEvent;
+import com.stream_pi.action_api.externalplugin.inputevent.StreamPiMouseEvent;
+import com.stream_pi.action_api.externalplugin.inputevent.StreamPiSwipeEvent;
+import com.stream_pi.action_api.externalplugin.inputevent.StreamPiTouchEvent;
 import com.stream_pi.client.controller.ClientExecutorService;
 import com.stream_pi.client.controller.ClientListener;
 import com.stream_pi.client.io.Config;
@@ -47,6 +52,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.SwipeEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -59,6 +65,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.ByteArrayInputStream;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
@@ -100,33 +107,69 @@ public class ActionBox extends StackPane
 
     private void initMouseAndTouchListeners()
     {
-        addEventFilter(MouseEvent.ANY, this::handleMouseTouchEvent);
-        addEventFilter(TouchEvent.ANY, this::handleMouseTouchEvent);
+        addEventFilter(MouseEvent.ANY, this::handleInputEvent);
+        addEventFilter(SwipeEvent.ANY, this::handleInputEvent);
+        addEventFilter(TouchEvent.ANY, this::handleInputEvent);
     }
 
-    private boolean isClick(InputEvent inputEvent)
+    private boolean isClick(StreamPiInputEvent inputEvent)
     {
-        return inputEvent instanceof MouseEvent && ((MouseEvent) inputEvent).getEventType() == MouseEvent.MOUSE_CLICKED;
+        return inputEvent instanceof StreamPiMouseEvent && inputEvent.getEventType() == MouseEvent.MOUSE_CLICKED;
     }
 
-    private void sendEvent(InputEvent inputEvent) throws SevereException
+    boolean isNotConnectedPromptShowing = false;
+    private void handleInputEvent(InputEvent rawInputEvent)
     {
-        if (inputEvent instanceof MouseEvent)
+        // only accept following input events for NOW:
+
+        if(List.of(MouseEvent.MOUSE_DRAGGED,
+                MouseEvent.MOUSE_MOVED,
+                MouseEvent.MOUSE_ENTERED,
+                MouseEvent.MOUSE_ENTERED_TARGET,
+                MouseEvent.MOUSE_EXITED_TARGET,
+                MouseEvent.MOUSE_EXITED).contains(rawInputEvent.getEventType()))
         {
-            clientListener.getClient().sendMouseEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), ((MouseEvent) inputEvent));
+            return;
+        }
+
+        System.out.println(rawInputEvent.getEventType());
+
+        StreamPiInputEvent inputEvent;
+
+        if(rawInputEvent instanceof MouseEvent)
+        {
+            MouseEvent mouseEvent = (MouseEvent) rawInputEvent;
+            inputEvent = new StreamPiMouseEvent(mouseEvent.getEventType(), mouseEvent.getClickCount(), mouseEvent.getButton());
+        }
+        else if(rawInputEvent instanceof SwipeEvent)
+        {
+            SwipeEvent swipeEvent = (SwipeEvent) rawInputEvent;
+            inputEvent = new StreamPiSwipeEvent(swipeEvent.getEventType(), swipeEvent.getTouchCount());
+        }
+        else if(rawInputEvent instanceof TouchEvent)
+        {
+            TouchEvent touchEvent = (TouchEvent) rawInputEvent;
+            inputEvent = new StreamPiTouchEvent(touchEvent.getEventType(), touchEvent.getTouchCount(),
+                    touchEvent.getEventSetId(), touchEvent.getTouchPoint(), touchEvent.getTouchPoints());
         }
         else
         {
-            clientListener.getClient().sendTouchEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), ((TouchEvent) inputEvent));
+            getLogger().severe("No handler for "+rawInputEvent.getEventType()+"! Ignoring ...");
+            return;
         }
-    }
 
-    private void handleMouseTouchEvent(InputEvent inputEvent)
-    {
         try
         {
             if(action!=null)
             {
+                if(isClick(inputEvent))
+                {
+                    if(Config.getInstance().isVibrateOnActionClicked())
+                    {
+                        VibrationService.create().ifPresent(VibrationService::vibrate);
+                    }
+                }
+
                 if(action.getActionType() == ActionType.FOLDER && isClick(inputEvent))
                 {
                     getActionGridPaneListener().renderFolder(action.getID());
@@ -137,18 +180,24 @@ public class ActionBox extends StackPane
                     {
                         if(Config.getInstance().isTryConnectingWhenActionClicked())
                         {
-                            clientListener.setupClientConnection(()->handleMouseTouchEvent(inputEvent));
+                            clientListener.setupClientConnection(()->handleInputEvent(rawInputEvent));
                         }
                         else
                         {
-                            exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
+                            if (!isNotConnectedPromptShowing)
+                            {
+                                exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
+                                isNotConnectedPromptShowing = true;
+                            }
                         }
                         return;
                     }
 
+                    isNotConnectedPromptShowing = false;
+
                     if(action.getActionType() == ActionType.NORMAL)
                     {
-                        sendEvent(inputEvent);
+                        clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
                     }
                     else if(action.getActionType() == ActionType.COMBINE)
                     {
@@ -165,7 +214,7 @@ public class ActionBox extends StackPane
 
                                     if (childAction.getActionType() == ActionType.NORMAL)
                                     {
-                                        sendEvent(inputEvent);
+                                        clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
                                     }
                                     else if (childAction.getActionType() == ActionType.TOGGLE)
                                     {
@@ -174,8 +223,6 @@ public class ActionBox extends StackPane
                                             toggle();
                                             clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
                                         }
-
-                                        handleMouseTouchEvent(inputEvent);
                                     }
                                 }
                                 catch (MinorException e)
@@ -201,8 +248,6 @@ public class ActionBox extends StackPane
                             toggle();
                             clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
                         }
-
-                        handleMouseTouchEvent(inputEvent);
                     }
                 }
             }

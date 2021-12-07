@@ -479,14 +479,12 @@ public class Controller extends Base
         getLogger().log(Level.SEVERE, message, e);
         e.printStackTrace();
 
-        Platform.runLater(()-> {
-            if(getScreenSaver() != null)
-            {
-                getScreenSaver().restart();
-            }
+        if(getScreenSaver() != null)
+        {
+            getScreenSaver().restart();
+        }
 
-            genNewAlert(e.getTitle(), message, StreamPiAlertType.WARNING).show();
-        });
+        new StreamPiAlert(e.getTitle(), message, StreamPiAlertType.WARNING).show();
     }
 
     @Override
@@ -501,53 +499,37 @@ public class Controller extends Base
         getLogger().log(Level.SEVERE, message, e);
         e.printStackTrace();
 
-
-        Platform.runLater(()->
+        if(getScreenSaver() != null)
         {
-            if(getScreenSaver() != null)
+            getScreenSaver().restart();
+        }
+
+        StreamPiAlert alert = new StreamPiAlert(e.getTitle(), message, StreamPiAlertType.ERROR);
+
+        alert.setOnClicked(new StreamPiAlertListener()
+        {
+            @Override
+            public void onClick(StreamPiAlertButton s)
             {
-                getScreenSaver().restart();
+                onCloseRequest();
+                exitApp();
             }
-
-            StreamPiAlert alert = genNewAlert(e.getTitle(), message, StreamPiAlertType.ERROR);
-
-            alert.setOnClicked(new StreamPiAlertListener()
-            {
-                @Override
-                public void onClick(StreamPiAlertButton s)
-                {
-                    onCloseRequest();
-                    exitApp();
-                }
-            });
-            alert.show();
         });
+
+        alert.show();
     }
 
     @Override
-    public void onAlert(String title, String body, StreamPiAlertType alertType) {
-        Platform.runLater(()-> genNewAlert(title, body, alertType).show());
-    }
-
-    public StreamPiAlert genNewAlert(String title, String message, StreamPiAlertType alertType)
+    public void onAlert(String title, String body, StreamPiAlertType alertType)
     {
-        return new StreamPiAlert(title, message, alertType);
+        Platform.runLater(()-> new StreamPiAlert(title, body, alertType).show());
     }
-
 
     private boolean isConnected = false;
 
     @Override
     public void onActionFailed(String profileID, String actionID) {
         Platform.runLater(()-> getDashboardPane().getActionGridPane().actionFailed(profileID, actionID));
-    }
-
-    public void vibratePhone()
-    {
-        if(getConfig().isVibrateOnActionClicked())
-        {
-            VibrationService.create().ifPresent(VibrationService::vibrate);
-        }
     }
 
     @Override
