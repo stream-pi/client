@@ -45,6 +45,8 @@ import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Orientation;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -926,7 +928,7 @@ public class Client extends Thread
         }
     }
 
-    public void onActionClicked(String profileID, String actionID, boolean toggleState) throws SevereException
+    /*public void onActionClicked(String profileID, String actionID, boolean toggleState) throws SevereException
     {
         Message message = new Message("action_clicked");
 
@@ -934,7 +936,7 @@ public class Client extends Thread
         message.setValue("ID", actionID);
         message.setValue("toggle_status", toggleState);
         sendMessage(message);
-    }
+    }*/
 
     public void updateOrientationOnClient(Orientation orientation) throws SevereException
     {
@@ -954,5 +956,33 @@ public class Client extends Thread
     {
         Message m = new Message("refresh_all_gauges");
         sendMessage(m);
+    }
+
+    public void sendMouseEvent(String profileID, String actionID, MouseEvent event) throws SevereException
+    {
+        Message m = new Message("mouse_event_in_action");
+        m.setValue("profile_ID", profileID);
+        m.setValue("ID", actionID);
+        m.setValue("event", event);
+        sendMessage(m);
+    }
+
+    public void sendTouchEvent(String profileID, String actionID, TouchEvent event) throws SevereException
+    {
+        Message m = new Message("touch_event_in_action");
+        m.setValue("profile_ID", profileID);
+        m.setValue("ID", actionID);
+        m.setValue("event", event);
+        sendMessage(m);
+    }
+
+    public void setToggleStatus(String profileID, String actionID, boolean toggleStatus) throws SevereException
+    {
+        Message message = new Message("set_toggle_status");
+
+        message.setValue("profile_ID", profileID);
+        message.setValue("ID", actionID);
+        message.setValue("toggle_status", toggleStatus);
+        sendMessage(message);
     }
 }

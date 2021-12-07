@@ -25,13 +25,14 @@ import com.stream_pi.theme_api.Themes;
 import com.stream_pi.util.comms.DisconnectReason;
 import com.stream_pi.util.exception.SevereException;
 import javafx.geometry.Orientation;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 
 import java.util.concurrent.ExecutorService;
 
 public interface ClientListener
 {
     void onActionFailed(String profileID, String actionID);
-    void onActionClicked(String profileID, String actionID, boolean toggleState);
 
     ClientProfiles getClientProfiles();
 

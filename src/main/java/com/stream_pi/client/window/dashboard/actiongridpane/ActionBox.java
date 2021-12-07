@@ -35,6 +35,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.chart.LineChart;
@@ -42,6 +45,9 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
@@ -92,22 +98,119 @@ public class ActionBox extends StackPane
 
     private FontIcon statusIcon;
 
-    public void initMouseAndTouchListeners()
+    private void initMouseAndTouchListeners()
     {
-        setOnMouseClicked(touchEvent -> actionClicked());
+        addEventFilter(MouseEvent.ANY, this::handleMouseTouchEvent);
+        addEventFilter(TouchEvent.ANY, this::handleMouseTouchEvent);
+    }
 
-        setOnMousePressed(TouchEvent -> {
-            if(action != null)
+    private boolean isClick(InputEvent inputEvent)
+    {
+        return inputEvent instanceof MouseEvent && ((MouseEvent) inputEvent).getEventType() == MouseEvent.MOUSE_CLICKED;
+    }
+
+    private void sendEvent(InputEvent inputEvent) throws SevereException
+    {
+        if (inputEvent instanceof MouseEvent)
+        {
+            clientListener.getClient().sendMouseEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), ((MouseEvent) inputEvent));
+        }
+        else
+        {
+            clientListener.getClient().sendTouchEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), ((TouchEvent) inputEvent));
+        }
+    }
+
+    private void handleMouseTouchEvent(InputEvent inputEvent)
+    {
+        try
+        {
+            if(action!=null)
             {
-                getStyleClass().add("action_box_onclick");
+                if(action.getActionType() == ActionType.FOLDER && isClick(inputEvent))
+                {
+                    getActionGridPaneListener().renderFolder(action.getID());
+                }
+                else
+                {
+                    if(!getActionGridPaneListener().isConnected())
+                    {
+                        if(Config.getInstance().isTryConnectingWhenActionClicked())
+                        {
+                            clientListener.setupClientConnection(()->handleMouseTouchEvent(inputEvent));
+                        }
+                        else
+                        {
+                            exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
+                        }
+                        return;
+                    }
+
+                    if(action.getActionType() == ActionType.NORMAL)
+                    {
+                        sendEvent(inputEvent);
+                    }
+                    else if(action.getActionType() == ActionType.COMBINE)
+                    {
+                        ClientExecutorService.getExecutorService().submit(()->{
+                            for(int i = 0;i<action.getClientProperties().getSize(); i++)
+                            {
+                                try
+                                {
+                                    ClientAction childAction = clientListener.getCurrentProfile().getActionFromID(
+                                            action.getClientProperties().getSingleProperty(i+"").getRawValue()
+                                    );
+
+                                    Thread.sleep(childAction.getDelayBeforeExecuting());
+
+                                    if (childAction.getActionType() == ActionType.NORMAL)
+                                    {
+                                        sendEvent(inputEvent);
+                                    }
+                                    else if (childAction.getActionType() == ActionType.TOGGLE)
+                                    {
+                                        if(isClick(inputEvent))
+                                        {
+                                            toggle();
+                                            clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
+                                        }
+
+                                        handleMouseTouchEvent(inputEvent);
+                                    }
+                                }
+                                catch (MinorException e)
+                                {
+                                    exceptionAndAlertHandler.handleMinorException(e);
+                                }
+                                catch (SevereException e)
+                                {
+                                    exceptionAndAlertHandler.handleSevereException(e);
+                                }
+                                catch (InterruptedException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                    }
+                    else if(action.getActionType() == ActionType.TOGGLE)
+                    {
+                        if(isClick(inputEvent))
+                        {
+                            toggle();
+                            clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
+                        }
+
+                        handleMouseTouchEvent(inputEvent);
+                    }
+                }
             }
-        });
-        setOnMouseReleased(TouchEvent ->{
-            if(action != null)
-            {
-                getStyleClass().remove("action_box_onclick");
-            }
-        });
+        }
+        catch (SevereException e)
+        {
+            exceptionAndAlertHandler.handleSevereException(e);
+        }
     }
 
     public void baseInit()
@@ -159,95 +262,7 @@ public class ActionBox extends StackPane
         statusIconAnimation.setOnFinished(event -> statusIcon.toBack());
     }
 
-    public void actionClicked()
-    {
-        if(action!=null)
-        {
-            if(action.getActionType() == ActionType.FOLDER)
-            {
-                getActionGridPaneListener().renderFolder(action.getID());
-            }
-            else
-            {
-                if(!getActionGridPaneListener().isConnected())
-                {
-                    try
-                    {
-                        if(Config.getInstance().isTryConnectingWhenActionClicked())
-                        {
-                            clientListener.setupClientConnection(this::actionClicked);
-                        }
-                        else
-                        {
-                            exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
-                        }
-                        return;
-                    }
-                    catch (SevereException e)
-                    {
-                        exceptionAndAlertHandler.handleSevereException(e);
-                    }
-                }
-
-                if(action.getActionType() == ActionType.NORMAL)
-                {
-                    getActionGridPaneListener().normalActionClicked(action.getID());
-                }
-                else if(action.getActionType() == ActionType.COMBINE)
-                {
-
-                    System.out.println("TOTAL CHILDREN : "+action.getClientProperties().getSize());
-
-                    ClientExecutorService.getExecutorService().submit(()->{
-                        for(int i = 0;i<action.getClientProperties().getSize(); i++)
-                        {
-                            try
-                            {
-                                ClientAction childAction = clientListener.getCurrentProfile().getActionFromID(
-                                        action.getClientProperties().getSingleProperty(i+"").getRawValue()
-                                );
-
-                                Thread.sleep(childAction.getDelayBeforeExecuting());
-
-                                if (childAction.getActionType() == ActionType.NORMAL)
-                                {
-                                    getActionGridPaneListener().normalActionClicked(childAction.getID());
-                                }
-                                else if (childAction.getActionType() == ActionType.TOGGLE)
-                                {
-                                    clientListener.getCurrentProfile().getActionFromID(childAction.getID()).setCurrentToggleStatus(
-                                            !clientListener.getCurrentProfile().getActionFromID(childAction.getID()).getCurrentToggleStatus()
-                                    );
-
-                                    getActionGridPaneListener().toggleActionClicked(childAction.getID(), childAction.getCurrentToggleStatus());
-                                }
-                            }
-                            catch (MinorException e)
-                            {
-                                exceptionAndAlertHandler.handleMinorException(e);
-                            }
-                            catch (InterruptedException e)
-                            {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                }
-                else if(action.getActionType() == ActionType.TOGGLE)
-                {
-                    toggle();
-                    getActionGridPaneListener().toggleActionClicked(action.getID(), getCurrentToggleStatus());
-                }
-            }
-        }
-    }
-
     private Timeline statusIconAnimation;
-
-    public Timeline getStatusIconAnimation() {
-        return statusIconAnimation;
-    }
 
     public ActionGridPaneListener getActionGridPaneListener() {
         return actionGridPaneListener;

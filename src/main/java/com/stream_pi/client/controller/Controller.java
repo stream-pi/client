@@ -50,6 +50,8 @@ import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -538,21 +540,6 @@ public class Controller extends Base
     @Override
     public void onActionFailed(String profileID, String actionID) {
         Platform.runLater(()-> getDashboardPane().getActionGridPane().actionFailed(profileID, actionID));
-    }
-
-    @Override
-    public void onActionClicked(String profileID, String actionID, boolean toggleState)
-    {
-        try
-        {
-            vibratePhone();
-            client.onActionClicked(profileID, actionID, toggleState);
-        }
-        catch (SevereException e)
-        {
-            e.printStackTrace();
-            handleSevereException(e);
-        }
     }
 
     public void vibratePhone()

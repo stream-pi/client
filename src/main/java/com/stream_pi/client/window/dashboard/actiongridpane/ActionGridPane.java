@@ -37,6 +37,8 @@ import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -517,15 +519,9 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     }
 
     @Override
-    public void normalActionClicked(String ID)
+    public ClientListener getClientListener()
     {
-        clientListener.onActionClicked(getClientProfile().getID(), ID, false);
-    }
-
-    @Override
-    public void toggleActionClicked(String ID, boolean toggleState)
-    {
-        clientListener.onActionClicked(getClientProfile().getID(), ID, toggleState);
+        return clientListener;
     }
 
     @Override
