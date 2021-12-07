@@ -149,8 +149,7 @@ public class ActionBox extends StackPane
         else if(rawInputEvent instanceof TouchEvent)
         {
             TouchEvent touchEvent = (TouchEvent) rawInputEvent;
-            inputEvent = new StreamPiTouchEvent(touchEvent.getEventType(), touchEvent.getTouchCount(),
-                    touchEvent.getEventSetId(), touchEvent.getTouchPoint(), touchEvent.getTouchPoints());
+            inputEvent = new StreamPiTouchEvent(touchEvent.getEventType(), touchEvent.getTouchCount(), touchEvent.getEventSetId());
         }
         else
         {
