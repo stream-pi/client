@@ -28,7 +28,7 @@
   {"name": "com.stream_pi.action_api.action.DisplayTextAlignment"},
   {"name": "com.stream_pi.action_api.action.Location"},
   {"name": "javafx.event.EventType"},
-  {"name": "javafx.event.EventType.EventTypeSerialization"},
+  {"name": "javafx.event.EventType$EventTypeSerialization"},
   {"name": "com.stream_pi.action_api.externalplugin.inputevent.StreamPiInputEvent"},
   {"name": "com.stream_pi.action_api.externalplugin.inputevent.StreamPiMouseEvent"},
   {"name": "com.stream_pi.action_api.externalplugin.inputevent.StreamPiRotateEvent"},
