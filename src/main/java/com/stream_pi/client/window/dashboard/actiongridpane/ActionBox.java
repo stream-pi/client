@@ -90,10 +90,10 @@ public class ActionBox extends StackPane
         setStyle(null);
         setAction(null);
         setCurrentToggleStatus(false);
-        getStyleClass().clear();
         setBackground(Background.EMPTY);
         removeFontIcon();
         getChildren().clear();
+        getStyleClass().clear();
         gauge = null;
         baseInit();
     }
@@ -271,7 +271,6 @@ public class ActionBox extends StackPane
         GridPane.setRowSpan(this, 1);
         GridPane.setColumnSpan(this, 1);
 
-        getStyleClass().clear();
         getStyleClass().add("action_box");
         getStyleClass().add("action_box_"+row+"_"+col);
 
