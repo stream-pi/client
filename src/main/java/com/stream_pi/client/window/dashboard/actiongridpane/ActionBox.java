@@ -62,6 +62,7 @@ import java.io.ByteArrayInputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 public class ActionBox extends StackPane
@@ -114,10 +115,10 @@ public class ActionBox extends StackPane
         return inputEvent instanceof StreamPiMouseEvent && inputEvent.getEventType() == MouseEvent.MOUSE_CLICKED;
     }
 
-    boolean isNotConnectedPromptShowing = false;
+    private AtomicBoolean isNotConnectedPromptShowing = new AtomicBoolean(false);
     private void handleInputEvent(InputEvent rawInputEvent)
     {
-        // only accept following input events for NOW:
+        // ignore following input events for NOW:
 
         if(List.of(MouseEvent.MOUSE_DRAGGED,
                 MouseEvent.MOUSE_MOVED,
@@ -190,16 +191,16 @@ public class ActionBox extends StackPane
                         }
                         else
                         {
-                            if (!isNotConnectedPromptShowing)
+                            if (!isNotConnectedPromptShowing.get())
                             {
                                 exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
-                                isNotConnectedPromptShowing = true;
+                                isNotConnectedPromptShowing.set(true);
                             }
                         }
                         return;
                     }
 
-                    isNotConnectedPromptShowing = false;
+                    isNotConnectedPromptShowing.set(false);
 
                     if(action.getActionType() == ActionType.NORMAL)
                     {
@@ -422,6 +423,8 @@ public class ActionBox extends StackPane
 
 
         displayTextLabel.setStyle(null);
+
+        getStyleClass().add("action_box_"+getAction().getID());
 
         try
         {
