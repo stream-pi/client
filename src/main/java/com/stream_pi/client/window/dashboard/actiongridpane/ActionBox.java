@@ -425,7 +425,7 @@ public class ActionBox extends StackPane
         displayTextLabel.setStyle(null);
 
         getStyleClass().add("action_box_"+getAction().getID());
-        getStyleClass().add("action_box_"+getAction().getUniqueID());
+        getStyleClass().add("action_box_"+getAction().getUniqueID().replace(".","-"));
 
         try
         {
