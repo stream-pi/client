@@ -94,6 +94,18 @@ public class Client extends Thread
 
         logger = Logger.getLogger(Client.class.getName());
 
+        if (clientListener.getLastClientFailSystemMills() > -1)
+        {
+            if ((System.currentTimeMillis() - clientListener.getLastClientFailSystemMills()) < 500 || StreamPiAlert.getParent().getChildren().size() > 0)
+            {
+                return;
+            }
+        }
+
+        clientListener.setLastClientFailSystemMills();
+
+        clientListener.setIsConnecting(true);
+
         ClientExecutorService.getExecutorService().submit(new Task<Void>() {
             @Override
             protected Void call()
@@ -116,6 +128,7 @@ public class Client extends Thread
                     }
                     finally
                     {
+                        clientListener.setIsConnecting(false);
                         clientListener.updateSettingsConnectDisconnectButton();
                     }
 
@@ -132,7 +145,8 @@ public class Client extends Thread
                     }
 
                     start();
-                } catch (MinorException e)
+                }
+                catch (MinorException e)
                 {
                     exceptionAndAlertHandler.handleMinorException(e);
                 }

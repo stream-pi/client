@@ -45,6 +45,9 @@ public interface ClientListener
     void setConnected(boolean isConnected);
     boolean isConnected();
 
+    void setIsConnecting(boolean isConnecting);
+    boolean isConnecting();
+
     void renderProfile(ClientProfile clientProfile, boolean freshRender);
 
     void clearActionBox(int col, int row, int colSpan, int rowSpan);
@@ -93,4 +96,7 @@ public interface ClientListener
     ScreenSaver getScreenSaver();
 
     void initThemes() throws SevereException;
+
+    long getLastClientFailSystemMills();
+    void setLastClientFailSystemMills();
 }

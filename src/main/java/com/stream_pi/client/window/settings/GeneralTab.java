@@ -398,12 +398,6 @@ public class GeneralTab extends VBox
         clientListener.exitApp();
     }
 
-    public void setDisableStatus(boolean status)
-    {
-        saveButton.setDisable(status);
-        connectDisconnectButton.setDisable(status);
-    }
-
     public Button getConnectDisconnectButton()
     {
         return connectDisconnectButton;
@@ -441,9 +435,8 @@ public class GeneralTab extends VBox
 
     public void setConnectDisconnectButtonStatus()
     {
-        javafx.application.Platform.runLater(()->{
-            setDisableStatus(false);
-
+        javafx.application.Platform.runLater(()->
+        {
             if(clientListener.isConnected())
             {
                 connectDisconnectButton.setText(I18N.getString("window.settings.GeneralTab.disconnect"));

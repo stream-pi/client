@@ -57,6 +57,7 @@ import javafx.util.Duration;
 import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 
 
@@ -326,19 +327,32 @@ public class Controller extends Base
     }
 
     @Override
-    public void setupClientConnection()
+    public synchronized void setupClientConnection()
     {
         setupClientConnection(null);
     }
 
     @Override
-    public void setupClientConnection(Runnable onConnect)
+    public synchronized void setupClientConnection(Runnable onConnect)
     {
-        if(getSettingsPane().getGeneralTab().getConnectDisconnectButton().isDisabled()) //probably already connecting
+        if(isConnecting()) //probably already connecting
             return;
 
-        Platform.runLater(()->getSettingsPane().getGeneralTab().setDisableStatus(true));
         client = new Client(getConfig().getSavedServerHostNameOrIP(), getConfig().getSavedServerPort(), this, this, onConnect);
+    }
+
+    private long lastClientFailSystemMills = -1;
+
+    @Override
+    public long getLastClientFailSystemMills()
+    {
+        return lastClientFailSystemMills;
+    }
+
+    @Override
+    public void setLastClientFailSystemMills()
+    {
+        this.lastClientFailSystemMills = System.currentTimeMillis();
     }
 
     @Override
@@ -525,16 +539,37 @@ public class Controller extends Base
         Platform.runLater(()-> new StreamPiAlert(title, body, alertType).show());
     }
 
-    private boolean isConnected = false;
-
     @Override
     public void onActionFailed(String profileID, String actionID) {
         Platform.runLater(()-> getDashboardPane().getActionGridPane().actionFailed(profileID, actionID));
     }
 
+    private final AtomicBoolean isConnected = new AtomicBoolean(false);
+
     @Override
-    public void setConnected(boolean isConnected) {
-        this.isConnected = isConnected;
+    public void setConnected(boolean isConnected)
+    {
+        this.isConnected.set(isConnected);
+    }
+
+    @Override
+    public boolean isConnected()
+    {
+        return isConnected.get();
+    }
+
+    private final AtomicBoolean isConnecting = new AtomicBoolean(false);
+
+    @Override
+    public void setIsConnecting(boolean isConnecting)
+    {
+        this.isConnecting.set(isConnecting);
+    }
+
+    @Override
+    public boolean isConnecting()
+    {
+        return isConnecting.get();
     }
 
     @Override
@@ -543,11 +578,6 @@ public class Controller extends Base
         return getDashboardPane().getActionGridPane().getActionBox(col, row);
     }
 
-    @Override
-    public boolean isConnected()
-    {
-        return isConnected;
-    }
 
     @Override
     public void renderProfile(ClientProfile clientProfile, boolean freshRender)

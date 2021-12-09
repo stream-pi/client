@@ -115,7 +115,7 @@ public class ActionBox extends StackPane
         return inputEvent instanceof StreamPiMouseEvent && inputEvent.getEventType() == MouseEvent.MOUSE_CLICKED;
     }
 
-    private AtomicBoolean isNotConnectedPromptShowing = new AtomicBoolean(false);
+    private final AtomicBoolean isNotConnectedPromptShowing = new AtomicBoolean(false);
     private void handleInputEvent(InputEvent rawInputEvent)
     {
         // ignore following input events for NOW:
