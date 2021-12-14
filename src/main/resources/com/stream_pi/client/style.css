@@ -248,3 +248,9 @@
     -fx-spacing: 10;
     -fx-padding: 5;
 }
+
+
+.dashboard_settings_button
+{
+    -fx-background-color: none;
+}
