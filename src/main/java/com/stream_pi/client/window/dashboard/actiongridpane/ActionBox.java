@@ -279,7 +279,6 @@ public class ActionBox extends StackPane
 
         displayTextLabel = new Label();
         displayTextLabel.setWrapText(true);
-        displayTextLabel.setVisible(false);
         displayTextLabel.setTextAlignment(TextAlignment.CENTER);
         displayTextLabel.getStyleClass().add("action_box_display_text_label");
 

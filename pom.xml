@@ -289,7 +289,7 @@
                     <mainClass>${main.class.name}</mainClass>
                     <verbose>true</verbose>
                     <nativeImageArgs>
-                        <arg>-H:IncludeLocales=de-DE,en,en-GB,en-IN,en-US,es-ES,fr,hi,mr</arg>
+                        <arg>-H:IncludeLocales=de,en,es,fr,hi,mr</arg>
                         <arg>--initialize-at-build-time=com.sun.org.apache.xml.internal.serializer.ToXMLStream</arg>
                     </nativeImageArgs>
                     <attachList>
