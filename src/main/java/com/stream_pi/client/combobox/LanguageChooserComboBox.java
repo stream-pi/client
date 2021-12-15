@@ -31,9 +31,7 @@ public class LanguageChooserComboBox extends StreamPiComboBox<Language>
                 return language.getDisplayName();
             }
         });
-
         setOptions(I18N.getLanguages());
-
     }
 
     public Locale getSelectedLocale()
