@@ -289,7 +289,7 @@ public class ActionBox extends StackPane
         statusIcon.getStyleClass().add("action_box_error_icon");
         statusIcon.setOpacity(0);
         statusIcon.setCache(true);
-        statusIcon.setCacheHint(CacheHint.SPEED);
+        statusIcon.setCacheHint(CacheHint.QUALITY);
 
         statusIconAnimation = new Timeline(
                 new KeyFrame(

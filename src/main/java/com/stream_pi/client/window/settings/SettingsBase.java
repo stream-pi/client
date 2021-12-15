@@ -70,7 +70,7 @@ public class SettingsBase extends VBox
         getStyleClass().add("settings_base");
 
         setCache(true);
-        setCacheHint(CacheHint.SPEED);
+        setCacheHint(CacheHint.QUALITY);
     }
 
     public void setDefaultTabToGeneral()

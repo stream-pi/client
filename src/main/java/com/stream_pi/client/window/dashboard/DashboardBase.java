@@ -24,6 +24,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
@@ -78,6 +79,9 @@ public class DashboardBase extends AnchorPane
         getChildren().addAll(actionGridPane,settingsButton);
 
         getStyleClass().add("dashboard");
+
+        setCache(true);
+        setCacheHint(CacheHint.QUALITY);
     }
 
     private void modifySettingsButtonToPreventOverlappingScrollBars()
