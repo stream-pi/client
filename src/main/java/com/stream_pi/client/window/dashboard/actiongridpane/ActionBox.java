@@ -421,7 +421,7 @@ public class ActionBox extends StackPane
         setBackground(null);
         setStyle(null);
 
-
+        statusIcon.setIconSize((int) (iconSize * 0.8));
         displayTextLabel.setStyle(null);
 
         getStyleClass().add("action_box_"+getAction().getID());
