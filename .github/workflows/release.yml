@@ -88,11 +88,11 @@ jobs:
           tag_name: ${{ env.VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create relase body
+      - name: Create release body
         run: |
           touch body.md
 
-          echo "Build Number : `${BUILD_NUMBER}`" >> body.md
+          echo Build Number : \`$BUILD_NUMBER\` >> body.md
 
           if [[ $VERSION == *"SNAPSHOT"* ]]; then
             echo "**These are snapshot builds. Untested and not recommended for daily use.**" >> body.md
