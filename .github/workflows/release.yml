@@ -50,6 +50,24 @@ jobs:
           workflow: build.yml
           name: linux-app-image-x64
           path: target/install
+      - name: Download Linux x86 deb
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          name: linux-deb-x86
+          path: target/install
+      - name: Download Linux x86 rpm
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          name: linux-rpm-x86
+          path: target/install
+      - name: Download Linux x86 AppImage
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          name: linux-app-image-x86
+          path: target/install
       - name: Download MacOS x64 PKG
         uses: dawidd6/action-download-artifact@v2
         with:
