@@ -90,6 +90,7 @@ public class ActionBox extends StackPane
     {
         setStyle(null);
         setAction(null);
+        setIcon(null);
         setCurrentToggleStatus(false);
         setBackground(Background.EMPTY);
         removeFontIcon();
@@ -275,8 +276,6 @@ public class ActionBox extends StackPane
         getStyleClass().add("action_box");
         getStyleClass().add("action_box_"+row+"_"+col);
 
-        setIcon(null);
-
         displayTextLabel = new Label();
         displayTextLabel.setWrapText(true);
         displayTextLabel.setTextAlignment(TextAlignment.CENTER);
@@ -418,14 +417,16 @@ public class ActionBox extends StackPane
 
     public void init()
     {
-        setBackground(null);
-        setStyle(null);
-
         statusIcon.setIconSize((int) (iconSize * 0.8));
         displayTextLabel.setStyle(null);
 
-        getStyleClass().add("action_box_"+getAction().getID());
-        getStyleClass().add("action_box_"+getAction().getUniqueID().replace(".","-"));
+        getStyleClass().add("action_box_id_"+getAction().getID());
+        getStyleClass().add("action_box_type_"+getAction().getActionType());
+
+        if (getAction().getUniqueID()!=null) // NORMAL, TOGGLE, GAUGE
+        {
+            getStyleClass().add("action_box_unique_id"+getAction().getUniqueID().replace(".","-"));
+        }
 
         try
         {
@@ -753,11 +754,12 @@ public class ActionBox extends StackPane
         }
     }
 
-
     public void setBackgroundColour(String colour)
     {
         if(!colour.isEmpty())
+        {
             setStyle("-fx-background-color : "+colour);
+        }
     }
 
     public void updateTemporaryDisplayText(String displayText)
