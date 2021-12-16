@@ -18,6 +18,14 @@ jobs:
       - name: Add Version to environment
         run: |
           echo "VERSION=$(<version.txt)" >> $GITHUB_ENV
+      - name: Download BUILD_NUMBER
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: init.yml
+          name: build_number
+      - name: Add BUILD_NUMBER to environment
+        run: |
+          echo "BUILD_NUMBER=$(<build_number.txt)" >> $GITHUB_ENV
       - name: Download windows x64 msi
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -83,6 +91,9 @@ jobs:
       - name: Create relase body
         run: |
           touch body.md
+
+          echo "Build Number : `${BUILD_NUMBER}`" >> body.md
+
           if [[ $VERSION == *"SNAPSHOT"* ]]; then
             echo "**These are snapshot builds. Untested and not recommended for daily use.**" >> body.md
           fi

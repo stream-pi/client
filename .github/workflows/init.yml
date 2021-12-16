@@ -37,6 +37,10 @@ jobs:
       - name: Set Version
         run: |
           echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Set Build Number
+        run: |
+          RAW_BUILD_NUMBER=$(sed '4q;d' src/main/resources/com/stream_pi/client/info/build.properties)
+          echo "BUILD_NUMBER=${RAW_BUILD_NUMBER#*=}" >> $GITHUB_ENV
       - name: Calculate required modules
         run: |
           JDEPS_MODULES=$(jdeps --module-path $JAVAFX_SDK/:target/lib/ --print-module-deps --ignore-missing-deps target/lib/client-$VERSION.jar)
@@ -59,3 +63,11 @@ jobs:
         with:
           name: version
           path: version.txt
+      - name: Saving BUILD_NUMBER
+        run: |
+          echo $BUILD_NUMBER > build_number.txt
+      - name: Uploading BUILD_NUMBER
+        uses: actions/upload-artifact@v2
+        with:
+          name: build_number
+          path: build_number.txt
