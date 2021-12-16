@@ -420,12 +420,12 @@ public class ActionBox extends StackPane
         statusIcon.setIconSize((int) (iconSize * 0.8));
         displayTextLabel.setStyle(null);
 
-        getStyleClass().add("action_box_id_"+getAction().getID());
+        getStyleClass().add("action_box_"+getAction().getID());
         getStyleClass().add("action_box_type_"+getAction().getActionType());
 
         if (getAction().getUniqueID()!=null) // NORMAL, TOGGLE, GAUGE
         {
-            getStyleClass().add("action_box_unique_id"+getAction().getUniqueID().replace(".","-"));
+            getStyleClass().add("action_box_"+getAction().getUniqueID().replace(".","-"));
         }
 
         try
