@@ -434,8 +434,8 @@ jobs:
             mv target/lib/* $INSTALL_DIR
 
 
-            axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-arm32_bin-sdk.zip
-            unzip openjfx-18-ea+7_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+            axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+8_linux-arm32_bin-sdk.zip
+            unzip openjfx-18-ea+8_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
             # Use Debug libgluon
