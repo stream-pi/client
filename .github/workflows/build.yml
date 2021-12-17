@@ -449,17 +449,6 @@ jobs:
 
 
 
-
-            # Use latest JFX
-            git clone https://github.com/rnayabed/jfx-embedded-builds
-
-            #mv jfx-embedded-builds/* $INSTALL_DIR/
-
-
-            mv jfx-embedded-builds/libglass.so javafx-sdk-arm32/javafx-sdk-17.0.2/lib/
-            # mv jfx-embedded-builds/libglass_monocle_x11.so  javafx-sdk-arm32/javafx-sdk-17.0.2/lib/
-
-
             mv javafx-sdk-arm32/javafx-sdk-17.0.2/lib/* $INSTALL_DIR/
 
             cp assets/launchers/arm-jvm/run_console $INSTALL_DIR/run_console
