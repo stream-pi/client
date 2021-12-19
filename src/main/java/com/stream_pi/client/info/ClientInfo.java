@@ -32,6 +32,7 @@ import com.stream_pi.util.version.Version;
 import javafx.geometry.Orientation;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
@@ -131,7 +132,10 @@ public class ClientInfo
 
         try
         {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(ClientInfo.class.getResourceAsStream("LICENSE"))));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                    Objects.requireNonNull(ClientInfo.class.getResourceAsStream("LICENSE")),
+                    StandardCharsets.UTF_8
+            ));
 
             StringBuilder licenseTxt = new StringBuilder();
             while(true)
