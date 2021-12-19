@@ -24,7 +24,7 @@ set /p VERSION=<version.txt
 --input target/lib ^
 --main-jar client-%VERSION%.jar ^
 --type msi ^
---java-options "-Dprism.verbose=true -Djavafx.verbose=true -Dprism.dirtyopts=false" ^
+--java-options "-Djavafx.verbose=true -Dprism.verbose=true -Dprism.lcdtext=false -Dprism.dirtyopts=false" ^
 --arguments "Stream-Pi.startupRunnerFileName='Stream-Pi Client.exe'" ^
 --main-class %MAIN_CLASS% ^
 --icon assets/windows-icon.ico ^
@@ -32,7 +32,7 @@ set /p VERSION=<version.txt
 --win-dir-chooser ^
 --win-menu ^
 --win-menu-group "Stream-Pi" ^
---vendor "Stream-Pi"
+--vendor "Debayan Sutradhar (rnayabed), Samuel Quiñones (SamuelQuinones)"
 
 echo Done now renaming ..
 cd %INSTALL_DIR%
