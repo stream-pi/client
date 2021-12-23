@@ -405,6 +405,7 @@ public class Client extends Thread
                 socket.close();
 
             clientListener.setConnected(false);
+            clientListener.onDisconnect();
             clientListener.updateSettingsConnectDisconnectButton();
         }
         catch (IOException e)

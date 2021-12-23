@@ -119,6 +119,11 @@ public class ActionBox extends StackPane
     private final AtomicBoolean isNotConnectedPromptShowing = new AtomicBoolean(false);
     private void handleInputEvent(InputEvent rawInputEvent)
     {
+        if (getAction() == null)
+        {
+            return;
+        }
+
         // ignore following input events for NOW:
 
         if(List.of(MouseEvent.MOUSE_DRAGGED,
@@ -130,8 +135,6 @@ public class ActionBox extends StackPane
         {
             return;
         }
-
-        System.out.println(rawInputEvent.getEventType());
 
         StreamPiInputEvent inputEvent;
 
@@ -168,94 +171,91 @@ public class ActionBox extends StackPane
 
         try
         {
-            if(action!=null)
+            if(isClick(inputEvent))
             {
-                if(isClick(inputEvent))
+                if(Config.getInstance().isVibrateOnActionClicked())
                 {
-                    if(Config.getInstance().isVibrateOnActionClicked())
+                    VibrationService.create().ifPresent(VibrationService::vibrate);
+                }
+            }
+
+            if(action.getActionType() == ActionType.FOLDER && isClick(inputEvent))
+            {
+                getActionGridPaneListener().renderFolder(action.getID());
+            }
+            else
+            {
+                if(!getActionGridPaneListener().isConnected())
+                {
+                    if(Config.getInstance().isTryConnectingWhenActionClicked())
                     {
-                        VibrationService.create().ifPresent(VibrationService::vibrate);
+                        clientListener.setupClientConnection(()->handleInputEvent(rawInputEvent));
                     }
+                    else
+                    {
+                        if (!isNotConnectedPromptShowing.get())
+                        {
+                            exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
+                            isNotConnectedPromptShowing.set(true);
+                        }
+                    }
+                    return;
                 }
 
-                if(action.getActionType() == ActionType.FOLDER && isClick(inputEvent))
+                isNotConnectedPromptShowing.set(false);
+
+                if(action.getActionType() == ActionType.NORMAL)
                 {
-                    getActionGridPaneListener().renderFolder(action.getID());
+                    clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
                 }
-                else
+                else if(action.getActionType() == ActionType.COMBINE)
                 {
-                    if(!getActionGridPaneListener().isConnected())
-                    {
-                        if(Config.getInstance().isTryConnectingWhenActionClicked())
+                    ClientExecutorService.getExecutorService().submit(()->{
+                        for(int i = 0;i<action.getClientProperties().getSize(); i++)
                         {
-                            clientListener.setupClientConnection(()->handleInputEvent(rawInputEvent));
-                        }
-                        else
-                        {
-                            if (!isNotConnectedPromptShowing.get())
+                            try
                             {
-                                exceptionAndAlertHandler.handleMinorException(new MinorException("Not Connected", "Not Connected to any Server"));
-                                isNotConnectedPromptShowing.set(true);
-                            }
-                        }
-                        return;
-                    }
+                                ClientAction childAction = clientListener.getCurrentProfile().getActionFromID(
+                                        action.getClientProperties().getSingleProperty(i+"").getRawValue()
+                                );
 
-                    isNotConnectedPromptShowing.set(false);
+                                Thread.sleep(childAction.getDelayBeforeExecuting());
 
-                    if(action.getActionType() == ActionType.NORMAL)
-                    {
-                        clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
-                    }
-                    else if(action.getActionType() == ActionType.COMBINE)
-                    {
-                        ClientExecutorService.getExecutorService().submit(()->{
-                            for(int i = 0;i<action.getClientProperties().getSize(); i++)
-                            {
-                                try
+                                if (childAction.getActionType() == ActionType.NORMAL)
                                 {
-                                    ClientAction childAction = clientListener.getCurrentProfile().getActionFromID(
-                                            action.getClientProperties().getSingleProperty(i+"").getRawValue()
-                                    );
-
-                                    Thread.sleep(childAction.getDelayBeforeExecuting());
-
-                                    if (childAction.getActionType() == ActionType.NORMAL)
+                                    clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
+                                }
+                                else if (childAction.getActionType() == ActionType.TOGGLE)
+                                {
+                                    if(isClick(inputEvent))
                                     {
-                                        clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
-                                    }
-                                    else if (childAction.getActionType() == ActionType.TOGGLE)
-                                    {
-                                        if(isClick(inputEvent))
-                                        {
-                                            toggle();
-                                            clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
-                                        }
+                                        toggle();
+                                        clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
                                     }
                                 }
-                                catch (MinorException e)
-                                {
-                                    exceptionAndAlertHandler.handleMinorException(e);
-                                }
-                                catch (SevereException e)
-                                {
-                                    exceptionAndAlertHandler.handleSevereException(e);
-                                }
-                                catch (InterruptedException e)
-                                {
-                                    e.printStackTrace();
-                                }
                             }
-                        });
-
-                    }
-                    else if(action.getActionType() == ActionType.TOGGLE)
-                    {
-                        if(isClick(inputEvent))
-                        {
-                            toggle();
-                            clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
+                            catch (MinorException e)
+                            {
+                                exceptionAndAlertHandler.handleMinorException(e);
+                            }
+                            catch (SevereException e)
+                            {
+                                exceptionAndAlertHandler.handleSevereException(e);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
+                    });
+
+                }
+                else if(action.getActionType() == ActionType.TOGGLE)
+                {
+                    if(isClick(inputEvent))
+                    {
+                        toggle();
+                        clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
                     }
                 }
             }
@@ -430,12 +430,28 @@ public class ActionBox extends StackPane
 
         try
         {
+            updateDisplayTextLabel();
+
+            if(getAction().isShowDisplayText())
+            {
+                setDisplayTextAlignment(getAction().getDisplayTextAlignment());
+                setDisplayTextFontColourAndSize(getAction().getDisplayTextFontColourHex());
+            }
+            else
+            {
+                clearDisplayTextLabel();
+            }
+
             if (getAction().getActionType() == ActionType.GAUGE)
             {
                 if (gauge == null)
                 {
                     gauge = new Gauge();
-                    gauge.setOnMouseClicked(getOnMouseClicked());
+                    gauge.addEventFilter(MouseEvent.ANY, this::handleInputEvent);
+                    gauge.addEventFilter(SwipeEvent.ANY, this::handleInputEvent);
+                    gauge.addEventFilter(RotateEvent.ANY, this::handleInputEvent);
+                    gauge.addEventFilter(TouchEvent.ANY, this::handleInputEvent);
+                    gauge.addEventFilter(ZoomEvent.ANY, this::handleInputEvent);
                     gauge.setAnimated(getAction().isGaugeAnimated());
 
                     getChildren().add(gauge);
@@ -444,7 +460,6 @@ public class ActionBox extends StackPane
 
                 setDisplayTextAlignment(getAction().getDisplayTextAlignment());
                 setDisplayTextFontColourAndSize(getAction().getDisplayTextFontColourHex());
-                updateDisplayTextLabel();
 
 
                 setGaugeTitle(getAction().getDisplayText());
@@ -453,19 +468,6 @@ public class ActionBox extends StackPane
 
                 setGaugeVisible(clientListener.isConnected());
 
-            }
-            else
-            {
-                if(getAction().isShowDisplayText())
-                {
-                    setDisplayTextAlignment(getAction().getDisplayTextAlignment());
-                    setDisplayTextFontColourAndSize(getAction().getDisplayTextFontColourHex());
-                    updateDisplayTextLabel();
-                }
-                else
-                {
-                    clearDisplayTextLabel();
-                }
             }
 
             if(getAction().getActionType() == ActionType.TOGGLE)
@@ -707,8 +709,18 @@ public class ActionBox extends StackPane
 
     public void updateDisplayTextLabel()
     {
-        displayTextLabel.setText((getAction().getTemporaryDisplayText() == null) ? getAction().getDisplayText() : getAction().getTemporaryDisplayText());
-    }
+        if (getAction().getTemporaryDisplayText() == null)
+        {
+            if(getAction().isShowDisplayText())
+            {
+                displayTextLabel.setText(getAction().getDisplayText());
+            }
+        }
+        else
+        {
+            displayTextLabel.setText(getAction().getTemporaryDisplayText());
+        }
+     }
 
     public void clearDisplayTextLabel()
     {
