@@ -46,7 +46,6 @@ public class ClientInfo
     private final ReleaseStatus releaseStatus;
     private final Platform platform;
     private String prePath;
-    private final Version minPluginSupportVersion;
     private final Version communicationProtocolVersion;
     private String buildNumber;
     private String license;
@@ -56,9 +55,8 @@ public class ClientInfo
 
     private ClientInfo()
     {
-        version = new Version(1,0,0);
-        minPluginSupportVersion = new Version(1,0,0);
-        communicationProtocolVersion = new Version(1,0,0);
+        version = new Version(2,0,0);
+        communicationProtocolVersion = new Version(2,0,0);
 
         releaseStatus = ReleaseStatus.EA;
 
@@ -187,11 +185,6 @@ public class ClientInfo
     public ReleaseStatus getReleaseStatus()
     {
         return releaseStatus;
-    }
-
-    public Version getMinPluginSupportVersion()
-    {
-        return minPluginSupportVersion;
     }
 
     public Version getCommunicationProtocolVersion()
