@@ -7,7 +7,7 @@
 
 Client Software for the Stream-Pi Platform
 
-![version](https://img.shields.io/badge/Version-1.0.0%20EA+3-green)
+![version](https://img.shields.io/badge/Version-2.0.0--SNAPSHOT-green)
 
 [![Discord](https://discordapp.com/api/guilds/582313435149238295/widget.png?style=shield)](https://discord.gg/BExqGmk)
 [![Matrix](https://img.shields.io/matrix/stream-pi-general:matrix.org?label=Matrix)](https://matrix.to/#/!hTwUYZonUXThjkMhCD:matrix.org?via=matrix.org)
