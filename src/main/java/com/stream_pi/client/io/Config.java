@@ -39,13 +39,16 @@ import com.stream_pi.client.Main;
 import com.stream_pi.client.i18n.I18N;
 import com.stream_pi.client.info.ClientInfo;
 import com.stream_pi.client.info.StartupFlags;
+import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
 import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.platform.Platform;
+import com.stream_pi.util.version.Version;
 import com.stream_pi.util.xmlconfighelper.XMLConfigHelper;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class Config
 {
@@ -53,9 +56,9 @@ public class Config
 
     private final File configFile;
 
-    private Document document;
+    private final Document document;
 
-    private Config() throws SevereException
+    public Config() throws SevereException
     {
         try
         {
@@ -74,7 +77,9 @@ public class Config
     public static synchronized Config getInstance() throws SevereException
     {
         if(instance == null)
+        {
             instance = new Config();
+        }
 
         return instance;
     }
@@ -84,17 +89,17 @@ public class Config
         instance = null;
     }
 
-    public static void unzipToDefaultPrePath() throws Exception
+    public static void unzipToDefaultPrePath() throws MinorException, SevereException
     {
         IOHelper.unzip(Objects.requireNonNull(Main.class.getResourceAsStream("Default.zip")), ClientInfo.getInstance().getPrePath());
-        Config.getInstance().setThemesPath(getDefaultThemesPath());
-        Config.getInstance().setIconsPath(getDefaultIconsPath());
-        Config.getInstance().setProfilesPath(getDefaultProfilesPath());
-        Config.getInstance().setCurrentLanguageLocale(getDefaultLanguageLocale());
 
-        Config.getInstance().setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
-
-        Config.getInstance().save();
+        Config tempConfig = new Config();
+        tempConfig.setThemesPath(getDefaultThemesPath());
+        tempConfig.setIconsPath(getDefaultIconsPath());
+        tempConfig.setProfilesPath(getDefaultProfilesPath());
+        tempConfig.setCurrentLanguageLocale(getDefaultLanguageLocale());
+        tempConfig.setIsFullScreenMode(StartupFlags.DEFAULT_FULLSCREEN_MODE);
+        tempConfig.save();
     }
 
     public void save() throws SevereException
@@ -110,6 +115,25 @@ public class Config
         catch (Exception e)
         {
             throw new SevereException(I18N.getString("io.config.unableToSaveConfig", e.getLocalizedMessage()));
+        }
+    }
+
+    public Version getVersion()
+    {
+        try
+        {
+            Node versionNode = document.getElementsByTagName("version").item(0);
+
+            if (versionNode == null)
+            {
+                return null;
+            }
+
+            return new Version(versionNode.getTextContent());
+        }
+        catch (MinorException e)
+        {
+            return null;
         }
     }
 

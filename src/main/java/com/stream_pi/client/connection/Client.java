@@ -504,7 +504,7 @@ public class Client extends Thread
         message.setValue("version", clientInfo.getVersion());
         message.setValue("release_status", clientInfo.getReleaseStatus());
         message.setValue("communication_protocol_version", clientInfo.getCommunicationProtocolVersion());
-        message.setValue("min_theme_standard", ThemeAPI.MIN_VERSION_SUPPORTED);
+        message.setValue("theme_api_version", ThemeAPI.VERSION);
         message.setValue("orientation", clientInfo.getOrientation());
         message.setValue("name", Config.getInstance().getClientName());
         message.setValue("platform",clientInfo.getPlatform());

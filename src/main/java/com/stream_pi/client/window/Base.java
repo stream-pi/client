@@ -44,6 +44,7 @@ import com.stream_pi.util.alert.StreamPiAlert;
 import com.stream_pi.util.combobox.StreamPiComboBox;
 import com.stream_pi.util.exception.MinorException;
 import com.stream_pi.util.exception.SevereException;
+import com.stream_pi.util.iohelper.IOHelper;
 import com.stream_pi.util.loggerhelper.StreamPiLogFallbackHandler;
 import com.stream_pi.util.loggerhelper.StreamPiLogFileHandler;
 import com.stream_pi.util.platform.Platform;
@@ -191,11 +192,9 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
         getChildren().addAll(alertStackPane);
 
-
         initLogger();
 
         checkPrePathDirectory();
-
 
         setStyle(null);
 
@@ -316,38 +315,45 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
 
     private void checkPrePathDirectory() throws SevereException
     {
-        try
+        String path = getClientInfo().getPrePath();
+
+        if(path == null)
         {
-            String path = getClientInfo().getPrePath();
+            throwStoragePermErrorAlert(I18N.getString("window.Base.failedToAccessFileSystem"));
+            return;
+        }
 
-            if(path == null)
+        File clientDataFolder = new File(path);
+
+        if (clientDataFolder.exists())
+        {
+            if (new File(getClientInfo().getPrePath()+"config.xml").exists())
             {
-                throwStoragePermErrorAlert(I18N.getString("window.Base.failedToAccessFileSystem"));
-                return;
+                Config tempConfig = new Config();
+
+                if (tempConfig.getVersion() == null || tempConfig.getVersion().getMajor() != getClientInfo().getVersion().getMajor())
+                {
+                    IOHelper.deleteFile(getClientInfo().getPrePath(), false);
+                }
             }
-
-            File file = new File(path);
-
-
-            if(!file.exists())
+            else
             {
-                boolean result = file.mkdirs();
-                if(result)
-                {
-                    Config.unzipToDefaultPrePath();
-
-                    initLogger();
-                }
-                else
-                {
-                    throwStoragePermErrorAlert(I18N.getString("window.Base.noStoragePermission"));
-                }
+                IOHelper.deleteFile(getClientInfo().getPrePath(), false);
             }
         }
-        catch (Exception e)
+
+
+        if (!clientDataFolder.exists())
         {
-            e.printStackTrace();
-            throw new SevereException(e.getMessage());
+            try
+            {
+                Config.unzipToDefaultPrePath();
+                initLogger();
+            }
+            catch (MinorException e)
+            {
+                throwStoragePermErrorAlert(e.getMessage());
+            }
         }
     }
 

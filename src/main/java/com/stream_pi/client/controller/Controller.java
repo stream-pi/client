@@ -482,13 +482,13 @@ public class Controller extends Base
 
 
     @Override
-    public void handleMinorException(MinorException e)
+    public StreamPiAlert handleMinorException(MinorException e)
     {
-        handleMinorException(e.getMessage(), e);
+        return handleMinorException(e.getMessage(), e);
     }
 
     @Override
-    public void handleMinorException(String message, MinorException e)
+    public StreamPiAlert handleMinorException(String message, MinorException e)
     {
         getLogger().log(Level.SEVERE, message, e);
         e.printStackTrace();
@@ -498,17 +498,19 @@ public class Controller extends Base
             getScreenSaver().restart();
         }
 
-        new StreamPiAlert(e.getTitle(), message, StreamPiAlertType.WARNING).show();
+        StreamPiAlert alert = new StreamPiAlert(e.getTitle(), message, StreamPiAlertType.WARNING);
+        alert.show();
+        return alert;
     }
 
     @Override
-    public void handleSevereException(SevereException e)
+    public StreamPiAlert handleSevereException(SevereException e)
     {
-        handleSevereException(e.getMessage(), e);
+        return handleSevereException(e.getMessage(), e);
     }
 
     @Override
-    public void handleSevereException(String message, SevereException e)
+    public StreamPiAlert handleSevereException(String message, SevereException e)
     {
         getLogger().log(Level.SEVERE, message, e);
         e.printStackTrace();
@@ -531,12 +533,8 @@ public class Controller extends Base
         });
 
         alert.show();
-    }
 
-    @Override
-    public void onAlert(String title, String body, StreamPiAlertType alertType)
-    {
-        Platform.runLater(()-> new StreamPiAlert(title, body, alertType).show());
+        return alert;
     }
 
     @Override

@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 public class About extends ScrollPane
 {
-    private ClientListener clientListener;
+    private final ClientListener clientListener;
 
     private ContributorsTab contributorsTab;
     private VBox mainVBox;
@@ -102,12 +102,6 @@ public class About extends ScrollPane
         Label commStandardLabel = new Label(I18N.getString("window.settings.about.About.serverCommunicationProtocolVersion", clientInfo.getCommunicationProtocolVersion().getText()));
         commStandardLabel.getStyleClass().add("about_comm_standard_label");
 
-        Label minThemeAPILabel = new Label("Min ThemeAPI " + ThemeAPI.MIN_VERSION_SUPPORTED.getText());
-        minThemeAPILabel.getStyleClass().add("about_min_theme_api_label");
-
-        Label minActionAPILabel = new Label("Min ActionAPI " + ActionAPI.MIN_VERSION_SUPPORTED.getText());
-        minActionAPILabel.getStyleClass().add("about_min_action_api_label");
-
         Label currentActionAPILabel = new Label("Action API " + ActionAPI.VERSION.getText());
         currentActionAPILabel.getStyleClass().add("about_current_action_api_label");
 
@@ -127,8 +121,6 @@ public class About extends ScrollPane
         VBox vBox = new VBox(
                 versionText,
                 commStandardLabel,
-                minThemeAPILabel,
-                minActionAPILabel,
                 currentActionAPILabel,
                 currentUtilLabel,
                 javaVersionLabel,
