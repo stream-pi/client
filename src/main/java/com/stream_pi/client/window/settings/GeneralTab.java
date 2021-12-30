@@ -284,11 +284,12 @@ public class GeneralTab extends VBox
                 vibrateOnActionPressHBox,
                 startOnBootHBox,
                 showCursorHBox,
-                checkForUpdatesButton,
                 shutdownButton,
                 factoryResetButton,
                 restartButton
         );
+
+        // checkForUpdatesButton removed until Update API is finalised
 
 
         getStyleClass().add("settings_general_tab");
