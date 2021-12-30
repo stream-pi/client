@@ -388,6 +388,8 @@ public class ActionBox extends StackPane
 
         getStyleClass().add("action_box_"+getAction().getID());
         getStyleClass().add("action_box_type_"+getAction().getActionType());
+
+        getStyleClass().remove("action_box_unoccupied");
         getStyleClass().add("action_box_occupied");
 
         if (getAction().getUniqueID()!=null) // NORMAL, TOGGLE, GAUGE
