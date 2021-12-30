@@ -169,6 +169,7 @@ public class ActionBox extends StackPane
             return;
         }
 
+
         try
         {
             if(isClick(inputEvent))
@@ -204,55 +205,19 @@ public class ActionBox extends StackPane
 
                 isNotConnectedPromptShowing.set(false);
 
-                if(action.getActionType() == ActionType.NORMAL)
+                if(action.getActionType() == ActionType.NORMAL || action.getActionType() == ActionType.TOGGLE)
                 {
                     clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
                 }
-                else if(action.getActionType() == ActionType.COMBINE)
+
+
+                if(isClick(inputEvent))
                 {
-                    ClientExecutorService.getExecutorService().submit(()->{
-                        for(int i = 0;i<action.getClientProperties().getSize(); i++)
-                        {
-                            try
-                            {
-                                ClientAction childAction = clientListener.getCurrentProfile().getActionFromID(
-                                        action.getClientProperties().getSingleProperty(i+"").getRawValue()
-                                );
-
-                                Thread.sleep(childAction.getDelayBeforeExecuting());
-
-                                if (childAction.getActionType() == ActionType.NORMAL)
-                                {
-                                    clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
-                                }
-                                else if (childAction.getActionType() == ActionType.TOGGLE)
-                                {
-                                    if(isClick(inputEvent))
-                                    {
-                                        toggle();
-                                        clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());
-                                    }
-                                }
-                            }
-                            catch (MinorException e)
-                            {
-                                exceptionAndAlertHandler.handleMinorException(e);
-                            }
-                            catch (SevereException e)
-                            {
-                                exceptionAndAlertHandler.handleSevereException(e);
-                            }
-                            catch (InterruptedException e)
-                            {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                }
-                else if(action.getActionType() == ActionType.TOGGLE)
-                {
-                    if(isClick(inputEvent))
+                    if(action.getActionType() == ActionType.COMBINE)
+                    {
+                        clientListener.getClient().sendInputEvent(clientListener.getCurrentProfile().getID(), getAction().getID(), inputEvent);
+                    }
+                    else if(action.getActionType() == ActionType.TOGGLE)
                     {
                         toggle();
                         clientListener.getClient().setToggleStatus(clientListener.getCurrentProfile().getID(), getAction().getID(), getCurrentToggleStatus());

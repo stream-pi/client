@@ -379,14 +379,14 @@ public class Controller extends Base
     {
         getStage().setTitle(I18N.getString("windowTitle"));
         getStage().setOnCloseRequest(e->{
-            onCloseRequest();
+            onQuitApp();
             exitApp();
         });
     }
 
 
     @Override
-    public void onCloseRequest()
+    public void onQuitApp()
     {
         try
         {
@@ -463,7 +463,7 @@ public class Controller extends Base
     @Override
     public boolean getToggleStatus(String profileID, String actionID)
     {
-        return getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID).getCurrentToggleStatus();
+        return getClientProfiles().getProfileFromID(profileID).getActionByID(actionID).getCurrentToggleStatus();
     }
 
 
@@ -527,7 +527,7 @@ public class Controller extends Base
             @Override
             public void onClick(StreamPiAlertButton s)
             {
-                onCloseRequest();
+                onQuitApp();
                 exitApp();
             }
         });
@@ -568,12 +568,6 @@ public class Controller extends Base
     public boolean isConnecting()
     {
         return isConnecting.get();
-    }
-
-    @Override
-    public ActionBox getActionBox(int col, int row)
-    {
-        return getDashboardPane().getActionGridPane().getActionBox(col, row);
     }
 
 
@@ -633,7 +627,7 @@ public class Controller extends Base
     @Override
     public ActionBox getActionBoxByProfileAndID(String profileID, String actionID)
     {
-        Action action = getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
+        Action action = getClientProfiles().getProfileFromID(profileID).getActionByID(actionID);
 
         if(!getCurrentProfile().getID().equals(profileID) && !getCurrentParent().equals(action.getParent()))
             return null;
@@ -688,7 +682,7 @@ public class Controller extends Base
     {
         getLogger().info("Reset to factory ...");
 
-        onCloseRequest();
+        onQuitApp();
 
         if (IOHelper.deleteFile(getClientInfo().getPrePath(), false))
         {
@@ -768,5 +762,18 @@ public class Controller extends Base
         });
 
         return closeSettingsTimeline;
+    }
+
+    @Override
+    public void restart()
+    {
+        getLogger().info("Restarting ...");
+
+        onQuitApp();
+        setFirstRun(true);
+        Platform.runLater(()->{
+            unregisterThemes();
+            init();
+        });
     }
 }

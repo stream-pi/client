@@ -53,8 +53,6 @@ public interface ClientListener
     void clearActionBox(int col, int row, int colSpan, int rowSpan);
     void renderAction(String currentProfileID, ClientAction action);
     void refreshGridIfCurrentProfile(String currentProfileID);
-    
-    ActionBox getActionBox(int col, int row);
 
     ClientProfile getCurrentProfile();
 
@@ -73,7 +71,7 @@ public interface ClientListener
 
     void updateSettingsConnectDisconnectButton();
 
-    void onCloseRequest();
+    void onQuitApp();
 
     void loadSettings();
 
@@ -99,4 +97,6 @@ public interface ClientListener
 
     long getLastClientFailSystemMills();
     void setLastClientFailSystemMills();
+
+    void restart();
 }

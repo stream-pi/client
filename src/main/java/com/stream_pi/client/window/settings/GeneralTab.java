@@ -228,14 +228,16 @@ public class GeneralTab extends VBox
 
 
         restartButton = new Button(I18N.getString("window.settings.GeneralTab.restart"));
-        restartButton.setOnAction(event->
-        {
-            restartButton.setDisable(true);
-            clientListener.setFirstRun(true);
-            clientListener.init();
-            restartButton.setDisable(false);
+        restartButton.setOnAction(event->{
+            if (clientListener.isConnected())
+            {
+                showRestartPrompt(I18N.getString("window.settings.GeneralTab.restartPromptWarning"));
+            }
+            else
+            {
+                clientListener.restart();
+            }
         });
-
 
         screenTimeoutSecondsHBoxInputBox = new HBoxInputBox(I18N.getString("window.settings.GeneralTab.screenTimeoutInSeconds"), screenTimeoutTextField, prefWidth);
         screenTimeoutSecondsHBoxInputBox.managedProperty().bind(screenTimeoutSecondsHBoxInputBox.visibleProperty());
@@ -343,6 +345,25 @@ public class GeneralTab extends VBox
         screenTimeoutSecondsHBoxInputBox.setVisible(StartupFlags.SCREEN_SAVER_FEATURE);
     }
 
+    private void showRestartPrompt(String promptText)
+    {
+        StreamPiAlert restartPrompt = new StreamPiAlert(promptText,
+                StreamPiAlertType.WARNING, StreamPiAlertButton.YES, StreamPiAlertButton.NO
+        );
+
+        restartPrompt.setOnClicked(new StreamPiAlertListener() {
+            @Override
+            public void onClick(StreamPiAlertButton s) {
+                if(s.equals(StreamPiAlertButton.YES))
+                {
+                    clientListener.restart();
+                }
+            }
+        });
+
+        restartPrompt.show();
+    }
+
     private Label generateSubHeading(String text)
     {
         Label label = new Label(text);
@@ -394,7 +415,7 @@ public class GeneralTab extends VBox
 
     public void onExitButtonClicked()
     {
-        clientListener.onCloseRequest();
+        clientListener.onQuitApp();
         clientListener.exitApp();
     }
 
@@ -405,7 +426,7 @@ public class GeneralTab extends VBox
 
     public void onShutdownButtonClicked()
     {
-        clientListener.onCloseRequest();
+        clientListener.onQuitApp();
         shutdownButton.setDisable(true);
 
         try
@@ -420,6 +441,42 @@ public class GeneralTab extends VBox
         }
     }
 
+    public StringBuilder connectionInputValidation()
+    {
+        StringBuilder errors = new StringBuilder();
+
+        int port;
+        try
+        {
+            port = Integer.parseInt(serverPortTextField.getText());
+
+            if(port < 1024 && !RootChecker.isRoot(ClientInfo.getInstance().getPlatform()))
+            {
+                errors.append("* ").append(I18N.getString("serverPortMustBeGreaterThan1024")).append("\n");
+            }
+            else if(port > 65535)
+            {
+                errors.append("* ").append(I18N.getString("serverPortMustBeLesserThan65535")).append("\n");
+            }
+        }
+        catch (NumberFormatException exception)
+        {
+            errors.append("* ").append(I18N.getString("serverPortMustBeInteger")).append("\n");
+        }
+
+        if(serverHostNameOrIPTextField.getText().isBlank())
+        {
+            errors.append("* ").append(I18N.getString("serverHostNameOrIPCannotBeBlank")).append("\n");
+        }
+
+        if(nameTextField.getText().isBlank())
+        {
+            errors.append("* ").append(I18N.getString("nameCannotBeBlank")).append("\n");
+        }
+
+        return errors;
+    }
+
     public void onConnectDisconnectButtonClicked()
     {
         if(clientListener.isConnected())
@@ -428,7 +485,14 @@ public class GeneralTab extends VBox
         }
         else
         {
-            onSaveButtonClicked();
+            StringBuilder errors = connectionInputValidation();
+
+            if(!errors.toString().isEmpty())
+            {
+                exceptionAndAlertHandler.handleMinorException(new MinorException(I18N.getString("validationError", errors)));
+                return;
+            }
+
             clientListener.setupClientConnection();
         }
     }
@@ -511,25 +575,6 @@ public class GeneralTab extends VBox
     {
         StringBuilder errors = new StringBuilder();
 
-        int port = -1;
-        try
-        {
-            port = Integer.parseInt(serverPortTextField.getText());
-
-            if(port < 1024 && !RootChecker.isRoot(ClientInfo.getInstance().getPlatform()))
-            {
-                errors.append("* ").append(I18N.getString("serverPortMustBeGreaterThan1024")).append("\n");
-            }
-            else if(port > 65535)
-            {
-                errors.append("* ").append(I18N.getString("serverPortMustBeLesserThan65535")).append("\n");
-            }
-        }
-        catch (NumberFormatException exception)
-        {
-            errors.append("* ").append(I18N.getString("serverPortMustBeInteger")).append("\n");
-        }
-
 
         int screenSaverTimeout = -1;
         try
@@ -546,17 +591,7 @@ public class GeneralTab extends VBox
             errors.append("* ").append(I18N.getString("window.settings.GeneralTab.screenTimeoutMustBeInteger")).append("\n");
         }
 
-
-        if(serverHostNameOrIPTextField.getText().isBlank())
-        {
-            errors.append("* ").append(I18N.getString("serverHostNameOrIPCannotBeBlank")).append("\n");
-        }
-
-        if(nameTextField.getText().isBlank())
-        {
-            errors.append("* ").append(I18N.getString("nameCannotBeBlank")).append("\n");
-        }
-
+        errors.append(connectionInputValidation());
 
         if(!errors.toString().isEmpty())
         {
@@ -598,6 +633,7 @@ public class GeneralTab extends VBox
 
             config.setName(nameTextField.getText());
 
+            int port = Integer.parseInt(serverPortTextField.getText());
             if(port != config.getSavedServerPort() || !serverHostNameOrIPTextField.getText().equals(config.getSavedServerHostNameOrIP()))
             {
                 syncWithServer = true;

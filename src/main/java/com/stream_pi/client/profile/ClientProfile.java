@@ -586,7 +586,7 @@ public class ClientProfile implements Cloneable
     {
         int index = getActionIndexInConfig(actionID);
 
-        getActionFromID(actionID).addIcon(state, array);
+        getActionByID(actionID).addIcon(state, array);
 
 
         File iconFile = new File(iconsPath + File.separator + actionID + "___" + state);
@@ -769,7 +769,7 @@ public class ClientProfile implements Cloneable
         return actionSize;
     }
 
-    public ClientAction getActionFromID(String ID)
+    public ClientAction getActionByID(String ID)
     {
         return actions.getOrDefault(ID, null);
     }

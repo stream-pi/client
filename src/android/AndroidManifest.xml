@@ -13,7 +13,7 @@
   ~ GNU General Public License for more details.
   -->
 
-<manifest xmlns:android='http://schemas.android.com/apk/res/android' package='com.streampi.client' android:versionCode='1' android:versionName='1.0.0 EA+4-SNAPSHOT'>
+<manifest xmlns:android='http://schemas.android.com/apk/res/android' package='com.streampi.client' android:versionCode='2' android:versionName='2.0.0-SNAPSHOT'>
     <supports-screens android:xlargeScreens="true"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

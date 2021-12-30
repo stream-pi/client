@@ -254,12 +254,18 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     public void initThemes() throws SevereException 
     {
         clearStylesheets();
+        System.out.println("IS THEME NULL : "+(themes == null));
         if(themes==null)
             registerThemes();
         applyDefaultStylesheet();
         applyDefaultTheme();
         applyDefaultIconsStylesheet();
         applyGlobalDefaultStylesheet();
+    }
+
+    public void unregisterThemes()
+    {
+        themes = null;
     }
 
     protected void resizeAccordingToResolution()
@@ -474,7 +480,7 @@ public abstract class Base extends StackPane implements ExceptionAndAlertHandler
     {
         logger.info("Loading themes ...");
 
-        themes = new Themes(getConfig().getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName());
+        themes = new Themes(Config.getDefaultThemesPath(), getConfig().getThemesPath(), getConfig().getCurrentThemeFullName());
         
         if(!themes.getErrors().isEmpty())
         {

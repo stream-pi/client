@@ -376,7 +376,7 @@ public class Client extends Thread
                 state
         );
 
-        ClientAction a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
+        ClientAction a = clientListener.getClientProfiles().getProfileFromID(profileID).getActionByID(actionID);
         clientListener.renderAction(profileID, a);
     }
 
@@ -718,7 +718,7 @@ public class Client extends Thread
 
         try
         {
-            ClientAction old = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(action.getID());
+            ClientAction old = clientListener.getClientProfiles().getProfileFromID(profileID).getActionByID(action.getID());
 
 
             if(old != null)
@@ -770,7 +770,7 @@ public class Client extends Thread
             String profileID = (String) message.getValue("profile_ID");
             String actionID = (String) message.getValue("ID");
 
-            ClientAction acc =  clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID);
+            ClientAction acc =  clientListener.getClientProfiles().getProfileFromID(profileID).getActionByID(actionID);
 
             if(acc == null)
             {
@@ -783,7 +783,7 @@ public class Client extends Thread
                 ArrayList<String> idsToBeRemoved = new ArrayList<>();
 
                 ArrayList<String> folders = new ArrayList<>();
-                String folderToBeDeletedID = clientListener.getClientProfiles().getProfileFromID(profileID).getActionFromID(actionID).getID();
+                String folderToBeDeletedID = clientListener.getClientProfiles().getProfileFromID(profileID).getActionByID(actionID).getID();
 
                 folders.add(folderToBeDeletedID);
 

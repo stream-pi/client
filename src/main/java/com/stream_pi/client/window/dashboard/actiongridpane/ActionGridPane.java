@@ -108,7 +108,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     {
         if(getClientProfile().getID().equals(profileID))
         {
-            ClientAction action = getClientProfile().getActionFromID(actionID);
+            ClientAction action = getClientProfile().getActionByID(actionID);
             if(action != null)
             {
                 if(currentParent.equals(action.getParent()))
@@ -119,7 +119,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
                 {
                     if(action.getLocation().getCol() == -1)
                     {
-                        failShow(getClientProfile().getActionFromID(action.getParent()));
+                        failShow(getClientProfile().getActionByID(action.getParent()));
                     }
                 }
             }
@@ -512,8 +512,8 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
     @Override
     public void renderFolder(String actionID)
     {
-        setCurrentParent(clientProfile.getActionFromID(actionID).getID());
-        setPreviousParent(clientProfile.getActionFromID(actionID).getParent());
+        setCurrentParent(clientProfile.getActionByID(actionID).getID());
+        setPreviousParent(clientProfile.getActionByID(actionID).getParent());
         renderGrid();
         renderActions();
     }
@@ -537,7 +537,7 @@ public class ActionGridPane extends ScrollPane implements ActionGridPaneListener
 
         if(!getPreviousParent().equals("root"))
         {
-            setPreviousParent(getClientProfile().getActionFromID(
+            setPreviousParent(getClientProfile().getActionByID(
                     getPreviousParent()
             ).getParent());
         }
