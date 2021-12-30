@@ -240,6 +240,7 @@ public class ActionBox extends StackPane
 
         getStyleClass().add("action_box");
         getStyleClass().add("action_box_"+row+"_"+col);
+        getStyleClass().add("action_box_unoccupied");
 
         displayTextLabel = new Label();
         displayTextLabel.setWrapText(true);
@@ -387,6 +388,7 @@ public class ActionBox extends StackPane
 
         getStyleClass().add("action_box_"+getAction().getID());
         getStyleClass().add("action_box_type_"+getAction().getActionType());
+        getStyleClass().add("action_box_occupied");
 
         if (getAction().getUniqueID()!=null) // NORMAL, TOGGLE, GAUGE
         {
