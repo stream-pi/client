@@ -630,11 +630,19 @@ public class Controller extends Base
         Action action = getClientProfiles().getProfileFromID(profileID).getActionByID(actionID);
 
         if(!getCurrentProfile().getID().equals(profileID) && !getCurrentParent().equals(action.getParent()))
+        {
             return null;
+        }
 
         if (action == null)
         {
             getLogger().warning("Action is null. Probably because deleted.");
+            return null;
+        }
+
+        if (action.getLocation() == null)
+        {
+            getLogger().warning("Action has no location. Probably combine action child.");
             return null;
         }
 
