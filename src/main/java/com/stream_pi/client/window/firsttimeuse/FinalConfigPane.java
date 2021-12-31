@@ -40,6 +40,9 @@ import javafx.scene.layout.VBox;
 
 import javax.xml.transform.TransformerException;
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Logger;
 
 public class FinalConfigPane extends ScrollPane
 {
@@ -87,6 +90,15 @@ public class FinalConfigPane extends ScrollPane
         setFitToWidth(true);
 
         setVisible(false);
+
+        try
+        {
+            clientNameTextField.setText(InetAddress.getLocalHost().getHostName());
+        }
+        catch (UnknownHostException e)
+        {
+            Logger.getLogger(getClass().getName()).warning("Hostname lookup failed! Not setting any placeholder for clientNameTextField.");
+        }
     }
 
     public void makeChangesToNextButton()
