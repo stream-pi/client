@@ -48,7 +48,7 @@ You may also reach us via any of the following platforms:
 This software is licensed to [GNU General Public License v3.0](https://github.com/stream-pi/client/blob/master/LICENSE).
 ```
 Stream-Pi - Free, Open-Source, Modular, Cross-Platform and Programmable Macro Pad
-Copyright (C) 2019-2021  Debayan Sutradhar (rnayabed),  Samuel Quiñones (SamuelQuinones)
+Copyright (C) 2019-2022 Debayan Sutradhar (rnayabed),  Samuel Quiñones (SamuelQuinones)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
