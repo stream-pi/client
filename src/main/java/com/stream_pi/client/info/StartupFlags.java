@@ -14,7 +14,10 @@
 
 package com.stream_pi.client.info;
 
+import javafx.application.Application;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StartupFlags
@@ -39,9 +42,9 @@ public class StartupFlags
     private static final String ALLOW_ROOT_ARG = "Stream-Pi.allowRoot";
     private static final String SET_FIXED_MIN_SIZE_ARG = "Stream-Pi.setFixedMinSize";
 
-    public static void init(String[] args)
+    public static void init(Application.Parameters parameters)
     {
-        for (String arg : args)
+        for (String arg : parameters.getRaw())
         {
             String[] arr = arg.split("=");
 
