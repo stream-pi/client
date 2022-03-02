@@ -27,10 +27,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <javafx.version>18-ea+7</javafx.version>
+        <javafx.version>18-ea+11</javafx.version>
         <medusa.version>11.7</medusa.version>
 
-        <gluonfx.plugin.version>1.0.9</gluonfx.plugin.version>
+        <gluonfx.plugin.version>1.0.12</gluonfx.plugin.version>
         <ikonli.version>12.2.0</ikonli.version>
 
         <action.api.version>2.0.0-SNAPSHOT</action.api.version>
