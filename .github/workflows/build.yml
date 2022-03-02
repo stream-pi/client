@@ -26,8 +26,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-18-ea+7_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+11_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-18-ea+11_linux-x64_bin-jmods.zip -d /tmp
       - name: Setup AppImage
         run: |
           cd /tmp
@@ -233,8 +233,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_linux-x64_bin-jmods.zip
-          unzip /tmp/openjfx-18-ea+7_linux-x64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+11_linux-x64_bin-jmods.zip
+          unzip /tmp/openjfx-18-ea+11_linux-x64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.3.0
         run: |
           cd /tmp
@@ -308,8 +308,8 @@ jobs:
           architecture: x64
       - name: Setup JavaFX
         run: |
-          wget -P /tmp https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_osx-x64_bin-jmods.zip
-          unzip /tmp/openjfx-18-ea+7_osx-x64_bin-jmods.zip -d /tmp
+          wget -P /tmp https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+11_osx-x64_bin-jmods.zip
+          unzip /tmp/openjfx-18-ea+11_osx-x64_bin-jmods.zip -d /tmp
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -375,8 +375,8 @@ jobs:
           name: version
       - name: Setup JavaFX
         run: |
-          curl.exe -o D:\openjfx-18-ea+7_windows-x64_bin-jmods.zip https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_windows-x64_bin-jmods.zip
-          Expand-Archive -Force D:\openjfx-18-ea+7_windows-x64_bin-jmods.zip D:\
+          curl.exe -o D:\openjfx-18-ea+11_windows-x64_bin-jmods.zip https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+11_windows-x64_bin-jmods.zip
+          Expand-Archive -Force D:\openjfx-18-ea+11_windows-x64_bin-jmods.zip D:\
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -590,8 +590,8 @@ jobs:
             INSTALL_DIR=target/install
             mkdir -p $INSTALL_DIR
             mv target/lib/* $INSTALL_DIR
-            axel -k -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+7_monocle-linux-aarch64_bin-sdk.zip
-            unzip openjfx-18-ea+7_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
+            axel -k -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+11_monocle-linux-aarch64_bin-sdk.zip
+            unzip openjfx-18-ea+11_monocle-linux-aarch64_bin-sdk.zip -d javafx-sdk-aarch64
             mv javafx-sdk-aarch64/javafx-sdk-18/legal javafx-sdk-aarch64/javafx-sdk-18/javafx-legal
 
             # Use Debug libgluon
