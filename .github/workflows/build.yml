@@ -436,8 +436,8 @@ jobs:
 
 
 
-            axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+6_linux-arm32_bin-sdk.zip
-            unzip openjfx-18-ea+6_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+            axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+11_linux-arm32_bin-sdk.zip
+            unzip openjfx-18-ea+11_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
             # Use Debug libgluon
@@ -495,8 +495,8 @@ jobs:
       - name: Setup JavaFX
         run: |
           cd /tmp
-          axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+6_linux-aarch64_bin-jmods.zip
-          unzip /tmp/openjfx-18-ea+6_linux-aarch64_bin-jmods.zip -d /tmp
+          axel -n 8 https://download2.gluonhq.com/openjfx/18/openjfx-18-ea+11_linux-aarch64_bin-jmods.zip
+          unzip /tmp/openjfx-18-ea+11_linux-aarch64_bin-jmods.zip -d /tmp
       - name: Download GraalVM 21.3.0
         run: |
           cd /tmp
