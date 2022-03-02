@@ -489,7 +489,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 11
+          java-version: 17
           distribution: temurin
           architecture: x64
       - name: Setup JavaFX
@@ -500,11 +500,11 @@ jobs:
       - name: Download GraalVM 22.0.0.2
         run: |
           cd /tmp
-          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.0.0.2/graalvm-ce-java11-linux-amd64-22.0.0.2.tar.gz
+          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.0.0.2/graalvm-ce-java17-linux-amd64-22.0.0.2.tar.gz
           tar -xvzf *.gz
       - name: Install native-image
         run: |
-          cd /tmp/graalvm-ce-java11-22.0.0.2/bin
+          cd /tmp/graalvm-ce-java17-22.0.0.2/bin
           ./gu install native-image
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
@@ -530,7 +530,7 @@ jobs:
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
       - name: Create Linux aarch64
         run: |
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-22.0.0.2/
+          export GRAALVM_HOME=/tmp/graalvm-ce-java17-22.0.0.2/
 
           #Build aarch64 linux native-image
 
