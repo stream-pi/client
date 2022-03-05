@@ -453,7 +453,6 @@ jobs:
             # rm -rf javafx-sdk-arm32/javafx-sdk-19/lib/libgluon_drm_debug-1.1.6.so
 
 
-
             mv javafx-sdk-arm32/javafx-sdk-19/lib/* $INSTALL_DIR/
 
             cp assets/launchers/arm-jvm/run_console $INSTALL_DIR/run_console
