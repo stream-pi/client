@@ -468,6 +468,7 @@ jobs:
             
             # ARMv6 HF is not available for emulation, use prebuilt custom jre
             axel -n 8 https://github.com/rnayabed/jdk-builds/releases/download/17/jdk-17-stream-pi-2.0.0-snapshot-linux-armv6hf-jre.tar.gz
+            mkdir -p $INSTALL_DIR/jre
             tar -xvzf jdk-17-stream-pi-2.0.0-snapshot-linux-armv6hf-jre.tar.gz -C $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
