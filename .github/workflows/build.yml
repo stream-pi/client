@@ -459,11 +459,16 @@ jobs:
             chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
-            axel -n 8 https://github.com/rnayabed/jdk-builds/releases/download/17/jdk-17-linux-armv6hf.tar.gz
-            tar -xvzf jdk-17-linux-armv6hf.tar.gz
+            #axel -n 8 https://github.com/rnayabed/jdk-builds/releases/download/17/jdk-17-linux-armv6hf.tar.gz
+            #tar -xvzf jdk-17-linux-armv6hf.tar.gz
 
             #Run jpackage
-            jdk-17/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
+            #jdk-17/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
+
+            
+            # ARMv6 HF is not available for emulation, use prebuilt custom jre
+            axel -n 8 https://github.com/rnayabed/jdk-builds/releases/download/17/jdk-17-stream-pi-2.0.0-snapshot-linux-armv6hf-jre.tar.gz
+            tar -xvzf jdk-17-stream-pi-2.0.0-snapshot-linux-armv6hf-jre.tar.gz -C $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
             zip -r stream-pi-client-linux-arm32-$VERSION-executable.zip *
