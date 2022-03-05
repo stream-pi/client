@@ -440,21 +440,21 @@ jobs:
             #unzip openjfx-18_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             #mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
-            axel -n 8 https://github.com/rnayabed/jfx-builds/releases/download/18/openjfx-18-internal_linux-arm32_bin-sdk.zip
-            unzip openjfx-18-internal_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
-            mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
+            axel -n 8 https://github.com/rnayabed/jfx-builds/releases/download/18/openjfx-19-internal_linux-arm32_bin-sdk.zip
+            unzip openjfx-19-internal_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
+            mv javafx-sdk-arm32/javafx-sdk-19/legal javafx-sdk-arm32/javafx-sdk-19/javafx-legal
 
             # Use Debug libgluon
-            mv javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm.so
-            rm -rf javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm-1.1.6.so
+            mv javafx-sdk-arm32/javafx-sdk-19/lib/libgluon_drm_debug-1.1.6.so javafx-sdk-arm32/javafx-sdk-19/lib/libgluon_drm.so
+            rm -rf javafx-sdk-arm32/javafx-sdk-19/lib/libgluon_drm-1.1.6.so
 
             # Use Non Debug libgluon
-            # mv javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm-1.1.6.so javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm.so
-            # rm -rf javafx-sdk-arm32/javafx-sdk-18/lib/libgluon_drm_debug-1.1.6.so
+            # mv javafx-sdk-arm32/javafx-sdk-19/lib/libgluon_drm-1.1.6.so javafx-sdk-arm32/javafx-sdk-19/lib/libgluon_drm.so
+            # rm -rf javafx-sdk-arm32/javafx-sdk-19/lib/libgluon_drm_debug-1.1.6.so
 
 
 
-            mv javafx-sdk-arm32/javafx-sdk-18/lib/* $INSTALL_DIR/
+            mv javafx-sdk-arm32/javafx-sdk-19/lib/* $INSTALL_DIR/
 
             cp assets/launchers/arm-jvm/run_console $INSTALL_DIR/run_console
             cp assets/launchers/arm-jvm/run_desktop $INSTALL_DIR/run_desktop
