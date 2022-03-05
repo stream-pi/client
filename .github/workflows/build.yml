@@ -227,7 +227,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          java-version: 11
+          java-version: 17
           distribution: temurin
           architecture: x64
       - name: Setup JavaFX
@@ -238,11 +238,11 @@ jobs:
       - name: Download GraalVM 22.0.0.2
         run: |
           cd /tmp
-          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.0.0.2/graalvm-ce-java11-linux-amd64-22.0.0.2.tar.gz
+          axel -n 8 https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.0.0.2/graalvm-ce-java17-linux-amd64-22.0.0.2.tar.gz
           tar -xvzf *.gz
       - name: Install native-image
         run: |
-          cd /tmp/graalvm-ce-java11-22.0.0.2/bin
+          cd /tmp/graalvm-ce-java17-22.0.0.2/bin
           ./gu install native-image
       - name: Download built jars
         uses: dawidd6/action-download-artifact@v2
@@ -268,7 +268,7 @@ jobs:
           echo "REQ_MODULES=$(<req_modules.txt)" >> $GITHUB_ENV
       - name: Create Android aarch64 APK
         run: |
-          export GRAALVM_HOME=/tmp/graalvm-ce-java11-22.0.0.2/
+          export GRAALVM_HOME=/tmp/graalvm-ce-java17-22.0.0.2/
           export ANDROID_SDK_ROOT=$HOME/.gluon/substrate/Android/
 
           #Build aarch64 android native-image
@@ -459,11 +459,11 @@ jobs:
             chmod +x $INSTALL_DIR/run_console
 
             #Download jdk
-            axel -n 8 https://cdn.azul.com/zulu-embedded/bin/zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
-            tar -xvzf zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf.tar.gz
+            axel -n 8 https://github.com/rnayabed/jdk-builds/releases/download/17/jdk-17-linux-armv6hf.tar.gz
+            tar -xvzf jdk-17-linux-armv6hf.tar.gz
 
             #Run jpackage
-            zulu11.48.21-ca-jdk11.0.11-linux_aarch32hf/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
+            jdk-17/bin/jlink --no-header-files --no-man-pages --add-modules java.base,java.logging,java.net.http,java.scripting,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,java.xml,java.management,jdk.localedata,java.sql,jdk.crypto.ec --output $INSTALL_DIR/jre
 
             cd $INSTALL_DIR
             zip -r stream-pi-client-linux-arm32-$VERSION-executable.zip *
