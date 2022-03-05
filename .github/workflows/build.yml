@@ -440,7 +440,7 @@ jobs:
             #unzip openjfx-18_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             #mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
-            axel -n 8 https://github.com/rnayabed/jfx-builds/blob/master/openjfx-18-internal_linux-arm32_bin-sdk.zip
+            axel -n 8 https://github.com/rnayabed/jfx-builds/raw/master/openjfx-18-internal_linux-arm32_bin-sdk.zip
             unzip openjfx-18-internal_linux-arm32_bin-sdk.zip -d javafx-sdk-arm32
             mv javafx-sdk-arm32/javafx-sdk-18/legal javafx-sdk-arm32/javafx-sdk-18/javafx-legal
 
