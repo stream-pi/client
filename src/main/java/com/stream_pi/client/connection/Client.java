@@ -182,8 +182,10 @@ public class Client extends Thread
     {
         try
         {
+            logger.info("Sending message with heading "+message.getHeader()+" ...");
             oos.writeObject(message);
             oos.flush();
+            logger.info("... Done!");
         }
         catch (IOException e)
         {
@@ -975,6 +977,8 @@ public class Client extends Thread
 
     public void sendInputEvent(String profileID, String actionID, StreamPiInputEvent event) throws SevereException
     {
+
+        System.out.println("7");
         Message m = new Message("input_event_in_action");
         m.setValue("profile_ID", profileID);
         m.setValue("ID", actionID);

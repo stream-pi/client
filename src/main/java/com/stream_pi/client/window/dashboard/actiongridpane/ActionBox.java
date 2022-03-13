@@ -138,29 +138,24 @@ public class ActionBox extends StackPane
 
         StreamPiInputEvent inputEvent;
 
-        if(rawInputEvent instanceof MouseEvent)
+        if(rawInputEvent instanceof MouseEvent mouseEvent)
         {
-            MouseEvent mouseEvent = (MouseEvent) rawInputEvent;
             inputEvent = new StreamPiMouseEvent(mouseEvent.getEventType(), mouseEvent.getClickCount(), mouseEvent.getButton());
         }
-        else if(rawInputEvent instanceof SwipeEvent)
+        else if(rawInputEvent instanceof SwipeEvent swipeEvent)
         {
-            SwipeEvent swipeEvent = (SwipeEvent) rawInputEvent;
             inputEvent = new StreamPiSwipeEvent(swipeEvent.getEventType(), swipeEvent.getTouchCount());
         }
-        else if(rawInputEvent instanceof RotateEvent)
+        else if(rawInputEvent instanceof RotateEvent rotateEvent)
         {
-            RotateEvent rotateEvent = (RotateEvent) rawInputEvent;
             inputEvent = new StreamPiRotateEvent(rotateEvent.getEventType(), rotateEvent.getAngle(), rotateEvent.getTotalAngle());
         }
-        else if(rawInputEvent instanceof TouchEvent)
+        else if(rawInputEvent instanceof TouchEvent touchEvent)
         {
-            TouchEvent touchEvent = (TouchEvent) rawInputEvent;
             inputEvent = new StreamPiTouchEvent(touchEvent.getEventType(), touchEvent.getTouchCount(), touchEvent.getEventSetId());
         }
-        else if(rawInputEvent instanceof ZoomEvent)
+        else if(rawInputEvent instanceof ZoomEvent zoomEvent)
         {
-            ZoomEvent zoomEvent = (ZoomEvent) rawInputEvent;
             inputEvent = new StreamPiZoomEvent(zoomEvent.getEventType(), zoomEvent.getZoomFactor(), zoomEvent.getTotalZoomFactor());
         }
         else
