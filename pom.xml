@@ -27,11 +27,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <javafx.version>18-ea+11</javafx.version>
+        <javafx.version>18</javafx.version>
         <medusa.version>11.7</medusa.version>
 
-        <gluonfx.plugin.version>1.0.12</gluonfx.plugin.version>
-        <ikonli.version>12.2.0</ikonli.version>
+        <gluonfx.plugin.version>1.0.13</gluonfx.plugin.version>
+        <ikonli.version>12.3.1</ikonli.version>
 
         <action.api.version>2.0.0-SNAPSHOT</action.api.version>
         <util.version>2.0.0-SNAPSHOT</util.version>
@@ -39,7 +39,7 @@
 
         <controlsfx.version>11.1.0</controlsfx.version>
 
-        <attach.version>4.0.13</attach.version>
+        <attach.version>4.0.14</attach.version>
 
         <main.class.name>com.stream_pi.client.Main</main.class.name>
 
