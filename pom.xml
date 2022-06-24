@@ -27,32 +27,34 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <javafx.version>18</javafx.version>
+
+        <javafx.version>19-ea+8</javafx.version>
         <medusa.version>11.7</medusa.version>
 
-        <gluonfx.plugin.version>1.0.13</gluonfx.plugin.version>
+        <gluonfx.plugin.version>1.0.14</gluonfx.plugin.version>
         <ikonli.version>12.3.1</ikonli.version>
 
         <action.api.version>2.0.0-SNAPSHOT</action.api.version>
         <util.version>2.0.0-SNAPSHOT</util.version>
         <theme.api.version>2.0.0-SNAPSHOT</theme.api.version>
 
-        <controlsfx.version>11.1.0</controlsfx.version>
+        <controlsfx.version>11.1.1</controlsfx.version>
 
         <attach.version>4.0.14</attach.version>
 
-        <main.class.name>com.stream_pi.client.Main</main.class.name>
+        <main.class.name>com.stream_pi.client/com.stream_pi.client.Main</main.class.name>
 
-        <source.plugin.version>2.2.1</source.plugin.version>
-        <javadoc.plugin.version>3.1.0</javadoc.plugin.version>
-        <gpg.plugin.version>1.6</gpg.plugin.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
 
-        <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
 
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-        <jar.plugin>2.3.1</jar.plugin>
+        <buildnumber.plugin.version>3.0.0</buildnumber.plugin.version>
 
-        <buildnumber.plugin.version>1.4</buildnumber.plugin.version>
+        <source.plugin.version>3.2.1</source.plugin.version>
+        <javadoc.plugin.version>3.4.0</javadoc.plugin.version>
+        <gpg.plugin.version>3.0.1</gpg.plugin.version>
+        <jar.plugin.version>3.2.2</jar.plugin.version>
+        <compiler.plugin.version>3.10.1</compiler.plugin.version>
     </properties>
 
     <dependencies>
@@ -229,7 +231,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>${jar.plugin}</version>
+                <version>${jar.plugin.version}</version>
                 <configuration>
                     <outputDirectory>target/lib/</outputDirectory>
                 </configuration>
@@ -238,7 +240,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${compiler.plugin.version}</version>
             </plugin>
 
             <plugin>
