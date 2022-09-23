@@ -14,6 +14,7 @@ target/
 # Misc
 gen/
 data/
+.dccache
 
 #VS Code
 .vscode/
