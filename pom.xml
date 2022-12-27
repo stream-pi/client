@@ -28,7 +28,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
 
-        <javafx.version>19-ea+8</javafx.version>
+        <javafx.version>20-ea+11</javafx.version>
         <medusa.version>11.7</medusa.version>
 
         <gluonfx.plugin.version>1.0.14</gluonfx.plugin.version>
